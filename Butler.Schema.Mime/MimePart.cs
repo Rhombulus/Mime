@@ -2,7 +2,7 @@
 
 namespace Butler.Schema.Mime {
 
-    public partial class MimePart : MimeNode, System.IDisposable, System.Collections.Generic.IEnumerable<MimePart> {
+    public partial class MimePart : MimeNode, System.IDisposable , System.Collections.Generic.IEnumerable<MimePart> {
 
         public MimePart() {
             accessToken = new MimePartThreadAccessToken(this);
@@ -41,15 +41,13 @@ namespace Butler.Schema.Mime {
             get {
                 this.ThrowIfDisposed();
                 using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                    var contentTypeHeader1 = headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
-                    if (contentTypeHeader1 != null)
-                        return contentTypeHeader1.Value;
+                    var contentTypeHeader = headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
+                    if (contentTypeHeader != null)
+                        return contentTypeHeader.Value;
                     var mimePart = this.Parent as MimePart;
-                    if (mimePart != null) {
-                        var contentTypeHeader2 = mimePart.Headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
-                        if (contentTypeHeader2 != null && contentTypeHeader2.Value == "multipart/digest")
-                            return "message/rfc822";
-                    }
+                    var parentContentTypeHeader = mimePart?.Headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
+                    if (parentContentTypeHeader != null && parentContentTypeHeader.Value == "multipart/digest")
+                        return "message/rfc822";
                     return "text/plain";
                 }
             }
@@ -357,7 +355,7 @@ namespace Butler.Schema.Mime {
                     if (!this.IsReadOnly)
                         return this.BodyCte;
                     lock (deferredStorageLock)
-                        return deferredStorageInfo != null ? deferredStorageInfo.BodyCte : _storageInfo.BodyCte;
+                        return deferredStorageInfo?.BodyCte ?? _storageInfo.BodyCte;
                 }
             }
         }
@@ -368,7 +366,7 @@ namespace Butler.Schema.Mime {
                     if (!this.IsReadOnly)
                         return this.BodyLineTermination;
                     lock (deferredStorageLock)
-                        return deferredStorageInfo != null ? deferredStorageInfo.BodyLineTermination : _storageInfo.BodyLineTermination;
+                        return deferredStorageInfo?.BodyLineTermination ?? _storageInfo.BodyLineTermination;
                 }
             }
         }
@@ -377,16 +375,26 @@ namespace Butler.Schema.Mime {
             this.Dispose(true);
         }
 
-        System.Collections.Generic.IEnumerator<MimePart> System.Collections.Generic.IEnumerable<MimePart>.GetEnumerator() {
+        public static MimePart LoadMime(string path, CachingMode cachingMode = CachingMode.Source) {
+            
+                return MimePart.LoadMime(System.IO.File.OpenRead(path), cachingMode);
+        }
+
+        public static MimePart LoadMime(System.IO.Stream stream, CachingMode cachingMode = CachingMode.Source) {
+            var doc = new MimeDocument();
+            return doc.Load(stream, cachingMode);
+        }
+
+        public System.Collections.Generic.IEnumerator<MimePart> GetEnumerator()
+        {
             this.ThrowIfDisposed();
             using (ThreadAccessGuard.EnterPublic(accessToken))
                 return new Enumerator<MimePart>(this);
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken))
-                return new Enumerator<MimePart>(this);
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
 
         public System.IO.Stream GetRawContentReadStream() {
@@ -474,11 +482,11 @@ namespace Butler.Schema.Mime {
                     if (!MimePart.IsEqualContentTransferEncoding(desiredCte, transferEncoding)) {
                         if (!MimePart.EncodingIsTransparent(transferEncoding)) {
                             var decoder = MimePart.CreateDecoder(transferEncoding);
-                            result = new Schema.Mime.Encoders.EncoderStream(result, decoder, Schema.Mime.Encoders.EncoderStreamAccess.Read, true);
+                            result = new Encoders.EncoderStream(result, decoder, Encoders.EncoderStreamAccess.Read, true);
                         }
                         if (!MimePart.EncodingIsTransparent(desiredCte)) {
                             var encoder = MimePart.CreateEncoder(result, desiredCte);
-                            result = new Schema.Mime.Encoders.EncoderStream(result, encoder, Schema.Mime.Encoders.EncoderStreamAccess.Read, true);
+                            result = new Encoders.EncoderStream(result, encoder, Encoders.EncoderStreamAccess.Read, true);
                         }
                     }
                     flag = true;
@@ -617,11 +625,11 @@ namespace Butler.Schema.Mime {
                 isDisposed = true;
         }
 
-        public new Enumerator<MimePart> GetEnumerator() {
-            this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken))
-                return new Enumerator<MimePart>(this);
-        }
+        //public new Enumerator<MimePart> GetEnumerator() {
+        //    this.ThrowIfDisposed();
+        //    using (ThreadAccessGuard.EnterPublic(accessToken))
+        //        return new Enumerator<MimePart>(this);
+        //}
 
         public override sealed MimeNode Clone() {
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
@@ -799,17 +807,17 @@ namespace Butler.Schema.Mime {
             return true;
         }
 
-        internal static Schema.Mime.Encoders.ByteEncoder CreateEncoder(System.IO.Stream stream, ContentTransferEncoding encoding) {
+        internal static Encoders.ByteEncoder CreateEncoder(System.IO.Stream stream, ContentTransferEncoding encoding) {
             switch (encoding) {
                 case ContentTransferEncoding.QuotedPrintable:
-                    return new Schema.Mime.Encoders.QPEncoder();
+                    return new Encoders.QPEncoder();
                 case ContentTransferEncoding.Base64:
-                    return new Schema.Mime.Encoders.Base64Encoder();
+                    return new Encoders.Base64Encoder();
                 case ContentTransferEncoding.UUEncode:
-                    return new Schema.Mime.Encoders.UUEncoder();
+                    return new Encoders.UUEncoder();
                 case ContentTransferEncoding.BinHex:
-                    return new Schema.Mime.Encoders.BinHexEncoder(
-                        new Schema.Mime.Encoders.MacBinaryHeader {
+                    return new Encoders.BinHexEncoder(
+                        new Encoders.MacBinaryHeader {
                             DataForkLength = stream.Length,
                             FileName = "binhex.dat"
                         });
@@ -818,16 +826,16 @@ namespace Butler.Schema.Mime {
             }
         }
 
-        internal static Schema.Mime.Encoders.ByteEncoder CreateDecoder(ContentTransferEncoding encoding) {
+        internal static Encoders.ByteEncoder CreateDecoder(ContentTransferEncoding encoding) {
             switch (encoding) {
                 case ContentTransferEncoding.QuotedPrintable:
-                    return new Schema.Mime.Encoders.QPDecoder();
+                    return new Encoders.QPDecoder();
                 case ContentTransferEncoding.Base64:
-                    return new Schema.Mime.Encoders.Base64Decoder();
+                    return new Encoders.Base64Decoder();
                 case ContentTransferEncoding.UUEncode:
-                    return new Schema.Mime.Encoders.UUDecoder();
+                    return new Encoders.UUDecoder();
                 case ContentTransferEncoding.BinHex:
-                    return new Schema.Mime.Encoders.BinHexDecoder(true);
+                    return new Encoders.BinHexDecoder(true);
                 default:
                     return null;
             }
@@ -840,8 +848,7 @@ namespace Butler.Schema.Mime {
                 CountingWriteStream countingWriteStream = null;
                 if ((System.IO.Stream.Null == destStream || (countingWriteStream = destStream as CountingWriteStream) != null && countingWriteStream.IsCountingOnly) && end != long.MaxValue) {
                     var num2 = end - start;
-                    if (countingWriteStream != null)
-                        countingWriteStream.Add(num2);
+                    countingWriteStream?.Add(num2);
                     if (lineTermination != LineTerminationState.NotInteresting)
                         lineTermination = srcLineTermination;
                     return num2;

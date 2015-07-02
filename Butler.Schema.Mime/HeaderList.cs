@@ -9,12 +9,12 @@ namespace Butler.Schema.Mime {
 
         private HeaderList() {}
 
-        System.Collections.Generic.IEnumerator<Header> System.Collections.Generic.IEnumerable<Header>.GetEnumerator() {
+        public System.Collections.Generic.IEnumerator<Header> GetEnumerator() {
             return new Enumerator<Header>(this);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            return new Enumerator<Header>(this);
+            return this.GetEnumerator();
         }
 
         public static HeaderList ReadFrom(MimeReader reader) {
@@ -204,9 +204,9 @@ namespace Butler.Schema.Mime {
             }
         }
 
-        public Enumerator<Header> GetEnumerator() {
-            return new Enumerator<Header>(this);
-        }
+        //public Enumerator<Header> GetEnumerator() {
+        //    return new Enumerator<Header>(this);
+        //}
 
         public override sealed MimeNode Clone() {
             var headerList = new HeaderList();

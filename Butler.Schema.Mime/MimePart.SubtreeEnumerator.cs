@@ -27,10 +27,29 @@ namespace Butler.Schema.Mime {
                     if (_nextChild != null) {
                         ++this.Depth;
                         this.Current = _nextChild;
-                        _nextChild = (_options & SubtreeEnumerationOptions.IncludeEmbeddedMessages) != SubtreeEnumerationOptions.None
-                                         ? (_includeUnparsed ? (MimePart) this.Current.FirstChild : (this.Current.InternalLastChild != null ? (MimePart) this.Current.FirstChild : null))
-                                         : (!this.Current.IsMultipart ? null : (_includeUnparsed ? (MimePart) this.Current.FirstChild : (this.Current.InternalLastChild != null ? (MimePart) this.Current.FirstChild : null)));
-                        _currentDisposition = (EnumeratorDisposition) (1 | (_nextChild == null ? 2 : 0));
+                        if (_options.HasFlag(SubtreeEnumerationOptions.IncludeEmbeddedMessages)) {
+                            if (_includeUnparsed)
+                                _nextChild = (MimePart) this.Current.FirstChild;
+                            else {
+                                if (this.Current.InternalLastChild != null)
+                                    _nextChild = (MimePart) this.Current.FirstChild;
+                                else
+                                    _nextChild = null;
+                            }
+                        } else {
+                            if (this.Current.IsMultipart) {
+                                if (_includeUnparsed)
+                                    _nextChild = (MimePart) this.Current.FirstChild;
+                                else {
+                                    if (this.Current.InternalLastChild != null)
+                                        _nextChild = (MimePart) this.Current.FirstChild;
+                                    else
+                                        _nextChild = null;
+                                }
+                            } else
+                                _nextChild = null;
+                        }
+                        _currentDisposition = EnumeratorDisposition.Begin | (_nextChild == null ? EnumeratorDisposition.End : 0);
                         return true;
                     }
                     if (this.Depth < 0)
@@ -43,11 +62,14 @@ namespace Butler.Schema.Mime {
                             _currentDisposition = 0;
                             return false;
                         }
-                        _nextChild = _includeUnparsed ? (MimePart) this.Current.NextSibling : (MimePart) this.Current.InternalNextSibling;
+                        if (_includeUnparsed)
+                            _nextChild = (MimePart) this.Current.NextSibling;
+                        else
+                            _nextChild = (MimePart) this.Current.InternalNextSibling;
                         this.Current = (MimePart) this.Current.Parent;
                         _currentDisposition = _nextChild == null ? EnumeratorDisposition.End : 0;
-                    } while ((_options & SubtreeEnumerationOptions.RevisitParent) == SubtreeEnumerationOptions.None && _nextChild == null);
-                    return (_options & SubtreeEnumerationOptions.RevisitParent) != SubtreeEnumerationOptions.None || this.MoveNext();
+                    } while ( !_options.HasFlag(SubtreeEnumerationOptions.RevisitParent) && _nextChild == null);
+                    return _options.HasFlag(SubtreeEnumerationOptions.RevisitParent) || this.MoveNext();
                 }
             }
 
@@ -80,6 +102,7 @@ namespace Butler.Schema.Mime {
             [System.Flags]
             private enum EnumeratorDisposition : byte {
 
+                None = 0,
                 Begin = 1,
                 End = 2
 

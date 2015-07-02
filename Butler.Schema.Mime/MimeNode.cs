@@ -2,7 +2,7 @@
 
 namespace Butler.Schema.Mime {
 
-    public abstract class MimeNode : System.Collections.Generic.IEnumerable<MimeNode> {
+    public abstract class MimeNode/* : System.Collections.Generic.IEnumerable<MimeNode>*/ {
 
         internal MimeNode(MimeNode parent) {
             this.Parent = parent;
@@ -10,9 +10,9 @@ namespace Butler.Schema.Mime {
 
         internal MimeNode() {}
         public bool HasChildren => null != this.FirstChild;
-        public MimeNode Parent { get; private set; }
+        internal MimeNode Parent { get; private set; }
 
-        public MimeNode FirstChild {
+        internal MimeNode FirstChild {
             get {
                 if (this.InternalLastChild == null)
                     return this.ParseNextChild();
@@ -20,7 +20,7 @@ namespace Butler.Schema.Mime {
             }
         }
 
-        public MimeNode LastChild {
+        internal MimeNode LastChild {
             get {
                 do
                     ; while (this.ParseNextChild() != null);
@@ -28,7 +28,7 @@ namespace Butler.Schema.Mime {
             }
         }
 
-        public MimeNode NextSibling {
+        internal MimeNode NextSibling {
             get {
                 if (this.Parent == null)
                     return null;
@@ -38,7 +38,7 @@ namespace Butler.Schema.Mime {
             }
         }
 
-        public MimeNode PreviousSibling {
+        internal MimeNode PreviousSibling {
             get {
                 if (this.Parent == null || this.Parent.InternalLastChild.nextSibling == this)
                     return null;
@@ -72,13 +72,13 @@ namespace Butler.Schema.Mime {
             }
         }
 
-        System.Collections.Generic.IEnumerator<MimeNode> System.Collections.Generic.IEnumerable<MimeNode>.GetEnumerator() {
-            return new Enumerator<MimeNode>(this);
-        }
+        //System.Collections.Generic.IEnumerator<MimeNode> System.Collections.Generic.IEnumerable<MimeNode>.GetEnumerator() {
+        //    return new Enumerator<MimeNode>(this);
+        //}
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            return new Enumerator<MimeNode>(this);
-        }
+        //System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        //    return new Enumerator<MimeNode>(this);
+        //}
 
         public MimeNode InsertBefore(MimeNode newChild, MimeNode refChild) {
             this.ThrowIfReadOnly("MimeNode.InsertBefore");
@@ -167,9 +167,9 @@ namespace Butler.Schema.Mime {
             writer.WriteMimeNode(this);
         }
 
-        public Enumerator<MimeNode> GetEnumerator() {
-            return new Enumerator<MimeNode>(this);
-        }
+        //public Enumerator<MimeNode> GetEnumerator() {
+        //    return new Enumerator<MimeNode>(this);
+        //}
 
         public virtual MimeNode Clone() {
             throw new System.NotSupportedException(
