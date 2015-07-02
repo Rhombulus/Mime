@@ -25,7 +25,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
       public uint Mask => this.Bits & 2863311530U | (this.Bits & 2863311530U) >> 1;
 
-      public uint Bits { get; }
+      public uint Bits { get; private set; }
 
       internal int IntegerBag
     {
