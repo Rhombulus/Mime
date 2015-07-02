@@ -26,9 +26,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     internal bool MultiValueBuildHelperLocked;
     internal Dictionary<string, PropertyValue> FontFaceDictionary;
     protected bool madeProgress;
-    private bool mustFlush;
-    private bool endOfFile;
-    private bool newLine;
+      private bool newLine;
     private bool textQuotingExpected;
 
     public FormatConverterContainer Root => new FormatConverterContainer(this, 0);
@@ -39,21 +37,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
       public FormatConverterContainer LastNonEmpty => new FormatConverterContainer(this, this.BuildStackTop - 1);
 
-      public bool EndOfFile => this.endOfFile;
+      public bool EndOfFile { get; private set; }
 
-      protected bool MustFlush
-    {
-      get
-      {
-        return this.mustFlush;
-      }
-      set
-      {
-        this.mustFlush = value;
-      }
-    }
+      protected bool MustFlush { get; set; }
 
-    internal FormatConverter(Stream formatConverterTraceStream)
+      internal FormatConverter(Stream formatConverterTraceStream)
     {
       this.Store = new FormatStore();
       this.BuildStack = new FormatConverter.BuildStackEntry[16];
@@ -148,8 +136,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       while (this.BuildStackTop > 1)
         this.CloseContainer();
       this.Store.GetNode(this.BuildStack[0].Node).PrepareToClose(this.Store.CurrentTextPosition);
-      this.mustFlush = true;
-      this.endOfFile = true;
+      this.MustFlush = true;
+      this.EndOfFile = true;
     }
 
     public void AddNonSpaceText(char[] buffer, int offset, int count)
@@ -404,8 +392,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       ++this.BuildStackTop;
       this.EmptyContainer = false;
       this.ContainerFlushed = true;
-      this.mustFlush = false;
-      this.endOfFile = false;
+      this.MustFlush = false;
+      this.EndOfFile = false;
       this.newLine = true;
       this.textQuotingExpected = true;
     }
@@ -572,7 +560,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     public virtual FormatStore ConvertToStore()
     {
       long num = 0L;
-      while (!this.endOfFile)
+      while (!this.EndOfFile)
       {
         this.Run();
         if (this.madeProgress)

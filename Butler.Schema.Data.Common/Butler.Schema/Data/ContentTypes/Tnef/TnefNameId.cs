@@ -11,49 +11,45 @@ namespace Butler.Schema.Data.ContentTypes.Tnef
 {
   public struct TnefNameId
   {
-    private Guid propertySetGuid;
-    private int id;
-    private string name;
-    private TnefNameIdKind kind;
 
-    public Guid PropertySetGuid => this.propertySetGuid;
+      public Guid PropertySetGuid { get; private set; }
 
-      public TnefNameIdKind Kind => this.kind;
+      public TnefNameIdKind Kind { get; private set; }
 
-      public string Name => this.name;
+      public string Name { get; private set; }
 
-      public int Id => this.id;
+      public int Id { get; private set; }
 
       public TnefNameId(Guid propertySetGuid, int id)
     {
-      this.propertySetGuid = propertySetGuid;
-      this.id = id;
-      this.name = (string) null;
-      this.kind = TnefNameIdKind.Id;
+      this.PropertySetGuid = propertySetGuid;
+      this.Id = id;
+      this.Name = (string) null;
+      this.Kind = TnefNameIdKind.Id;
     }
 
     public TnefNameId(Guid propertySetGuid, string name)
     {
-      this.propertySetGuid = propertySetGuid;
-      this.id = 0;
-      this.name = name;
-      this.kind = TnefNameIdKind.Name;
+      this.PropertySetGuid = propertySetGuid;
+      this.Id = 0;
+      this.Name = name;
+      this.Kind = TnefNameIdKind.Name;
     }
 
     internal void Set(Guid propertySetGuid, int id)
     {
-      this.propertySetGuid = propertySetGuid;
-      this.id = id;
-      this.name = (string) null;
-      this.kind = TnefNameIdKind.Id;
+      this.PropertySetGuid = propertySetGuid;
+      this.Id = id;
+      this.Name = (string) null;
+      this.Kind = TnefNameIdKind.Id;
     }
 
     internal void Set(Guid propertySetGuid, string name)
     {
-      this.propertySetGuid = propertySetGuid;
-      this.id = 0;
-      this.name = name;
-      this.kind = TnefNameIdKind.Name;
+      this.PropertySetGuid = propertySetGuid;
+      this.Id = 0;
+      this.Name = name;
+      this.Kind = TnefNameIdKind.Name;
     }
   }
 }

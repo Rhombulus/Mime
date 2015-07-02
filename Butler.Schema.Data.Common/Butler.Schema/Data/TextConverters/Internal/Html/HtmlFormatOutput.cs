@@ -28,8 +28,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       new Format.Property(Format.PropertyId.FontColor, new Format.PropertyValue(new Format.RGBT(0U, 0U, (uint) byte.MaxValue)))
     };
     private const int MaxRecognizedHyperlinkLength = 4096;
-    private HtmlWriter writer;
-    private HtmlInjection injection;
+      private HtmlInjection injection;
     private bool filterHtml;
     private HtmlTagCallback callback;
     private HtmlFormatOutputCallbackContext callbackContext;
@@ -39,19 +38,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private HtmlFormatOutput.EndTagActionEntry[] endTagActionStack;
     private int endTagActionStackTop;
 
-    internal HtmlWriter Writer
-    {
-      get
-      {
-        return this.writer;
-      }
-      set
-      {
-        this.writer = value;
-      }
-    }
+    internal HtmlWriter Writer { get; set; }
 
-    public override bool OutputCodePageSameAsInput => false;
+      public override bool OutputCodePageSameAsInput => false;
 
       public override Encoding OutputEncoding
     {
@@ -61,12 +50,12 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       }
     }
 
-    public override bool CanAcceptMoreOutput => this.writer.CanAcceptMore;
+    public override bool CanAcceptMoreOutput => this.Writer.CanAcceptMore;
 
       public HtmlFormatOutput(HtmlWriter writer, HtmlInjection injection, bool outputFragment, Stream formatTraceStream, Stream formatOutputTraceStream, bool filterHtml, HtmlTagCallback callback, bool recognizeHyperlinks)
       : base(formatOutputTraceStream)
     {
-      this.writer = writer;
+      this.Writer = writer;
       this.injection = injection;
       this.outputFragment = outputFragment;
       this.filterHtml = filterHtml;
@@ -100,21 +89,21 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       }
       else
       {
-        this.writer.WriteAttributeName(HtmlNameIndex.Id);
-        this.writer.WriteAttributeValue(@string);
+        this.Writer.WriteAttributeName(HtmlNameIndex.Id);
+        this.Writer.WriteAttributeValue(@string);
       }
     }
 
     bool IRestartable.CanRestart()
     {
-      if (this.writer != null)
-        return ((IRestartable) this.writer).CanRestart();
+      if (this.Writer != null)
+        return ((IRestartable) this.Writer).CanRestart();
       return false;
     }
 
     void IRestartable.Restart()
     {
-      ((IRestartable) this.writer).Restart();
+      ((IRestartable) this.Writer).Restart();
       this.Restart();
       if (this.injection != null)
         this.injection.Reset();
@@ -123,22 +112,22 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 
     void IRestartable.DisableRestart()
     {
-      if (this.writer == null)
+      if (this.Writer == null)
         return;
-      ((IRestartable) this.writer).DisableRestart();
+      ((IRestartable) this.Writer).DisableRestart();
     }
 
     public override bool Flush()
     {
       if (!base.Flush())
         return false;
-      this.writer.Flush();
+      this.Writer.Flush();
       return true;
     }
 
     internal void SetWriter(HtmlWriter writer)
     {
-      this.writer = writer;
+      this.Writer = writer;
     }
 
     protected override bool StartRoot()
@@ -157,7 +146,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         bool flag1 = false;
         bool flag2 = false;
         bool tagDropped = false;
-        this.writer.WriteStartTag(HtmlNameIndex.Html);
+        this.Writer.WriteStartTag(HtmlNameIndex.Html);
         if (this.callback != null)
         {
           if (this.callbackContext == null)
@@ -165,11 +154,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           this.callbackContext.InitializeTag(false, HtmlNameIndex.Head, false);
         }
         else
-          this.writer.WriteStartTag(HtmlNameIndex.Head);
+          this.Writer.WriteStartTag(HtmlNameIndex.Head);
         if (this.callback != null)
         {
           this.callbackContext.InitializeFragment(false);
-          this.callback((HtmlTagContext) this.callbackContext, this.writer);
+          this.callback((HtmlTagContext) this.callbackContext, this.Writer);
           this.callbackContext.UninitializeFragment();
           if (this.callbackContext.IsInvokeCallbackForEndTag)
             flag1 = true;
@@ -180,51 +169,51 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         }
         if (!flag2)
         {
-          if (this.writer.HasEncoding)
+          if (this.Writer.HasEncoding)
           {
-            this.writer.WriteStartTag(HtmlNameIndex.Meta);
-            this.writer.WriteAttribute(HtmlNameIndex.HttpEquiv, "Content-Type");
-            this.writer.WriteAttributeName(HtmlNameIndex.Content);
-            this.writer.WriteAttributeValueInternal("text/html; charset=");
-            this.writer.WriteAttributeValue(Globalization.Charset.GetCharset(this.writer.Encoding).Name);
-            this.writer.WriteNewLine(true);
+            this.Writer.WriteStartTag(HtmlNameIndex.Meta);
+            this.Writer.WriteAttribute(HtmlNameIndex.HttpEquiv, "Content-Type");
+            this.Writer.WriteAttributeName(HtmlNameIndex.Content);
+            this.Writer.WriteAttributeValueInternal("text/html; charset=");
+            this.Writer.WriteAttributeValue(Globalization.Charset.GetCharset(this.Writer.Encoding).Name);
+            this.Writer.WriteNewLine(true);
           }
-          this.writer.WriteStartTag(HtmlNameIndex.Meta);
-          this.writer.WriteAttribute(HtmlNameIndex.Name, "Generator");
-          this.writer.WriteAttribute(HtmlNameIndex.Content, "Microsoft Exchange Server");
-          this.writer.WriteNewLine(true);
+          this.Writer.WriteStartTag(HtmlNameIndex.Meta);
+          this.Writer.WriteAttribute(HtmlNameIndex.Name, "Generator");
+          this.Writer.WriteAttribute(HtmlNameIndex.Content, "Microsoft Exchange Server");
+          this.Writer.WriteNewLine(true);
           if (this.Comment != null)
           {
-            this.writer.WriteMarkupText("<!-- " + this.Comment + " -->");
-            this.writer.WriteNewLine(true);
+            this.Writer.WriteMarkupText("<!-- " + this.Comment + " -->");
+            this.Writer.WriteNewLine(true);
           }
-          this.writer.WriteStartTag(HtmlNameIndex.Style);
-          this.writer.WriteMarkupText("<!-- .EmailQuote { margin-left: 1pt; padding-left: 4pt; border-left: #800000 2px solid; } -->");
-          this.writer.WriteEndTag(HtmlNameIndex.Style);
+          this.Writer.WriteStartTag(HtmlNameIndex.Style);
+          this.Writer.WriteMarkupText("<!-- .EmailQuote { margin-left: 1pt; padding-left: 4pt; border-left: #800000 2px solid; } -->");
+          this.Writer.WriteEndTag(HtmlNameIndex.Style);
         }
         if (flag1)
         {
           this.callbackContext.InitializeTag(true, HtmlNameIndex.Head, tagDropped);
           this.callbackContext.InitializeFragment(false);
-          this.callback((HtmlTagContext) this.callbackContext, this.writer);
+          this.callback((HtmlTagContext) this.callbackContext, this.Writer);
           this.callbackContext.UninitializeFragment();
         }
         else if (!tagDropped)
         {
-          this.writer.WriteEndTag(HtmlNameIndex.Head);
-          this.writer.WriteNewLine(true);
+          this.Writer.WriteEndTag(HtmlNameIndex.Head);
+          this.Writer.WriteNewLine(true);
         }
-        this.writer.WriteStartTag(HtmlNameIndex.Body);
-        this.writer.WriteNewLine(true);
+        this.Writer.WriteStartTag(HtmlNameIndex.Body);
+        this.Writer.WriteNewLine(true);
       }
       else
       {
-        this.writer.WriteStartTag(HtmlNameIndex.Div);
-        this.writer.WriteAttribute(HtmlNameIndex.Class, "BodyFragment");
-        this.writer.WriteNewLine(true);
+        this.Writer.WriteStartTag(HtmlNameIndex.Div);
+        this.Writer.WriteAttribute(HtmlNameIndex.Class, "BodyFragment");
+        this.Writer.WriteNewLine(true);
       }
       if (this.injection != null && this.injection.HaveHead)
-        this.injection.Inject(true, this.writer);
+        this.injection.Inject(true, this.Writer);
       this.ApplyCharFormat();
       return true;
     }
@@ -233,20 +222,20 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     {
       this.RevertCharFormat();
       if (this.injection != null && this.injection.HaveTail)
-        this.injection.Inject(false, this.writer);
+        this.injection.Inject(false, this.Writer);
       if (!this.outputFragment)
       {
-        this.writer.WriteNewLine(true);
-        this.writer.WriteEndTag(HtmlNameIndex.Body);
-        this.writer.WriteNewLine(true);
-        this.writer.WriteEndTag(HtmlNameIndex.Html);
+        this.Writer.WriteNewLine(true);
+        this.Writer.WriteEndTag(HtmlNameIndex.Body);
+        this.Writer.WriteNewLine(true);
+        this.Writer.WriteEndTag(HtmlNameIndex.Html);
       }
       else
       {
-        this.writer.WriteNewLine(true);
-        this.writer.WriteEndTag(HtmlNameIndex.Div);
+        this.Writer.WriteNewLine(true);
+        this.Writer.WriteEndTag(HtmlNameIndex.Div);
       }
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override void StartEndBaseFont()
@@ -258,8 +247,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       Format.PropertyValue distinctProperty = this.GetDistinctProperty(Format.PropertyId.FontFace);
       if (!distinctProperty.IsNull)
       {
-        this.writer.WriteStartTag(HtmlNameIndex.Font);
-        this.writer.WriteAttributeName(HtmlNameIndex.Face);
+        this.Writer.WriteStartTag(HtmlNameIndex.Font);
+        this.Writer.WriteAttributeName(HtmlNameIndex.Face);
         if (distinctProperty.IsMultiValue)
         {
           Format.MultiValue multiValue = this.FormatStore.GetMultiValue(distinctProperty);
@@ -267,43 +256,43 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           {
             string @string = multiValue.GetStringValue(index).GetString();
             if (index != 0)
-              this.writer.WriteAttributeValue(",");
-            this.writer.WriteAttributeValue(@string);
+              this.Writer.WriteAttributeValue(",");
+            this.Writer.WriteAttributeValue(@string);
           }
         }
         else
-          this.writer.WriteAttributeValue(this.FormatStore.GetStringValue(distinctProperty).GetString());
+          this.Writer.WriteAttributeValue(this.FormatStore.GetStringValue(distinctProperty).GetString());
       }
-      this.writer.WriteNewLine(true);
-      this.writer.WriteStartTag(HtmlNameIndex.Table);
+      this.Writer.WriteNewLine(true);
+      this.Writer.WriteStartTag(HtmlNameIndex.Table);
       this.OutputTableTagAttributes();
       bool styleAttributeOpen = false;
       this.OutputTableCssProperties(ref styleAttributeOpen);
       this.OutputBlockCssProperties(ref styleAttributeOpen);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
       return true;
     }
 
     protected override void EndTable()
     {
-      this.writer.WriteNewLine(true);
-      this.writer.WriteEndTag(HtmlNameIndex.Table);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
+      this.Writer.WriteEndTag(HtmlNameIndex.Table);
+      this.Writer.WriteNewLine(true);
       if (this.GetDistinctProperty(Format.PropertyId.FontFace).IsNull)
         return;
-      this.writer.WriteEndTag(HtmlNameIndex.Font);
+      this.Writer.WriteEndTag(HtmlNameIndex.Font);
     }
 
     protected override bool StartTableColumnGroup()
     {
-      this.writer.WriteNewLine(true);
-      this.writer.WriteStartTag(HtmlNameIndex.ColGroup);
+      this.Writer.WriteNewLine(true);
+      this.Writer.WriteStartTag(HtmlNameIndex.ColGroup);
       Format.PropertyValue distinctProperty1 = this.GetDistinctProperty(Format.PropertyId.Width);
       if (!distinctProperty1.IsNull && distinctProperty1.IsAbsRelLength)
-        this.writer.WriteAttribute(HtmlNameIndex.Width, distinctProperty1.PixelsInteger.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.Width, distinctProperty1.PixelsInteger.ToString());
       Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.NumColumns);
       if (!distinctProperty2.IsNull && distinctProperty2.IsAbsRelLength)
-        this.writer.WriteAttribute(HtmlNameIndex.Span, distinctProperty2.Integer.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.Span, distinctProperty2.Integer.ToString());
       bool styleAttributeOpen = false;
       this.OutputTableColumnCssProperties(ref styleAttributeOpen);
       return true;
@@ -311,30 +300,30 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 
     protected override void EndTableColumnGroup()
     {
-      this.writer.WriteEndTag(HtmlNameIndex.ColGroup);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteEndTag(HtmlNameIndex.ColGroup);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override void StartEndTableColumn()
     {
-      this.writer.WriteStartTag(HtmlNameIndex.Col);
+      this.Writer.WriteStartTag(HtmlNameIndex.Col);
       Format.PropertyValue distinctProperty1 = this.GetDistinctProperty(Format.PropertyId.Width);
       if (!distinctProperty1.IsNull && distinctProperty1.IsAbsRelLength)
-        this.writer.WriteAttribute(HtmlNameIndex.Width, distinctProperty1.PixelsInteger.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.Width, distinctProperty1.PixelsInteger.ToString());
       Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.NumColumns);
       if (!distinctProperty2.IsNull && distinctProperty2.IsAbsRelLength)
-        this.writer.WriteAttribute(HtmlNameIndex.Span, distinctProperty2.Integer.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.Span, distinctProperty2.Integer.ToString());
       bool styleAttributeOpen = false;
       this.OutputTableColumnCssProperties(ref styleAttributeOpen);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override bool StartTableCaption()
     {
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
       if (!this.CurrentNode.Parent.IsNull && this.CurrentNode.Parent.NodeType == Format.FormatContainerType.Table)
       {
-        this.writer.WriteStartTag(HtmlNameIndex.Caption);
+        this.Writer.WriteStartTag(HtmlNameIndex.Caption);
         Format.FormatStyle style = this.FormatStore.GetStyle(13);
         this.SubtractDefaultContainerPropertiesFromDistinct(style.FlagProperties, style.PropertyList);
         Format.PropertyValue distinctProperty = this.GetDistinctProperty(Format.PropertyId.BlockAlignment);
@@ -342,9 +331,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         {
           string blockAlignmentString = HtmlSupport.GetBlockAlignmentString(distinctProperty);
           if (blockAlignmentString != null)
-            this.writer.WriteAttribute(HtmlNameIndex.Align, blockAlignmentString);
+            this.Writer.WriteAttribute(HtmlNameIndex.Align, blockAlignmentString);
         }
-        this.writer.WriteNewLine(true);
+        this.Writer.WriteNewLine(true);
       }
       this.ApplyCharFormat();
       return true;
@@ -355,10 +344,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       this.RevertCharFormat();
       if (!this.CurrentNode.Parent.IsNull && this.CurrentNode.Parent.NodeType == Format.FormatContainerType.Table)
       {
-        this.writer.WriteNewLine(true);
-        this.writer.WriteEndTag(HtmlNameIndex.Caption);
+        this.Writer.WriteNewLine(true);
+        this.Writer.WriteEndTag(HtmlNameIndex.Caption);
       }
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override bool StartTableExtraContent()
@@ -373,22 +362,22 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 
     protected override bool StartTableRow()
     {
-      this.writer.WriteNewLine(true);
-      this.writer.WriteStartTag(HtmlNameIndex.TR);
+      this.Writer.WriteNewLine(true);
+      this.Writer.WriteStartTag(HtmlNameIndex.TR);
       Format.PropertyValue distinctProperty = this.GetDistinctProperty(Format.PropertyId.Height);
       if (!distinctProperty.IsNull && distinctProperty.IsAbsRelLength)
-        this.writer.WriteAttribute(HtmlNameIndex.Height, distinctProperty.PixelsInteger.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.Height, distinctProperty.PixelsInteger.ToString());
       bool styleAttributeOpen = false;
       this.OutputBlockCssProperties(ref styleAttributeOpen);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
       return true;
     }
 
     protected override void EndTableRow()
     {
-      this.writer.WriteNewLine(true);
-      this.writer.WriteEndTag(HtmlNameIndex.TR);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
+      this.Writer.WriteEndTag(HtmlNameIndex.TR);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override bool StartTableCell()
@@ -396,8 +385,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       Format.PropertyValue distinctProperty = this.GetDistinctProperty(Format.PropertyId.MergedCell);
       if (distinctProperty.IsNull || !distinctProperty.Bool)
       {
-        this.writer.WriteNewLine(true);
-        this.writer.WriteStartTag(HtmlNameIndex.TD);
+        this.Writer.WriteNewLine(true);
+        this.Writer.WriteStartTag(HtmlNameIndex.TD);
         this.OutputTableCellTagAttributes();
         bool styleAttributeOpen = false;
         this.OutputBlockCssProperties(ref styleAttributeOpen);
@@ -412,35 +401,35 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       if (!distinctProperty.IsNull && distinctProperty.Bool)
         return;
       this.RevertCharFormat();
-      this.writer.WriteEndTag(HtmlNameIndex.TD);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteEndTag(HtmlNameIndex.TD);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override bool StartList()
     {
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
       Format.PropertyValue effectiveProperty = this.GetEffectiveProperty(Format.PropertyId.ListStyle);
       bool flag = true;
       if (effectiveProperty.IsNull || effectiveProperty.Enum == 1)
       {
-        this.writer.WriteStartTag(HtmlNameIndex.UL);
+        this.Writer.WriteStartTag(HtmlNameIndex.UL);
       }
       else
       {
-        this.writer.WriteStartTag(HtmlNameIndex.OL);
+        this.Writer.WriteStartTag(HtmlNameIndex.OL);
         flag = false;
       }
       Format.PropertyValue distinctProperty1 = this.GetDistinctProperty(Format.PropertyId.RightToLeft);
       if (!distinctProperty1.IsNull)
-        this.writer.WriteAttribute(HtmlNameIndex.Dir, distinctProperty1.Bool ? "rtl" : "ltr");
+        this.Writer.WriteAttribute(HtmlNameIndex.Dir, distinctProperty1.Bool ? "rtl" : "ltr");
       if (!flag && effectiveProperty.Enum != 2)
-        this.writer.WriteAttribute(HtmlNameIndex.Type, HtmlFormatOutput.listType[effectiveProperty.Enum]);
+        this.Writer.WriteAttribute(HtmlNameIndex.Type, HtmlFormatOutput.listType[effectiveProperty.Enum]);
       Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.ListStart);
       if (!flag && distinctProperty2.IsInteger && distinctProperty2.Integer != 1)
-        this.writer.WriteAttribute(HtmlNameIndex.Start, distinctProperty2.Integer.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.Start, distinctProperty2.Integer.ToString());
       bool styleAttributeOpen = false;
       this.OutputBlockCssProperties(ref styleAttributeOpen);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
       this.ApplyCharFormat();
       return true;
     }
@@ -449,18 +438,18 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     {
       this.RevertCharFormat();
       Format.PropertyValue effectiveProperty = this.GetEffectiveProperty(Format.PropertyId.ListStyle);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
       if (effectiveProperty.IsNull || effectiveProperty.Enum == 1)
-        this.writer.WriteEndTag(HtmlNameIndex.UL);
+        this.Writer.WriteEndTag(HtmlNameIndex.UL);
       else
-        this.writer.WriteEndTag(HtmlNameIndex.OL);
-      this.writer.WriteNewLine(true);
+        this.Writer.WriteEndTag(HtmlNameIndex.OL);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override bool StartListItem()
     {
-      this.writer.WriteNewLine(true);
-      this.writer.WriteStartTag(HtmlNameIndex.LI);
+      this.Writer.WriteNewLine(true);
+      this.Writer.WriteStartTag(HtmlNameIndex.LI);
       bool styleAttributeOpen = false;
       this.OutputBlockCssProperties(ref styleAttributeOpen);
       this.ApplyCharFormat();
@@ -470,8 +459,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     protected override void EndListItem()
     {
       this.RevertCharFormat();
-      this.writer.WriteEndTag(HtmlNameIndex.LI);
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteEndTag(HtmlNameIndex.LI);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override bool StartHyperLink()
@@ -489,7 +478,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         this.callbackContext.InitializeTag(false, HtmlNameIndex.A, false);
       }
       else
-        this.writer.WriteStartTag(HtmlNameIndex.A);
+        this.Writer.WriteStartTag(HtmlNameIndex.A);
       Format.PropertyValue distinctProperty1 = this.GetDistinctProperty(Format.PropertyId.HyperlinkUrl);
       if (!distinctProperty1.IsNull)
       {
@@ -502,8 +491,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         }
         else
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Href);
-          this.writer.WriteAttributeValue(url);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Href);
+          this.Writer.WriteAttributeValue(url);
         }
         Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.HyperlinkTarget);
         if (!distinctProperty2.IsNull)
@@ -515,8 +504,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           }
           else
           {
-            this.writer.WriteAttributeName(HtmlNameIndex.Target);
-            this.writer.WriteAttributeValue(targetString);
+            this.Writer.WriteAttributeName(HtmlNameIndex.Target);
+            this.Writer.WriteAttributeValue(targetString);
           }
         }
         this.WriteIdAttribute(this.callback != null);
@@ -524,7 +513,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       if (this.callback != null)
       {
         this.callbackContext.InitializeFragment(false);
-        this.callback((HtmlTagContext) this.callbackContext, this.writer);
+        this.callback((HtmlTagContext) this.callbackContext, this.Writer);
         this.callbackContext.UninitializeFragment();
         if (this.callbackContext.IsInvokeCallbackForEndTag)
           flag3 = true;
@@ -553,8 +542,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         this.ApplyCharFormat();
       else
         this.CloseHyperLink();
-      if (this.writer.IsTagOpen)
-        this.writer.WriteTagEnd();
+      if (this.Writer.IsTagOpen)
+        this.Writer.WriteTagEnd();
       return !flag2;
     }
 
@@ -563,9 +552,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       --this.hyperlinkLevel;
       this.RevertCharFormat();
       this.CloseHyperLink();
-      if (!this.writer.IsTagOpen)
+      if (!this.Writer.IsTagOpen)
         return;
-      this.writer.WriteTagEnd();
+      this.Writer.WriteTagEnd();
     }
 
     protected override bool StartBookmark()
@@ -573,14 +562,14 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       Format.PropertyValue distinctProperty = this.GetDistinctProperty(Format.PropertyId.BookmarkName);
       if (!distinctProperty.IsNull)
       {
-        this.writer.WriteStartTag(HtmlNameIndex.A);
+        this.Writer.WriteStartTag(HtmlNameIndex.A);
         string @string = this.FormatStore.GetStringValue(distinctProperty).GetString();
-        this.writer.WriteAttributeName(HtmlNameIndex.Name);
-        this.writer.WriteAttributeValue(@string);
+        this.Writer.WriteAttributeName(HtmlNameIndex.Name);
+        this.Writer.WriteAttributeValue(@string);
       }
       this.ApplyCharFormat();
-      if (this.writer.IsTagOpen)
-        this.writer.WriteTagEnd();
+      if (this.Writer.IsTagOpen)
+        this.Writer.WriteTagEnd();
       return true;
     }
 
@@ -588,10 +577,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     {
       this.RevertCharFormat();
       if (!this.GetDistinctProperty(Format.PropertyId.BookmarkName).IsNull)
-        this.writer.WriteEndTag(HtmlNameIndex.A);
-      if (!this.writer.IsTagOpen)
+        this.Writer.WriteEndTag(HtmlNameIndex.A);
+      if (!this.Writer.IsTagOpen)
         return;
-      this.writer.WriteTagEnd();
+      this.Writer.WriteTagEnd();
     }
 
     protected override void StartEndImage()
@@ -603,7 +592,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         this.callbackContext.InitializeTag(false, HtmlNameIndex.Img, false);
       }
       else
-        this.writer.WriteStartTag(HtmlNameIndex.Img);
+        this.Writer.WriteStartTag(HtmlNameIndex.Img);
       Format.PropertyValue distinctProperty1 = this.GetDistinctProperty(Format.PropertyId.Width);
       if (!distinctProperty1.IsNull)
       {
@@ -613,7 +602,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           if (this.callback != null)
             this.callbackContext.AddAttribute(HtmlNameIndex.Width, bufferString.ToString());
           else
-            this.writer.WriteAttribute(HtmlNameIndex.Width, bufferString);
+            this.Writer.WriteAttribute(HtmlNameIndex.Width, bufferString);
         }
       }
       Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.Height);
@@ -625,7 +614,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           if (this.callback != null)
             this.callbackContext.AddAttribute(HtmlNameIndex.Height, bufferString.ToString());
           else
-            this.writer.WriteAttribute(HtmlNameIndex.Height, bufferString);
+            this.Writer.WriteAttribute(HtmlNameIndex.Height, bufferString);
         }
       }
       Format.PropertyValue distinctProperty3 = this.GetDistinctProperty(Format.PropertyId.BlockAlignment);
@@ -637,7 +626,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           if (this.callback != null)
             this.callbackContext.AddAttribute(HtmlNameIndex.Align, blockAlignmentString);
           else
-            this.writer.WriteAttribute(HtmlNameIndex.Align, blockAlignmentString);
+            this.Writer.WriteAttribute(HtmlNameIndex.Align, blockAlignmentString);
         }
       }
       Format.PropertyValue distinctProperty4 = this.GetDistinctProperty(Format.PropertyId.TableBorder);
@@ -649,7 +638,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           if (this.callback != null)
             this.callbackContext.AddAttribute(HtmlNameIndex.Border, bufferString.ToString());
           else
-            this.writer.WriteAttribute(HtmlNameIndex.Border, bufferString);
+            this.Writer.WriteAttribute(HtmlNameIndex.Border, bufferString);
         }
       }
       Format.PropertyValue distinctProperty5 = this.GetDistinctProperty(Format.PropertyId.ImageUrl);
@@ -664,8 +653,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         }
         else
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Src);
-          this.writer.WriteAttributeValue(url);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Src);
+          this.Writer.WriteAttributeValue(url);
         }
       }
       Format.PropertyValue distinctProperty6 = this.GetDistinctProperty(Format.PropertyId.RightToLeft);
@@ -677,8 +666,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         }
         else
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Dir);
-          this.writer.WriteAttributeValue(distinctProperty6.Bool ? "rtl" : "ltr");
+          this.Writer.WriteAttributeName(HtmlNameIndex.Dir);
+          this.Writer.WriteAttributeValue(distinctProperty6.Bool ? "rtl" : "ltr");
         }
       }
       distinctProperty6 = this.GetDistinctProperty(Format.PropertyId.Language);
@@ -691,8 +680,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         }
         else
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Lang);
-          this.writer.WriteAttributeValue(culture.Name);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Lang);
+          this.Writer.WriteAttributeValue(culture.Name);
         }
       }
       distinctProperty6 = this.GetDistinctProperty(Format.PropertyId.ImageAltText);
@@ -705,66 +694,66 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         }
         else
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Alt);
-          this.writer.WriteAttributeValue(@string);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Alt);
+          this.Writer.WriteAttributeValue(@string);
         }
       }
       if (this.callback != null)
       {
         this.callbackContext.InitializeFragment(true);
-        this.callback((HtmlTagContext) this.callbackContext, this.writer);
+        this.callback((HtmlTagContext) this.callbackContext, this.Writer);
         this.callbackContext.UninitializeFragment();
       }
-      if (!this.writer.IsTagOpen)
+      if (!this.Writer.IsTagOpen)
         return;
-      this.writer.WriteTagEnd();
+      this.Writer.WriteTagEnd();
     }
 
     protected override void StartEndHorizontalLine()
     {
-      this.writer.WriteNewLine(true);
-      this.writer.WriteStartTag(HtmlNameIndex.HR);
+      this.Writer.WriteNewLine(true);
+      this.Writer.WriteStartTag(HtmlNameIndex.HR);
       Format.PropertyValue distinctProperty1 = this.GetDistinctProperty(Format.PropertyId.Width);
       if (!distinctProperty1.IsNull)
       {
         BufferString bufferString = HtmlSupport.FormatPixelOrPercentageLength(ref this.scratchBuffer, distinctProperty1);
         if (bufferString.Length != 0)
-          this.writer.WriteAttribute(HtmlNameIndex.Width, bufferString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Width, bufferString);
       }
       Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.Height);
       if (!distinctProperty2.IsNull && distinctProperty2.IsAbsRelLength)
-        this.writer.WriteAttribute(HtmlNameIndex.Size, distinctProperty2.PixelsInteger.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.Size, distinctProperty2.PixelsInteger.ToString());
       Format.PropertyValue distinctProperty3 = this.GetDistinctProperty(Format.PropertyId.BlockAlignment);
       if (!distinctProperty3.IsNull)
       {
         string horizontalAlignmentString = HtmlSupport.GetHorizontalAlignmentString(distinctProperty3);
         if (horizontalAlignmentString != null)
-          this.writer.WriteAttribute(HtmlNameIndex.Align, horizontalAlignmentString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Align, horizontalAlignmentString);
       }
       Format.PropertyValue distinctProperty4 = this.GetDistinctProperty(Format.PropertyId.FontColor);
       if (!distinctProperty4.IsNull)
       {
         BufferString bufferString = HtmlSupport.FormatColor(ref this.scratchBuffer, distinctProperty4);
         if (bufferString.Length != 0)
-          this.writer.WriteAttribute(HtmlNameIndex.Color, bufferString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Color, bufferString);
       }
       if (!distinctProperty1.IsNull)
       {
-        this.writer.WriteAttributeName(HtmlNameIndex.Style);
+        this.Writer.WriteAttributeName(HtmlNameIndex.Style);
         if (!distinctProperty1.IsNull)
         {
           BufferString bufferString = HtmlSupport.FormatLength(ref this.scratchBuffer, distinctProperty1);
           if (bufferString.Length != 0)
           {
-            this.writer.WriteAttributeValue("width:");
-            this.writer.WriteAttributeValue(bufferString);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue("width:");
+            this.Writer.WriteAttributeValue(bufferString);
+            this.Writer.WriteAttributeValue(";");
           }
         }
       }
-      if (this.writer.LiteralWhitespaceNesting != 0)
+      if (this.Writer.LiteralWhitespaceNesting != 0)
         return;
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override bool StartInline()
@@ -842,7 +831,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     protected override bool StartText()
     {
       this.ApplyCharFormat();
-      this.writer.StartTextChunk();
+      this.Writer.StartTextChunk();
       return true;
     }
 
@@ -860,7 +849,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
             if (type != Format.TextRunType.NonSpace)
             {
               if (type == Format.TextRunType.NbSp)
-                this.writer.WriteNbsp(effectiveLength);
+                this.Writer.WriteNbsp(effectiveLength);
             }
             else
             {
@@ -872,7 +861,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
               if (this.recognizeHyperlinks && this.hyperlinkLevel == 0 && (effectiveLength > 10 && effectiveLength < 4096) && this.RecognizeHyperLink(textRun, out offset1, out length, out addFilePrefix, out addHttpPrefix))
               {
                 if (offset1 != 0)
-                  this.writer.WriteTextInternal(this.scratchBuffer.Buffer, 0, offset1);
+                  this.Writer.WriteTextInternal(this.scratchBuffer.Buffer, 0, offset1);
                 if (this.callback != null)
                 {
                   if (this.callbackContext == null)
@@ -885,36 +874,36 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
                     str = "file://" + str;
                   this.callbackContext.AddAttribute(HtmlNameIndex.Href, str);
                   this.callbackContext.InitializeFragment(false);
-                  this.callback((HtmlTagContext) this.callbackContext, this.writer);
+                  this.callback((HtmlTagContext) this.callbackContext, this.Writer);
                   this.callbackContext.UninitializeFragment();
-                  if (this.writer.IsTagOpen)
-                    this.writer.WriteTagEnd();
+                  if (this.Writer.IsTagOpen)
+                    this.Writer.WriteTagEnd();
                   if (!this.callbackContext.IsDeleteInnerContent)
-                    this.writer.WriteTextInternal(this.scratchBuffer.Buffer, offset1, length);
+                    this.Writer.WriteTextInternal(this.scratchBuffer.Buffer, offset1, length);
                   if (this.callbackContext.IsInvokeCallbackForEndTag)
                   {
                     this.callbackContext.InitializeTag(true, HtmlNameIndex.A, this.callbackContext.IsDeleteEndTag);
                     this.callbackContext.InitializeFragment(false);
-                    this.callback((HtmlTagContext) this.callbackContext, this.writer);
+                    this.callback((HtmlTagContext) this.callbackContext, this.Writer);
                     this.callbackContext.UninitializeFragment();
                   }
                   else if (!this.callbackContext.IsDeleteEndTag)
-                    this.writer.WriteEndTag(HtmlNameIndex.A);
-                  if (this.writer.IsTagOpen)
-                    this.writer.WriteTagEnd();
+                    this.Writer.WriteEndTag(HtmlNameIndex.A);
+                  if (this.Writer.IsTagOpen)
+                    this.Writer.WriteTagEnd();
                 }
                 else
                 {
-                  this.writer.WriteStartTag(HtmlNameIndex.A);
-                  this.writer.WriteAttributeName(HtmlNameIndex.Href);
+                  this.Writer.WriteStartTag(HtmlNameIndex.A);
+                  this.Writer.WriteAttributeName(HtmlNameIndex.Href);
                   if (addHttpPrefix)
-                    this.writer.WriteAttributeValue("http://");
+                    this.Writer.WriteAttributeValue("http://");
                   else if (addFilePrefix)
-                    this.writer.WriteAttributeValue("file://");
-                  this.writer.WriteAttributeValue(this.scratchBuffer.Buffer, offset1, length);
-                  this.writer.WriteTagEnd();
-                  this.writer.WriteTextInternal(this.scratchBuffer.Buffer, offset1, length);
-                  this.writer.WriteEndTag(HtmlNameIndex.A);
+                    this.Writer.WriteAttributeValue("file://");
+                  this.Writer.WriteAttributeValue(this.scratchBuffer.Buffer, offset1, length);
+                  this.Writer.WriteTagEnd();
+                  this.Writer.WriteTextInternal(this.scratchBuffer.Buffer, offset1, length);
+                  this.Writer.WriteEndTag(HtmlNameIndex.A);
                 }
                 start += offset1 + length;
                 if (start == effectiveLength)
@@ -929,7 +918,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
                 int offset2;
                 int count;
                 textRun.GetChunk(start, out buffer, out offset2, out count);
-                this.writer.WriteTextInternal(buffer, offset2, count);
+                this.Writer.WriteTextInternal(buffer, offset2, count);
                 start += count;
               }
               while (start != effectiveLength);
@@ -943,17 +932,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
               {
                 while (effectiveLength-- != 0)
                 {
-                  if (this.writer.LiteralWhitespaceNesting == 0)
-                    this.writer.WriteStartTag(HtmlNameIndex.BR);
-                  this.writer.WriteNewLine(false);
+                  if (this.Writer.LiteralWhitespaceNesting == 0)
+                    this.Writer.WriteStartTag(HtmlNameIndex.BR);
+                  this.Writer.WriteNewLine(false);
                 }
               }
             }
             else
-              this.writer.WriteTabulation(effectiveLength);
+              this.Writer.WriteTabulation(effectiveLength);
           }
           else
-            this.writer.WriteSpace(effectiveLength);
+            this.Writer.WriteSpace(effectiveLength);
           textRun.MoveNext();
 label_44:;
         }
@@ -964,36 +953,36 @@ label_44:;
 
     protected override void EndText()
     {
-      this.writer.EndTextChunk();
+      this.Writer.EndTextChunk();
       this.RevertCharFormat();
     }
 
     protected override bool StartBlockContainer()
     {
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
       Format.PropertyValue distinctProperty1 = this.GetDistinctProperty(Format.PropertyId.Preformatted);
       Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.QuotingLevelDelta);
       if (!distinctProperty1.IsNull && distinctProperty1.Bool)
       {
         Format.FormatStyle style = this.FormatStore.GetStyle(14);
         this.SubtractDefaultContainerPropertiesFromDistinct(Format.FlagProperties.AllOff, style.PropertyList);
-        this.writer.WriteStartTag(HtmlNameIndex.Pre);
+        this.Writer.WriteStartTag(HtmlNameIndex.Pre);
       }
       else if (!distinctProperty2.IsNull && distinctProperty2.Integer != 0)
       {
         for (int index = 0; index < distinctProperty2.Integer; ++index)
         {
-          this.writer.WriteStartTag(HtmlNameIndex.Div);
-          this.writer.WriteAttribute(HtmlNameIndex.Class, "EmailQuote");
+          this.Writer.WriteStartTag(HtmlNameIndex.Div);
+          this.Writer.WriteAttribute(HtmlNameIndex.Class, "EmailQuote");
         }
       }
       else
       {
         if (this.SourceFormat == Format.SourceFormat.Text)
           this.ApplyCharFormat();
-        this.writer.WriteStartTag(HtmlNameIndex.Div);
+        this.Writer.WriteStartTag(HtmlNameIndex.Div);
         if (this.SourceFormat == Format.SourceFormat.Text)
-          this.writer.WriteAttribute(HtmlNameIndex.Class, "PlainText");
+          this.Writer.WriteAttribute(HtmlNameIndex.Class, "PlainText");
       }
       this.OutputBlockTagAttributes();
       bool styleAttributeOpen = false;
@@ -1001,13 +990,13 @@ label_44:;
       if (this.SourceFormat != Format.SourceFormat.Text)
         this.ApplyCharFormat();
       if (this.CurrentNode.FirstChild.IsNull)
-        this.writer.WriteText(' ');
+        this.Writer.WriteText(' ');
       else if (this.CurrentNode.FirstChild == this.CurrentNode.LastChild && this.CurrentNode.FirstChild.NodeType == Format.FormatContainerType.Text)
       {
         Format.FormatNode firstChild = this.CurrentNode.FirstChild;
         if ((int) firstChild.BeginTextPosition + 1 == (int) firstChild.EndTextPosition && this.FormatStore.GetTextRun(firstChild.BeginTextPosition).Type == Format.TextRunType.Space)
         {
-          this.writer.WriteText(' ');
+          this.Writer.WriteText(' ');
           this.EndBlockContainer();
           return false;
         }
@@ -1022,19 +1011,19 @@ label_44:;
       if (this.SourceFormat != Format.SourceFormat.Text)
         this.RevertCharFormat();
       if (!distinctProperty1.IsNull && distinctProperty1.Bool)
-        this.writer.WriteEndTag(HtmlNameIndex.Pre);
+        this.Writer.WriteEndTag(HtmlNameIndex.Pre);
       else if (!distinctProperty2.IsNull && distinctProperty2.Integer != 0)
       {
         for (int index = 0; index < distinctProperty2.Integer; ++index)
-          this.writer.WriteEndTag(HtmlNameIndex.Div);
+          this.Writer.WriteEndTag(HtmlNameIndex.Div);
       }
       else
       {
-        this.writer.WriteEndTag(HtmlNameIndex.Div);
+        this.Writer.WriteEndTag(HtmlNameIndex.Div);
         if (this.SourceFormat == Format.SourceFormat.Text)
           this.RevertCharFormat();
       }
-      this.writer.WriteNewLine(true);
+      this.Writer.WriteNewLine(true);
     }
 
     protected override bool StartInlineContainer()
@@ -1048,9 +1037,9 @@ label_44:;
 
     protected override void Dispose(bool disposing)
     {
-      if (this.writer != null && this.writer != null)
-        this.writer.Dispose();
-      this.writer = (HtmlWriter) null;
+      if (this.Writer != null && this.Writer != null)
+        this.Writer.Dispose();
+      this.Writer = (HtmlWriter) null;
       base.Dispose(disposing);
     }
 
@@ -1068,14 +1057,14 @@ label_44:;
       {
         this.callbackContext.InitializeTag(true, HtmlNameIndex.A, tagDropped);
         this.callbackContext.InitializeFragment(false);
-        this.callback((HtmlTagContext) this.callbackContext, this.writer);
+        this.callback((HtmlTagContext) this.callbackContext, this.Writer);
         this.callbackContext.UninitializeFragment();
       }
       else
       {
         if (tagDropped)
           return;
-        this.writer.WriteEndTag(HtmlNameIndex.A);
+        this.Writer.WriteEndTag(HtmlNameIndex.A);
       }
     }
 
@@ -1138,10 +1127,10 @@ label_44:;
       Format.PropertyValue distinctProperty7 = this.GetDistinctProperty(Format.PropertyId.FontColor);
       if (!distinctProperty6.IsNull || !distinctProperty1.IsNull || !distinctProperty7.IsNull)
       {
-        this.writer.WriteStartTag(HtmlNameIndex.Font);
+        this.Writer.WriteStartTag(HtmlNameIndex.Font);
         if (!distinctProperty6.IsNull)
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Face);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Face);
           if (distinctProperty6.IsMultiValue)
           {
             Format.MultiValue multiValue = this.FormatStore.GetMultiValue(distinctProperty6);
@@ -1149,59 +1138,59 @@ label_44:;
             {
               string @string = multiValue.GetStringValue(index).GetString();
               if (index != 0)
-                this.writer.WriteAttributeValue(",");
-              this.writer.WriteAttributeValue(@string);
+                this.Writer.WriteAttributeValue(",");
+              this.Writer.WriteAttributeValue(@string);
             }
           }
           else
-            this.writer.WriteAttributeValue(this.FormatStore.GetStringValue(distinctProperty6).GetString());
+            this.Writer.WriteAttributeValue(this.FormatStore.GetStringValue(distinctProperty6).GetString());
         }
         BufferString bufferString;
         if (!distinctProperty1.IsNull)
         {
           bufferString = HtmlSupport.FormatFontSize(ref this.scratchValueBuffer, distinctProperty1);
           if (bufferString.Length != 0)
-            this.writer.WriteAttribute(HtmlNameIndex.Size, bufferString);
+            this.Writer.WriteAttribute(HtmlNameIndex.Size, bufferString);
         }
         if (!distinctProperty7.IsNull)
         {
           bufferString = HtmlSupport.FormatColor(ref this.scratchValueBuffer, distinctProperty7);
           if (bufferString.Length != 0)
-            this.writer.WriteAttribute(HtmlNameIndex.Color, bufferString);
+            this.Writer.WriteAttribute(HtmlNameIndex.Color, bufferString);
         }
       }
       if (this.scratchBuffer.Length != 0 || distinctFlags.IsDefined(Format.PropertyId.RightToLeft) || culture != null)
       {
-        this.writer.WriteStartTag(HtmlNameIndex.Span);
+        this.Writer.WriteStartTag(HtmlNameIndex.Span);
         if (this.scratchBuffer.Length != 0)
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Style);
-          this.writer.WriteAttributeValue(this.scratchBuffer.BufferString);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Style);
+          this.Writer.WriteAttributeValue(this.scratchBuffer.BufferString);
         }
         if (distinctFlags.IsDefined(Format.PropertyId.RightToLeft))
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Dir);
-          this.writer.WriteAttributeValue(distinctFlags.IsOn(Format.PropertyId.RightToLeft) ? "rtl" : "ltr");
+          this.Writer.WriteAttributeName(HtmlNameIndex.Dir);
+          this.Writer.WriteAttributeValue(distinctFlags.IsOn(Format.PropertyId.RightToLeft) ? "rtl" : "ltr");
         }
         if (culture != null)
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Lang);
-          this.writer.WriteAttributeValue(culture.Name);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Lang);
+          this.Writer.WriteAttributeValue(culture.Name);
         }
       }
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.FirstFlag))
-        this.writer.WriteStartTag(HtmlNameIndex.B);
+        this.Writer.WriteStartTag(HtmlNameIndex.B);
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.Italic))
-        this.writer.WriteStartTag(HtmlNameIndex.I);
+        this.Writer.WriteStartTag(HtmlNameIndex.I);
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.Underline))
-        this.writer.WriteStartTag(HtmlNameIndex.U);
+        this.Writer.WriteStartTag(HtmlNameIndex.U);
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.Subscript))
-        this.writer.WriteStartTag(HtmlNameIndex.Sub);
+        this.Writer.WriteStartTag(HtmlNameIndex.Sub);
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.Superscript))
-        this.writer.WriteStartTag(HtmlNameIndex.Sup);
+        this.Writer.WriteStartTag(HtmlNameIndex.Sup);
       if (!distinctFlags.IsDefinedAndOn(Format.PropertyId.Strikethrough))
         return;
-      this.writer.WriteStartTag(HtmlNameIndex.Strike);
+      this.Writer.WriteStartTag(HtmlNameIndex.Strike);
     }
 
     private void RevertCharFormat()
@@ -1242,22 +1231,22 @@ label_44:;
       if (!distinctProperty5.IsNull || !distinctProperty1.IsNull || !distinctProperty6.IsNull)
         flag1 = true;
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.Strikethrough))
-        this.writer.WriteEndTag(HtmlNameIndex.Strike);
+        this.Writer.WriteEndTag(HtmlNameIndex.Strike);
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.Superscript))
-        this.writer.WriteEndTag(HtmlNameIndex.Sup);
+        this.Writer.WriteEndTag(HtmlNameIndex.Sup);
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.Subscript))
-        this.writer.WriteEndTag(HtmlNameIndex.Sub);
+        this.Writer.WriteEndTag(HtmlNameIndex.Sub);
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.Underline))
-        this.writer.WriteEndTag(HtmlNameIndex.U);
+        this.Writer.WriteEndTag(HtmlNameIndex.U);
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.Italic))
-        this.writer.WriteEndTag(HtmlNameIndex.I);
+        this.Writer.WriteEndTag(HtmlNameIndex.I);
       if (distinctFlags.IsDefinedAndOn(Format.PropertyId.FirstFlag))
-        this.writer.WriteEndTag(HtmlNameIndex.B);
+        this.Writer.WriteEndTag(HtmlNameIndex.B);
       if (flag2)
-        this.writer.WriteEndTag(HtmlNameIndex.Span);
+        this.Writer.WriteEndTag(HtmlNameIndex.Span);
       if (!flag1)
         return;
-      this.writer.WriteEndTag(HtmlNameIndex.Font);
+      this.Writer.WriteEndTag(HtmlNameIndex.Font);
     }
 
     private void OutputBlockCssProperties(ref bool styleAttributeOpen)
@@ -1294,7 +1283,7 @@ label_44:;
       {
         if (!styleAttributeOpen)
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Style);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Style);
           styleAttributeOpen = true;
         }
         if (!distinctProperty1.IsNull)
@@ -1314,9 +1303,9 @@ label_44:;
           BufferString bufferString = HtmlSupport.FormatLength(ref this.scratchBuffer, distinctProperty4);
           if (bufferString.Length != 0)
           {
-            this.writer.WriteAttributeValue("width:");
-            this.writer.WriteAttributeValue(bufferString);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue("width:");
+            this.Writer.WriteAttributeValue(bufferString);
+            this.Writer.WriteAttributeValue(";");
           }
         }
         if (!distinctProperty3.IsNull)
@@ -1324,9 +1313,9 @@ label_44:;
           BufferString bufferString = HtmlSupport.FormatLength(ref this.scratchBuffer, distinctProperty3);
           if (bufferString.Length != 0)
           {
-            this.writer.WriteAttributeValue("height:");
-            this.writer.WriteAttributeValue(bufferString);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue("height:");
+            this.Writer.WriteAttributeValue(bufferString);
+            this.Writer.WriteAttributeValue(";");
           }
         }
         if (!distinctProperty5.IsNull)
@@ -1334,9 +1323,9 @@ label_44:;
           string unicodeBiDiString = HtmlSupport.GetUnicodeBiDiString(distinctProperty5);
           if (unicodeBiDiString != null)
           {
-            this.writer.WriteAttributeValue("unicode-bidi:");
-            this.writer.WriteAttributeValue(unicodeBiDiString);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue("unicode-bidi:");
+            this.Writer.WriteAttributeValue(unicodeBiDiString);
+            this.Writer.WriteAttributeValue(";");
           }
         }
       }
@@ -1344,7 +1333,7 @@ label_44:;
       {
         if (!styleAttributeOpen)
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Style);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Style);
           styleAttributeOpen = true;
         }
         if (!distinctProperty6.IsNull)
@@ -1352,25 +1341,25 @@ label_44:;
           BufferString bufferString = HtmlSupport.FormatLength(ref this.scratchBuffer, distinctProperty6);
           if (bufferString.Length != 0)
           {
-            this.writer.WriteAttributeValue("text-indent:");
-            this.writer.WriteAttributeValue(bufferString);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue("text-indent:");
+            this.Writer.WriteAttributeValue(bufferString);
+            this.Writer.WriteAttributeValue(";");
           }
         }
         if (!distinctProperty7.IsNull && distinctProperty7.IsEnum && distinctProperty7.Enum < HtmlSupport.TextAlignmentEnumeration.Length)
         {
-          this.writer.WriteAttributeValue("text-align:");
-          this.writer.WriteAttributeValue(HtmlSupport.TextAlignmentEnumeration[distinctProperty7.Enum].Name);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue("text-align:");
+          this.Writer.WriteAttributeValue(HtmlSupport.TextAlignmentEnumeration[distinctProperty7.Enum].Name);
+          this.Writer.WriteAttributeValue(";");
         }
         if (!distinctProperty8.IsNull)
         {
           BufferString bufferString = HtmlSupport.FormatColor(ref this.scratchBuffer, distinctProperty8);
           if (bufferString.Length != 0)
           {
-            this.writer.WriteAttributeValue("background-color:");
-            this.writer.WriteAttributeValue(bufferString);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue("background-color:");
+            this.Writer.WriteAttributeValue(bufferString);
+            this.Writer.WriteAttributeValue(";");
           }
         }
       }
@@ -1378,7 +1367,7 @@ label_44:;
       {
         if (!styleAttributeOpen)
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Style);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Style);
           styleAttributeOpen = true;
         }
         this.OutputMarginAndPaddingProperties("margin", distinctProperty9, distinctProperty10, distinctProperty11, distinctProperty12);
@@ -1387,7 +1376,7 @@ label_44:;
       {
         if (!styleAttributeOpen)
         {
-          this.writer.WriteAttributeName(HtmlNameIndex.Style);
+          this.Writer.WriteAttributeName(HtmlNameIndex.Style);
           styleAttributeOpen = true;
         }
         this.OutputMarginAndPaddingProperties("padding", distinctProperty13, distinctProperty14, distinctProperty15, distinctProperty16);
@@ -1396,7 +1385,7 @@ label_44:;
         return;
       if (!styleAttributeOpen)
       {
-        this.writer.WriteAttributeName(HtmlNameIndex.Style);
+        this.Writer.WriteAttributeName(HtmlNameIndex.Style);
         styleAttributeOpen = true;
       }
       this.OutputBorderProperties(distinctProperty17, distinctProperty18, distinctProperty19, distinctProperty20, distinctProperty21, distinctProperty22, distinctProperty23, distinctProperty24, distinctProperty25, distinctProperty26, distinctProperty27, distinctProperty28);
@@ -1415,45 +1404,45 @@ label_44:;
         ++num;
       if (num == 4)
       {
-        this.writer.WriteAttributeValue(name);
-        this.writer.WriteAttributeValue(":");
+        this.Writer.WriteAttributeValue(name);
+        this.Writer.WriteAttributeValue(":");
         if (topValue == rightValue && topValue == bottomValue && topValue == leftValue)
           this.OutputLengthPropertyValue(topValue);
         else if (topValue == bottomValue && rightValue == leftValue)
           this.OutputCompositeLengthPropertyValue(topValue, rightValue);
         else
           this.OutputCompositeLengthPropertyValue(topValue, rightValue, bottomValue, leftValue);
-        this.writer.WriteAttributeValue(";");
+        this.Writer.WriteAttributeValue(";");
       }
       else
       {
         if (!topValue.IsNull)
         {
-          this.writer.WriteAttributeValue(name);
-          this.writer.WriteAttributeValue("-top:");
+          this.Writer.WriteAttributeValue(name);
+          this.Writer.WriteAttributeValue("-top:");
           this.OutputLengthPropertyValue(topValue);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!rightValue.IsNull)
         {
-          this.writer.WriteAttributeValue(name);
-          this.writer.WriteAttributeValue("-right:");
+          this.Writer.WriteAttributeValue(name);
+          this.Writer.WriteAttributeValue("-right:");
           this.OutputLengthPropertyValue(rightValue);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!bottomValue.IsNull)
         {
-          this.writer.WriteAttributeValue(name);
-          this.writer.WriteAttributeValue("-bottom:");
+          this.Writer.WriteAttributeValue(name);
+          this.Writer.WriteAttributeValue("-bottom:");
           this.OutputLengthPropertyValue(bottomValue);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (leftValue.IsNull)
           return;
-        this.writer.WriteAttributeValue(name);
-        this.writer.WriteAttributeValue("-left:");
+        this.Writer.WriteAttributeValue(name);
+        this.Writer.WriteAttributeValue("-left:");
         this.OutputLengthPropertyValue(leftValue);
-        this.writer.WriteAttributeValue(";");
+        this.Writer.WriteAttributeValue(";");
       }
     }
 
@@ -1551,36 +1540,36 @@ label_44:;
       {
         if (flag1 && flag3 && flag5)
         {
-          this.writer.WriteAttributeValue("border:");
+          this.Writer.WriteAttributeValue("border:");
           this.OutputCompositeBorderSidePropertyValue(topBorderWidth, topBorderStyle, topBorderColor);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         else
         {
-          this.writer.WriteAttributeValue("border-width:");
+          this.Writer.WriteAttributeValue("border-width:");
           if (flag1)
             this.OutputBorderWidthPropertyValue(topBorderWidth);
           else if (flag2)
             this.OutputCompositeBorderWidthPropertyValue(topBorderWidth, rightBorderWidth);
           else
             this.OutputCompositeBorderWidthPropertyValue(topBorderWidth, rightBorderWidth, bottomBorderWidth, leftBorderWidth);
-          this.writer.WriteAttributeValue(";");
-          this.writer.WriteAttributeValue("border-style:");
+          this.Writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue("border-style:");
           if (flag3)
             this.OutputBorderStylePropertyValue(topBorderStyle);
           else if (flag4)
             this.OutputCompositeBorderStylePropertyValue(topBorderStyle, rightBorderStyle);
           else
             this.OutputCompositeBorderStylePropertyValue(topBorderStyle, rightBorderStyle, bottomBorderStyle, leftBorderStyle);
-          this.writer.WriteAttributeValue(";");
-          this.writer.WriteAttributeValue("border-color:");
+          this.Writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue("border-color:");
           if (flag5)
             this.OutputBorderColorPropertyValue(topBorderColor);
           else if (flag6)
             this.OutputCompositeBorderColorPropertyValue(topBorderColor, rightBorderColor);
           else
             this.OutputCompositeBorderColorPropertyValue(topBorderColor, rightBorderColor, bottomBorderColor, leftBorderColor);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
       }
       else
@@ -1601,14 +1590,14 @@ label_44:;
         {
           if (num1 == 4)
           {
-            this.writer.WriteAttributeValue("border-width:");
+            this.Writer.WriteAttributeValue("border-width:");
             if (flag1)
               this.OutputBorderWidthPropertyValue(topBorderWidth);
             else if (flag2)
               this.OutputCompositeBorderWidthPropertyValue(topBorderWidth, rightBorderWidth);
             else
               this.OutputCompositeBorderWidthPropertyValue(topBorderWidth, rightBorderWidth, bottomBorderWidth, leftBorderWidth);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue(";");
             flag7 = true;
             flag8 = true;
             flag9 = true;
@@ -1616,14 +1605,14 @@ label_44:;
           }
           if (num2 == 4)
           {
-            this.writer.WriteAttributeValue("border-style:");
+            this.Writer.WriteAttributeValue("border-style:");
             if (flag3)
               this.OutputBorderStylePropertyValue(topBorderStyle);
             else if (flag4)
               this.OutputCompositeBorderStylePropertyValue(topBorderStyle, rightBorderStyle);
             else
               this.OutputCompositeBorderStylePropertyValue(topBorderStyle, rightBorderStyle, bottomBorderStyle, leftBorderStyle);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue(";");
             flag11 = true;
             flag12 = true;
             flag13 = true;
@@ -1631,14 +1620,14 @@ label_44:;
           }
           if (num3 == 4)
           {
-            this.writer.WriteAttributeValue("border-color:");
+            this.Writer.WriteAttributeValue("border-color:");
             if (flag5)
               this.OutputBorderColorPropertyValue(topBorderColor);
             else if (flag6)
               this.OutputCompositeBorderColorPropertyValue(topBorderColor, rightBorderColor);
             else
               this.OutputCompositeBorderColorPropertyValue(topBorderColor, rightBorderColor, bottomBorderColor, leftBorderColor);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue(";");
             flag15 = true;
             flag16 = true;
             flag17 = true;
@@ -1649,36 +1638,36 @@ label_44:;
         {
           if (num4 == 3)
           {
-            this.writer.WriteAttributeValue("border-top:");
+            this.Writer.WriteAttributeValue("border-top:");
             this.OutputCompositeBorderSidePropertyValue(topBorderWidth, topBorderStyle, topBorderColor);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue(";");
             flag7 = true;
             flag11 = true;
             flag15 = true;
           }
           if (num5 == 3)
           {
-            this.writer.WriteAttributeValue("border-right:");
+            this.Writer.WriteAttributeValue("border-right:");
             this.OutputCompositeBorderSidePropertyValue(rightBorderWidth, rightBorderStyle, rightBorderColor);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue(";");
             flag8 = true;
             flag12 = true;
             flag16 = true;
           }
           if (num6 == 3)
           {
-            this.writer.WriteAttributeValue("border-bottom:");
+            this.Writer.WriteAttributeValue("border-bottom:");
             this.OutputCompositeBorderSidePropertyValue(bottomBorderWidth, bottomBorderStyle, bottomBorderColor);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue(";");
             flag9 = true;
             flag13 = true;
             flag17 = true;
           }
           if (num7 == 3)
           {
-            this.writer.WriteAttributeValue("border-left:");
+            this.Writer.WriteAttributeValue("border-left:");
             this.OutputCompositeBorderSidePropertyValue(leftBorderWidth, leftBorderStyle, leftBorderColor);
-            this.writer.WriteAttributeValue(";");
+            this.Writer.WriteAttributeValue(";");
             flag10 = true;
             flag14 = true;
             flag18 = true;
@@ -1686,156 +1675,156 @@ label_44:;
         }
         if (!flag7 && !topBorderWidth.IsNull)
         {
-          this.writer.WriteAttributeValue("border-top-width:");
+          this.Writer.WriteAttributeValue("border-top-width:");
           this.OutputBorderWidthPropertyValue(topBorderWidth);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag8 && !rightBorderWidth.IsNull)
         {
-          this.writer.WriteAttributeValue("border-right-width:");
+          this.Writer.WriteAttributeValue("border-right-width:");
           this.OutputBorderWidthPropertyValue(rightBorderWidth);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag9 && !bottomBorderWidth.IsNull)
         {
-          this.writer.WriteAttributeValue("border-bottom-width:");
+          this.Writer.WriteAttributeValue("border-bottom-width:");
           this.OutputBorderWidthPropertyValue(bottomBorderWidth);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag10 && !leftBorderWidth.IsNull)
         {
-          this.writer.WriteAttributeValue("border-left-width:");
+          this.Writer.WriteAttributeValue("border-left-width:");
           this.OutputBorderWidthPropertyValue(leftBorderWidth);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag11 && !topBorderStyle.IsNull)
         {
-          this.writer.WriteAttributeValue("border-top-style:");
+          this.Writer.WriteAttributeValue("border-top-style:");
           this.OutputBorderStylePropertyValue(topBorderStyle);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag12 && !rightBorderStyle.IsNull)
         {
-          this.writer.WriteAttributeValue("border-right-style:");
+          this.Writer.WriteAttributeValue("border-right-style:");
           this.OutputBorderStylePropertyValue(rightBorderStyle);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag13 && !bottomBorderStyle.IsNull)
         {
-          this.writer.WriteAttributeValue("border-bottom-style:");
+          this.Writer.WriteAttributeValue("border-bottom-style:");
           this.OutputBorderStylePropertyValue(bottomBorderStyle);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag14 && !leftBorderStyle.IsNull)
         {
-          this.writer.WriteAttributeValue("border-left-style:");
+          this.Writer.WriteAttributeValue("border-left-style:");
           this.OutputBorderStylePropertyValue(leftBorderStyle);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag15 && !topBorderColor.IsNull)
         {
-          this.writer.WriteAttributeValue("border-top-color:");
+          this.Writer.WriteAttributeValue("border-top-color:");
           this.OutputBorderColorPropertyValue(topBorderColor);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag16 && !rightBorderColor.IsNull)
         {
-          this.writer.WriteAttributeValue("border-right-color:");
+          this.Writer.WriteAttributeValue("border-right-color:");
           this.OutputBorderColorPropertyValue(rightBorderColor);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (!flag17 && !bottomBorderColor.IsNull)
         {
-          this.writer.WriteAttributeValue("border-bottom-color:");
+          this.Writer.WriteAttributeValue("border-bottom-color:");
           this.OutputBorderColorPropertyValue(bottomBorderColor);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue(";");
         }
         if (flag18 || leftBorderColor.IsNull)
           return;
-        this.writer.WriteAttributeValue("border-left-color:");
+        this.Writer.WriteAttributeValue("border-left-color:");
         this.OutputBorderColorPropertyValue(leftBorderColor);
-        this.writer.WriteAttributeValue(";");
+        this.Writer.WriteAttributeValue(";");
       }
     }
 
     private void OutputCompositeBorderSidePropertyValue(Format.PropertyValue width, Format.PropertyValue style, Format.PropertyValue color)
     {
       this.OutputBorderWidthPropertyValue(width);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderStylePropertyValue(style);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderColorPropertyValue(color);
     }
 
     private void OutputCompositeLengthPropertyValue(Format.PropertyValue topBottom, Format.PropertyValue rightLeft)
     {
       this.OutputLengthPropertyValue(topBottom);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputLengthPropertyValue(rightLeft);
     }
 
     private void OutputCompositeLengthPropertyValue(Format.PropertyValue top, Format.PropertyValue right, Format.PropertyValue bottom, Format.PropertyValue left)
     {
       this.OutputLengthPropertyValue(top);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputLengthPropertyValue(right);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputLengthPropertyValue(bottom);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputLengthPropertyValue(left);
     }
 
     private void OutputCompositeBorderWidthPropertyValue(Format.PropertyValue topBottom, Format.PropertyValue rightLeft)
     {
       this.OutputBorderWidthPropertyValue(topBottom);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderWidthPropertyValue(rightLeft);
     }
 
     private void OutputCompositeBorderWidthPropertyValue(Format.PropertyValue top, Format.PropertyValue right, Format.PropertyValue bottom, Format.PropertyValue left)
     {
       this.OutputBorderWidthPropertyValue(top);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderWidthPropertyValue(right);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderWidthPropertyValue(bottom);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderWidthPropertyValue(left);
     }
 
     private void OutputCompositeBorderStylePropertyValue(Format.PropertyValue topBottom, Format.PropertyValue rightLeft)
     {
       this.OutputBorderStylePropertyValue(topBottom);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderStylePropertyValue(rightLeft);
     }
 
     private void OutputCompositeBorderStylePropertyValue(Format.PropertyValue top, Format.PropertyValue right, Format.PropertyValue bottom, Format.PropertyValue left)
     {
       this.OutputBorderStylePropertyValue(top);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderStylePropertyValue(right);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderStylePropertyValue(bottom);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderStylePropertyValue(left);
     }
 
     private void OutputCompositeBorderColorPropertyValue(Format.PropertyValue topBottom, Format.PropertyValue rightLeft)
     {
       this.OutputBorderColorPropertyValue(topBottom);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderColorPropertyValue(rightLeft);
     }
 
     private void OutputCompositeBorderColorPropertyValue(Format.PropertyValue top, Format.PropertyValue right, Format.PropertyValue bottom, Format.PropertyValue left)
     {
       this.OutputBorderColorPropertyValue(top);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderColorPropertyValue(right);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderColorPropertyValue(bottom);
-      this.writer.WriteAttributeValue(" ");
+      this.Writer.WriteAttributeValue(" ");
       this.OutputBorderColorPropertyValue(left);
     }
 
@@ -1843,36 +1832,36 @@ label_44:;
     {
       BufferString bufferString = HtmlSupport.FormatLength(ref this.scratchBuffer, width);
       if (bufferString.Length != 0)
-        this.writer.WriteAttributeValue(bufferString);
+        this.Writer.WriteAttributeValue(bufferString);
       else
-        this.writer.WriteAttributeValue("0");
+        this.Writer.WriteAttributeValue("0");
     }
 
     private void OutputBorderWidthPropertyValue(Format.PropertyValue width)
     {
       BufferString bufferString = HtmlSupport.FormatLength(ref this.scratchBuffer, width);
       if (bufferString.Length != 0)
-        this.writer.WriteAttributeValue(bufferString);
+        this.Writer.WriteAttributeValue(bufferString);
       else
-        this.writer.WriteAttributeValue("medium");
+        this.Writer.WriteAttributeValue("medium");
     }
 
     private void OutputBorderStylePropertyValue(Format.PropertyValue style)
     {
       string borderStyleString = HtmlSupport.GetBorderStyleString(style);
       if (borderStyleString != null)
-        this.writer.WriteAttributeValue(borderStyleString);
+        this.Writer.WriteAttributeValue(borderStyleString);
       else
-        this.writer.WriteAttributeValue("solid");
+        this.Writer.WriteAttributeValue("solid");
     }
 
     private void OutputBorderColorPropertyValue(Format.PropertyValue color)
     {
       BufferString bufferString = HtmlSupport.FormatColor(ref this.scratchBuffer, color);
       if (bufferString.Length != 0)
-        this.writer.WriteAttributeValue(bufferString);
+        this.Writer.WriteAttributeValue(bufferString);
       else
-        this.writer.WriteAttributeValue("black");
+        this.Writer.WriteAttributeValue("black");
     }
 
     private void OutputTableCssProperties(ref bool styleAttributeOpen)
@@ -1887,50 +1876,50 @@ label_44:;
         return;
       if (!styleAttributeOpen)
       {
-        this.writer.WriteAttributeName(HtmlNameIndex.Style);
+        this.Writer.WriteAttributeName(HtmlNameIndex.Style);
         styleAttributeOpen = true;
       }
       if (!distinctProperty1.IsNull)
       {
-        this.writer.WriteAttributeValue("table-layout:");
-        this.writer.WriteAttributeValue(distinctProperty1.Bool ? "fixed" : "auto");
-        this.writer.WriteAttributeValue(";");
+        this.Writer.WriteAttributeValue("table-layout:");
+        this.Writer.WriteAttributeValue(distinctProperty1.Bool ? "fixed" : "auto");
+        this.Writer.WriteAttributeValue(";");
       }
       if (!distinctProperty2.IsNull)
       {
-        this.writer.WriteAttributeValue("border-collapse:");
-        this.writer.WriteAttributeValue(distinctProperty2.Bool ? "collapse" : "separate");
-        this.writer.WriteAttributeValue(";");
+        this.Writer.WriteAttributeValue("border-collapse:");
+        this.Writer.WriteAttributeValue(distinctProperty2.Bool ? "collapse" : "separate");
+        this.Writer.WriteAttributeValue(";");
       }
       if (!distinctProperty3.IsNull)
       {
-        this.writer.WriteAttributeValue("empty-cells:");
-        this.writer.WriteAttributeValue(distinctProperty3.Bool ? "show" : "hide");
-        this.writer.WriteAttributeValue(";");
+        this.Writer.WriteAttributeValue("empty-cells:");
+        this.Writer.WriteAttributeValue(distinctProperty3.Bool ? "show" : "hide");
+        this.Writer.WriteAttributeValue(";");
       }
       if (!distinctProperty4.IsNull)
       {
-        this.writer.WriteAttributeValue("caption-side:");
-        this.writer.WriteAttributeValue(distinctProperty4.Bool ? "top" : "bottom");
-        this.writer.WriteAttributeValue(";");
+        this.Writer.WriteAttributeValue("caption-side:");
+        this.Writer.WriteAttributeValue(distinctProperty4.Bool ? "top" : "bottom");
+        this.Writer.WriteAttributeValue(";");
       }
       if (distinctProperty5.IsNull || distinctProperty5.IsNull)
         return;
       BufferString bufferString1 = HtmlSupport.FormatLength(ref this.scratchBuffer, distinctProperty5);
       if (bufferString1.Length == 0)
         return;
-      this.writer.WriteAttributeValue("border-spacing:");
-      this.writer.WriteAttributeValue(bufferString1);
+      this.Writer.WriteAttributeValue("border-spacing:");
+      this.Writer.WriteAttributeValue(bufferString1);
       if (distinctProperty5 != distinctProperty6)
       {
         BufferString bufferString2 = HtmlSupport.FormatLength(ref this.scratchBuffer, distinctProperty6);
         if (bufferString2.Length != 0)
         {
-          this.writer.WriteAttributeValue(" ");
-          this.writer.WriteAttributeValue(bufferString2);
+          this.Writer.WriteAttributeValue(" ");
+          this.Writer.WriteAttributeValue(bufferString2);
         }
       }
-      this.writer.WriteAttributeValue(";");
+      this.Writer.WriteAttributeValue(";");
     }
 
     private void OutputTableColumnCssProperties(ref bool styleAttributeOpen)
@@ -1941,7 +1930,7 @@ label_44:;
         return;
       if (!styleAttributeOpen)
       {
-        this.writer.WriteAttributeName(HtmlNameIndex.Style);
+        this.Writer.WriteAttributeName(HtmlNameIndex.Style);
         styleAttributeOpen = true;
       }
       if (!distinctProperty1.IsNull)
@@ -1949,9 +1938,9 @@ label_44:;
         BufferString bufferString = HtmlSupport.FormatLength(ref this.scratchBuffer, distinctProperty1);
         if (bufferString.Length != 0)
         {
-          this.writer.WriteAttributeValue("width:");
-          this.writer.WriteAttributeValue(bufferString);
-          this.writer.WriteAttributeValue(";");
+          this.Writer.WriteAttributeValue("width:");
+          this.Writer.WriteAttributeValue(bufferString);
+          this.Writer.WriteAttributeValue(";");
         }
       }
       if (distinctProperty2.IsNull)
@@ -1959,21 +1948,21 @@ label_44:;
       BufferString bufferString1 = HtmlSupport.FormatColor(ref this.scratchBuffer, distinctProperty2);
       if (bufferString1.Length == 0)
         return;
-      this.writer.WriteAttributeValue("background-color:");
-      this.writer.WriteAttributeValue(bufferString1);
+      this.Writer.WriteAttributeValue("background-color:");
+      this.Writer.WriteAttributeValue(bufferString1);
     }
 
     private void OutputBlockTagAttributes()
     {
       Format.PropertyValue distinctProperty1 = this.GetDistinctProperty(Format.PropertyId.RightToLeft);
       if (!distinctProperty1.IsNull)
-        this.writer.WriteAttribute(HtmlNameIndex.Dir, distinctProperty1.Bool ? "rtl" : "ltr");
+        this.Writer.WriteAttribute(HtmlNameIndex.Dir, distinctProperty1.Bool ? "rtl" : "ltr");
       Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.TextAlignment);
       if (!distinctProperty2.IsNull)
       {
         string textAlignmentString = HtmlSupport.GetTextAlignmentString(distinctProperty2);
         if (textAlignmentString != null)
-          this.writer.WriteAttribute(HtmlNameIndex.Align, textAlignmentString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Align, textAlignmentString);
       }
       this.WriteIdAttribute(false);
     }
@@ -1985,45 +1974,45 @@ label_44:;
       {
         BufferString bufferString = HtmlSupport.FormatPixelOrPercentageLength(ref this.scratchBuffer, distinctProperty1);
         if (bufferString.Length != 0)
-          this.writer.WriteAttribute(HtmlNameIndex.Width, bufferString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Width, bufferString);
       }
       Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.BlockAlignment);
       if (!distinctProperty2.IsNull)
       {
         string horizontalAlignmentString = HtmlSupport.GetHorizontalAlignmentString(distinctProperty2);
         if (horizontalAlignmentString != null)
-          this.writer.WriteAttribute(HtmlNameIndex.Align, horizontalAlignmentString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Align, horizontalAlignmentString);
       }
       Format.PropertyValue distinctProperty3 = this.GetDistinctProperty(Format.PropertyId.RightToLeft);
       if (!distinctProperty3.IsNull)
-        this.writer.WriteAttribute(HtmlNameIndex.Dir, distinctProperty3.Bool ? "rtl" : "ltr");
+        this.Writer.WriteAttribute(HtmlNameIndex.Dir, distinctProperty3.Bool ? "rtl" : "ltr");
       Format.PropertyValue distinctProperty4 = this.GetDistinctProperty(Format.PropertyId.TableBorder);
       if (!distinctProperty4.IsNull)
       {
         BufferString bufferString = HtmlSupport.FormatPixelOrPercentageLength(ref this.scratchBuffer, distinctProperty4);
         if (bufferString.Length != 0)
-          this.writer.WriteAttribute(HtmlNameIndex.Border, bufferString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Border, bufferString);
       }
       Format.PropertyValue distinctProperty5 = this.GetDistinctProperty(Format.PropertyId.TableFrame);
       if (!distinctProperty5.IsNull)
       {
         string tableFrameString = HtmlSupport.GetTableFrameString(distinctProperty5);
         if (tableFrameString != null)
-          this.writer.WriteAttribute(HtmlNameIndex.Frame, tableFrameString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Frame, tableFrameString);
       }
       Format.PropertyValue distinctProperty6 = this.GetDistinctProperty(Format.PropertyId.TableRules);
       if (!distinctProperty6.IsNull)
       {
         string tableRulesString = HtmlSupport.GetTableRulesString(distinctProperty6);
         if (tableRulesString != null)
-          this.writer.WriteAttribute(HtmlNameIndex.Rules, tableRulesString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Rules, tableRulesString);
       }
       Format.PropertyValue distinctProperty7 = this.GetDistinctProperty(Format.PropertyId.TableCellSpacing);
       if (!distinctProperty7.IsNull)
       {
         BufferString bufferString = HtmlSupport.FormatPixelOrPercentageLength(ref this.scratchBuffer, distinctProperty7);
         if (bufferString.Length != 0)
-          this.writer.WriteAttribute(HtmlNameIndex.CellSpacing, bufferString);
+          this.Writer.WriteAttribute(HtmlNameIndex.CellSpacing, bufferString);
       }
       Format.PropertyValue distinctProperty8 = this.GetDistinctProperty(Format.PropertyId.TableCellPadding);
       if (distinctProperty8.IsNull)
@@ -2031,38 +2020,38 @@ label_44:;
       BufferString bufferString1 = HtmlSupport.FormatPixelOrPercentageLength(ref this.scratchBuffer, distinctProperty8);
       if (bufferString1.Length == 0)
         return;
-      this.writer.WriteAttribute(HtmlNameIndex.CellPadding, bufferString1);
+      this.Writer.WriteAttribute(HtmlNameIndex.CellPadding, bufferString1);
     }
 
     private void OutputTableCellTagAttributes()
     {
       Format.PropertyValue distinctProperty1 = this.GetDistinctProperty(Format.PropertyId.NumColumns);
       if (distinctProperty1.IsInteger && distinctProperty1.Integer != 1)
-        this.writer.WriteAttribute(HtmlNameIndex.ColSpan, distinctProperty1.Integer.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.ColSpan, distinctProperty1.Integer.ToString());
       Format.PropertyValue distinctProperty2 = this.GetDistinctProperty(Format.PropertyId.NumRows);
       if (distinctProperty2.IsInteger && distinctProperty2.Integer != 1)
-        this.writer.WriteAttribute(HtmlNameIndex.RowSpan, distinctProperty2.Integer.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.RowSpan, distinctProperty2.Integer.ToString());
       Format.PropertyValue distinctProperty3 = this.GetDistinctProperty(Format.PropertyId.Width);
       if (!distinctProperty3.IsNull && distinctProperty3.IsAbsRelLength)
-        this.writer.WriteAttribute(HtmlNameIndex.Width, distinctProperty3.PixelsInteger.ToString());
+        this.Writer.WriteAttribute(HtmlNameIndex.Width, distinctProperty3.PixelsInteger.ToString());
       Format.PropertyValue distinctProperty4 = this.GetDistinctProperty(Format.PropertyId.TextAlignment);
       if (!distinctProperty4.IsNull)
       {
         string textAlignmentString = HtmlSupport.GetTextAlignmentString(distinctProperty4);
         if (textAlignmentString != null)
-          this.writer.WriteAttribute(HtmlNameIndex.Align, textAlignmentString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Align, textAlignmentString);
       }
       Format.PropertyValue distinctProperty5 = this.GetDistinctProperty(Format.PropertyId.BlockAlignment);
       if (!distinctProperty5.IsNull)
       {
         string verticalAlignmentString = HtmlSupport.GetVerticalAlignmentString(distinctProperty5);
         if (verticalAlignmentString != null)
-          this.writer.WriteAttribute(HtmlNameIndex.Valign, verticalAlignmentString);
+          this.Writer.WriteAttribute(HtmlNameIndex.Valign, verticalAlignmentString);
       }
       Format.PropertyValue distinctProperty6 = this.GetDistinctProperty(Format.PropertyId.TableCellNoWrap);
       if (distinctProperty6.IsNull || !distinctProperty6.Bool)
         return;
-      this.writer.WriteAttribute(HtmlNameIndex.NoWrap, string.Empty);
+      this.Writer.WriteAttribute(HtmlNameIndex.NoWrap, string.Empty);
     }
 
     private bool RecognizeHyperLink(Format.TextRun run, out int offset, out int length, out bool addFilePrefix, out bool addHttpPrefix)

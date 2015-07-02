@@ -13,9 +13,8 @@ namespace Butler.Schema.Data.Internal
   internal abstract class RefCountable : IDisposable
   {
     private int refCount;
-    private bool isDisposed;
 
-    protected bool IsDisposed => this.isDisposed;
+      protected bool IsDisposed { get; private set; }
 
       public int RefCount => this.refCount;
 
@@ -26,7 +25,7 @@ namespace Butler.Schema.Data.Internal
 
     protected void ThrowIfDisposed()
     {
-      if (this.isDisposed)
+      if (this.IsDisposed)
         throw new ObjectDisposedException("RefCountable");
     }
 
@@ -52,7 +51,7 @@ namespace Butler.Schema.Data.Internal
 
     protected virtual void Dispose(bool disposing)
     {
-      this.isDisposed = true;
+      this.IsDisposed = true;
     }
   }
 }

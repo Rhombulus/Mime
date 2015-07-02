@@ -16,8 +16,7 @@ namespace Butler.Schema.Data.TextConverters
     private bool outputEncodingSameAsInput = true;
     private bool fallbacks = true;
     private bool testTraceShowTokenNum = true;
-    private TextExtractionMode textExtractionMode;
-    private Encoding outputEncoding;
+      private Encoding outputEncoding;
     private bool wrapFlowed;
     private bool wrapDelSp;
     private bool htmlEscape;
@@ -30,7 +29,7 @@ namespace Butler.Schema.Data.TextConverters
     private int testTraceStopOnTokenNum;
     private Stream testFormatTraceStream;
 
-    public TextExtractionMode TextExtractionMode => this.textExtractionMode;
+    public TextExtractionMode TextExtractionMode { get; }
 
       public Encoding OutputEncoding
     {
@@ -129,12 +128,12 @@ namespace Butler.Schema.Data.TextConverters
 
     public RtfToText()
     {
-      this.textExtractionMode = TextExtractionMode.NormalConversion;
+      this.TextExtractionMode = TextExtractionMode.NormalConversion;
     }
 
     public RtfToText(TextExtractionMode textExtractionMode)
     {
-      this.textExtractionMode = textExtractionMode;
+      this.TextExtractionMode = textExtractionMode;
     }
 
     internal RtfToText SetOutputEncoding(Encoding value)
@@ -282,7 +281,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       this.locked = true;
       Internal.Rtf.RtfParser parser = new Internal.Rtf.RtfParser(input, push, this.InputStreamBufferSize, this.testBoundaryConditions, push ? (IProgressMonitor) null : progressMonitor, (IReportBytes) null);
-      if (this.textExtractionMode == TextExtractionMode.ExtractText)
+      if (this.TextExtractionMode == TextExtractionMode.ExtractText)
         return (IProducerConsumer) new Internal.Rtf.RtfTextExtractionConverter(parser, output, this.testTraceStream, this.testTraceShowTokenNum, this.testTraceStopOnTokenNum);
       Injection injection = (Injection) null;
       if (this.injectHead != null || this.injectTail != null)
@@ -301,7 +300,7 @@ namespace Butler.Schema.Data.TextConverters
     private void AssertNotLockedAndNotTextExtraction()
     {
       this.AssertNotLocked();
-      if (this.textExtractionMode == TextExtractionMode.ExtractText)
+      if (this.TextExtractionMode == TextExtractionMode.ExtractText)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.PropertyNotValidForTextExtractionMode);
     }
   }

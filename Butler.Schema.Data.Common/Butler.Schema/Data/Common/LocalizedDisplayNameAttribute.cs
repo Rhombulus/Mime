@@ -15,17 +15,16 @@ namespace Butler.Schema.Data.Common
   [Serializable]
   public class LocalizedDisplayNameAttribute : DisplayNameAttribute, ILocalizedString
   {
-    private LocalizedString displayname;
 
-    public override sealed string DisplayName
+      public override sealed string DisplayName
     {
       [HostProtection(SecurityAction.LinkDemand, SharedState = true)] get
       {
-        return (string) this.displayname;
+        return (string) this.LocalizedString;
       }
     }
 
-    public LocalizedString LocalizedString => this.displayname;
+    public LocalizedString LocalizedString { get; }
 
       public LocalizedDisplayNameAttribute()
     {
@@ -33,7 +32,7 @@ namespace Butler.Schema.Data.Common
 
     public LocalizedDisplayNameAttribute(LocalizedString displayname)
     {
-      this.displayname = displayname;
+      this.LocalizedString = displayname;
     }
   }
 }

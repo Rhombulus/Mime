@@ -11,21 +11,18 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 {
   internal struct HtmlAttributeInstruction
   {
-    private HtmlNameIndex attributeNameId;
-    private Format.PropertyId propertyId;
-    private PropertyValueParsingMethod parsingMethod;
 
-    public HtmlNameIndex AttributeNameId => this.attributeNameId;
+      public HtmlNameIndex AttributeNameId { get; }
 
-      public Format.PropertyId PropertyId => this.propertyId;
+      public Format.PropertyId PropertyId { get; }
 
-      public PropertyValueParsingMethod ParsingMethod => this.parsingMethod;
+      public PropertyValueParsingMethod ParsingMethod { get; }
 
       public HtmlAttributeInstruction(HtmlNameIndex attributeNameId, Format.PropertyId propertyId, PropertyValueParsingMethod parsingMethod)
     {
-      this.attributeNameId = attributeNameId;
-      this.propertyId = propertyId;
-      this.parsingMethod = parsingMethod;
+      this.AttributeNameId = attributeNameId;
+      this.PropertyId = propertyId;
+      this.ParsingMethod = parsingMethod;
     }
   }
 }

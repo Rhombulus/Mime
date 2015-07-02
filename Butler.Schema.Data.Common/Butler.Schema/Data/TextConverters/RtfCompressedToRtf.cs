@@ -12,10 +12,10 @@ namespace Butler.Schema.Data.TextConverters
 {
   public class RtfCompressedToRtf : TextConverter
   {
-    private RtfCompressionMode compressionMode = RtfCompressionMode.Uncompressed;
-    private bool testDisableFastLoop;
 
-    public RtfCompressionMode CompressionMode => this.compressionMode;
+      private bool testDisableFastLoop;
+
+    public RtfCompressionMode CompressionMode { get; private set; } = RtfCompressionMode.Uncompressed;
 
       internal RtfCompressedToRtf SetInputStreamBufferSize(int value)
     {
@@ -84,7 +84,7 @@ namespace Butler.Schema.Data.TextConverters
     internal override void SetResult(ConfigParameter parameterId, object val)
     {
       if (parameterId == ConfigParameter.RtfCompressionMode)
-        this.compressionMode = (RtfCompressionMode) val;
+        this.CompressionMode = (RtfCompressionMode) val;
       base.SetResult(parameterId, val);
     }
   }

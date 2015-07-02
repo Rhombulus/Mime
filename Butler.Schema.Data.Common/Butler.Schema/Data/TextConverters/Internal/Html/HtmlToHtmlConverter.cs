@@ -20,8 +20,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private int dropLevel = int.MaxValue;
     private static bool textConvertersConfigured;
     private static Dictionary<string, string> safeUrlDictionary;
-    private HtmlToken token;
-    private HtmlWriter writer;
+      private HtmlWriter writer;
     private bool convertFragment;
     private bool outputFragment;
     private bool filterForFragment;
@@ -70,7 +69,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private HtmlToHtmlConverter.VirtualScratchSink virtualScratchSink;
     private IProgressMonitor progressMonitor;
 
-    internal HtmlToken InternalToken => this.token;
+    internal HtmlToken InternalToken { get; private set; }
 
       private HtmlToHtmlConverter.CopyPendingState CopyPendingStateFlag
     {
@@ -110,11 +109,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         ((IDisposable) this.parser).Dispose();
       if (!this.convertFragment && this.writer != null && this.writer != null)
         this.writer.Dispose();
-      if (this.token != null && this.token is IDisposable)
-        ((IDisposable) this.token).Dispose();
+      if (this.InternalToken != null && this.InternalToken is IDisposable)
+        ((IDisposable) this.InternalToken).Dispose();
       this.parser = (IHtmlParser) null;
       this.writer = (HtmlWriter) null;
-      this.token = (HtmlToken) null;
+      this.InternalToken = (HtmlToken) null;
       GC.SuppressFinalize((object) this);
     }
 
@@ -156,7 +155,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       if (this.writer != null && !this.convertFragment)
         ((IRestartable) this.writer).Restart();
       this.endOfFile = false;
-      this.token = (HtmlToken) null;
+      this.InternalToken = (HtmlToken) null;
       this.styleIsCSS = true;
       this.insideCSS = false;
       this.headDivUnterminated = false;
@@ -214,14 +213,14 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 
     internal void CopyInputTag(bool copyTagAttributes)
     {
-      if (this.token.IsTagBegin)
-        this.writer.WriteTagBegin(HtmlDtd.tags[(int) this.tagIndex].NameIndex, (string) null, this.token.IsEndTag, this.token.IsAllowWspLeft, this.token.IsAllowWspRight);
+      if (this.InternalToken.IsTagBegin)
+        this.writer.WriteTagBegin(HtmlDtd.tags[(int) this.tagIndex].NameIndex, (string) null, this.InternalToken.IsEndTag, this.InternalToken.IsAllowWspLeft, this.InternalToken.IsAllowWspRight);
       if (this.tagIndex <= HtmlTagIndex.Unknown)
       {
         if (this.tagIndex < HtmlTagIndex.Unknown)
         {
-          this.token.UnstructuredContent.WriteTo((ITextSink) this.writer.WriteUnstructuredTagContent());
-          if (this.token.IsTagEnd)
+          this.InternalToken.UnstructuredContent.WriteTo((ITextSink) this.writer.WriteUnstructuredTagContent());
+          if (this.InternalToken.IsTagEnd)
           {
             this.CopyPendingStateFlag = HtmlToHtmlConverter.CopyPendingState.NotPending;
             return;
@@ -229,10 +228,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           this.CopyPendingStateFlag = HtmlToHtmlConverter.CopyPendingState.TagCopyPending;
           return;
         }
-        if (this.token.HasNameFragment)
+        if (this.InternalToken.HasNameFragment)
         {
-          this.token.Name.WriteTo((ITextSink) this.writer.WriteTagName());
-          if (!this.token.IsTagNameEnd && !copyTagAttributes)
+          this.InternalToken.Name.WriteTo((ITextSink) this.writer.WriteTagName());
+          if (!this.InternalToken.IsTagNameEnd && !copyTagAttributes)
           {
             this.CopyPendingStateFlag = HtmlToHtmlConverter.CopyPendingState.TagNameCopyPending;
             return;
@@ -247,7 +246,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       {
         if (this.attributeCount != 0)
           this.CopyInputTagAttributes();
-        if (this.token.IsTagEnd)
+        if (this.InternalToken.IsTagEnd)
           this.CopyPendingStateFlag = HtmlToHtmlConverter.CopyPendingState.NotPending;
         else
           this.CopyPendingStateFlag = HtmlToHtmlConverter.CopyPendingState.TagCopyPending;
@@ -660,7 +659,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 
     private void Process(HtmlTokenId tokenId)
     {
-      this.token = this.parser.Token;
+      this.InternalToken = this.parser.Token;
       if (!this.metaInjected && !this.InjectMetaTagIfNecessary())
         return;
       switch (tokenId)
@@ -674,10 +673,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         case HtmlTokenId.EncodingChange:
           if (!this.writer.HasEncoding || !this.writer.CodePageSameAsInput)
             break;
-          this.writer.Encoding = this.token.TokenEncoding;
+          this.writer.Encoding = this.InternalToken.TokenEncoding;
           break;
         case HtmlTokenId.Tag:
-          if (!this.token.IsEndTag)
+          if (!this.InternalToken.IsEndTag)
           {
             this.ProcessStartTag();
             break;
@@ -702,16 +701,16 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private void ProcessStartTag()
     {
       HtmlToHtmlConverter.AvailableTagParts availableTagParts = HtmlToHtmlConverter.AvailableTagParts.None;
-      if (this.insideCSS && this.token.TagIndex == HtmlTagIndex._COMMENT && this.filterHtml)
+      if (this.insideCSS && this.InternalToken.TagIndex == HtmlTagIndex._COMMENT && this.filterHtml)
       {
         this.AppendCssFromTokenText();
       }
       else
       {
-        if (this.token.IsTagBegin)
+        if (this.InternalToken.IsTagBegin)
         {
           ++this.currentLevel;
-          this.tagIndex = this.token.TagIndex;
+          this.tagIndex = this.InternalToken.TagIndex;
           this.tagDropped = false;
           this.justTruncated = false;
           this.endTagCallbackRequested = false;
@@ -724,7 +723,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
             this.ignoreAttrCallback = false;
             if (this.filterHtml || this.callback != null)
             {
-              HtmlFilterData.FilterAction filterAction = this.filterForFragment ? HtmlFilterData.filterInstructions[(int) this.token.NameIndex].tagFragmentAction : HtmlFilterData.filterInstructions[(int) this.token.NameIndex].tagAction;
+              HtmlFilterData.FilterAction filterAction = this.filterForFragment ? HtmlFilterData.filterInstructions[(int) this.InternalToken.NameIndex].tagFragmentAction : HtmlFilterData.filterInstructions[(int) this.InternalToken.NameIndex].tagAction;
               if (this.callback != null && (filterAction & HtmlFilterData.FilterAction.Callback) != HtmlFilterData.FilterAction.Unknown)
                 this.tagCallbackRequested = true;
               else if (this.filterHtml)
@@ -755,8 +754,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         }
         if (!this.tagDropped)
         {
-          HtmlToken.TagPartMinor minorPart = this.token.MinorPart;
-          if (this.token.IsTagEnd)
+          HtmlToken.TagPartMinor minorPart = this.InternalToken.MinorPart;
+          if (this.InternalToken.IsTagEnd)
             availableTagParts |= HtmlToHtmlConverter.AvailableTagParts.TagEnd;
           if (this.tagIndex < HtmlTagIndex.Unknown)
           {
@@ -765,7 +764,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           }
           else
           {
-            if (this.token.HasNameFragment || this.token.IsTagNameEnd)
+            if (this.InternalToken.HasNameFragment || this.InternalToken.IsTagNameEnd)
               availableTagParts |= HtmlToHtmlConverter.AvailableTagParts.TagName;
             this.ProcessTagAttributes();
             if (this.attributeCount != 0)
@@ -783,7 +782,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
                   if (this.tagCallbackRequested && (availableTagParts & HtmlToHtmlConverter.AvailableTagParts.TagEnd) != HtmlToHtmlConverter.AvailableTagParts.None)
                   {
                     this.attributeCount = 0;
-                    this.token.Name.MakeEmpty();
+                    this.InternalToken.Name.MakeEmpty();
                     availableTagParts &= ~HtmlToHtmlConverter.AvailableTagParts.TagEnd;
                     tagPartMinor = HtmlToken.TagPartMinor.Empty;
                     break;
@@ -791,10 +790,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
                   availableTagParts = HtmlToHtmlConverter.AvailableTagParts.None;
                   break;
                 case HtmlToHtmlConverter.CopyPendingState.TagNameCopyPending:
-                  this.token.Name.WriteTo((ITextSink) this.writer.WriteTagName());
-                  if (this.token.IsTagNameEnd)
+                  this.InternalToken.Name.WriteTo((ITextSink) this.writer.WriteTagName());
+                  if (this.InternalToken.IsTagNameEnd)
                     this.CopyPendingStateFlag = HtmlToHtmlConverter.CopyPendingState.NotPending;
-                  this.token.Name.MakeEmpty();
+                  this.InternalToken.Name.MakeEmpty();
                   availableTagParts &= ~HtmlToHtmlConverter.AvailableTagParts.TagName;
                   tagPartMinor = minorPart & (HtmlToken.TagPartMinor) 248;
                   break;
@@ -808,7 +807,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
                   break;
                 case HtmlToHtmlConverter.CopyPendingState.AttributeNameCopyPending:
                   this.CopyInputAttributeName(0);
-                  if (1 == this.attributeCount && (this.token.Attributes[0].MinorPart & HtmlToken.AttrPartMinor.ContinueValue) == HtmlToken.AttrPartMinor.Empty)
+                  if (1 == this.attributeCount && (this.InternalToken.Attributes[0].MinorPart & HtmlToken.AttrPartMinor.ContinueValue) == HtmlToken.AttrPartMinor.Empty)
                   {
                     this.attributeSkipCount = 1;
                     --this.attributeCount;
@@ -816,8 +815,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
                     tagPartMinor = minorPart & (HtmlToken.TagPartMinor) 199;
                     break;
                   }
-                  this.token.Attributes[0].Name.MakeEmpty();
-                  this.token.Attributes[0].SetMinorPart(this.token.Attributes[0].MinorPart & (HtmlToken.AttrPartMinor) 248);
+                  this.InternalToken.Attributes[0].Name.MakeEmpty();
+                  this.InternalToken.Attributes[0].SetMinorPart(this.InternalToken.Attributes[0].MinorPart & (HtmlToken.AttrPartMinor) 248);
                   break;
                 case HtmlToHtmlConverter.CopyPendingState.AttributeValueCopyPending:
                   this.CopyInputAttributeValue(0);
@@ -835,23 +834,23 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
               {
                 if (this.callbackContext == null)
                   this.callbackContext = new HtmlToHtmlTagContext(this);
-                if (this.token.IsTagBegin || this.attributeTriggeredCallback)
+                if (this.InternalToken.IsTagBegin || this.attributeTriggeredCallback)
                 {
                   this.callbackContext.InitializeTag(false, HtmlDtd.tags[(int) this.tagIndex].NameIndex, false);
                   this.attributeTriggeredCallback = false;
                 }
-                this.callbackContext.InitializeFragment(this.token.IsEmptyScope, this.attributeCount, new HtmlTagParts(this.token.MajorPart, this.token.MinorPart));
+                this.callbackContext.InitializeFragment(this.InternalToken.IsEmptyScope, this.attributeCount, new HtmlTagParts(this.InternalToken.MajorPart, this.InternalToken.MinorPart));
                 this.callback((HtmlTagContext) this.callbackContext, this.writer);
                 this.callbackContext.UninitializeFragment();
-                if (this.token.IsTagEnd || this.truncateForCallback)
+                if (this.InternalToken.IsTagEnd || this.truncateForCallback)
                 {
                   if (this.callbackContext.IsInvokeCallbackForEndTag)
                     this.endTagCallbackRequested = true;
                   if (this.callbackContext.IsDeleteInnerContent)
                     this.dropLevel = this.currentLevel + 1;
-                  if (this.token.IsTagBegin && this.callbackContext.IsDeleteEndTag)
+                  if (this.InternalToken.IsTagBegin && this.callbackContext.IsDeleteEndTag)
                     this.tagDropped = true;
-                  if (!this.tagDropped && !this.token.IsTagEnd)
+                  if (!this.tagDropped && !this.InternalToken.IsTagEnd)
                   {
                     this.tagDropped = true;
                     this.justTruncated = true;
@@ -861,21 +860,21 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
               }
               else
               {
-                if (this.token.IsTagBegin)
+                if (this.InternalToken.IsTagBegin)
                   this.CopyInputTag(false);
                 if (this.attributeCount != 0)
                   this.CopyInputTagAttributes();
-                if (this.token.IsTagEnd && this.tagIndex == HtmlTagIndex.Unknown)
-                  this.writer.WriteTagEnd(this.token.IsEmptyScope);
+                if (this.InternalToken.IsTagEnd && this.tagIndex == HtmlTagIndex.Unknown)
+                  this.writer.WriteTagEnd(this.InternalToken.IsEmptyScope);
               }
             }
           }
         }
-        if (!this.token.IsTagEnd)
+        if (!this.InternalToken.IsTagEnd)
           return;
         if (this.writer.IsTagOpen)
           this.writer.WriteTagEnd();
-        if (!this.token.IsEmptyScope && this.tagIndex > HtmlTagIndex.Unknown)
+        if (!this.InternalToken.IsEmptyScope && this.tagIndex > HtmlTagIndex.Unknown)
         {
           if (this.normalizedInput && this.currentLevel < this.dropLevel && (this.tagDropped && !this.justTruncated || this.endTagCallbackRequested))
           {
@@ -908,11 +907,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private void ProcessEndTag()
     {
       HtmlToHtmlConverter.AvailableTagParts availableTagParts = HtmlToHtmlConverter.AvailableTagParts.None;
-      if (this.token.IsTagBegin)
+      if (this.InternalToken.IsTagBegin)
       {
         if (this.currentLevel > 0)
           --this.currentLevel;
-        this.tagIndex = this.token.TagIndex;
+        this.tagIndex = this.InternalToken.TagIndex;
         this.tagDropped = false;
         this.tagCallbackRequested = false;
         this.tagHasFilteredStyleAttribute = false;
@@ -949,23 +948,23 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
               }
             }
           }
-          if (this.token.Argument == 1 && this.tagIndex == HtmlTagIndex.Unknown)
+          if (this.InternalToken.Argument == 1 && this.tagIndex == HtmlTagIndex.Unknown)
             this.tagDropped = true;
         }
       }
       if (!this.tagDropped)
       {
-        HtmlToken.TagPartMinor minor = this.token.MinorPart & (HtmlToken.TagPartMinor) 71;
-        if (this.token.IsTagEnd)
+        HtmlToken.TagPartMinor minor = this.InternalToken.MinorPart & (HtmlToken.TagPartMinor) 71;
+        if (this.InternalToken.IsTagEnd)
           availableTagParts |= HtmlToHtmlConverter.AvailableTagParts.TagEnd;
-        if (this.token.HasNameFragment)
+        if (this.InternalToken.HasNameFragment)
           availableTagParts |= HtmlToHtmlConverter.AvailableTagParts.TagName;
         if (this.CopyPendingStateFlag == HtmlToHtmlConverter.CopyPendingState.TagNameCopyPending)
         {
-          this.token.Name.WriteTo((ITextSink) this.writer.WriteTagName());
-          if (this.token.IsTagNameEnd)
+          this.InternalToken.Name.WriteTo((ITextSink) this.writer.WriteTagName());
+          if (this.InternalToken.IsTagNameEnd)
             this.CopyPendingStateFlag = HtmlToHtmlConverter.CopyPendingState.NotPending;
-          this.token.Name.MakeEmpty();
+          this.InternalToken.Name.MakeEmpty();
           availableTagParts &= ~HtmlToHtmlConverter.AvailableTagParts.TagName;
           minor &= (HtmlToken.TagPartMinor) 248;
         }
@@ -973,26 +972,26 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         {
           if (this.tagCallbackRequested)
           {
-            if (this.token.IsTagBegin)
+            if (this.InternalToken.IsTagBegin)
               this.callbackContext.InitializeTag(true, HtmlDtd.tags[(int) this.tagIndex].NameIndex, false);
-            this.callbackContext.InitializeFragment(false, 0, new HtmlTagParts(this.token.MajorPart, minor));
+            this.callbackContext.InitializeFragment(false, 0, new HtmlTagParts(this.InternalToken.MajorPart, minor));
             this.callback((HtmlTagContext) this.callbackContext, this.writer);
             this.callbackContext.UninitializeFragment();
           }
-          else if (this.token.IsTagBegin)
+          else if (this.InternalToken.IsTagBegin)
             this.CopyInputTag(false);
         }
       }
       else if (this.tagCallbackRequested)
       {
-        HtmlToken.TagPartMinor minor = this.token.MinorPart & (HtmlToken.TagPartMinor) 71;
-        if (this.token.IsTagBegin)
+        HtmlToken.TagPartMinor minor = this.InternalToken.MinorPart & (HtmlToken.TagPartMinor) 71;
+        if (this.InternalToken.IsTagBegin)
           this.callbackContext.InitializeTag(true, HtmlDtd.tags[(int) this.tagIndex].NameIndex, true);
-        this.callbackContext.InitializeFragment(false, 0, new HtmlTagParts(this.token.MajorPart, minor));
+        this.callbackContext.InitializeFragment(false, 0, new HtmlTagParts(this.InternalToken.MajorPart, minor));
         this.callback((HtmlTagContext) this.callbackContext, this.writer);
         this.callbackContext.UninitializeFragment();
       }
-      if (!this.token.IsTagEnd)
+      if (!this.InternalToken.IsTagEnd)
         return;
       if (this.writer.IsTagOpen)
         this.writer.WriteTagEnd();
@@ -1014,13 +1013,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 
     private void ProcessOverlappedClose()
     {
-      this.currentLevelDelta = this.token.Argument * 2;
+      this.currentLevelDelta = this.InternalToken.Argument * 2;
       this.currentLevel -= this.currentLevelDelta;
     }
 
     private void ProcessOverlappedReopen()
     {
-      this.currentLevel += this.token.Argument * 2;
+      this.currentLevel += this.InternalToken.Argument * 2;
       this.currentLevelDelta = 0;
     }
 
@@ -1030,21 +1029,21 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         return;
       if (this.insideCSS && this.filterHtml)
         this.AppendCssFromTokenText();
-      else if (this.token.Argument == 1)
+      else if (this.InternalToken.Argument == 1)
       {
         this.writer.WriteCollapsedWhitespace();
       }
       else
       {
-        if (!this.token.Runs.MoveNext(true))
+        if (!this.InternalToken.Runs.MoveNext(true))
           return;
-        this.token.Text.WriteTo((ITextSink) this.writer.WriteText());
+        this.InternalToken.Text.WriteTo((ITextSink) this.writer.WriteText());
       }
     }
 
     private void ProcessInjectionBegin()
     {
-      if (this.token.Argument != 0 || !this.headDivUnterminated)
+      if (this.InternalToken.Argument != 0 || !this.headDivUnterminated)
         return;
       this.writer.WriteEndTag(HtmlNameIndex.Div);
       this.writer.WriteAutoNewLine(true);
@@ -1053,7 +1052,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 
     private void ProcessInjectionEnd()
     {
-      if (this.token.Argument == 0)
+      if (this.InternalToken.Argument == 0)
         return;
       this.writer.WriteAutoNewLine(true);
       this.writer.WriteStartTag(HtmlNameIndex.Div);
@@ -1095,8 +1094,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       {
         if (this.filterHtml)
           return;
-        this.token.Attributes.Rewind();
-        foreach (HtmlAttribute htmlAttribute in this.token.Attributes)
+        this.InternalToken.Attributes.Rewind();
+        foreach (HtmlAttribute htmlAttribute in this.InternalToken.Attributes)
         {
           if (htmlAttribute.NameIndex == HtmlNameIndex.HttpEquiv)
           {
@@ -1116,7 +1115,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       else if (this.tagIndex == HtmlTagIndex.Style)
       {
         this.styleIsCSS = true;
-        if (!this.token.Attributes.Find(HtmlNameIndex.Type) || this.token.Attributes.Current.Value.CaseInsensitiveCompareEqual("text/css"))
+        if (!this.InternalToken.Attributes.Find(HtmlNameIndex.Type) || this.InternalToken.Attributes.Current.Value.CaseInsensitiveCompareEqual("text/css"))
           return;
         this.styleIsCSS = false;
       }
@@ -1143,7 +1142,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private void ProcessTagAttributes()
     {
       this.attributeSkipCount = 0;
-      HtmlToken.AttributeEnumerator attributes = this.token.Attributes;
+      HtmlToken.AttributeEnumerator attributes = this.InternalToken.Attributes;
       if (this.filterHtml)
       {
         this.attributeCount = 0;
@@ -1161,11 +1160,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           if (htmlAttribute.IsAttrBegin)
           {
             HtmlFilterData.FilterAction filterAction2 = this.filterForFragment ? HtmlFilterData.filterInstructions[(int) htmlAttribute.NameIndex].attrFragmentAction : HtmlFilterData.filterInstructions[(int) htmlAttribute.NameIndex].attrAction;
-            if ((filterAction2 & HtmlFilterData.FilterAction.HasExceptions) != HtmlFilterData.FilterAction.Unknown && (HtmlFilterData.filterInstructions[(int) this.token.NameIndex].tagAction & HtmlFilterData.FilterAction.HasExceptions) != HtmlFilterData.FilterAction.Unknown)
+            if ((filterAction2 & HtmlFilterData.FilterAction.HasExceptions) != HtmlFilterData.FilterAction.Unknown && (HtmlFilterData.filterInstructions[(int) this.InternalToken.NameIndex].tagAction & HtmlFilterData.FilterAction.HasExceptions) != HtmlFilterData.FilterAction.Unknown)
             {
               for (int index2 = 0; index2 < HtmlFilterData.filterExceptions.Length; ++index2)
               {
-                if (HtmlFilterData.filterExceptions[index2].tagNameIndex == this.token.NameIndex && HtmlFilterData.filterExceptions[index2].attrNameIndex == htmlAttribute.NameIndex)
+                if (HtmlFilterData.filterExceptions[index2].tagNameIndex == this.InternalToken.NameIndex && HtmlFilterData.filterExceptions[index2].attrNameIndex == htmlAttribute.NameIndex)
                 {
                   filterAction2 = this.filterForFragment ? HtmlFilterData.filterExceptions[index2].fragmentAction : HtmlFilterData.filterExceptions[index2].action;
                   break;
@@ -1183,7 +1182,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
               filterAction2 = HtmlFilterData.FilterAction.Keep;
             if (this.callback != null && !this.ignoreAttrCallback && (filterAction2 & HtmlFilterData.FilterAction.Callback) != HtmlFilterData.FilterAction.Unknown)
             {
-              if (this.token.IsTagBegin || !this.truncateForCallback)
+              if (this.InternalToken.IsTagBegin || !this.truncateForCallback)
               {
                 this.attributeTriggeredCallback = this.attributeTriggeredCallback || !this.tagCallbackRequested;
                 this.tagCallbackRequested = true;
@@ -1366,7 +1365,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
             }
           }
         }
-        if (!this.tagHasFilteredStyleAttribute || !this.token.IsTagEnd && (!this.tagCallbackRequested || !this.truncateForCallback))
+        if (!this.tagHasFilteredStyleAttribute || !this.InternalToken.IsTagEnd && (!this.tagCallbackRequested || !this.truncateForCallback))
           return;
         this.attributeIndirectIndex[this.attributeCount].Index = (short) -1;
         this.attributeIndirectIndex[this.attributeCount].Kind = HtmlToHtmlConverter.AttributeIndirectKind.FilteredStyle;
@@ -1384,18 +1383,18 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
           if (htmlAttribute.IsAttrBegin)
           {
             HtmlFilterData.FilterAction filterAction = HtmlFilterData.filterInstructions[(int) htmlAttribute.NameIndex].attrAction;
-            if ((filterAction & HtmlFilterData.FilterAction.HasExceptions) != HtmlFilterData.FilterAction.Unknown && (HtmlFilterData.filterInstructions[(int) this.token.NameIndex].tagAction & HtmlFilterData.FilterAction.HasExceptions) != HtmlFilterData.FilterAction.Unknown)
+            if ((filterAction & HtmlFilterData.FilterAction.HasExceptions) != HtmlFilterData.FilterAction.Unknown && (HtmlFilterData.filterInstructions[(int) this.InternalToken.NameIndex].tagAction & HtmlFilterData.FilterAction.HasExceptions) != HtmlFilterData.FilterAction.Unknown)
             {
               for (int index2 = 0; index2 < HtmlFilterData.filterExceptions.Length; ++index2)
               {
-                if (HtmlFilterData.filterExceptions[index2].tagNameIndex == this.token.NameIndex && HtmlFilterData.filterExceptions[index2].attrNameIndex == htmlAttribute.NameIndex)
+                if (HtmlFilterData.filterExceptions[index2].tagNameIndex == this.InternalToken.NameIndex && HtmlFilterData.filterExceptions[index2].attrNameIndex == htmlAttribute.NameIndex)
                 {
                   filterAction = HtmlFilterData.filterExceptions[index2].action;
                   break;
                 }
               }
             }
-            if ((filterAction & HtmlFilterData.FilterAction.Callback) != HtmlFilterData.FilterAction.Unknown && (this.token.IsTagBegin || !this.truncateForCallback))
+            if ((filterAction & HtmlFilterData.FilterAction.Callback) != HtmlFilterData.FilterAction.Unknown && (this.InternalToken.IsTagBegin || !this.truncateForCallback))
             {
               this.attributeTriggeredCallback = this.attributeTriggeredCallback || !this.tagCallbackRequested;
               this.tagCallbackRequested = true;
@@ -1510,26 +1509,26 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     {
       if (this.filterForFragment || !this.writer.HasEncoding)
         this.metaInjected = true;
-      else if (this.token.HtmlTokenId != HtmlTokenId.Restart && this.token.HtmlTokenId != HtmlTokenId.EncodingChange)
+      else if (this.InternalToken.HtmlTokenId != HtmlTokenId.Restart && this.InternalToken.HtmlTokenId != HtmlTokenId.EncodingChange)
       {
         if (string.Compare(this.writer.Encoding.WebName, "utf-7", StringComparison.OrdinalIgnoreCase) == 0)
         {
           this.OutputMetaTag();
           this.metaInjected = true;
         }
-        else if (this.token.HtmlTokenId == HtmlTokenId.Tag)
+        else if (this.InternalToken.HtmlTokenId == HtmlTokenId.Tag)
         {
-          if (!this.insideHtml && this.token.TagIndex == HtmlTagIndex.Html)
+          if (!this.insideHtml && this.InternalToken.TagIndex == HtmlTagIndex.Html)
           {
-            if (this.token.IsTagEnd)
+            if (this.InternalToken.IsTagEnd)
               this.insideHtml = true;
           }
-          else if (!this.insideHead && this.token.TagIndex == HtmlTagIndex.Head)
+          else if (!this.insideHead && this.InternalToken.TagIndex == HtmlTagIndex.Head)
           {
-            if (this.token.IsTagEnd)
+            if (this.InternalToken.IsTagEnd)
               this.insideHead = true;
           }
-          else if (this.token.TagIndex > HtmlTagIndex._ASP)
+          else if (this.InternalToken.TagIndex > HtmlTagIndex._ASP)
           {
             if (this.insideHtml && !this.insideHead)
             {
@@ -1549,11 +1548,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
             this.metaInjected = true;
           }
         }
-        else if (this.token.HtmlTokenId == HtmlTokenId.Text)
+        else if (this.InternalToken.HtmlTokenId == HtmlTokenId.Text)
         {
-          if (this.token.IsWhitespaceOnly)
+          if (this.InternalToken.IsWhitespaceOnly)
             return false;
-          this.token.Text.StripLeadingWhitespace();
+          this.InternalToken.Text.StripLeadingWhitespace();
           if (this.insideHtml && !this.insideHead)
           {
             this.writer.WriteNewLine(true);
@@ -1606,10 +1605,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private HtmlAttribute GetAttribute(int index)
     {
       if (!this.attributeIndirect)
-        return this.token.Attributes[index + this.attributeSkipCount];
+        return this.InternalToken.Attributes[index + this.attributeSkipCount];
       if (this.attributeIndirectIndex[index + this.attributeSkipCount].Kind != HtmlToHtmlConverter.AttributeIndirectKind.Virtual)
-        return this.token.Attributes[(int) this.attributeIndirectIndex[index + this.attributeSkipCount].Index];
-      return this.token.Attributes[(int) this.attributeVirtualList[(int) this.attributeIndirectIndex[index + this.attributeSkipCount].Index].Index];
+        return this.InternalToken.Attributes[(int) this.attributeIndirectIndex[index + this.attributeSkipCount].Index];
+      return this.InternalToken.Attributes[(int) this.attributeVirtualList[(int) this.attributeIndirectIndex[index + this.attributeSkipCount].Index].Index];
     }
 
     private void AppendCssFromTokenText()
@@ -1619,7 +1618,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
         this.cssParserInput = new ConverterBufferInput(524288, this.progressMonitor);
         this.cssParser = new Css.CssParser((ConverterInput) this.cssParserInput, 4096, false);
       }
-      this.token.Text.WriteTo((ITextSink) this.cssParserInput);
+      this.InternalToken.Text.WriteTo((ITextSink) this.cssParserInput);
     }
 
     private void AppendCss(string css)

@@ -16,10 +16,7 @@ namespace Butler.Schema.Data.TextConverters
     private HtmlTagContext.TagWriteState writeState;
     private byte cookie;
     private bool valid;
-    private bool invokeCallbackForEndTag;
-    private bool deleteInnerContent;
-    private bool deleteEndTag;
-    private bool isEndTag;
+      private bool isEndTag;
     private bool isEmptyElementTag;
     private Internal.Html.HtmlNameIndex tagNameIndex;
     private HtmlTagParts tagParts;
@@ -88,11 +85,11 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    internal bool IsInvokeCallbackForEndTag => this.invokeCallbackForEndTag;
+    internal bool IsInvokeCallbackForEndTag { get; private set; }
 
-      internal bool IsDeleteInnerContent => this.deleteInnerContent;
+      internal bool IsDeleteInnerContent { get; private set; }
 
-      internal bool IsDeleteEndTag => this.deleteEndTag;
+      internal bool IsDeleteEndTag { get; private set; }
 
       internal bool CopyPending
     {
@@ -117,7 +114,7 @@ namespace Butler.Schema.Data.TextConverters
       this.AssertContextValid();
       if (this.writeState != HtmlTagContext.TagWriteState.Undefined)
         throw new InvalidOperationException(this.writeState == HtmlTagContext.TagWriteState.Written ? CtsResources.TextConvertersStrings.CallbackTagAlreadyWritten : CtsResources.TextConvertersStrings.CallbackTagAlreadyDeleted);
-      this.deleteEndTag = false;
+      this.IsDeleteEndTag = false;
       this.WriteTagImpl(!this.isEndTag && copyInputAttributes);
       this.writeState = HtmlTagContext.TagWriteState.Written;
     }
@@ -132,7 +129,7 @@ namespace Butler.Schema.Data.TextConverters
       this.AssertContextValid();
       if (this.writeState != HtmlTagContext.TagWriteState.Undefined)
         throw new InvalidOperationException(this.writeState == HtmlTagContext.TagWriteState.Written ? CtsResources.TextConvertersStrings.CallbackTagAlreadyWritten : CtsResources.TextConvertersStrings.CallbackTagAlreadyDeleted);
-      this.deleteEndTag = !this.isEndTag && !this.isEmptyElementTag && !keepEndTag;
+      this.IsDeleteEndTag = !this.isEndTag && !this.isEmptyElementTag && !keepEndTag;
       this.DeleteTagImpl();
       this.writeState = HtmlTagContext.TagWriteState.Deleted;
     }
@@ -142,7 +139,7 @@ namespace Butler.Schema.Data.TextConverters
       this.AssertContextValid();
       if (this.isEndTag || this.isEmptyElementTag)
         return;
-      this.deleteInnerContent = true;
+      this.IsDeleteInnerContent = true;
     }
 
     public void InvokeCallbackForEndTag()
@@ -150,7 +147,7 @@ namespace Butler.Schema.Data.TextConverters
       this.AssertContextValid();
       if (this.isEndTag || this.isEmptyElementTag)
         return;
-      this.invokeCallbackForEndTag = true;
+      this.IsInvokeCallbackForEndTag = true;
     }
 
     internal static byte ExtractCookie(int attributeIndexAndCookie)
@@ -174,9 +171,9 @@ namespace Butler.Schema.Data.TextConverters
       this.isEmptyElementTag = false;
       this.tagNameIndex = tagNameIndex;
       this.writeState = droppedEndTag ? HtmlTagContext.TagWriteState.Deleted : HtmlTagContext.TagWriteState.Undefined;
-      this.invokeCallbackForEndTag = false;
-      this.deleteInnerContent = false;
-      this.deleteEndTag = !this.isEndTag;
+      this.IsInvokeCallbackForEndTag = false;
+      this.IsDeleteInnerContent = false;
+      this.IsDeleteEndTag = !this.isEndTag;
       this.cookie = (byte) ((uint) this.cookie + 1U);
     }
 

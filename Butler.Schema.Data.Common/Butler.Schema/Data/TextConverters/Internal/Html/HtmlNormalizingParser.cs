@@ -29,8 +29,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private HtmlTagIndex[] openList;
     private bool validRTC;
     private HtmlTagIndex tagIdRTC;
-    private HtmlToken token;
-    private HtmlToken inputToken;
+      private HtmlToken inputToken;
     private bool ignoreInputTag;
     private int currentRun;
     private int currentRunOffset;
@@ -41,7 +40,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private HtmlInjection injection;
     private HtmlNormalizingParser.DocumentState saveState;
 
-    public HtmlToken Token => this.token;
+    public HtmlToken Token { get; private set; }
 
       public int CurrentOffset => this.parser.CurrentOffset;
 
@@ -123,7 +122,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       this.queue = (HtmlNormalizingParser.QueueItem[]) null;
       this.closeList = (int[]) null;
       this.openList = (HtmlTagIndex[]) null;
-      this.token = (HtmlToken) null;
+      this.Token = (HtmlToken) null;
       this.inputToken = (HtmlToken) null;
       this.tokenBuilder = (HtmlNormalizingParser.SmallTokenBuilder) null;
       GC.SuppressFinalize((object) this);
@@ -155,7 +154,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       this.queueStart = 0;
       this.validRTC = false;
       this.tagIdRTC = HtmlTagIndex._NULL;
-      this.token = (HtmlToken) null;
+      this.Token = (HtmlToken) null;
       if (this.injection == null)
         return;
       if (this.injection.Active)
@@ -893,18 +892,18 @@ label_8:
       {
         case HtmlNormalizingParser.QueueItemKind.None:
           this.DoDequeueFirst();
-          this.token = (HtmlToken) null;
+          this.Token = (HtmlToken) null;
           return HtmlTokenId.None;
         case HtmlNormalizingParser.QueueItemKind.Eof:
           this.tokenBuilder.BuildEofToken();
-          this.token = (HtmlToken) this.tokenBuilder;
+          this.Token = (HtmlToken) this.tokenBuilder;
           break;
         case HtmlNormalizingParser.QueueItemKind.BeginElement:
         case HtmlNormalizingParser.QueueItemKind.EndElement:
           HtmlNormalizingParser.QueueItem queueItem2 = this.DoDequeueFirst();
           this.tokenBuilder.BuildTagToken(queueItem2.TagIndex, queueItem2.Kind == HtmlNormalizingParser.QueueItemKind.EndElement, (queueItem2.Flags & HtmlNormalizingParser.QueueItemFlags.AllowWspLeft) == HtmlNormalizingParser.QueueItemFlags.AllowWspLeft, (queueItem2.Flags & HtmlNormalizingParser.QueueItemFlags.AllowWspRight) == HtmlNormalizingParser.QueueItemFlags.AllowWspRight, false);
-          this.token = (HtmlToken) this.tokenBuilder;
-          if (queueItem2.Kind == HtmlNormalizingParser.QueueItemKind.BeginElement && this.token.OriginalTagId == HtmlTagIndex.Body && (this.injection != null && this.injection.HaveHead) && !this.injection.HeadDone)
+          this.Token = (HtmlToken) this.tokenBuilder;
+          if (queueItem2.Kind == HtmlNormalizingParser.QueueItemKind.BeginElement && this.Token.OriginalTagId == HtmlTagIndex.Body && (this.injection != null && this.injection.HaveHead) && !this.injection.HeadDone)
           {
             int container = this.FindContainer(HtmlTagIndex.Body, HtmlDtd.SetId.Empty);
             this.parser = (HtmlParser) this.injection.Push(true, (IHtmlParser) this.parser);
@@ -916,20 +915,20 @@ label_8:
               this.OpenContainer(HtmlTagIndex.Pre);
             }
           }
-          return this.token.HtmlTokenId;
+          return this.Token.HtmlTokenId;
         case HtmlNormalizingParser.QueueItemKind.OverlappedClose:
         case HtmlNormalizingParser.QueueItemKind.OverlappedReopen:
           HtmlNormalizingParser.QueueItem queueItem3 = this.DoDequeueFirst();
           this.tokenBuilder.BuildOverlappedToken(queueItem3.Kind == HtmlNormalizingParser.QueueItemKind.OverlappedClose, queueItem3.Argument);
-          this.token = (HtmlToken) this.tokenBuilder;
-          return this.token.HtmlTokenId;
+          this.Token = (HtmlToken) this.tokenBuilder;
+          return this.Token.HtmlTokenId;
         case HtmlNormalizingParser.QueueItemKind.PassThrough:
           HtmlNormalizingParser.QueueItem queueItem4 = this.DoDequeueFirst();
-          this.token = this.inputToken;
-          if (this.token.HtmlTokenId == HtmlTokenId.Tag)
+          this.Token = this.inputToken;
+          if (this.Token.HtmlTokenId == HtmlTokenId.Tag)
           {
-            this.token.Flags |= (HtmlToken.TagFlags) (((queueItem4.Flags & HtmlNormalizingParser.QueueItemFlags.AllowWspLeft) == HtmlNormalizingParser.QueueItemFlags.AllowWspLeft ? 64 : 0) | ((queueItem4.Flags & HtmlNormalizingParser.QueueItemFlags.AllowWspRight) == HtmlNormalizingParser.QueueItemFlags.AllowWspRight ? 128 : 0));
-            if (this.token.OriginalTagId == HtmlTagIndex.Body && this.token.IsTagEnd && (this.injection != null && this.injection.HaveHead) && !this.injection.HeadDone)
+            this.Token.Flags |= (HtmlToken.TagFlags) (((queueItem4.Flags & HtmlNormalizingParser.QueueItemFlags.AllowWspLeft) == HtmlNormalizingParser.QueueItemFlags.AllowWspLeft ? 64 : 0) | ((queueItem4.Flags & HtmlNormalizingParser.QueueItemFlags.AllowWspRight) == HtmlNormalizingParser.QueueItemFlags.AllowWspRight ? 128 : 0));
+            if (this.Token.OriginalTagId == HtmlTagIndex.Body && this.Token.IsTagEnd && (this.injection != null && this.injection.HaveHead) && !this.injection.HeadDone)
             {
               int container = this.FindContainer(HtmlTagIndex.Body, HtmlDtd.SetId.Empty);
               this.parser = (HtmlParser) this.injection.Push(true, (IHtmlParser) this.parser);
@@ -942,12 +941,12 @@ label_8:
               }
             }
           }
-          return this.token.HtmlTokenId;
+          return this.Token.HtmlTokenId;
         case HtmlNormalizingParser.QueueItemKind.Space:
           queueItem1 = this.DoDequeueFirst();
           this.tokenBuilder.BuildSpaceToken();
-          this.token = (HtmlToken) this.tokenBuilder;
-          return this.token.HtmlTokenId;
+          this.Token = (HtmlToken) this.tokenBuilder;
+          return this.Token.HtmlTokenId;
         case HtmlNormalizingParser.QueueItemKind.Text:
           bool flag = false;
           int num1 = 0;
@@ -959,7 +958,7 @@ label_8:
             this.DoDequeueFirst();
           }
           this.tokenBuilder.BuildTextSliceToken((Token) this.inputToken, this.currentRun, this.currentRunOffset, this.numRuns);
-          this.token = (HtmlToken) this.tokenBuilder;
+          this.Token = (HtmlToken) this.tokenBuilder;
           Token.RunEnumerator runs = this.inputToken.Runs;
           if (runs.IsValidPosition)
           {
@@ -994,18 +993,18 @@ label_8:
           }
           if (flag)
             this.EnqueueTail(HtmlNormalizingParser.QueueItemKind.InjectionEnd, num1);
-          return this.token.HtmlTokenId;
+          return this.Token.HtmlTokenId;
         case HtmlNormalizingParser.QueueItemKind.InjectionBegin:
         case HtmlNormalizingParser.QueueItemKind.InjectionEnd:
           HtmlNormalizingParser.QueueItem queueItem5 = this.DoDequeueFirst();
           this.tokenBuilder.BuildInjectionToken(queueItem5.Kind == HtmlNormalizingParser.QueueItemKind.InjectionBegin, queueItem5.Argument != 0);
-          this.token = (HtmlToken) this.tokenBuilder;
+          this.Token = (HtmlToken) this.tokenBuilder;
           break;
         case HtmlNormalizingParser.QueueItemKind.EndLastTag:
           HtmlNormalizingParser.QueueItem queueItem6 = this.DoDequeueFirst();
           this.tokenBuilder.BuildTagToken(queueItem6.TagIndex, false, (queueItem6.Flags & HtmlNormalizingParser.QueueItemFlags.AllowWspLeft) == HtmlNormalizingParser.QueueItemFlags.AllowWspLeft, (queueItem6.Flags & HtmlNormalizingParser.QueueItemFlags.AllowWspRight) == HtmlNormalizingParser.QueueItemFlags.AllowWspRight, true);
-          this.token = (HtmlToken) this.tokenBuilder;
-          if (queueItem6.Kind == HtmlNormalizingParser.QueueItemKind.BeginElement && this.token.OriginalTagId == HtmlTagIndex.Body && (this.injection != null && this.injection.HaveHead) && !this.injection.HeadDone)
+          this.Token = (HtmlToken) this.tokenBuilder;
+          if (queueItem6.Kind == HtmlNormalizingParser.QueueItemKind.BeginElement && this.Token.OriginalTagId == HtmlTagIndex.Body && (this.injection != null && this.injection.HaveHead) && !this.injection.HeadDone)
           {
             int container = this.FindContainer(HtmlTagIndex.Body, HtmlDtd.SetId.Empty);
             this.parser = (HtmlParser) this.injection.Push(true, (IHtmlParser) this.parser);
@@ -1017,9 +1016,9 @@ label_8:
               this.OpenContainer(HtmlTagIndex.Pre);
             }
           }
-          return this.token.HtmlTokenId;
+          return this.Token.HtmlTokenId;
       }
-      return this.token.HtmlTokenId;
+      return this.Token.HtmlTokenId;
     }
 
     private void ExpandQueue()
@@ -1124,8 +1123,7 @@ label_8:
       private int queueHead;
       private int queueTail;
       private HtmlToken inputToken;
-      private int elementStackTop;
-      private int currentRun;
+        private int currentRun;
       private int currentRunOffset;
       private int numRuns;
       private int savedElementStackEntriesCount;
@@ -1134,7 +1132,7 @@ label_8:
       private bool validRTC;
       private HtmlTagIndex tagIdRTC;
 
-      public int SavedStackTop => this.elementStackTop;
+      public int SavedStackTop { get; private set; }
 
         public void Save(HtmlNormalizingParser document, int stackLevel)
       {
@@ -1146,7 +1144,7 @@ label_8:
         }
         else
           this.savedElementStackEntriesCount = 0;
-        this.elementStackTop = document.elementStackTop;
+        this.SavedStackTop = document.elementStackTop;
         this.queueHead = document.queueHead;
         this.queueTail = document.queueTail;
         this.inputToken = document.inputToken;

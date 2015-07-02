@@ -23,50 +23,17 @@ namespace Butler.Schema.Data.TextConverters
     protected internal Token.RunEntry[] RunList;
     protected internal Token.Fragment Whole;
     protected internal Token.FragmentPosition WholePosition;
-    private TokenId tokenId;
-    private Encoding tokenEncoding;
-    private int argument;
-    private Token.LowerCaseCompareSink compareSink;
+      private Token.LowerCaseCompareSink compareSink;
     private Token.LowerCaseSubstringSearchSink searchSink;
     private StringBuildSink stringBuildSink;
 
-    public TokenId TokenId
-    {
-      get
-      {
-        return this.tokenId;
-      }
-      set
-      {
-        this.tokenId = value;
-      }
-    }
+    public TokenId TokenId { get; set; }
 
-    public int Argument
-    {
-      get
-      {
-        return this.argument;
-      }
-      set
-      {
-        this.argument = value;
-      }
-    }
+      public int Argument { get; set; }
 
-    public Encoding TokenEncoding
-    {
-      get
-      {
-        return this.tokenEncoding;
-      }
-      set
-      {
-        this.tokenEncoding = value;
-      }
-    }
+      public Encoding TokenEncoding { get; set; }
 
-    public bool IsEmpty => this.Whole.Tail == this.Whole.Head;
+      public bool IsEmpty => this.Whole.Tail == this.Whole.Head;
 
       public Token.RunEnumerator Runs => new Token.RunEnumerator(this);
 
@@ -811,9 +778,9 @@ label_5:
 
     internal void Reset()
     {
-      this.tokenId = TokenId.None;
-      this.argument = 0;
-      this.tokenEncoding = (Encoding) null;
+      this.TokenId = TokenId.None;
+      this.Argument = 0;
+      this.TokenEncoding = (Encoding) null;
       this.Whole.Reset();
       this.WholePosition.Reset();
     }
@@ -1062,27 +1029,27 @@ label_5:
 
     private class LowerCaseCompareSink : ITextSink
     {
-      private bool definitelyNotEqual;
-      private int strIndex;
+
+        private int strIndex;
       private string str;
 
       public bool IsEqual
       {
         get
         {
-          if (!this.definitelyNotEqual)
+          if (!this.IsEnough)
             return this.strIndex == this.str.Length;
           return false;
         }
       }
 
-      public bool IsEnough => this.definitelyNotEqual;
+      public bool IsEnough { get; private set; }
 
         public void Reset(string str)
       {
         this.str = str;
         this.strIndex = 0;
-        this.definitelyNotEqual = false;
+        this.IsEnough = false;
       }
 
       public void Write(char[] buffer, int offset, int count)
@@ -1105,12 +1072,12 @@ label_5:
               ++offset;
               continue;
             }
-            this.definitelyNotEqual = true;
+            this.IsEnough = true;
             break;
           }
           if ((int) ParseSupport.ToLowerCase(buffer[offset]) != (int) this.str[this.strIndex])
           {
-            this.definitelyNotEqual = true;
+            this.IsEnough = true;
             break;
           }
           ++offset;
@@ -1122,7 +1089,7 @@ label_5:
       {
         if (Token.LiteralLength(ucs32Char) != 1)
         {
-          this.definitelyNotEqual = true;
+          this.IsEnough = true;
         }
         else
         {
@@ -1135,11 +1102,11 @@ label_5:
           {
             if (ParseSupport.WhitespaceCharacter(ParseSupport.GetCharClass((char) ucs32Char)))
               return;
-            this.definitelyNotEqual = true;
+            this.IsEnough = true;
             return;
           }
           if ((int) this.str[this.strIndex] != (int) ParseSupport.ToLowerCase((char) ucs32Char))
-            this.definitelyNotEqual = true;
+            this.IsEnough = true;
           else
             ++this.strIndex;
         }
@@ -1148,19 +1115,19 @@ label_5:
 
     private class LowerCaseSubstringSearchSink : ITextSink
     {
-      private bool found;
-      private int strIndex;
+
+        private int strIndex;
       private string str;
 
-      public bool IsFound => this.found;
+      public bool IsFound { get; private set; }
 
-        public bool IsEnough => this.found;
+        public bool IsEnough => this.IsFound;
 
         public void Reset(string str)
       {
         this.str = str;
         this.strIndex = 0;
-        this.found = false;
+        this.IsFound = false;
       }
 
       public void Write(char[] buffer, int offset, int count)
@@ -1174,7 +1141,7 @@ label_5:
         }
         if (this.strIndex != this.str.Length)
           return;
-        this.found = true;
+        this.IsFound = true;
       }
 
       public void Write(int ucs32Char)
@@ -1188,7 +1155,7 @@ label_5:
           ++this.strIndex;
           if (this.strIndex != this.str.Length)
             return;
-          this.found = true;
+          this.IsFound = true;
         }
       }
     }

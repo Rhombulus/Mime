@@ -21,15 +21,14 @@ namespace Butler.Schema.Data.Common
   public class LocalizedDescriptionAttribute : DescriptionAttribute, ILocalizedString
   {
     private static Dictionary<string, Dictionary<object, string>> locEnumStringTable;
-    private LocalizedString description;
 
-    public LocalizedString LocalizedString => this.description;
+      public LocalizedString LocalizedString { get; }
 
       public override sealed string Description
     {
       [HostProtection(SecurityAction.LinkDemand, SharedState = true)] get
       {
-        return (string) this.description;
+        return (string) this.LocalizedString;
       }
     }
 
@@ -39,7 +38,7 @@ namespace Butler.Schema.Data.Common
 
     public LocalizedDescriptionAttribute(LocalizedString description)
     {
-      this.description = description;
+      this.LocalizedString = description;
     }
 
     public static string FromEnum(Type enumType, object value)

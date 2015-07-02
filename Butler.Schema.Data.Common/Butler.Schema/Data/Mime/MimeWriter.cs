@@ -867,87 +867,52 @@ namespace Butler.Schema.Data.Mime
 
     private struct PartData
     {
-      private byte[] boundary;
-      private bool contentType;
-      private bool multipartPart;
 
-      public bool IsMultipart
-      {
-        get
-        {
-          return this.multipartPart;
-        }
-        set
-        {
-          this.multipartPart = value;
-        }
-      }
+        public bool IsMultipart { get; set; }
 
-      public bool HasContentType
-      {
-        get
-        {
-          return this.contentType;
-        }
-        set
-        {
-          this.contentType = value;
-        }
-      }
+        public bool HasContentType { get; set; }
 
-      public byte[] Boundary
-      {
-        get
-        {
-          return this.boundary;
-        }
-        set
-        {
-          this.boundary = value;
-        }
-      }
+        public byte[] Boundary { get; set; }
+
     }
 
     private struct QueuedWrite
     {
       public static int QueuedWriteSize = 4096;
-      private byte[] data;
-      private int offset;
-      private int count;
 
-      public int Length => this.data.Length;
+        public int Length => this.Data.Length;
 
-        public byte[] Data => this.data;
+        public byte[] Data { get; private set; }
 
-        public int Offset => this.offset;
+        public int Offset { get; private set; }
 
-        public int Count => this.count;
+        public int Count { get; private set; }
 
         public bool Full
       {
         get
         {
-          if (this.data != null)
-            return this.Count == this.data.Length;
+          if (this.Data != null)
+            return this.Count == this.Data.Length;
           return false;
         }
       }
 
       public void Reset()
       {
-        this.count = 0;
-        this.offset = 0;
+        this.Count = 0;
+        this.Offset = 0;
       }
 
       public int Append(byte[] buffer, int offset, int count)
       {
         if (this.Full)
           return 0;
-        if (this.data == null)
-          this.data = new byte[MimeWriter.QueuedWrite.QueuedWriteSize];
-        int count1 = Math.Min(count, this.data.Length - this.Count);
-        Buffer.BlockCopy((Array) buffer, offset, (Array) this.data, this.Count, count1);
-        this.count += count1;
+        if (this.Data == null)
+          this.Data = new byte[MimeWriter.QueuedWrite.QueuedWriteSize];
+        int count1 = Math.Min(count, this.Data.Length - this.Count);
+        Buffer.BlockCopy((Array) buffer, offset, (Array) this.Data, this.Count, count1);
+        this.Count += count1;
         return count1;
       }
     }

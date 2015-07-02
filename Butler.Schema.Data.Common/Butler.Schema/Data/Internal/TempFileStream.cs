@@ -20,11 +20,10 @@ namespace Butler.Schema.Data.Internal
   {
     private static int nextId = Environment.TickCount ^ Process.GetCurrentProcess().Id;
     private static string tempPath;
-    private string filePath;
 
-    internal static string Path => TempFileStream.GetTempPath();
+      internal static string Path => TempFileStream.GetTempPath();
 
-      public string FilePath => this.filePath;
+      public string FilePath { get; private set; }
 
       private TempFileStream(SafeFileHandle handle)
       : base(handle, FileAccess.ReadWrite)
@@ -76,7 +75,7 @@ namespace Butler.Schema.Data.Internal
       }
       return new TempFileStream(file)
       {
-        filePath = str
+        FilePath = str
       };
     }
 

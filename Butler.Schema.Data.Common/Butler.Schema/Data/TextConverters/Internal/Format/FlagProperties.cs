@@ -20,34 +20,33 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private const uint ValueBit = 1U;
     private const uint DefinedBit = 2U;
     private const uint ValueAndDefinedBits = 3U;
-    private uint bits;
 
-    public bool IsClear => 0 == (int) this.bits;
+      public bool IsClear => 0 == (int) this.Bits;
 
-      public uint Mask => this.bits & 2863311530U | (this.bits & 2863311530U) >> 1;
+      public uint Mask => this.Bits & 2863311530U | (this.Bits & 2863311530U) >> 1;
 
-      public uint Bits => this.bits;
+      public uint Bits { get; }
 
       internal int IntegerBag
     {
       get
       {
-        return (int) this.bits;
+        return (int) this.Bits;
       }
       set
       {
-        this.bits = (uint) value;
+        this.Bits = (uint) value;
       }
     }
 
     internal FlagProperties(uint bits)
     {
-      this.bits = bits;
+      this.Bits = bits;
     }
 
     public static FlagProperties operator &(FlagProperties x, FlagProperties y)
     {
-      return new FlagProperties(x.bits & (y.bits & 2863311530U | (y.bits & 2863311530U) >> 1));
+      return new FlagProperties(x.Bits & (y.Bits & 2863311530U | (y.Bits & 2863311530U) >> 1));
     }
 
     public static FlagProperties operator |(FlagProperties x, FlagProperties y)
@@ -57,23 +56,23 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public static FlagProperties operator ^(FlagProperties x, FlagProperties y)
     {
-      uint num = (x.bits ^ y.bits) & x.Mask & y.Mask;
+      uint num = (x.Bits ^ y.Bits) & x.Mask & y.Mask;
       return new FlagProperties(num | num << 1);
     }
 
     public static FlagProperties operator ~(FlagProperties x)
     {
-      return new FlagProperties((uint) ~((int) x.bits & -1431655766 | (int) ((x.bits & 2863311530U) >> 1)));
+      return new FlagProperties((uint) ~((int) x.Bits & -1431655766 | (int) ((x.Bits & 2863311530U) >> 1)));
     }
 
     public static bool operator ==(FlagProperties x, FlagProperties y)
     {
-      return (int) x.bits == (int) y.bits;
+      return (int) x.Bits == (int) y.Bits;
     }
 
     public static bool operator !=(FlagProperties x, FlagProperties y)
     {
-      return (int) x.bits != (int) y.bits;
+      return (int) x.Bits != (int) y.Bits;
     }
 
     public static bool IsFlagProperty(PropertyId id)
@@ -85,7 +84,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public static FlagProperties Merge(FlagProperties baseFlags, FlagProperties overrideFlags)
     {
-      return new FlagProperties(baseFlags.bits & ~((overrideFlags.bits & 2863311530U) >> 1) | overrideFlags.bits);
+      return new FlagProperties(baseFlags.Bits & ~((overrideFlags.Bits & 2863311530U) >> 1) | overrideFlags.Bits);
     }
 
     public void Set(PropertyId id, bool value)
@@ -93,55 +92,55 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       int num = (int) (id - (byte) 1) * 2;
       if (value)
       {
-        this.bits |= (uint) (3 << num);
+        this.Bits |= (uint) (3 << num);
       }
       else
       {
-        this.bits &= (uint) ~(1 << num);
-        this.bits |= (uint) (2 << num);
+        this.Bits &= (uint) ~(1 << num);
+        this.Bits |= (uint) (2 << num);
       }
     }
 
     public void Remove(PropertyId id)
     {
-      this.bits &= (uint) ~(3 << (int) (id - (byte) 1) * 2);
+      this.Bits &= (uint) ~(3 << (int) (id - (byte) 1) * 2);
     }
 
     public void ClearAll()
     {
-      this.bits = 0U;
+      this.Bits = 0U;
     }
 
     public bool IsDefined(PropertyId id)
     {
-      return 0 != ((int) this.bits & 2 << (int) (id - (byte) 1) * 2);
+      return 0 != ((int) this.Bits & 2 << (int) (id - (byte) 1) * 2);
     }
 
     public bool IsAnyDefined()
     {
-      return (int) this.bits != 0;
+      return (int) this.Bits != 0;
     }
 
     public bool IsOn(PropertyId id)
     {
-      return 0 != ((int) this.bits & 1 << (int) (id - (byte) 1) * 2);
+      return 0 != ((int) this.Bits & 1 << (int) (id - (byte) 1) * 2);
     }
 
     public bool IsDefinedAndOn(PropertyId id)
     {
-      return 3 == ((int) (this.bits >> (int) (id - (byte) 1) * 2) & 3);
+      return 3 == ((int) (this.Bits >> (int) (id - (byte) 1) * 2) & 3);
     }
 
     public bool IsDefinedAndOff(PropertyId id)
     {
-      return 2 == ((int) (this.bits >> (int) (id - (byte) 1) * 2) & 3);
+      return 2 == ((int) (this.Bits >> (int) (id - (byte) 1) * 2) & 3);
     }
 
     public PropertyValue GetPropertyValue(PropertyId id)
     {
       int num = (int) (id - (byte) 1) * 2;
-      if (((int) this.bits & 2 << num) != 0)
-        return new PropertyValue(0 != ((int) this.bits & 1 << num));
+      if (((int) this.Bits & 2 << num) != 0)
+        return new PropertyValue(0 != ((int) this.Bits & 1 << num));
       return PropertyValue.Null;
     }
 
@@ -154,29 +153,29 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public bool IsSubsetOf(FlagProperties overrideFlags)
     {
-      return 0 == ((int) this.bits & -1431655766 & ~((int) overrideFlags.bits & -1431655766));
+      return 0 == ((int) this.Bits & -1431655766 & ~((int) overrideFlags.Bits & -1431655766));
     }
 
     public void Merge(FlagProperties overrideFlags)
     {
-      this.bits = this.bits & ~((overrideFlags.bits & 2863311530U) >> 1) | overrideFlags.bits;
+      this.Bits = this.Bits & ~((overrideFlags.Bits & 2863311530U) >> 1) | overrideFlags.Bits;
     }
 
     public void ReverseMerge(FlagProperties baseFlags)
     {
-      this.bits = baseFlags.bits & ~((this.bits & 2863311530U) >> 1) | this.bits;
+      this.Bits = baseFlags.Bits & ~((this.Bits & 2863311530U) >> 1) | this.Bits;
     }
 
     public override bool Equals(object obj)
     {
       if (obj is FlagProperties)
-        return (int) this.bits == (int) ((FlagProperties) obj).bits;
+        return (int) this.Bits == (int) ((FlagProperties) obj).Bits;
       return false;
     }
 
     public override int GetHashCode()
     {
-      return (int) this.bits;
+      return (int) this.Bits;
     }
 
     public override string ToString()

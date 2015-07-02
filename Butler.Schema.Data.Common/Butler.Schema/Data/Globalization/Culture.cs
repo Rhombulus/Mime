@@ -13,15 +13,8 @@ namespace Butler.Schema.Data.Globalization
   [Serializable]
   public class Culture
   {
-    private int lcid;
-    private string name;
-    private Charset windowsCharset;
-    private Charset mimeCharset;
-    private Charset webCharset;
-    private string description;
-    private string nativeDescription;
-    private Culture parentCulture;
-    private int[] codepageDetectionPriorityOrder;
+
+      private int[] codepageDetectionPriorityOrder;
     private CultureInfo cultureInfo;
 
     public static Culture Default => CultureCharsetDatabase.Data.DefaultCulture;
@@ -30,28 +23,28 @@ namespace Butler.Schema.Data.Globalization
 
       public static Culture Invariant => CultureCharsetDatabase.Data.InvariantCulture;
 
-      public int LCID => this.lcid;
+      public int LCID { get; }
 
-      public string Name => this.name;
+      public string Name { get; }
 
-      public Charset WindowsCharset => this.windowsCharset;
+      public Charset WindowsCharset { get; private set; }
 
-      public Charset MimeCharset => this.mimeCharset;
+      public Charset MimeCharset { get; private set; }
 
-      public Charset WebCharset => this.webCharset;
+      public Charset WebCharset { get; private set; }
 
-      public string Description => this.description;
+      public string Description { get; private set; }
 
-      public string NativeDescription => this.nativeDescription;
+      public string NativeDescription { get; private set; }
 
-      public Culture ParentCulture => this.parentCulture;
+      public Culture ParentCulture { get; private set; }
 
       internal int[] CodepageDetectionPriorityOrder => this.GetCodepageDetectionPriorityOrder(CultureCharsetDatabase.Data);
 
       internal Culture(int lcid, string name)
     {
-      this.lcid = lcid;
-      this.name = name;
+      this.LCID = lcid;
+      this.Name = name;
     }
 
     public static Culture GetCulture(string name)
@@ -92,32 +85,32 @@ namespace Butler.Schema.Data.Globalization
 
     internal void SetWindowsCharset(Charset windowsCharset)
     {
-      this.windowsCharset = windowsCharset;
+      this.WindowsCharset = windowsCharset;
     }
 
     internal void SetMimeCharset(Charset mimeCharset)
     {
-      this.mimeCharset = mimeCharset;
+      this.MimeCharset = mimeCharset;
     }
 
     internal void SetWebCharset(Charset webCharset)
     {
-      this.webCharset = webCharset;
+      this.WebCharset = webCharset;
     }
 
     internal void SetDescription(string description)
     {
-      this.description = description;
+      this.Description = description;
     }
 
     internal void SetNativeDescription(string description)
     {
-      this.nativeDescription = description;
+      this.NativeDescription = description;
     }
 
     internal void SetParentCulture(Culture parentCulture)
     {
-      this.parentCulture = parentCulture;
+      this.ParentCulture = parentCulture;
     }
 
     internal void SetCultureInfo(CultureInfo cultureInfo)
@@ -128,7 +121,7 @@ namespace Butler.Schema.Data.Globalization
     internal int[] GetCodepageDetectionPriorityOrder(CultureCharsetDatabase.GlobalizationData data)
     {
       if (this.codepageDetectionPriorityOrder == null)
-        this.codepageDetectionPriorityOrder = CultureCharsetDatabase.GetCultureSpecificCodepageDetectionPriorityOrder(this, this.parentCulture == null || this.parentCulture == this ? data.DefaultDetectionPriorityOrder : this.parentCulture.GetCodepageDetectionPriorityOrder(data));
+        this.codepageDetectionPriorityOrder = CultureCharsetDatabase.GetCultureSpecificCodepageDetectionPriorityOrder(this, this.ParentCulture == null || this.ParentCulture == this ? data.DefaultDetectionPriorityOrder : this.ParentCulture.GetCodepageDetectionPriorityOrder(data));
       return this.codepageDetectionPriorityOrder;
     }
 

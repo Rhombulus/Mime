@@ -663,23 +663,13 @@ label_12:
     protected internal struct SelectorEntry
     {
       public Html.HtmlNameIndex NameId;
-      private bool deleted;
-      public Token.Fragment Name;
+        public Token.Fragment Name;
       public Token.Fragment ClassName;
       public CssSelectorClassType ClassType;
       public CssSelectorCombinator Combinator;
 
-      public bool IsSelectorDeleted
-      {
-        get
-        {
-          return this.deleted;
-        }
-        set
-        {
-          this.deleted = value;
-        }
-      }
+      public bool IsSelectorDeleted { get; set; }
+
     }
   }
 }

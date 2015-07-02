@@ -14,10 +14,10 @@ namespace Butler.Schema.Data.Internal
 {
   internal sealed class CtsConfigurationSection : ConfigurationSection
   {
-    private Dictionary<string, IList<CtsConfigurationSetting>> subSections = new Dictionary<string, IList<CtsConfigurationSetting>>();
-    private static ConfigurationPropertyCollection properties;
 
-    public Dictionary<string, IList<CtsConfigurationSetting>> SubSectionsDictionary => this.subSections;
+      private static ConfigurationPropertyCollection properties;
+
+    public Dictionary<string, IList<CtsConfigurationSetting>> SubSectionsDictionary { get; } = new Dictionary<string, IList<CtsConfigurationSetting>>();
 
       protected override ConfigurationPropertyCollection Properties
     {
@@ -32,7 +32,7 @@ namespace Butler.Schema.Data.Internal
     protected override void DeserializeSection(XmlReader reader)
     {
       IList<CtsConfigurationSetting> list1 = (IList<CtsConfigurationSetting>) new List<CtsConfigurationSetting>();
-      this.subSections.Add(string.Empty, list1);
+      this.SubSectionsDictionary.Add(string.Empty, list1);
       if (!reader.Read() || reader.NodeType != XmlNodeType.Element)
         throw new ConfigurationErrorsException("error", reader);
       if (reader.IsEmptyElement)
@@ -50,10 +50,10 @@ namespace Butler.Schema.Data.Internal
           {
             string name = reader.Name;
             IList<CtsConfigurationSetting> list2;
-            if (!this.subSections.TryGetValue(name, out list2))
+            if (!this.SubSectionsDictionary.TryGetValue(name, out list2))
             {
               list2 = (IList<CtsConfigurationSetting>) new List<CtsConfigurationSetting>();
-              this.subSections.Add(name, list2);
+              this.SubSectionsDictionary.Add(name, list2);
             }
             while (reader.Read())
             {

@@ -13,16 +13,12 @@ namespace Butler.Schema.Data.Globalization
   [Serializable]
   public class Charset
   {
-    private int codePage;
-    private string name;
-    private Culture culture;
-    private short mapIndex;
-    private bool windows;
-    private bool available;
-    private Encoding encoding;
-    private string description;
 
-    public static Charset DefaultMimeCharset => Culture.Default.MimeCharset;
+      private short mapIndex;
+      private bool available;
+    private Encoding encoding;
+
+      public static Charset DefaultMimeCharset => Culture.Default.MimeCharset;
 
       public static bool FallbackToDefaultCharset => Culture.FallbackToDefaultCharset;
 
@@ -36,11 +32,11 @@ namespace Butler.Schema.Data.Globalization
 
       public static Charset Unicode => CultureCharsetDatabase.Data.UnicodeCharset;
 
-      public int CodePage => this.codePage;
+      public int CodePage { get; }
 
-      public string Name => this.name;
+      public string Name { get; private set; }
 
-      public Culture Culture => this.culture;
+      public Culture Culture { get; private set; }
 
       public bool IsDetectable
     {
@@ -64,9 +60,9 @@ namespace Butler.Schema.Data.Globalization
       }
     }
 
-    public bool IsWindowsCharset => this.windows;
+    public bool IsWindowsCharset { get; private set; }
 
-      public string Description => this.description;
+      public string Description { get; private set; }
 
       internal static int MaxCharsetNameLength => CultureCharsetDatabase.Data.MaxCharsetNameLength;
 
@@ -120,15 +116,15 @@ namespace Butler.Schema.Data.Globalization
           return 0;
         if ((CodePageMapData.codePages[(int) this.mapIndex].flags & CodePageFlags.Detectable) == CodePageFlags.None)
           return (int) CodePageMapData.codePages[(int) this.mapIndex].detectCpid;
-        return this.codePage;
+        return this.CodePage;
       }
     }
 
     internal Charset(int codePage, string name)
     {
-      this.codePage = codePage;
-      this.name = name;
-      this.culture = (Culture) null;
+      this.CodePage = codePage;
+      this.Name = name;
+      this.Culture = (Culture) null;
       this.available = true;
       this.mapIndex = (short) -1;
     }
@@ -218,28 +214,28 @@ namespace Butler.Schema.Data.Globalization
     {
       Encoding encoding;
       if (!this.TryGetEncoding(out encoding))
-        throw new CharsetNotInstalledException(this.codePage, this.name);
+        throw new CharsetNotInstalledException(this.CodePage, this.Name);
       return encoding;
     }
 
     internal void SetCulture(Culture culture)
     {
-      this.culture = culture;
+      this.Culture = culture;
     }
 
     internal void SetDescription(string description)
     {
-      this.description = description;
+      this.Description = description;
     }
 
     internal void SetDefaultName(string name)
     {
-      this.name = name;
+      this.Name = name;
     }
 
     internal void SetWindows()
     {
-      this.windows = true;
+      this.IsWindowsCharset = true;
     }
 
     internal void SetMapIndex(int index)
@@ -266,7 +262,7 @@ namespace Butler.Schema.Data.Globalization
         {
           try
           {
-            this.encoding = this.codePage != 20127 ? (this.codePage == 28591 || this.codePage == 28599 ? (Encoding) new RemapEncoding(this.codePage) : (this.codePage == 50220 || this.codePage == 50221 || this.codePage == 50222 ? (Encoding) new Iso2022JpEncoding(this.codePage) : Encoding.GetEncoding(this.codePage))) : Encoding.GetEncoding(this.codePage, (EncoderFallback) new AsciiEncoderFallback(), DecoderFallback.ReplacementFallback);
+            this.encoding = this.CodePage != 20127 ? (this.CodePage == 28591 || this.CodePage == 28599 ? (Encoding) new RemapEncoding(this.CodePage) : (this.CodePage == 50220 || this.CodePage == 50221 || this.CodePage == 50222 ? (Encoding) new Iso2022JpEncoding(this.CodePage) : Encoding.GetEncoding(this.CodePage))) : Encoding.GetEncoding(this.CodePage, (EncoderFallback) new AsciiEncoderFallback(), DecoderFallback.ReplacementFallback);
           }
           catch (ArgumentException ex)
           {

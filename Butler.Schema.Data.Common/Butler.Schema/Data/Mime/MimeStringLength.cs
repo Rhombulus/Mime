@@ -11,82 +11,80 @@ namespace Butler.Schema.Data.Mime
 {
   internal struct MimeStringLength
   {
-    private int inChars;
-    private int inBytes;
 
-    public int InChars => this.inChars;
+      public int InChars { get; private set; }
 
-      public int InBytes => this.inBytes;
+      public int InBytes { get; private set; }
 
       public MimeStringLength(int value)
     {
-      this.inChars = value;
-      this.inBytes = value;
+      this.InChars = value;
+      this.InBytes = value;
     }
 
     public MimeStringLength(int valueInChars, int valueInBytes)
     {
-      this.inChars = valueInChars;
-      this.inBytes = valueInBytes;
+      this.InChars = valueInChars;
+      this.InBytes = valueInBytes;
     }
 
     public void IncrementBy(int count)
     {
-      this.inChars += count;
-      this.inBytes += count;
+      this.InChars += count;
+      this.InBytes += count;
     }
 
     public void IncrementBy(int countInChars, int countInBytes)
     {
-      this.inChars += countInChars;
-      this.inBytes += countInBytes;
+      this.InChars += countInChars;
+      this.InBytes += countInBytes;
     }
 
     public void IncrementBy(MimeStringLength count)
     {
-      this.inChars += count.InChars;
-      this.inBytes += count.InBytes;
+      this.InChars += count.InChars;
+      this.InBytes += count.InBytes;
     }
 
     public void DecrementBy(int count)
     {
-      this.inChars -= count;
-      this.inBytes -= count;
+      this.InChars -= count;
+      this.InBytes -= count;
     }
 
     public void DecrementBy(int countInChars, int countInBytes)
     {
-      this.inChars -= countInChars;
-      this.inBytes -= countInBytes;
+      this.InChars -= countInChars;
+      this.InBytes -= countInBytes;
     }
 
     public void DecrementBy(MimeStringLength count)
     {
-      this.inChars -= count.InChars;
-      this.inBytes -= count.InBytes;
+      this.InChars -= count.InChars;
+      this.InBytes -= count.InBytes;
     }
 
     public void SetAs(int value)
     {
-      this.inChars = value;
-      this.inBytes = value;
+      this.InChars = value;
+      this.InBytes = value;
     }
 
     public void SetAs(int valueInChars, int valueInBytes)
     {
-      this.inChars = valueInChars;
-      this.inBytes = valueInBytes;
+      this.InChars = valueInChars;
+      this.InBytes = valueInBytes;
     }
 
     public void SetAs(MimeStringLength value)
     {
-      this.inChars = value.InChars;
-      this.inBytes = value.InBytes;
+      this.InChars = value.InChars;
+      this.InBytes = value.InBytes;
     }
 
     public override string ToString()
     {
-      return string.Format("InChars={0}, InBytes={1}", (object) this.inChars, (object) this.inBytes);
+      return string.Format("InChars={0}, InBytes={1}", (object) this.InChars, (object) this.InBytes);
     }
   }
 }

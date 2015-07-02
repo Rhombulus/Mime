@@ -16,10 +16,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     private const ushort LeadBit = (ushort) 512;
     private const ushort KeywordIdMask = (ushort) 511;
     private ushort bitFields;
-    private ushort length;
-    private int value;
 
-    public RtfRunKind Kind => (RtfRunKind) ((uint) this.bitFields & 61440U);
+      public RtfRunKind Kind => (RtfRunKind) ((uint) this.bitFields & 61440U);
 
       public short KeywordId => (short) ((int) this.bitFields & 511);
 
@@ -27,9 +25,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
 
       public bool Lead => 0 != ((int) this.bitFields & 512);
 
-      public ushort Length => this.length;
+      public ushort Length { get; private set; }
 
-      public int Value => this.value;
+      public int Value { get; private set; }
 
       public bool IsSkiped
     {
@@ -51,7 +49,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           case RtfRunKind.Zero:
             return true;
           case RtfRunKind.Text:
-            return (int) this.length == 1;
+            return (int) this.Length == 1;
           default:
             return false;
         }
@@ -63,15 +61,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       internal void Reset()
     {
       this.bitFields = (ushort) 0;
-      this.length = (ushort) 0;
-      this.value = 0;
+      this.Length = (ushort) 0;
+      this.Value = 0;
     }
 
     internal void Initialize(RtfRunKind kind, int length, int value)
     {
       this.bitFields = (ushort) kind;
-      this.length = (ushort) length;
-      this.value = value;
+      this.Length = (ushort) length;
+      this.Value = value;
     }
 
     internal void Initialize(RtfRunKind kind, int length, int unescaped, bool skip, bool lead)
@@ -82,8 +80,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       if (lead)
         num |= (ushort) 512;
       this.bitFields = num;
-      this.length = (ushort) length;
-      this.value = unescaped;
+      this.Length = (ushort) length;
+      this.Value = unescaped;
     }
 
     internal void InitializeKeyword(short keywordId, int value, int length, bool skip, bool firstKeyword)
@@ -94,8 +92,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       if (firstKeyword)
         num |= (ushort) 512;
       this.bitFields = num;
-      this.length = (ushort) length;
-      this.value = value;
+      this.Length = (ushort) length;
+      this.Value = value;
     }
   }
 }

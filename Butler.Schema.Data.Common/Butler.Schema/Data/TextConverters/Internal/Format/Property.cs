@@ -14,24 +14,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
   internal struct Property
   {
     public static readonly Property Null = new Property();
-    private PropertyId id;
-    private PropertyValue value;
+      private PropertyValue value;
 
-    public bool IsNull => this.id == PropertyId.Null;
+    public bool IsNull => this.Id == PropertyId.Null;
 
-      public PropertyId Id
-    {
-      get
-      {
-        return this.id;
-      }
-      set
-      {
-        this.id = value;
-      }
-    }
+      public PropertyId Id { get; set; }
 
-    public PropertyValue Value
+      public PropertyValue Value
     {
       get
       {
@@ -45,19 +34,19 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public Property(PropertyId id, PropertyValue value)
     {
-      this.id = id;
+      this.Id = id;
       this.value = value;
     }
 
     public void Set(PropertyId id, PropertyValue value)
     {
-      this.id = id;
+      this.Id = id;
       this.value = value;
     }
 
     public override string ToString()
     {
-      return this.id.ToString() + " = " + this.value.ToString();
+      return this.Id.ToString() + " = " + this.value.ToString();
     }
   }
 }

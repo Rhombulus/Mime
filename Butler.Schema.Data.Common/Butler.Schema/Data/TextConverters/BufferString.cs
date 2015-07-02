@@ -13,25 +13,22 @@ namespace Butler.Schema.Data.TextConverters
   internal struct BufferString
   {
     public static readonly BufferString Null = new BufferString();
-    private char[] buffer;
-    private int offset;
-    private int count;
 
-    public char[] Buffer => this.buffer;
+      public char[] Buffer { get; private set; }
 
-      public int Offset => this.offset;
+      public int Offset { get; private set; }
 
-      public int Length => this.count;
+      public int Length { get; private set; }
 
-      public bool IsEmpty => this.count == 0;
+      public bool IsEmpty => this.Length == 0;
 
-      public char this[int index] => this.buffer[this.offset + index];
+      public char this[int index] => this.Buffer[this.Offset + index];
 
       public BufferString(char[] buffer, int offset, int count)
     {
-      this.buffer = buffer;
-      this.offset = offset;
-      this.count = count;
+      this.Buffer = buffer;
+      this.Offset = offset;
+      this.Length = count;
     }
 
     public static int CompareLowerCaseStringToBufferStringIgnoreCase(string left, BufferString right)
@@ -48,40 +45,40 @@ namespace Butler.Schema.Data.TextConverters
 
     public void Set(char[] buffer, int offset, int count)
     {
-      this.buffer = buffer;
-      this.offset = offset;
-      this.count = count;
+      this.Buffer = buffer;
+      this.Offset = offset;
+      this.Length = count;
     }
 
     public BufferString SubString(int offset, int count)
     {
-      return new BufferString(this.buffer, this.offset + offset, count);
+      return new BufferString(this.Buffer, this.Offset + offset, count);
     }
 
     public void Trim(int offset, int count)
     {
-      this.offset += offset;
-      this.count = count;
+      this.Offset += offset;
+      this.Length = count;
     }
 
     public void TrimWhitespace()
     {
-      for (; this.count != 0 && ParseSupport.WhitespaceCharacter(this.buffer[this.offset]); --this.count)
-        ++this.offset;
-      if (this.count == 0)
+      for (; this.Length != 0 && ParseSupport.WhitespaceCharacter(this.Buffer[this.Offset]); --this.Length)
+        ++this.Offset;
+      if (this.Length == 0)
         return;
-      int num = this.offset + this.count - 1;
-      while (ParseSupport.WhitespaceCharacter(this.buffer[num--]))
-        --this.count;
+      int num = this.Offset + this.Length - 1;
+      while (ParseSupport.WhitespaceCharacter(this.Buffer[num--]))
+        --this.Length;
     }
 
     public bool EqualsToString(string rightPart)
     {
-      if (this.count != rightPart.Length)
+      if (this.Length != rightPart.Length)
         return false;
       for (int index = 0; index < rightPart.Length; ++index)
       {
-        if ((int) this.buffer[this.offset + index] != (int) rightPart[index])
+        if ((int) this.Buffer[this.Offset + index] != (int) rightPart[index])
           return false;
       }
       return true;
@@ -89,11 +86,11 @@ namespace Butler.Schema.Data.TextConverters
 
     public bool EqualsToLowerCaseStringIgnoreCase(string rightPart)
     {
-      if (this.count != rightPart.Length)
+      if (this.Length != rightPart.Length)
         return false;
       for (int index = 0; index < rightPart.Length; ++index)
       {
-        if ((int) ParseSupport.ToLowerCase(this.buffer[this.offset + index]) != (int) rightPart[index])
+        if ((int) ParseSupport.ToLowerCase(this.Buffer[this.Offset + index]) != (int) rightPart[index])
           return false;
       }
       return true;
@@ -101,11 +98,11 @@ namespace Butler.Schema.Data.TextConverters
 
     public bool StartsWithLowerCaseStringIgnoreCase(string rightPart)
     {
-      if (this.count < rightPart.Length)
+      if (this.Length < rightPart.Length)
         return false;
       for (int index = 0; index < rightPart.Length; ++index)
       {
-        if ((int) ParseSupport.ToLowerCase(this.buffer[this.offset + index]) != (int) rightPart[index])
+        if ((int) ParseSupport.ToLowerCase(this.Buffer[this.Offset + index]) != (int) rightPart[index])
           return false;
       }
       return true;
@@ -113,11 +110,11 @@ namespace Butler.Schema.Data.TextConverters
 
     public bool StartsWithString(string rightPart)
     {
-      if (this.count < rightPart.Length)
+      if (this.Length < rightPart.Length)
         return false;
       for (int index = 0; index < rightPart.Length; ++index)
       {
-        if ((int) this.buffer[this.offset + index] != (int) rightPart[index])
+        if ((int) this.Buffer[this.Offset + index] != (int) rightPart[index])
           return false;
       }
       return true;
@@ -125,12 +122,12 @@ namespace Butler.Schema.Data.TextConverters
 
     public bool EndsWithLowerCaseStringIgnoreCase(string rightPart)
     {
-      if (this.count < rightPart.Length)
+      if (this.Length < rightPart.Length)
         return false;
-      int num = this.offset + this.count - rightPart.Length;
+      int num = this.Offset + this.Length - rightPart.Length;
       for (int index = 0; index < rightPart.Length; ++index)
       {
-        if ((int) ParseSupport.ToLowerCase(this.buffer[num + index]) != (int) rightPart[index])
+        if ((int) ParseSupport.ToLowerCase(this.Buffer[num + index]) != (int) rightPart[index])
           return false;
       }
       return true;
@@ -138,12 +135,12 @@ namespace Butler.Schema.Data.TextConverters
 
     public bool EndsWithString(string rightPart)
     {
-      if (this.count < rightPart.Length)
+      if (this.Length < rightPart.Length)
         return false;
-      int num = this.offset + this.count - rightPart.Length;
+      int num = this.Offset + this.Length - rightPart.Length;
       for (int index = 0; index < rightPart.Length; ++index)
       {
-        if ((int) this.buffer[num + index] != (int) rightPart[index])
+        if ((int) this.Buffer[num + index] != (int) rightPart[index])
           return false;
       }
       return true;
@@ -151,10 +148,10 @@ namespace Butler.Schema.Data.TextConverters
 
     public override string ToString()
     {
-      if (this.buffer == null)
+      if (this.Buffer == null)
         return (string) null;
-      if (this.count != 0)
-        return new string(this.buffer, this.offset, this.count);
+      if (this.Length != 0)
+        return new string(this.Buffer, this.Offset, this.Length);
       return string.Empty;
     }
 

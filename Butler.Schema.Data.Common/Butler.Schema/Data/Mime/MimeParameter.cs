@@ -41,16 +41,15 @@ namespace Butler.Schema.Data.Mime
       '\f',
       '\v'
     };
-    private int segmentNumber = -1;
-    private MimeStringList valueFragments = new MimeStringList();
+
+      private MimeStringList valueFragments = new MimeStringList();
     internal const bool AllowUTF8Name = false;
     private const string DefaultLanguage = "en-us";
     private bool valueEncoded;
-    private string paramName;
-    private string decodedValue;
+      private string decodedValue;
     private bool allowAppend;
 
-    public string Name => this.paramName;
+    public string Name { get; private set; }
 
       public string Value
     {
@@ -63,12 +62,12 @@ namespace Butler.Schema.Data.Mime
       }
       set
       {
-        if (this.segmentNumber == 0)
+        if (this.SegmentNumber == 0)
         {
           this.RemoveAll();
-          this.segmentNumber = -1;
+          this.SegmentNumber = -1;
         }
-        else if (0 < this.segmentNumber)
+        else if (0 < this.SegmentNumber)
           throw new NotSupportedException(CtsResources.Strings.CantSetValueOfRfc2231ContinuationSegment);
         this.RawValue = (byte[]) null;
         this.decodedValue = value;
@@ -80,17 +79,17 @@ namespace Butler.Schema.Data.Mime
       get
       {
         if (this.valueFragments.Length == 0 && this.decodedValue != null && 0 < this.decodedValue.Length)
-          this.valueFragments = this.EncodeValue(this.decodedValue, this.paramName == "charset" ? MimeParameter.EncodingOptionsAscii : this.GetDocumentEncodingOptions());
+          this.valueFragments = this.EncodeValue(this.decodedValue, this.Name == "charset" ? MimeParameter.EncodingOptionsAscii : this.GetDocumentEncodingOptions());
         return this.valueFragments.GetSz(4026531839U);
       }
       set
       {
-        if (this.segmentNumber == 0)
+        if (this.SegmentNumber == 0)
         {
           this.RemoveAll();
-          this.segmentNumber = -1;
+          this.SegmentNumber = -1;
         }
-        else if (0 < this.segmentNumber)
+        else if (0 < this.SegmentNumber)
           throw new NotSupportedException(CtsResources.Strings.CantSetRawValueOfRfc2231ContinuationSegment);
         this.decodedValue = (string) null;
         this.valueFragments.Reset();
@@ -111,19 +110,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    internal int SegmentNumber
-    {
-      get
-      {
-        return this.segmentNumber;
-      }
-      set
-      {
-        this.segmentNumber = value;
-      }
-    }
+    internal int SegmentNumber { get; set; } = -1;
 
-    internal bool AllowAppend
+      internal bool AllowAppend
     {
       set
       {
@@ -135,7 +124,7 @@ namespace Butler.Schema.Data.Mime
     {
       if (name == null)
         throw new ArgumentNullException(nameof(name));
-      this.paramName = Header.NormalizeString(name);
+      this.Name = Header.NormalizeString(name);
     }
 
     public MimeParameter(string name, string value)
@@ -146,7 +135,7 @@ namespace Butler.Schema.Data.Mime
 
     public override sealed MimeNode Clone()
     {
-      MimeParameter mimeParameter = new MimeParameter(this.paramName);
+      MimeParameter mimeParameter = new MimeParameter(this.Name);
       this.CopyTo((object) mimeParameter);
       return (MimeNode) mimeParameter;
     }
@@ -164,10 +153,10 @@ namespace Butler.Schema.Data.Mime
       base.CopyTo(destination);
       mimeParameter.AllowAppend = false;
       mimeParameter.valueEncoded = this.valueEncoded;
-      mimeParameter.segmentNumber = this.segmentNumber;
+      mimeParameter.SegmentNumber = this.SegmentNumber;
       mimeParameter.valueFragments = this.valueFragments.Clone();
       mimeParameter.decodedValue = this.decodedValue;
-      mimeParameter.paramName = this.paramName;
+      mimeParameter.Name = this.Name;
     }
 
     public bool TryGetValue(out string value)
@@ -182,9 +171,9 @@ namespace Butler.Schema.Data.Mime
         decodingOptions.Charset = this.GetDefaultHeaderDecodingCharset((MimeDocument) null, (MimeNode) null);
       if ((DecodingFlags.Rfc2231 & decodingOptions.DecodingFlags) != DecodingFlags.None)
       {
-        if (this.segmentNumber == 0)
+        if (this.SegmentNumber == 0)
           return this.TryDecodeRfc2231(ref decodingOptions, out decodingResults, out value);
-        if (0 < this.segmentNumber)
+        if (0 < this.SegmentNumber)
           throw new NotSupportedException(CtsResources.Strings.CantGetValueOfRfc2231ContinuationSegment);
       }
       if (this.valueFragments.Length != 0)
@@ -242,7 +231,7 @@ namespace Butler.Schema.Data.Mime
     {
       if (name == null)
         throw new ArgumentNullException(nameof(name));
-      return this.paramName.Equals(name, StringComparison.OrdinalIgnoreCase);
+      return this.Name.Equals(name, StringComparison.OrdinalIgnoreCase);
     }
 
     internal override long WriteTo(Stream stream, EncodingOptions encodingOptions, MimeOutputFilter filter, ref MimeStringLength currentLineLength, ref byte[] scratchBuffer)
@@ -254,7 +243,7 @@ namespace Butler.Schema.Data.Mime
         fragments = this.EncodeValue(this.decodedValue, encodingOptions);
         this.valueFragments = fragments;
       }
-      else if ((EncodingFlags.ForceReencode & encodingOptions.EncodingFlags) != EncodingFlags.None && 0 >= this.segmentNumber)
+      else if ((EncodingFlags.ForceReencode & encodingOptions.EncodingFlags) != EncodingFlags.None && 0 >= this.SegmentNumber)
         fragments = this.EncodeValue(this.Value, encodingOptions);
       bool quoteOutput = false;
       if (this.IsQuotingReqired() || fragments.Length == 0)
@@ -276,16 +265,16 @@ namespace Butler.Schema.Data.Mime
         }
       }
       MimeNode mimeNode = (MimeNode) null;
-      if (this.segmentNumber == 0)
+      if (this.SegmentNumber == 0)
       {
         mimeNode = this.FirstChild;
         while (mimeNode != null && !(mimeNode is MimeParameter))
           mimeNode = mimeNode.NextSibling;
       }
-      MimeString mimeString = this.segmentNumber == 0 && mimeNode != null || 0 < this.segmentNumber ? new MimeString(this.segmentNumber.ToString()) : new MimeString();
+      MimeString mimeString = this.SegmentNumber == 0 && mimeNode != null || 0 < this.SegmentNumber ? new MimeString(this.SegmentNumber.ToString()) : new MimeString();
       if (1 < currentLineLength.InChars)
       {
-        int num2 = 1 + this.paramName.Length + 1;
+        int num2 = 1 + this.Name.Length + 1;
         int num3 = Internal.ByteString.BytesToCharCount(fragments.GetSz(), encodingOptions.AllowUTF8);
         if (mimeString.Length != 0)
           num2 += 1 + mimeString.Length;
@@ -316,13 +305,13 @@ namespace Butler.Schema.Data.Mime
           currentLineLength.IncrementBy(MimeString.Space.Length);
         }
       }
-      int val2 = Internal.ByteString.StringToBytesCount(this.paramName, false);
+      int val2 = Internal.ByteString.StringToBytesCount(this.Name, false);
       if (scratchBuffer == null || scratchBuffer.Length < val2)
         scratchBuffer = new byte[Math.Max(998, val2)];
-      int num7 = Internal.ByteString.StringToBytes(this.paramName, scratchBuffer, 0, false);
+      int num7 = Internal.ByteString.StringToBytes(this.Name, scratchBuffer, 0, false);
       stream.Write(scratchBuffer, 0, num7);
       long num8 = num1 + (long) num7;
-      currentLineLength.IncrementBy(this.paramName.Length, num7);
+      currentLineLength.IncrementBy(this.Name.Length, num7);
       if (mimeString.Length != 0)
       {
         stream.Write(MimeString.Asterisk, 0, MimeString.Asterisk.Length);
@@ -352,7 +341,7 @@ namespace Butler.Schema.Data.Mime
         if (mimeParameter != null)
         {
           ++num11;
-          mimeParameter.segmentNumber = num11;
+          mimeParameter.SegmentNumber = num11;
           stream.Write(MimeString.Semicolon, 0, MimeString.Semicolon.Length);
           long num2 = num10 + (long) MimeString.Semicolon.Length;
           currentLineLength.IncrementBy(MimeString.Semicolon.Length);
@@ -404,8 +393,8 @@ namespace Butler.Schema.Data.Mime
 
     private bool IsQuotingReqired()
     {
-      if (this.paramName != "boundary" && this.paramName != "filename" && (this.paramName != "name" && this.paramName != "id"))
-        return this.paramName == "charset";
+      if (this.Name != "boundary" && this.Name != "filename" && (this.Name != "name" && this.Name != "id"))
+        return this.Name == "charset";
       return true;
     }
 
@@ -424,7 +413,7 @@ namespace Butler.Schema.Data.Mime
       if (!MimeCommon.IsEncodingRequired(this.decodedValue, encodingOptions.AllowUTF8))
       {
         this.valueEncoded = false;
-        this.segmentNumber = -1;
+        this.SegmentNumber = -1;
         this.valueFragments.AppendFragment(new MimeString(this.decodedValue));
       }
       else
@@ -459,24 +448,24 @@ namespace Butler.Schema.Data.Mime
           this.valueFragments.AppendFragment(new MimeString(numArray1, 0, count));
           this.valueEncoded = true;
         }
-        int num11 = 78 - this.paramName.Length - 6;
+        int num11 = 78 - this.Name.Length - 6;
         int num12 = 2;
         byte[] bytes = encoding.GetBytes(this.decodedValue);
         int sourceIndex = this.EncodeRfc2231Segment(bytes, 0, num11 - num12 - num1, encodingOptions);
-        this.segmentNumber = sourceIndex < bytes.Length ? 0 : -1;
+        this.SegmentNumber = sourceIndex < bytes.Length ? 0 : -1;
         int num13 = 1;
         int num14 = 10;
         this.AllowAppend = true;
         while (sourceIndex < bytes.Length)
         {
-          MimeParameter mimeParameter = new MimeParameter(this.paramName);
+          MimeParameter mimeParameter = new MimeParameter(this.Name);
           if (num14 == num13)
           {
             ++num12;
             num14 *= 10;
           }
           sourceIndex = mimeParameter.EncodeRfc2231Segment(bytes, sourceIndex, num11 - num12, encodingOptions);
-          mimeParameter.segmentNumber = num13++;
+          mimeParameter.SegmentNumber = num13++;
           this.InternalAppendChild((MimeNode) mimeParameter);
           if (10000 == num13)
             break;

@@ -11,17 +11,15 @@ namespace Butler.Schema.Data.Internal
 {
   internal class CtsConfigurationArgument
   {
-    private string name;
-    private string value;
 
-    public string Name => this.name;
+      public string Name { get; }
 
-      public string Value => this.value;
+      public string Value { get; }
 
       internal CtsConfigurationArgument(string name, string value)
     {
-      this.name = name;
-      this.value = value;
+      this.Name = name;
+      this.Value = value;
     }
   }
 }

@@ -331,17 +331,16 @@ namespace Butler.Schema.Data.Internal
 
     private struct VirtualBuffer : IDisposable
     {
-      private int maximumSize;
-      private int blockSize;
-      private long length;
+
+        private long length;
       private byte[] firstBlock;
       private byte[][] followingBlocks;
       private Func<int, byte[]> acquireBuffer;
       private Action<byte[]> releaseBuffer;
 
-      public int MaxBytes => this.maximumSize;
+      public int MaxBytes { get; }
 
-        public int BlockSize => this.blockSize;
+        public int BlockSize { get; }
 
         public int Length => (int) this.length;
 
@@ -354,8 +353,8 @@ namespace Butler.Schema.Data.Internal
       {
         if (acquireBuffer != null && releaseBuffer == null || acquireBuffer == null && releaseBuffer != null)
           throw new ArgumentException("acquireBuffer and releaseBuffer should be both null or non-null");
-        this.blockSize = blockSize;
-        this.maximumSize = maximumSize;
+        this.BlockSize = blockSize;
+        this.MaxBytes = maximumSize;
         this.length = 0L;
         this.firstBlock = (byte[]) null;
         this.followingBlocks = (byte[][]) null;

@@ -20,11 +20,9 @@ namespace Butler.Schema.Data.TextConverters
     private bool autoNewLines;
     private bool allowWspBeforeFollowingTag;
     private bool lastWhitespace;
-    private int lineLength;
-    private int longestLineLength;
+      private int longestLineLength;
     private int textLineLength;
-    private int literalWhitespaceNesting;
-    private bool literalTags;
+      private bool literalTags;
     private bool literalEntities;
     private bool cssEscaping;
     private IFallback fallback;
@@ -32,9 +30,8 @@ namespace Butler.Schema.Data.TextConverters
     private Internal.Html.HtmlNameIndex previousTagNameIndex;
     private bool isEndTag;
     private bool isEmptyScopeTag;
-    private bool copyPending;
 
-    public HtmlWriterState WriterState
+      public HtmlWriterState WriterState
     {
       get
       {
@@ -66,11 +63,11 @@ namespace Butler.Schema.Data.TextConverters
 
       internal bool IsTagOpen => this.outputState != HtmlWriter.OutputState.OutsideTag;
 
-      internal int LineLength => this.lineLength;
+      internal int LineLength { get; private set; }
 
-      internal int LiteralWhitespaceNesting => this.literalWhitespaceNesting;
+      internal int LiteralWhitespaceNesting { get; private set; }
 
-      internal bool IsCopyPending => this.copyPending;
+      internal bool IsCopyPending { get; private set; }
 
       public HtmlWriter(Stream output, Encoding outputEncoding)
     {
@@ -99,7 +96,7 @@ namespace Butler.Schema.Data.TextConverters
 
     public void Flush()
     {
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState != HtmlWriter.OutputState.OutsideTag)
         this.WriteTagEnd();
@@ -110,7 +107,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (reader.TagId != HtmlTagId.Unknown)
       {
@@ -182,7 +179,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.isEndTag)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.EndTagCannotHaveAttributes);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState > HtmlWriter.OutputState.BeforeAttribute)
         this.OutputAttributeEnd();
@@ -205,7 +202,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.isEndTag)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.EndTagCannotHaveAttributes);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState > HtmlWriter.OutputState.BeforeAttribute)
         this.OutputAttributeEnd();
@@ -234,7 +231,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.isEndTag)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.EndTagCannotHaveAttributes);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState > HtmlWriter.OutputState.BeforeAttribute)
         this.OutputAttributeEnd();
@@ -260,7 +257,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.isEndTag)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.EndTagCannotHaveAttributes);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState > HtmlWriter.OutputState.BeforeAttribute)
         this.OutputAttributeEnd();
@@ -276,7 +273,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.isEndTag)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.EndTagCannotHaveAttributes);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       attributeReader.WriteNameTo((ITextSink) this.WriteAttributeName());
       if (attributeReader.HasValue)
@@ -295,7 +292,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.isEndTag)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.EndTagCannotHaveAttributes);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState > HtmlWriter.OutputState.BeforeAttribute)
         this.OutputAttributeEnd();
@@ -312,7 +309,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.isEndTag)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.EndTagCannotHaveAttributes);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState > HtmlWriter.OutputState.BeforeAttribute)
         this.OutputAttributeEnd();
@@ -325,7 +322,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.isEndTag)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.EndTagCannotHaveAttributes);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       attributeReader.WriteNameTo((ITextSink) this.WriteAttributeName());
     }
@@ -338,7 +335,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.outputState < HtmlWriter.OutputState.WritingAttributeName)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.AttributeNotStarted);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       this.OutputAttributeValue(value);
     }
@@ -355,7 +352,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.outputState < HtmlWriter.OutputState.WritingAttributeName)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.AttributeNotStarted);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       this.OutputAttributeValue(buffer, index, count);
     }
@@ -366,7 +363,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.TagNotStarted);
       if (this.outputState < HtmlWriter.OutputState.WritingAttributeName)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.AttributeNotStarted);
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (!attributeReader.HasValue)
         return;
@@ -377,7 +374,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (value == null)
         throw new ArgumentNullException("value");
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState != HtmlWriter.OutputState.OutsideTag)
         this.WriteTagEnd();
@@ -386,7 +383,7 @@ namespace Butler.Schema.Data.TextConverters
       if (this.lastWhitespace)
         this.OutputLastWhitespace(value[0]);
       this.output.Write(value, (IFallback) this);
-      this.lineLength += value.Length;
+      this.LineLength += value.Length;
       this.textLineLength += value.Length;
       this.allowWspBeforeFollowingTag = false;
     }
@@ -399,7 +396,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new ArgumentOutOfRangeException("index");
       if (count < 0 || count > buffer.Length - index)
         throw new ArgumentOutOfRangeException("count");
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState != HtmlWriter.OutputState.OutsideTag)
         this.WriteTagEnd();
@@ -410,7 +407,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       reader.WriteTextTo((ITextSink) this.WriteText());
     }
@@ -419,14 +416,14 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (value == null)
         throw new ArgumentNullException("value");
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState != HtmlWriter.OutputState.OutsideTag)
         this.WriteTagEnd();
       if (this.lastWhitespace)
         this.OutputLastWhitespace(value[0]);
       this.output.Write(value, (IFallback) null);
-      this.lineLength += value.Length;
+      this.LineLength += value.Length;
       this.allowWspBeforeFollowingTag = false;
     }
 
@@ -438,14 +435,14 @@ namespace Butler.Schema.Data.TextConverters
         throw new ArgumentOutOfRangeException("index");
       if (count < 0 || count > buffer.Length - index)
         throw new ArgumentOutOfRangeException("count");
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       if (this.outputState != HtmlWriter.OutputState.OutsideTag)
         this.WriteTagEnd();
       if (this.lastWhitespace)
         this.OutputLastWhitespace(buffer[index]);
       this.output.Write(buffer, index, count, (IFallback) null);
-      this.lineLength += count;
+      this.LineLength += count;
       this.allowWspBeforeFollowingTag = false;
     }
 
@@ -453,7 +450,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       reader.WriteMarkupTextTo((ITextSink) this.WriteMarkupText());
     }
@@ -471,9 +468,9 @@ namespace Butler.Schema.Data.TextConverters
         ((IRestartable) this.output).Restart();
       this.allowWspBeforeFollowingTag = false;
       this.lastWhitespace = false;
-      this.lineLength = 0;
+      this.LineLength = 0;
       this.longestLineLength = 0;
-      this.literalWhitespaceNesting = 0;
+      this.LiteralWhitespaceNesting = 0;
       this.literalTags = false;
       this.literalEntities = false;
       this.cssEscaping = false;
@@ -481,7 +478,7 @@ namespace Butler.Schema.Data.TextConverters
       this.previousTagNameIndex = Internal.Html.HtmlNameIndex._NOTANAME;
       this.isEndTag = false;
       this.isEmptyScopeTag = false;
-      this.copyPending = false;
+      this.IsCopyPending = false;
       this.outputState = HtmlWriter.OutputState.OutsideTag;
     }
 
@@ -602,31 +599,31 @@ namespace Butler.Schema.Data.TextConverters
 
     void ITextSink.Write(char[] buffer, int offset, int count)
     {
-      this.lineLength += count;
+      this.LineLength += count;
       this.textLineLength += count;
       this.output.Write(buffer, offset, count, this.fallback);
     }
 
     void ITextSink.Write(int ucs32Char)
     {
-      ++this.lineLength;
+      ++this.LineLength;
       ++this.textLineLength;
       this.output.Write(ucs32Char, this.fallback);
     }
 
     void ITextSinkEx.Write(string text)
     {
-      this.lineLength += text.Length;
+      this.LineLength += text.Length;
       this.textLineLength += text.Length;
       this.output.Write(text, this.fallback);
     }
 
     void ITextSinkEx.WriteNewLine()
     {
-      if (this.lineLength > this.longestLineLength)
-        this.longestLineLength = this.lineLength;
+      if (this.LineLength > this.longestLineLength)
+        this.longestLineLength = this.LineLength;
       this.output.Write("\r\n");
-      this.lineLength = 0;
+      this.LineLength = 0;
     }
 
     public void Close()
@@ -662,7 +659,7 @@ namespace Butler.Schema.Data.TextConverters
 
     internal void SetCopyPending(bool copyPending)
     {
-      this.copyPending = copyPending;
+      this.IsCopyPending = copyPending;
     }
 
     internal void WriteStartTag(Internal.Html.HtmlNameIndex nameIndex)
@@ -697,19 +694,19 @@ namespace Butler.Schema.Data.TextConverters
           if (Internal.Html.HtmlDtd.tags[(int) htmlTagIndex].UnmatchedSubstitute != Internal.Html.HtmlTagIndex._IMPLICIT_BEGIN)
           {
             this.output.Write("<!-- </");
-            this.lineLength += 7;
+            this.LineLength += 7;
             if (nameIndex > Internal.Html.HtmlNameIndex.Unknown)
             {
               this.output.Write(Internal.Html.HtmlNameData.Names[(int) nameIndex].Name);
-              this.lineLength += Internal.Html.HtmlNameData.Names[(int) nameIndex].Name.Length;
+              this.LineLength += Internal.Html.HtmlNameData.Names[(int) nameIndex].Name.Length;
             }
             else
             {
               this.output.Write(name != null ? name : "???");
-              this.lineLength += name != null ? name.Length : 3;
+              this.LineLength += name != null ? name.Length : 3;
             }
             this.output.Write("> ");
-            this.lineLength += 2;
+            this.LineLength += 2;
             this.tagNameIndex = Internal.Html.HtmlNameIndex._COMMENT;
             this.outputState = HtmlWriter.OutputState.WritingUnstructuredTagContent;
             return;
@@ -717,19 +714,19 @@ namespace Butler.Schema.Data.TextConverters
           isEndTag = false;
         }
       }
-      if (this.autoNewLines && this.literalWhitespaceNesting == 0)
+      if (this.autoNewLines && this.LiteralWhitespaceNesting == 0)
       {
         bool flag = this.lastWhitespace;
         Internal.Html.HtmlDtd.TagFill tagFill = Internal.Html.HtmlDtd.tags[(int) htmlTagIndex].Fill;
-        if (this.lineLength != 0)
+        if (this.LineLength != 0)
         {
           Internal.Html.HtmlDtd.TagFmt tagFmt = Internal.Html.HtmlDtd.tags[(int) htmlTagIndex].Fmt;
-          if (!isEndTag && tagFmt.LB == Internal.Html.HtmlDtd.FmtCode.BRK || isEndTag && tagFmt.LE == Internal.Html.HtmlDtd.FmtCode.BRK || this.lineLength > 80 && (this.lastWhitespace || this.allowWspBeforeFollowingTag || !isEndTag && tagFill.LB == Internal.Html.HtmlDtd.FillCode.EAT || isEndTag && tagFill.LE == Internal.Html.HtmlDtd.FillCode.EAT))
+          if (!isEndTag && tagFmt.LB == Internal.Html.HtmlDtd.FmtCode.BRK || isEndTag && tagFmt.LE == Internal.Html.HtmlDtd.FmtCode.BRK || this.LineLength > 80 && (this.lastWhitespace || this.allowWspBeforeFollowingTag || !isEndTag && tagFill.LB == Internal.Html.HtmlDtd.FillCode.EAT || isEndTag && tagFill.LE == Internal.Html.HtmlDtd.FillCode.EAT))
           {
-            if (this.lineLength > this.longestLineLength)
-              this.longestLineLength = this.lineLength;
+            if (this.LineLength > this.longestLineLength)
+              this.longestLineLength = this.LineLength;
             this.output.Write("\r\n");
-            this.lineLength = 0;
+            this.LineLength = 0;
             this.lastWhitespace = false;
           }
         }
@@ -738,13 +735,13 @@ namespace Butler.Schema.Data.TextConverters
       if (this.lastWhitespace)
       {
         this.output.Write(' ');
-        ++this.lineLength;
+        ++this.LineLength;
         this.lastWhitespace = false;
       }
       if (Internal.Html.HtmlDtd.tags[(int) htmlTagIndex].BlockElement || htmlTagIndex == Internal.Html.HtmlTagIndex.BR)
         this.textLineLength = 0;
       this.output.Write('<');
-      ++this.lineLength;
+      ++this.LineLength;
       if (nameIndex >= Internal.Html.HtmlNameIndex.Unknown)
       {
         if (isEndTag)
@@ -756,14 +753,14 @@ namespace Butler.Schema.Data.TextConverters
             this.cssEscaping = false;
           }
           if (Internal.Html.HtmlDtd.tags[(int) htmlTagIndex].ContextTextType == Internal.Html.HtmlDtd.ContextTextType.Literal)
-            --this.literalWhitespaceNesting;
+            --this.LiteralWhitespaceNesting;
           this.output.Write('/');
-          ++this.lineLength;
+          ++this.LineLength;
         }
         if (nameIndex != Internal.Html.HtmlNameIndex.Unknown)
         {
           this.output.Write(Internal.Html.HtmlNameData.Names[(int) nameIndex].Name);
-          this.lineLength += Internal.Html.HtmlNameData.Names[(int) nameIndex].Name.Length;
+          this.LineLength += Internal.Html.HtmlNameData.Names[(int) nameIndex].Name.Length;
           this.outputState = HtmlWriter.OutputState.BeforeAttribute;
         }
         else
@@ -771,7 +768,7 @@ namespace Butler.Schema.Data.TextConverters
           if (name != null)
           {
             this.output.Write(name);
-            this.lineLength += name.Length;
+            this.LineLength += name.Length;
             this.outputState = HtmlWriter.OutputState.BeforeAttribute;
           }
           else
@@ -785,27 +782,27 @@ namespace Butler.Schema.Data.TextConverters
         if (nameIndex == Internal.Html.HtmlNameIndex._COMMENT)
         {
           this.output.Write("!--");
-          this.lineLength += 3;
+          this.LineLength += 3;
         }
         else if (nameIndex == Internal.Html.HtmlNameIndex._ASP)
         {
           this.output.Write('%');
-          ++this.lineLength;
+          ++this.LineLength;
         }
         else if (nameIndex == Internal.Html.HtmlNameIndex._CONDITIONAL)
         {
           this.output.Write("!--[");
-          this.lineLength += 4;
+          this.LineLength += 4;
         }
         else if (nameIndex == Internal.Html.HtmlNameIndex._DTD)
         {
           this.output.Write('?');
-          ++this.lineLength;
+          ++this.LineLength;
         }
         else
         {
           this.output.Write('!');
-          ++this.lineLength;
+          ++this.LineLength;
         }
         this.outputState = HtmlWriter.OutputState.WritingUnstructuredTagContent;
         this.isEmptyScopeTag = true;
@@ -827,49 +824,49 @@ namespace Butler.Schema.Data.TextConverters
       if (this.tagNameIndex > Internal.Html.HtmlNameIndex.Unknown)
       {
         this.output.Write('>');
-        ++this.lineLength;
+        ++this.LineLength;
       }
       else
       {
         if (this.tagNameIndex == Internal.Html.HtmlNameIndex._COMMENT)
         {
           this.output.Write("-->");
-          this.lineLength += 3;
+          this.LineLength += 3;
         }
         else if (this.tagNameIndex == Internal.Html.HtmlNameIndex._ASP)
         {
           this.output.Write("%>");
-          this.lineLength += 2;
+          this.LineLength += 2;
         }
         else if (this.tagNameIndex == Internal.Html.HtmlNameIndex._CONDITIONAL)
         {
           this.output.Write("]-->");
-          this.lineLength += 4;
+          this.LineLength += 4;
         }
         else if (this.tagNameIndex == Internal.Html.HtmlNameIndex.Unknown && emptyScopeTag)
         {
           this.output.Write(" />");
-          this.lineLength += 3;
+          this.LineLength += 3;
         }
         else
         {
           this.output.Write('>');
-          ++this.lineLength;
+          ++this.LineLength;
         }
         this.tagNameIndex = this.previousTagNameIndex;
       }
       if (this.isEndTag && (htmlTagIndex == Internal.Html.HtmlTagIndex.LI || htmlTagIndex == Internal.Html.HtmlTagIndex.DD || htmlTagIndex == Internal.Html.HtmlTagIndex.DT))
-        this.lineLength = 0;
-      if (this.autoNewLines && this.literalWhitespaceNesting == 0)
+        this.LineLength = 0;
+      if (this.autoNewLines && this.LiteralWhitespaceNesting == 0)
       {
         Internal.Html.HtmlDtd.TagFmt tagFmt = Internal.Html.HtmlDtd.tags[(int) htmlTagIndex].Fmt;
         Internal.Html.HtmlDtd.TagFill tagFill = Internal.Html.HtmlDtd.tags[(int) htmlTagIndex].Fill;
-        if (!this.isEndTag && tagFmt.RB == Internal.Html.HtmlDtd.FmtCode.BRK || this.isEndTag && tagFmt.RE == Internal.Html.HtmlDtd.FmtCode.BRK || this.lineLength > 80 && (this.allowWspBeforeFollowingTag || !this.isEndTag && tagFill.RB == Internal.Html.HtmlDtd.FillCode.EAT || this.isEndTag && tagFill.RE == Internal.Html.HtmlDtd.FillCode.EAT))
+        if (!this.isEndTag && tagFmt.RB == Internal.Html.HtmlDtd.FmtCode.BRK || this.isEndTag && tagFmt.RE == Internal.Html.HtmlDtd.FmtCode.BRK || this.LineLength > 80 && (this.allowWspBeforeFollowingTag || !this.isEndTag && tagFill.RB == Internal.Html.HtmlDtd.FillCode.EAT || this.isEndTag && tagFill.RE == Internal.Html.HtmlDtd.FillCode.EAT))
         {
-          if (this.lineLength > this.longestLineLength)
-            this.longestLineLength = this.lineLength;
+          if (this.LineLength > this.longestLineLength)
+            this.longestLineLength = this.LineLength;
           this.output.Write("\r\n");
-          this.lineLength = 0;
+          this.LineLength = 0;
         }
       }
       if (!this.isEndTag && !emptyScopeTag)
@@ -882,7 +879,7 @@ namespace Butler.Schema.Data.TextConverters
           this.cssEscaping = htmlTagIndex == Internal.Html.HtmlTagIndex.Style;
         }
         if (Internal.Html.HtmlDtd.tags[(int) htmlTagIndex].ContextTextType == Internal.Html.HtmlDtd.ContextTextType.Literal)
-          ++this.literalWhitespaceNesting;
+          ++this.LiteralWhitespaceNesting;
       }
       this.outputState = HtmlWriter.OutputState.OutsideTag;
     }
@@ -939,7 +936,7 @@ namespace Butler.Schema.Data.TextConverters
       if (this.lastWhitespace)
         this.OutputLastWhitespace(ch);
       this.output.Write(ch, (IFallback) this);
-      ++this.lineLength;
+      ++this.LineLength;
       ++this.textLineLength;
       this.allowWspBeforeFollowingTag = false;
     }
@@ -951,7 +948,7 @@ namespace Butler.Schema.Data.TextConverters
       if (this.lastWhitespace)
         this.OutputLastWhitespace(ch);
       this.output.Write(ch, (IFallback) null);
-      ++this.lineLength;
+      ++this.LineLength;
       this.allowWspBeforeFollowingTag = false;
     }
 
@@ -975,7 +972,7 @@ namespace Butler.Schema.Data.TextConverters
         if (this.outputState > HtmlWriter.OutputState.BeforeAttribute)
           this.OutputAttributeEnd();
         this.output.Write(' ');
-        ++this.lineLength;
+        ++this.LineLength;
       }
       this.outputState = HtmlWriter.OutputState.WritingAttributeName;
       this.fallback = (IFallback) null;
@@ -987,7 +984,7 @@ namespace Butler.Schema.Data.TextConverters
       if (this.outputState != HtmlWriter.OutputState.WritingAttributeValue)
       {
         this.output.Write("=\"");
-        this.lineLength += 2;
+        this.LineLength += 2;
       }
       this.outputState = HtmlWriter.OutputState.WritingAttributeValue;
       this.fallback = (IFallback) this;
@@ -1012,7 +1009,7 @@ namespace Butler.Schema.Data.TextConverters
       if (this.lastWhitespace)
       {
         this.output.Write(' ');
-        ++this.lineLength;
+        ++this.LineLength;
         this.lastWhitespace = false;
       }
       this.fallback = (IFallback) null;
@@ -1028,12 +1025,12 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (this.outputState != HtmlWriter.OutputState.OutsideTag)
         this.WriteTagEnd();
-      if (optional && (this.lineLength == 0 || this.literalWhitespaceNesting != 0))
+      if (optional && (this.LineLength == 0 || this.LiteralWhitespaceNesting != 0))
         return;
-      if (this.lineLength > this.longestLineLength)
-        this.longestLineLength = this.lineLength;
+      if (this.LineLength > this.longestLineLength)
+        this.longestLineLength = this.LineLength;
       this.output.Write("\r\n");
-      this.lineLength = 0;
+      this.LineLength = 0;
       this.lastWhitespace = false;
       this.allowWspBeforeFollowingTag = false;
     }
@@ -1047,12 +1044,12 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (this.outputState != HtmlWriter.OutputState.OutsideTag)
         this.WriteTagEnd();
-      if (!this.autoNewLines || optional && (this.lineLength == 0 || this.literalWhitespaceNesting != 0))
+      if (!this.autoNewLines || optional && (this.LineLength == 0 || this.LiteralWhitespaceNesting != 0))
         return;
-      if (this.lineLength > this.longestLineLength)
-        this.longestLineLength = this.lineLength;
+      if (this.LineLength > this.longestLineLength)
+        this.longestLineLength = this.LineLength;
       this.output.Write("\r\n");
-      this.lineLength = 0;
+      this.LineLength = 0;
       this.lastWhitespace = false;
       this.allowWspBeforeFollowingTag = false;
     }
@@ -1064,9 +1061,9 @@ namespace Butler.Schema.Data.TextConverters
 
     internal void WriteSpace(int count)
     {
-      if (this.literalWhitespaceNesting == 0)
+      if (this.LiteralWhitespaceNesting == 0)
       {
-        if (this.lineLength == 0 && count == 1)
+        if (this.LineLength == 0 && count == 1)
         {
           this.output.Write(' ', (IFallback) this);
         }
@@ -1074,10 +1071,10 @@ namespace Butler.Schema.Data.TextConverters
         {
           if (this.lastWhitespace)
           {
-            ++this.lineLength;
+            ++this.LineLength;
             this.output.Write(' ', (IFallback) this);
           }
-          this.lineLength += count - 1;
+          this.LineLength += count - 1;
           this.textLineLength += count - 1;
           while (--count != 0)
             this.output.Write(' ', (IFallback) this);
@@ -1089,7 +1086,7 @@ namespace Butler.Schema.Data.TextConverters
       {
         while (count-- != 0)
           this.output.Write(' ');
-        this.lineLength += count;
+        this.LineLength += count;
         this.textLineLength += count;
         this.lastWhitespace = false;
         this.allowWspBeforeFollowingTag = false;
@@ -1100,7 +1097,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (this.lastWhitespace)
         this.OutputLastWhitespace(' ');
-      this.lineLength += count;
+      this.LineLength += count;
       this.textLineLength += count;
       while (count-- != 0)
         this.output.Write(' ', (IFallback) this);
@@ -1114,7 +1111,7 @@ namespace Butler.Schema.Data.TextConverters
       if (this.lastWhitespace)
         this.OutputLastWhitespace(buffer[index]);
       this.output.Write(buffer, index, count, (IFallback) this);
-      this.lineLength += count;
+      this.LineLength += count;
       this.textLineLength += count;
       this.allowWspBeforeFollowingTag = false;
     }
@@ -1145,7 +1142,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (disposing && this.output != null)
       {
-        if (!this.copyPending)
+        if (!this.IsCopyPending)
           this.Flush();
         if (this.output != null)
           this.output.Dispose();
@@ -1159,7 +1156,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new ArgumentException(CtsResources.TextConvertersStrings.TagIdInvalid, "id");
       if (id == HtmlTagId.Unknown)
         throw new ArgumentException(CtsResources.TextConvertersStrings.TagIdIsUnknown, "id");
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       this.WriteTagBegin(Internal.Html.HtmlNameData.TagIndex[(int) id], (string) null, isEndTag, false, false);
     }
@@ -1170,7 +1167,7 @@ namespace Butler.Schema.Data.TextConverters
         throw new ArgumentNullException("name");
       if (name.Length == 0)
         throw new ArgumentException(CtsResources.TextConvertersStrings.TagNameIsEmpty, "name");
-      if (this.copyPending)
+      if (this.IsCopyPending)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.CannotWriteWhileCopyPending);
       Internal.Html.HtmlNameIndex nameIndex = HtmlWriter.LookupName(name);
       if (nameIndex != Internal.Html.HtmlNameIndex.Unknown)
@@ -1180,22 +1177,22 @@ namespace Butler.Schema.Data.TextConverters
 
     private void OutputLastWhitespace(char nextChar)
     {
-      if (this.lineLength > (int) byte.MaxValue && this.autoNewLines)
+      if (this.LineLength > (int) byte.MaxValue && this.autoNewLines)
       {
-        if (this.lineLength > this.longestLineLength)
-          this.longestLineLength = this.lineLength;
+        if (this.LineLength > this.longestLineLength)
+          this.longestLineLength = this.LineLength;
         this.output.Write("\r\n");
-        this.lineLength = 0;
+        this.LineLength = 0;
         if (ParseSupport.FarEastNonHanguelChar(nextChar))
         {
           this.output.Write(' ');
-          ++this.lineLength;
+          ++this.LineLength;
         }
       }
       else
       {
         this.output.Write(' ');
-        ++this.lineLength;
+        ++this.LineLength;
       }
       ++this.textLineLength;
       this.lastWhitespace = false;
@@ -1205,7 +1202,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       this.output.Write(' ');
       this.output.Write(name);
-      this.lineLength += name.Length + 1;
+      this.LineLength += name.Length + 1;
       this.outputState = HtmlWriter.OutputState.AfterAttributeName;
     }
 
@@ -1214,10 +1211,10 @@ namespace Butler.Schema.Data.TextConverters
       if (this.outputState < HtmlWriter.OutputState.WritingAttributeValue)
       {
         this.output.Write("=\"");
-        this.lineLength += 2;
+        this.LineLength += 2;
       }
       this.output.Write(value, (IFallback) this);
-      this.lineLength += value.Length;
+      this.LineLength += value.Length;
       this.outputState = HtmlWriter.OutputState.WritingAttributeValue;
     }
 
@@ -1226,10 +1223,10 @@ namespace Butler.Schema.Data.TextConverters
       if (this.outputState < HtmlWriter.OutputState.WritingAttributeValue)
       {
         this.output.Write("=\"");
-        this.lineLength += 2;
+        this.LineLength += 2;
       }
       this.output.Write(value, index, count, (IFallback) this);
-      this.lineLength += count;
+      this.LineLength += count;
       this.outputState = HtmlWriter.OutputState.WritingAttributeValue;
     }
 
@@ -1238,10 +1235,10 @@ namespace Butler.Schema.Data.TextConverters
       if (this.outputState < HtmlWriter.OutputState.WritingAttributeValue)
       {
         this.output.Write("=\"");
-        this.lineLength += 2;
+        this.LineLength += 2;
       }
       this.output.Write('"');
-      ++this.lineLength;
+      ++this.LineLength;
     }
 
     internal enum OutputState

@@ -12,22 +12,20 @@ namespace Butler.Schema.Data.Internal
 {
   internal class CtsConfigurationSetting
   {
-    private string name;
-    private IList<CtsConfigurationArgument> arguments;
 
-    public string Name => this.name;
+      public string Name { get; }
 
-      public IList<CtsConfigurationArgument> Arguments => this.arguments;
+      public IList<CtsConfigurationArgument> Arguments { get; }
 
       internal CtsConfigurationSetting(string name)
     {
-      this.name = name;
-      this.arguments = (IList<CtsConfigurationArgument>) new List<CtsConfigurationArgument>();
+      this.Name = name;
+      this.Arguments = (IList<CtsConfigurationArgument>) new List<CtsConfigurationArgument>();
     }
 
     internal void AddArgument(string name, string value)
     {
-      this.arguments.Add(new CtsConfigurationArgument(name, value));
+      this.Arguments.Add(new CtsConfigurationArgument(name, value));
     }
   }
 }

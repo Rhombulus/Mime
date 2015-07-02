@@ -15,9 +15,8 @@ namespace Butler.Schema.Data.TextConverters
     internal Stream InputRtfStream;
     internal Internal.Rtf.RtfParserBase Parser;
     internal int InternalPosition;
-    private RtfEncapsulation rtfEncapsulation;
 
-    public RtfEncapsulation Encapsulation => this.rtfEncapsulation;
+      public RtfEncapsulation Encapsulation { get; }
 
       public override bool CanRead => true;
 
@@ -71,12 +70,12 @@ namespace Butler.Schema.Data.TextConverters
             {
               if (this.Parser.KeywordValue < 1)
                 return;
-              this.rtfEncapsulation = RtfEncapsulation.Html;
+              this.Encapsulation = RtfEncapsulation.Html;
               return;
             }
             if ((int) this.Parser.KeywordId == 329)
             {
-              this.rtfEncapsulation = RtfEncapsulation.Text;
+              this.Encapsulation = RtfEncapsulation.Text;
               return;
             }
             continue;

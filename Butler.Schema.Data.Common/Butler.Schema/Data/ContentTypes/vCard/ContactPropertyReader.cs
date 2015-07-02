@@ -15,9 +15,8 @@ namespace Butler.Schema.Data.ContentTypes.vCard
   public struct ContactPropertyReader
   {
     private Internal.ContentLineReader reader;
-    private ContactValueSeparators lastSeparator;
 
-    public ContactValueSeparators LastValueSeparator => this.lastSeparator;
+      public ContactValueSeparators LastValueSeparator { get; private set; }
 
       public PropertyId PropertyId
     {
@@ -58,7 +57,7 @@ namespace Butler.Schema.Data.ContentTypes.vCard
     internal ContactPropertyReader(Internal.ContentLineReader reader)
     {
       this.reader = reader;
-      this.lastSeparator = ContactValueSeparators.None;
+      this.LastValueSeparator = ContactValueSeparators.None;
     }
 
     public object ReadValue(ContactValueSeparators expectedSeparators)
@@ -117,7 +116,7 @@ namespace Butler.Schema.Data.ContentTypes.vCard
       this.reader.AssertValidState(Internal.ContentLineNodeType.Parameter | Internal.ContentLineNodeType.Property);
       Internal.ContentLineParser.Separators endSeparator;
       string str = !expectedSeparators.HasValue ? this.reader.ReadPropertyValue(true, Internal.ContentLineParser.Separators.None, true, out endSeparator) : this.reader.ReadPropertyValue(true, (Internal.ContentLineParser.Separators) expectedSeparators.Value, false, out endSeparator);
-      this.lastSeparator = (ContactValueSeparators) endSeparator;
+      this.LastValueSeparator = (ContactValueSeparators) endSeparator;
       return str;
     }
 
@@ -259,7 +258,7 @@ namespace Butler.Schema.Data.ContentTypes.vCard
     public Stream GetValueReadStream()
     {
       this.reader.AssertValidState(Internal.ContentLineNodeType.Parameter | Internal.ContentLineNodeType.Property);
-      this.lastSeparator = ContactValueSeparators.None;
+      this.LastValueSeparator = ContactValueSeparators.None;
       return this.reader.GetValueReadStream();
     }
 

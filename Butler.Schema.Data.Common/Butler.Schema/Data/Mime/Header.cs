@@ -23,14 +23,11 @@ namespace Butler.Schema.Data.Mime
     };
     private MimeStringList lines = new MimeStringList();
     internal const bool AllowUTF8Name = false;
-    private string name;
-    private string customName;
-    private HeaderId headerId;
-    private bool dirty;
+      private string customName;
 
-    public string Name => this.name;
+      public string Name { get; }
 
-      public HeaderId HeaderId => this.headerId;
+      public HeaderId HeaderId { get; }
 
       public abstract string Value { get; set; }
 
@@ -75,7 +72,7 @@ namespace Butler.Schema.Data.Mime
 
     internal int RawLength => this.lines.Length;
 
-      internal bool IsDirty => this.dirty;
+      internal bool IsDirty { get; private set; }
 
       internal bool IsProtected
     {
@@ -88,8 +85,8 @@ namespace Butler.Schema.Data.Mime
 
     internal Header(string name, HeaderId headerId)
     {
-      this.name = name;
-      this.headerId = headerId;
+      this.Name = name;
+      this.HeaderId = headerId;
     }
 
     public static Header Create(string name)
@@ -189,7 +186,7 @@ namespace Butler.Schema.Data.Mime
         throw new ArgumentException(CtsResources.Strings.CantCopyToDifferentObjectType);
       base.CopyTo(destination);
       header.lines = this.lines.Clone();
-      header.dirty = this.dirty;
+      header.IsDirty = this.IsDirty;
     }
 
     internal static Type TypeFromHeaderId(HeaderId headerId)
@@ -697,7 +694,7 @@ label_5:
 
     internal override void SetDirty()
     {
-      this.dirty = true;
+      this.IsDirty = true;
       base.SetDirty();
     }
 

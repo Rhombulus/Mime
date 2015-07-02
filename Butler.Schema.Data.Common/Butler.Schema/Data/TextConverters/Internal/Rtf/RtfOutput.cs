@@ -33,21 +33,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     private RtfOutput.TextType textType;
     private bool lastKeyword;
     private byte[] encodeBuffer;
-    private int rtfLineLength;
 
-    public int RtfLineLength
-    {
-      get
-      {
-        return this.rtfLineLength;
-      }
-      set
-      {
-        this.rtfLineLength = value;
-      }
-    }
+      public int RtfLineLength { get; set; }
 
-    public bool CanAcceptMoreOutput
+      public bool CanAcceptMoreOutput
     {
       get
       {
@@ -183,12 +172,12 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         this.outputBuffer[--num3] = (byte) (value % 10 + 48);
       }
       while ((value /= 10) != 0);
-      this.rtfLineLength += keyword.Length + num1 + 1;
-      if (this.rtfLineLength > 128)
+      this.RtfLineLength += keyword.Length + num1 + 1;
+      if (this.RtfLineLength > 128)
       {
         this.outputBuffer[this.outputCurrent++] = (byte) 13;
         this.outputBuffer[this.outputCurrent++] = (byte) 10;
-        this.rtfLineLength = 0;
+        this.RtfLineLength = 0;
         this.lastKeyword = false;
       }
       else
@@ -215,12 +204,12 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       }
       for (; index < controlText.Length; ++index)
         this.outputBuffer[this.outputCurrent++] = (byte) controlText[index];
-      this.rtfLineLength += controlText.Length;
-      if (this.rtfLineLength > 128 && (int) controlText[controlText.Length - 1] != 10 && (this.outputEnd - this.outputCurrent >= 2 && lastKeyword))
+      this.RtfLineLength += controlText.Length;
+      if (this.RtfLineLength > 128 && (int) controlText[controlText.Length - 1] != 10 && (this.outputEnd - this.outputCurrent >= 2 && lastKeyword))
       {
         this.outputBuffer[this.outputCurrent++] = (byte) 13;
         this.outputBuffer[this.outputCurrent++] = (byte) 10;
-        this.rtfLineLength = 0;
+        this.RtfLineLength = 0;
         lastKeyword = false;
       }
       this.lastKeyword = lastKeyword;
@@ -243,10 +232,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           num = 0;
           break;
         default:
-          num = this.rtfLineLength + count;
+          num = this.RtfLineLength + count;
           break;
       }
-      this.rtfLineLength = num;
+      this.RtfLineLength = num;
       if (this.outputEnd - this.outputCurrent < count)
       {
         int count1 = this.outputEnd - this.outputCurrent;
@@ -283,7 +272,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           this.FlushTextBuffer(this.textType != RtfOutput.TextType.Text);
         this.textType = RtfOutput.TextType.Text;
       }
-      this.rtfLineLength += count;
+      this.RtfLineLength += count;
       while (count != 0)
       {
         int count1 = Math.Min(count, this.textBuffer.Length - this.textEnd);
@@ -310,7 +299,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           this.FlushTextBuffer(this.textType != RtfOutput.TextType.Text);
         this.textType = RtfOutput.TextType.Text;
       }
-      this.rtfLineLength += count;
+      this.RtfLineLength += count;
       if (count <= 64)
       {
         Buffer.BlockCopy((Array) buffer, offset * 2, (Array) this.textBuffer, this.textEnd * 2, count * 2);
@@ -352,7 +341,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           this.FlushTextBuffer(this.textType != RtfOutput.TextType.MarkupText);
         this.textType = RtfOutput.TextType.MarkupText;
       }
-      this.rtfLineLength += count;
+      this.RtfLineLength += count;
       if (count <= 64)
       {
         Buffer.BlockCopy((Array) buffer, offset * 2, (Array) this.textBuffer, this.textEnd * 2, count * 2);
@@ -399,7 +388,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           this.FlushTextBuffer(this.textType != RtfOutput.TextType.Text);
         this.textType = RtfOutput.TextType.DoubleEscapedText;
       }
-      this.rtfLineLength += count;
+      this.RtfLineLength += count;
       while (true)
       {
         int count1 = Math.Min(count, this.textBuffer.Length - this.textEnd);

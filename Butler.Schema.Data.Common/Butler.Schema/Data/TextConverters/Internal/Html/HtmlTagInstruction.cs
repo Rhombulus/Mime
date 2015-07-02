@@ -11,25 +11,21 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 {
   internal struct HtmlTagInstruction
   {
-    private Format.FormatContainerType containerType;
-    private int defaultStyle;
-    private int inheritanceMaskIndex;
-    private HtmlAttributeInstruction[] attributeInstructions;
 
-    public Format.FormatContainerType ContainerType => this.containerType;
+      public Format.FormatContainerType ContainerType { get; }
 
-      public int DefaultStyle => this.defaultStyle;
+      public int DefaultStyle { get; }
 
-      public int InheritanceMaskIndex => this.inheritanceMaskIndex;
+      public int InheritanceMaskIndex { get; }
 
-      public HtmlAttributeInstruction[] AttributeInstructions => this.attributeInstructions;
+      public HtmlAttributeInstruction[] AttributeInstructions { get; }
 
       public HtmlTagInstruction(Format.FormatContainerType containerType, int defaultStyle, int inheritanceMaskIndex, HtmlAttributeInstruction[] attributeInstructions)
     {
-      this.containerType = containerType;
-      this.defaultStyle = defaultStyle;
-      this.inheritanceMaskIndex = inheritanceMaskIndex;
-      this.attributeInstructions = attributeInstructions;
+      this.ContainerType = containerType;
+      this.DefaultStyle = defaultStyle;
+      this.InheritanceMaskIndex = inheritanceMaskIndex;
+      this.AttributeInstructions = attributeInstructions;
     }
   }
 }

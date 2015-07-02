@@ -14,10 +14,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
   internal abstract class FormatOutput : IDisposable
   {
     private PropertyState propertyState = new PropertyState();
-    private SourceFormat sourceFormat;
-    private string comment;
-    private FormatStore formatStore;
-    private FormatNode rootNode;
+      private FormatNode rootNode;
     private FormatOutput.OutputStackEntry currentOutputLevel;
     private FormatOutput.OutputStackEntry[] outputStack;
     private int outputStackTop;
@@ -36,11 +33,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public virtual bool CanAcceptMoreOutput => true;
 
-      protected FormatStore FormatStore => this.formatStore;
+      protected FormatStore FormatStore { get; private set; }
 
-      protected SourceFormat SourceFormat => this.sourceFormat;
+      protected SourceFormat SourceFormat { get; private set; }
 
-      protected string Comment => this.comment;
+      protected string Comment { get; private set; }
 
       protected FormatNode CurrentNode => this.currentOutputLevel.Node;
 
@@ -52,10 +49,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public virtual void Initialize(FormatStore store, SourceFormat sourceFormat, string comment)
     {
-      this.sourceFormat = sourceFormat;
-      this.comment = comment;
-      this.formatStore = store;
-      this.Restart(this.formatStore.RootNode);
+      this.SourceFormat = sourceFormat;
+      this.Comment = comment;
+      this.FormatStore = store;
+      this.Restart(this.FormatStore.RootNode);
     }
 
     public void Restart(FormatNode rootNode)
@@ -815,7 +812,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       this.currentOutputLevel.Node = FormatNode.Null;
       this.outputStack = (FormatOutput.OutputStackEntry[]) null;
-      this.formatStore = (FormatStore) null;
+      this.FormatStore = (FormatStore) null;
     }
 
     void IDisposable.Dispose()

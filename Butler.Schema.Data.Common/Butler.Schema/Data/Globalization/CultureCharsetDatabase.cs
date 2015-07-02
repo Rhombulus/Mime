@@ -1466,125 +1466,104 @@ namespace Butler.Schema.Data.Globalization
 
     private struct WindowsCodePage
     {
-      private int codePage;
-      private string name;
-      private int lcid;
-      private string cultureName;
-      private int mimeCodePage;
-      private int webCodePage;
-      private string genericCultureDescription;
 
-      public int CodePage => this.codePage;
+        public int CodePage { get; }
 
-        public string Name => this.name;
+        public string Name { get; }
 
-        public int LCID => this.lcid;
+        public int LCID { get; }
 
-        public string CultureName => this.cultureName;
+        public string CultureName { get; }
 
-        public int MimeCodePage => this.mimeCodePage;
+        public int MimeCodePage { get; }
 
-        public int WebCodePage => this.webCodePage;
+        public int WebCodePage { get; }
 
-        public string GenericCultureDescription => this.genericCultureDescription;
+        public string GenericCultureDescription { get; }
 
         public WindowsCodePage(int codePage, string name, int lcid, string cultureName, int mimeCodePage, int webCodePage, string genericCultureDescription)
       {
-        this.codePage = codePage;
-        this.name = name;
-        this.lcid = lcid;
-        this.cultureName = cultureName;
-        this.mimeCodePage = mimeCodePage;
-        this.webCodePage = webCodePage;
-        this.genericCultureDescription = genericCultureDescription;
+        this.CodePage = codePage;
+        this.Name = name;
+        this.LCID = lcid;
+        this.CultureName = cultureName;
+        this.MimeCodePage = mimeCodePage;
+        this.WebCodePage = webCodePage;
+        this.GenericCultureDescription = genericCultureDescription;
       }
     }
 
     private struct CodePageCultureOverride
     {
-      private int codePage;
-      private string cultureName;
 
-      public int CodePage => this.codePage;
+        public int CodePage { get; }
 
-        public string CultureName => this.cultureName;
+        public string CultureName { get; }
 
         public CodePageCultureOverride(int codePage, string cultureName)
       {
-        this.codePage = codePage;
-        this.cultureName = cultureName;
+        this.CodePage = codePage;
+        this.CultureName = cultureName;
       }
     }
 
     private struct CultureCodePageOverride
     {
-      private string cultureName;
-      private int mimeCodePage;
-      private int webCodePage;
 
-      public string CultureName => this.cultureName;
+        public string CultureName { get; }
 
-        public int MimeCodePage => this.mimeCodePage;
+        public int MimeCodePage { get; }
 
-        public int WebCodePage => this.webCodePage;
+        public int WebCodePage { get; }
 
         public CultureCodePageOverride(string cultureName, int mimeCodePage, int webCodePage)
       {
-        this.cultureName = cultureName;
-        this.mimeCodePage = mimeCodePage;
-        this.webCodePage = webCodePage;
+        this.CultureName = cultureName;
+        this.MimeCodePage = mimeCodePage;
+        this.WebCodePage = webCodePage;
       }
     }
 
     private struct CharsetName
     {
-      private string name;
-      private int codePage;
 
-      public string Name => this.name;
+        public string Name { get; }
 
-        public int CodePage => this.codePage;
+        public int CodePage { get; }
 
         public CharsetName(string name, int codePage)
       {
-        this.name = name;
-        this.codePage = codePage;
+        this.Name = name;
+        this.CodePage = codePage;
       }
     }
 
     private struct CultureData
     {
-      private int lcid;
-      private string name;
-      private int windowsCodePage;
-      private int mimeCodePage;
-      private int webCodePage;
-      private string parentCultureName;
-      private string description;
 
-      public int LCID => this.lcid;
+        public int LCID { get; }
 
-        public string Name => this.name;
+        public string Name { get; }
 
-        public int WindowsCodePage => this.windowsCodePage;
+        public int WindowsCodePage { get; }
 
-        public int MimeCodePage => this.mimeCodePage;
+        public int MimeCodePage { get; }
 
-        public int WebCodePage => this.webCodePage;
+        public int WebCodePage { get; }
 
-        public string ParentCultureName => this.parentCultureName;
+        public string ParentCultureName { get; }
 
-        public string Description => this.description;
+        public string Description { get; }
 
         public CultureData(int lcid, string name, int windowsCodePage, int mimeCodePage, int webCodePage, string parentCultureName, string description)
       {
-        this.lcid = lcid;
-        this.name = name;
-        this.windowsCodePage = windowsCodePage;
-        this.mimeCodePage = mimeCodePage;
-        this.webCodePage = webCodePage;
-        this.parentCultureName = parentCultureName;
-        this.description = description;
+        this.LCID = lcid;
+        this.Name = name;
+        this.WindowsCodePage = windowsCodePage;
+        this.MimeCodePage = mimeCodePage;
+        this.WebCodePage = webCodePage;
+        this.ParentCultureName = parentCultureName;
+        this.Description = description;
       }
     }
 

@@ -13,54 +13,52 @@ namespace Butler.Schema.Data.Globalization
   [Serializable]
   public class UnknownCultureException : ExchangeDataException
   {
-    private int localeId;
-    private string cultureName;
 
-    public int LocaleId => this.localeId;
+      public int LocaleId { get; }
 
-      public string CultureName => this.cultureName;
+      public string CultureName { get; }
 
       public UnknownCultureException(int localeId)
       : base(CtsResources.GlobalizationStrings.InvalidLocaleId(localeId))
     {
-      this.localeId = localeId;
+      this.LocaleId = localeId;
     }
 
     public UnknownCultureException(string cultureName)
       : base(CtsResources.GlobalizationStrings.InvalidCultureName(cultureName == null ? "<null>" : cultureName))
     {
-      this.cultureName = cultureName;
+      this.CultureName = cultureName;
     }
 
     public UnknownCultureException(int localeId, string message)
       : base(message)
     {
-      this.localeId = localeId;
+      this.LocaleId = localeId;
     }
 
     public UnknownCultureException(string cultureName, string message)
       : base(message)
     {
-      this.cultureName = cultureName;
+      this.CultureName = cultureName;
     }
 
     public UnknownCultureException(int localeId, string message, Exception innerException)
       : base(message, innerException)
     {
-      this.localeId = localeId;
+      this.LocaleId = localeId;
     }
 
     public UnknownCultureException(string cultureName, string message, Exception innerException)
       : base(message, innerException)
     {
-      this.cultureName = cultureName;
+      this.CultureName = cultureName;
     }
 
     protected UnknownCultureException(SerializationInfo info, StreamingContext context)
       : base(info, context)
     {
-      this.localeId = info.GetInt32("localeId");
-      this.cultureName = info.GetString("cultureName");
+      this.LocaleId = info.GetInt32("localeId");
+      this.CultureName = info.GetString("cultureName");
     }
   }
 }

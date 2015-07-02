@@ -15,19 +15,18 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
   {
     public static readonly FormatNode Null = new FormatNode();
     private FormatStore.NodeStore nodes;
-    private int nodeHandle;
 
-    public int Handle => this.nodeHandle;
+      public int Handle { get; }
 
-      public bool IsNull => this.nodeHandle == 0;
+      public bool IsNull => this.Handle == 0;
 
-      public bool IsInOrder => (FormatStore.NodeFlags) 0 == (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.OutOfOrder);
+      public bool IsInOrder => (FormatStore.NodeFlags) 0 == (this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags & FormatStore.NodeFlags.OutOfOrder);
 
-      public bool OnRightEdge => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.OnRightEdge);
+      public bool OnRightEdge => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags & FormatStore.NodeFlags.OnRightEdge);
 
-      public bool OnLeftEdge => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.OnLeftEdge);
+      public bool OnLeftEdge => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags & FormatStore.NodeFlags.OnLeftEdge);
 
-      public bool IsVisited => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.Visited);
+      public bool IsVisited => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags & FormatStore.NodeFlags.Visited);
 
       public bool IsEmptyBlockNode
     {
@@ -39,40 +38,40 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public bool CanFlush => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.CanFlush);
+    public bool CanFlush => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags & FormatStore.NodeFlags.CanFlush);
 
       public FormatContainerType NodeType
     {
       get
       {
-        return this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Type;
+        return this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Type;
       }
       set
       {
-        this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Type = value;
+        this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Type = value;
       }
     }
 
-    public bool IsText => this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Type == FormatContainerType.Text;
+    public bool IsText => this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Type == FormatContainerType.Text;
 
       public FormatNode Parent
     {
       get
       {
-        int nodeHandle = this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Parent;
+        int nodeHandle = this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Parent;
         if (nodeHandle != 0)
           return new FormatNode(this.nodes, nodeHandle);
         return FormatNode.Null;
       }
     }
 
-    public bool IsOnlySibling => this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NextSibling == this.nodeHandle;
+    public bool IsOnlySibling => this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NextSibling == this.Handle;
 
       public FormatNode FirstChild
     {
       get
       {
-        int handle = this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].LastChild;
+        int handle = this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].LastChild;
         if (handle != 0)
           return new FormatNode(this.nodes, this.nodes.Plane(handle)[this.nodes.Index(handle)].NextSibling);
         return FormatNode.Null;
@@ -83,7 +82,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       get
       {
-        int nodeHandle = this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].LastChild;
+        int nodeHandle = this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].LastChild;
         if (nodeHandle != 0)
           return new FormatNode(this.nodes, nodeHandle);
         return FormatNode.Null;
@@ -94,9 +93,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       get
       {
-        int handle = this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Parent;
-        if (handle != 0 && this.nodeHandle != this.nodes.Plane(handle)[this.nodes.Index(handle)].LastChild)
-          return new FormatNode(this.nodes, this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NextSibling);
+        int handle = this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Parent;
+        if (handle != 0 && this.Handle != this.nodes.Plane(handle)[this.nodes.Index(handle)].LastChild)
+          return new FormatNode(this.nodes, this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NextSibling);
         return FormatNode.Null;
       }
     }
@@ -118,11 +117,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       get
       {
-        return this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].BeginTextPosition;
+        return this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].BeginTextPosition;
       }
       set
       {
-        this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].BeginTextPosition = value;
+        this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].BeginTextPosition = value;
       }
     }
 
@@ -130,11 +129,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       get
       {
-        return this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].EndTextPosition;
+        return this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].EndTextPosition;
       }
       set
       {
-        this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].EndTextPosition = value;
+        this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].EndTextPosition = value;
       }
     }
 
@@ -142,11 +141,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       get
       {
-        return this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].InheritanceMaskIndex;
+        return this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].InheritanceMaskIndex;
       }
       set
       {
-        this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].InheritanceMaskIndex = value;
+        this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].InheritanceMaskIndex = value;
       }
     }
 
@@ -154,11 +153,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       get
       {
-        return this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].FlagProperties;
+        return this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].FlagProperties;
       }
       set
       {
-        this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].FlagProperties = value;
+        this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].FlagProperties = value;
       }
     }
 
@@ -166,11 +165,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       get
       {
-        return this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].PropertyMask;
+        return this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].PropertyMask;
       }
       set
       {
-        this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].PropertyMask = value;
+        this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].PropertyMask = value;
       }
     }
 
@@ -178,17 +177,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       get
       {
-        return this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Properties;
+        return this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Properties;
       }
       set
       {
-        this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Properties = value;
+        this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Properties = value;
       }
     }
 
     public NodePropertiesEnumerator PropertiesEnumerator => new NodePropertiesEnumerator(this);
 
-      public bool IsBlockNode => FormatContainerType.Null != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Type & FormatContainerType.BlockFlag);
+      public bool IsBlockNode => FormatContainerType.Null != (this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Type & FormatContainerType.BlockFlag);
 
       public FormatNode.NodeSubtree Subtree => new FormatNode.NodeSubtree(this);
 
@@ -197,63 +196,63 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       internal FormatNode(FormatStore.NodeStore nodes, int nodeHandle)
     {
       this.nodes = nodes;
-      this.nodeHandle = nodeHandle;
+      this.Handle = nodeHandle;
     }
 
     internal FormatNode(FormatStore store, int nodeHandle)
     {
       this.nodes = store.Nodes;
-      this.nodeHandle = nodeHandle;
+      this.Handle = nodeHandle;
     }
 
     public static bool operator ==(FormatNode x, FormatNode y)
     {
       if (x.nodes == y.nodes)
-        return x.nodeHandle == y.nodeHandle;
+        return x.Handle == y.Handle;
       return false;
     }
 
     public static bool operator !=(FormatNode x, FormatNode y)
     {
       if (x.nodes == y.nodes)
-        return x.nodeHandle != y.nodeHandle;
+        return x.Handle != y.Handle;
       return true;
     }
 
     public void SetOutOfOrder()
     {
-      this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags |= FormatStore.NodeFlags.OutOfOrder;
+      this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags |= FormatStore.NodeFlags.OutOfOrder;
     }
 
     public void SetOnLeftEdge()
     {
-      this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags |= FormatStore.NodeFlags.OnLeftEdge;
+      this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags |= FormatStore.NodeFlags.OnLeftEdge;
     }
 
     public void ResetOnLeftEdge()
     {
-      this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags &= ~FormatStore.NodeFlags.OnLeftEdge;
+      this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags &= ~FormatStore.NodeFlags.OnLeftEdge;
     }
 
     public void SetOnRightEdge()
     {
-      this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags |= FormatStore.NodeFlags.OnRightEdge;
+      this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags |= FormatStore.NodeFlags.OnRightEdge;
     }
 
     public void SetVisited()
     {
-      this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags |= FormatStore.NodeFlags.Visited;
+      this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags |= FormatStore.NodeFlags.Visited;
     }
 
     public void ResetVisited()
     {
-      this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags &= ~FormatStore.NodeFlags.Visited;
+      this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].NodeFlags &= ~FormatStore.NodeFlags.Visited;
     }
 
     public PropertyValue GetProperty(PropertyId id)
     {
-      FormatStore.NodeEntry[] nodeEntryArray = this.nodes.Plane(this.nodeHandle);
-      int index1 = this.nodes.Index(this.nodeHandle);
+      FormatStore.NodeEntry[] nodeEntryArray = this.nodes.Plane(this.Handle);
+      int index1 = this.nodes.Index(this.Handle);
       if (FlagProperties.IsFlagProperty(id))
         return nodeEntryArray[index1].FlagProperties.GetPropertyValue(id);
       if (nodeEntryArray[index1].PropertyMask.IsSet(id))
@@ -272,8 +271,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public void SetProperty(PropertyId id, PropertyValue value)
     {
-      FormatStore.NodeEntry[] nodeEntryArray = this.nodes.Plane(this.nodeHandle);
-      int index1 = this.nodes.Index(this.nodeHandle);
+      FormatStore.NodeEntry[] nodeEntryArray = this.nodes.Plane(this.Handle);
+      int index1 = this.nodes.Index(this.Handle);
       if (FlagProperties.IsFlagProperty(id))
       {
         nodeEntryArray[index1].FlagProperties.SetPropertyValue(id, value);
@@ -317,60 +316,60 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public void AppendChild(FormatNode newChildNode)
     {
-      FormatNode.InternalAppendChild(this.nodes, this.nodeHandle, newChildNode.Handle);
+      FormatNode.InternalAppendChild(this.nodes, this.Handle, newChildNode.Handle);
     }
 
     public void PrependChild(FormatNode newChildNode)
     {
-      FormatNode.InternalPrependChild(this.nodes, this.nodeHandle, newChildNode.Handle);
+      FormatNode.InternalPrependChild(this.nodes, this.Handle, newChildNode.Handle);
     }
 
     public void InsertSiblingAfter(FormatNode newSiblingNode)
     {
-      int handle1 = newSiblingNode.nodeHandle;
+      int handle1 = newSiblingNode.Handle;
       FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(handle1);
       int index1 = this.nodes.Index(handle1);
-      FormatStore.NodeEntry[] nodeEntryArray2 = this.nodes.Plane(this.nodeHandle);
-      int index2 = this.nodes.Index(this.nodeHandle);
+      FormatStore.NodeEntry[] nodeEntryArray2 = this.nodes.Plane(this.Handle);
+      int index2 = this.nodes.Index(this.Handle);
       int handle2 = nodeEntryArray2[index2].Parent;
       FormatStore.NodeEntry[] nodeEntryArray3 = this.nodes.Plane(handle2);
       int index3 = this.nodes.Index(handle2);
       nodeEntryArray1[index1].Parent = handle2;
       nodeEntryArray1[index1].NextSibling = nodeEntryArray2[index2].NextSibling;
       nodeEntryArray2[index2].NextSibling = handle1;
-      if (this.nodeHandle != nodeEntryArray3[index3].LastChild)
+      if (this.Handle != nodeEntryArray3[index3].LastChild)
         return;
       nodeEntryArray3[index3].LastChild = handle1;
     }
 
     public void InsertSiblingBefore(FormatNode newSiblingNode)
     {
-      int handle1 = newSiblingNode.nodeHandle;
+      int handle1 = newSiblingNode.Handle;
       FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(handle1);
       int index1 = this.nodes.Index(handle1);
-      int handle2 = this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Parent;
+      int handle2 = this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Parent;
       int handle3 = this.nodes.Plane(handle2)[this.nodes.Index(handle2)].LastChild;
       FormatStore.NodeEntry[] nodeEntryArray2 = this.nodes.Plane(handle3);
       int index2;
       int handle4;
-      for (index2 = this.nodes.Index(handle3); nodeEntryArray2[index2].NextSibling != this.nodeHandle; index2 = this.nodes.Index(handle4))
+      for (index2 = this.nodes.Index(handle3); nodeEntryArray2[index2].NextSibling != this.Handle; index2 = this.nodes.Index(handle4))
       {
         handle4 = nodeEntryArray2[index2].NextSibling;
         nodeEntryArray2 = this.nodes.Plane(handle4);
       }
       nodeEntryArray1[index1].Parent = handle2;
-      nodeEntryArray1[index1].NextSibling = this.nodeHandle;
+      nodeEntryArray1[index1].NextSibling = this.Handle;
       nodeEntryArray2[index2].NextSibling = handle1;
     }
 
     public void RemoveFromParent()
     {
-      FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(this.nodeHandle);
-      int index1 = this.nodes.Index(this.nodeHandle);
+      FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(this.Handle);
+      int index1 = this.nodes.Index(this.Handle);
       int handle1 = nodeEntryArray1[index1].Parent;
       FormatStore.NodeEntry[] nodeEntryArray2 = this.nodes.Plane(handle1);
       int index2 = this.nodes.Index(handle1);
-      if (this.nodeHandle == nodeEntryArray1[index1].NextSibling)
+      if (this.Handle == nodeEntryArray1[index1].NextSibling)
       {
         nodeEntryArray2[index2].LastChild = 0;
       }
@@ -379,13 +378,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
         int handle2 = nodeEntryArray2[index2].LastChild;
         FormatStore.NodeEntry[] nodeEntryArray3 = this.nodes.Plane(handle2);
         int index3;
-        for (index3 = this.nodes.Index(handle2); nodeEntryArray3[index3].NextSibling != this.nodeHandle; index3 = this.nodes.Index(handle2))
+        for (index3 = this.nodes.Index(handle2); nodeEntryArray3[index3].NextSibling != this.Handle; index3 = this.nodes.Index(handle2))
         {
           handle2 = nodeEntryArray3[index3].NextSibling;
           nodeEntryArray3 = this.nodes.Plane(handle2);
         }
         nodeEntryArray3[index3].NextSibling = nodeEntryArray1[index1].NextSibling;
-        if (nodeEntryArray2[index2].LastChild == this.nodeHandle)
+        if (nodeEntryArray2[index2].LastChild == this.Handle)
           nodeEntryArray2[index2].LastChild = handle2;
       }
       nodeEntryArray1[index1].Parent = 0;
@@ -403,13 +402,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public void ChangeNodeType(FormatContainerType newType)
     {
-      this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Type = newType;
+      this.nodes.Plane(this.Handle)[this.nodes.Index(this.Handle)].Type = newType;
     }
 
     public void PrepareToClose(uint endTextPosition)
     {
-      FormatStore.NodeEntry[] nodeEntryArray = this.nodes.Plane(this.nodeHandle);
-      int index = this.nodes.Index(this.nodeHandle);
+      FormatStore.NodeEntry[] nodeEntryArray = this.nodes.Plane(this.Handle);
+      int index = this.nodes.Index(this.Handle);
       nodeEntryArray[index].EndTextPosition = endTextPosition;
       nodeEntryArray[index].NodeFlags &= ~FormatStore.NodeFlags.OnRightEdge;
       nodeEntryArray[index].NodeFlags |= FormatStore.NodeFlags.CanFlush;
@@ -417,8 +416,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public void SetProps(FlagProperties flagProperties, PropertyBitMask propertyMask, Property[] properties, int inheritanceMaskIndex)
     {
-      FormatStore.NodeEntry[] nodeEntryArray = this.nodes.Plane(this.nodeHandle);
-      int index = this.nodes.Index(this.nodeHandle);
+      FormatStore.NodeEntry[] nodeEntryArray = this.nodes.Plane(this.Handle);
+      int index = this.nodes.Index(this.Handle);
       nodeEntryArray[index].FlagProperties = flagProperties;
       nodeEntryArray[index].PropertyMask = propertyMask;
       nodeEntryArray[index].Properties = properties;
@@ -427,8 +426,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public FormatNode SplitTextNode(uint splitPosition)
     {
-      FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(this.nodeHandle);
-      int index1 = this.nodes.Index(this.nodeHandle);
+      FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(this.Handle);
+      int index1 = this.nodes.Index(this.Handle);
       int num = this.nodes.Allocate(FormatContainerType.Text, nodeEntryArray1[index1].BeginTextPosition);
       FormatStore.NodeEntry[] nodeEntryArray2 = this.nodes.Plane(num);
       int index2 = this.nodes.Index(num);
@@ -446,8 +445,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public FormatNode SplitNodeBeforeChild(FormatNode child)
     {
-      FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(this.nodeHandle);
-      int index1 = this.nodes.Index(this.nodeHandle);
+      FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(this.Handle);
+      int index1 = this.nodes.Index(this.Handle);
       int num = this.nodes.Allocate(this.NodeType, nodeEntryArray1[index1].BeginTextPosition);
       FormatStore.NodeEntry[] nodeEntryArray2 = this.nodes.Plane(num);
       int index2 = this.nodes.Index(num);
@@ -473,8 +472,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     public FormatNode DuplicateInsertAsChild()
     {
       int num = this.nodes.Allocate(this.NodeType, this.BeginTextPosition);
-      FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(this.nodeHandle);
-      int index1 = this.nodes.Index(this.nodeHandle);
+      FormatStore.NodeEntry[] nodeEntryArray1 = this.nodes.Plane(this.Handle);
+      int index1 = this.nodes.Index(this.Handle);
       FormatStore.NodeEntry[] nodeEntryArray2 = this.nodes.Plane(num);
       int index2 = this.nodes.Index(num);
       nodeEntryArray2[index2].NodeFlags = nodeEntryArray1[index1].NodeFlags;
@@ -492,13 +491,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     public override bool Equals(object obj)
     {
       if (obj is FormatNode && this.nodes == ((FormatNode) obj).nodes)
-        return this.nodeHandle == ((FormatNode) obj).nodeHandle;
+        return this.Handle == ((FormatNode) obj).Handle;
       return false;
     }
 
     public override int GetHashCode()
     {
-      return this.nodeHandle;
+      return this.Handle;
     }
 
     internal static void InternalAppendChild(FormatStore.NodeStore nodes, int thisNode, int newChildNode)
@@ -644,54 +643,52 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       private bool revisitParent;
       private FormatNode.SubtreeEnumerator.EnumeratorDisposition currentDisposition;
       private FormatNode root;
-      private FormatNode current;
-      private FormatNode nextChild;
-      private int depth;
+        private FormatNode nextChild;
 
-      public FormatNode Current => this.current;
+        public FormatNode Current { get; private set; }
 
         public bool FirstVisit => (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0 != (this.currentDisposition & FormatNode.SubtreeEnumerator.EnumeratorDisposition.Begin);
 
         public bool LastVisit => (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0 != (this.currentDisposition & FormatNode.SubtreeEnumerator.EnumeratorDisposition.End);
 
-        public int Depth => this.depth;
+        public int Depth { get; private set; }
 
-        object IEnumerator.Current => (object) this.current;
+        object IEnumerator.Current => (object) this.Current;
 
         internal SubtreeEnumerator(FormatNode node, bool revisitParent)
       {
         this.revisitParent = revisitParent;
         this.root = node;
-        this.current = FormatNode.Null;
+        this.Current = FormatNode.Null;
         this.currentDisposition = (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0;
         this.nextChild = node;
-        this.depth = -1;
+        this.Depth = -1;
       }
 
       public bool MoveNext()
       {
         if (this.nextChild != FormatNode.Null)
         {
-          ++this.depth;
-          this.current = this.nextChild;
-          this.nextChild = this.current.FirstChild;
+          ++this.Depth;
+          this.Current = this.nextChild;
+          this.nextChild = this.Current.FirstChild;
           this.currentDisposition = (FormatNode.SubtreeEnumerator.EnumeratorDisposition) (1 | (this.nextChild == FormatNode.Null ? 2 : 0));
           return true;
         }
-        if (this.depth < 0)
+        if (this.Depth < 0)
           return false;
         do
         {
-          --this.depth;
-          if (this.depth < 0)
+          --this.Depth;
+          if (this.Depth < 0)
           {
-            this.current = FormatNode.Null;
+            this.Current = FormatNode.Null;
             this.nextChild = FormatNode.Null;
             this.currentDisposition = (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0;
             return false;
           }
-          this.nextChild = this.current.NextSibling;
-          this.current = this.current.Parent;
+          this.nextChild = this.Current.NextSibling;
+          this.Current = this.Current.Parent;
           this.currentDisposition = this.nextChild == FormatNode.Null ? FormatNode.SubtreeEnumerator.EnumeratorDisposition.End : (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0;
         }
         while (!this.revisitParent && this.nextChild == FormatNode.Null);
@@ -704,10 +701,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       {
         if (this.nextChild != FormatNode.Null)
           return this.nextChild;
-        if (this.depth < 0)
+        if (this.Depth < 0)
           return FormatNode.Null;
-        int num = this.depth;
-        FormatNode formatNode = this.current;
+        int num = this.Depth;
+        FormatNode formatNode = this.Current;
         FormatNode nextSibling;
         do
         {
@@ -733,10 +730,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
       void IEnumerator.Reset()
       {
-        this.current = FormatNode.Null;
+        this.Current = FormatNode.Null;
         this.currentDisposition = (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0;
         this.nextChild = this.root;
-        this.depth = -1;
+        this.Depth = -1;
       }
 
       void IDisposable.Dispose()

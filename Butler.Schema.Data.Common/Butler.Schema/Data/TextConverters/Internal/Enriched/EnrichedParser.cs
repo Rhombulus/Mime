@@ -18,14 +18,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
         private int parseStart;
         private ParseState parseState;
         private int parseThreshold = 1;
-        private Html.HtmlToken token;
         private Html.HtmlTokenBuilder tokenBuilder;
 
         public EnrichedParser(ConverterInput input, int maxRuns, bool testBoundaryConditions)
         {
             this.input = input;
             this.tokenBuilder = new Html.HtmlTokenBuilder(null, maxRuns, 0, testBoundaryConditions);
-            this.token = this.tokenBuilder.Token;
+            this.Token = this.tokenBuilder.Token;
         }
 
         public void Dispose()
@@ -42,7 +41,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
             }
             this.input = null;
             this.parseBuffer = null;
-            this.token = null;
+            this.Token = null;
             this.tokenBuilder = null;
         }
 
@@ -165,7 +164,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
                                 tokenBuilder.AddLiteralRun(RunTextType.Space, Html.HtmlRunKind.Text, baseOffset, baseOffset, 0x20);
                                 tokenBuilder.EndText();
                                 this.parseCurrent = baseOffset;
-                                return this.token.HtmlTokenId;
+                                return this.Token.HtmlTokenId;
                             }
                             tokenBuilder.StartTag(Html.HtmlNameIndex.Unknown, baseOffset);
                             if (flag2)
@@ -214,7 +213,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
                             tokenBuilder.AddLiteralRun(RunTextType.Space, Html.HtmlRunKind.Text, baseOffset, baseOffset, 0x20);
                             tokenBuilder.EndText();
                             this.parseCurrent = baseOffset;
-                            return this.token.HtmlTokenId;
+                            return this.Token.HtmlTokenId;
                         }
                         this.newLineState = NewLineState.None;
                         goto Label_043E;
@@ -250,7 +249,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
                         this.parseState = ParseState.Text;
                     }
                     this.parseCurrent = parseCurrent;
-                    return this.token.HtmlTokenId;
+                    return this.Token.HtmlTokenId;
 
                 default:
                     this.parseCurrent = parseCurrent;
@@ -259,14 +258,14 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
             Label_01F9:
             this.ParseText(ch, charClass, ref parseCurrent);
             parseThreshold = this.parseThreshold;
-            if (this.token.IsEmpty && !flag)
+            if (this.Token.IsEmpty && !flag)
             {
                 tokenBuilder.Reset();
                 goto Label_008C;
             }
             tokenBuilder.EndText();
             this.parseCurrent = parseCurrent;
-            return this.token.HtmlTokenId;
+            return this.Token.HtmlTokenId;
             Label_043E:
             tokenBuilder.StartTag(Html.HtmlNameIndex.Unknown, baseOffset);
             if (flag2)
@@ -287,7 +286,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
                 this.parseState = ParseState.Text;
             }
             this.parseCurrent = parseCurrent;
-            return this.token.HtmlTokenId;
+            return this.Token.HtmlTokenId;
             Label_0502:
             if (!flag || ((parseCurrent + parseThreshold) < parseEnd))
             {
@@ -295,11 +294,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
             }
             if (this.endOfFile)
             {
-                if (!this.token.IsTagBegin)
+                if (!this.Token.IsTagBegin)
                 {
                     tokenBuilder.EndTag(true);
                     this.parseCurrent = parseCurrent;
-                    return this.token.HtmlTokenId;
+                    return this.Token.HtmlTokenId;
                 }
                 parseCurrent = this.parseStart;
                 tokenBuilder.Reset();
@@ -315,7 +314,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
             Label_0545:
             tokenBuilder.EndTag(false);
             this.parseCurrent = parseCurrent;
-            return this.token.HtmlTokenId;
+            return this.Token.HtmlTokenId;
         }
 
         private void ParseText(char ch, CharClass charClass, ref int parseCurrent)
@@ -612,7 +611,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
             return ((num + this.parseThreshold) <= parseEnd);
         }
 
-        public Html.HtmlToken Token => this.token;
+        public Html.HtmlToken Token { get; private set; }
 
 
         private enum NewLineState

@@ -38,12 +38,10 @@ namespace Butler.Schema.Data.Mime
     private MimePart lastPart;
     private long parsedSize;
     private MimeDocument.EndOfHeadersCallback eohCallback;
-    private int version;
-    private bool stopLoading;
+      private bool stopLoading;
     private bool loadEmbeddedMessages;
     private bool isDisposed;
-    private bool isReadOnly;
-    private bool parseCompletely;
+      private bool parseCompletely;
     private int embeddedMessagePartDepth;
     private long cachedSize;
     private bool expectBinaryContent;
@@ -162,7 +160,7 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public int Version => this.version;
+    public int Version { get; private set; }
 
       internal static bool FixMimeForTestUseOnly
     {
@@ -178,7 +176,7 @@ namespace Butler.Schema.Data.Mime
 
     internal ObjectThreadAccessToken AccessToken => (ObjectThreadAccessToken) this.accessToken;
 
-      internal bool IsReadOnly => this.isReadOnly;
+      internal bool IsReadOnly { get; private set; }
 
       internal DecodingOptions EffectiveHeaderDecodingOptions
     {
@@ -360,9 +358,9 @@ namespace Butler.Schema.Data.Mime
       this.ThrowIfDisposed();
       using (ThreadAccessGuard.EnterPublic((ObjectThreadAccessToken) this.accessToken))
       {
-        if (Stream.Null != stream || this.cachedSizeVersion != this.version)
+        if (Stream.Null != stream || this.cachedSizeVersion != this.Version)
         {
-          this.cachedSizeVersion = this.version;
+          this.cachedSizeVersion = this.Version;
           this.cachedSize = this.root == null ? 0L : this.root.WriteTo(stream, this.EncodingOptions, (MimeOutputFilter) null);
         }
         return this.cachedSize;
@@ -416,7 +414,7 @@ namespace Butler.Schema.Data.Mime
       this.ThrowIfDisposed();
       using (ThreadAccessGuard.EnterPublic((ObjectThreadAccessToken) this.accessToken))
       {
-        if (makeReadOnly == this.isReadOnly)
+        if (makeReadOnly == this.IsReadOnly)
           return;
         if (makeReadOnly)
           this.CompleteParse();
@@ -438,7 +436,7 @@ namespace Butler.Schema.Data.Mime
     {
       using (ThreadAccessGuard.EnterPublic((ObjectThreadAccessToken) this.accessToken))
       {
-        this.isReadOnly = makeReadOnly;
+        this.IsReadOnly = makeReadOnly;
         using (MimePart.SubtreeEnumerator enumerator = this.root.Subtree.GetEnumerator(MimePart.SubtreeEnumerationOptions.IncludeEmbeddedMessages, false))
         {
           while (enumerator.MoveNext())
@@ -450,7 +448,7 @@ namespace Butler.Schema.Data.Mime
     internal void IncrementVersion()
     {
       using (ThreadAccessGuard.EnterPublic((ObjectThreadAccessToken) this.accessToken))
-        this.version = int.MaxValue == this.version ? 1 : this.version + 1;
+        this.Version = int.MaxValue == this.Version ? 1 : this.Version + 1;
     }
 
     internal void BuildEmbeddedDom(MimePart part)
@@ -1048,7 +1046,7 @@ label_13:
 
     private void ThrowIfReadOnly(string method)
     {
-      if (this.isReadOnly)
+      if (this.IsReadOnly)
         throw new ReadOnlyMimeException(method);
     }
 

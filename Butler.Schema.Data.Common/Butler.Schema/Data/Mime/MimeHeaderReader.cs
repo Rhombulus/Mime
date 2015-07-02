@@ -11,16 +11,15 @@ namespace Butler.Schema.Data.Mime
 {
   public struct MimeHeaderReader
   {
-    private MimeReader reader;
 
-    internal MimeReader MimeReader => this.reader;
+      internal MimeReader MimeReader { get; }
 
       public HeaderId HeaderId
     {
       get
       {
         this.AssertGood(true);
-        return this.reader.HeaderId;
+        return this.MimeReader.HeaderId;
       }
     }
 
@@ -29,7 +28,7 @@ namespace Butler.Schema.Data.Mime
       get
       {
         this.AssertGood(true);
-        return this.reader.HeaderName;
+        return this.MimeReader.HeaderName;
       }
     }
 
@@ -48,9 +47,9 @@ namespace Butler.Schema.Data.Mime
       {
         if (!this.IsAddressHeader)
           throw new InvalidOperationException(CtsResources.Strings.HeaderCannotHaveAddresses);
-        if (this.reader.ReaderState == MimeReaderState.HeaderStart)
-          this.reader.TryCompleteCurrentHeader(true);
-        return new MimeAddressReader(this.reader, true);
+        if (this.MimeReader.ReaderState == MimeReaderState.HeaderStart)
+          this.MimeReader.TryCompleteCurrentHeader(true);
+        return new MimeAddressReader(this.MimeReader, true);
       }
     }
 
@@ -72,9 +71,9 @@ namespace Butler.Schema.Data.Mime
       {
         if (!this.CanHaveParameters)
           throw new InvalidOperationException(CtsResources.Strings.HeaderCannotHaveParameters);
-        if (this.reader.ReaderState == MimeReaderState.HeaderStart)
-          this.reader.TryCompleteCurrentHeader(true);
-        return new MimeParameterReader(this.reader);
+        if (this.MimeReader.ReaderState == MimeReaderState.HeaderStart)
+          this.MimeReader.TryCompleteCurrentHeader(true);
+        return new MimeParameterReader(this.MimeReader);
       }
     }
 
@@ -84,7 +83,7 @@ namespace Butler.Schema.Data.Mime
       {
         DecodingResults decodingResults;
         string str;
-        if (!this.TryGetValue(this.reader.HeaderDecodingOptions, out decodingResults, out str))
+        if (!this.TryGetValue(this.MimeReader.HeaderDecodingOptions, out decodingResults, out str))
           MimeCommon.ThrowDecodingFailedException(ref decodingResults);
         return str;
       }
@@ -92,28 +91,28 @@ namespace Butler.Schema.Data.Mime
 
     internal MimeHeaderReader(MimeReader reader)
     {
-      this.reader = reader;
+      this.MimeReader = reader;
     }
 
     public DateTime ReadValueAsDateTime()
     {
       this.AssertGood(true);
-      if (this.reader.ReaderState == MimeReaderState.HeaderStart)
-        this.reader.TryCompleteCurrentHeader(true);
-      if (this.reader.CurrentHeaderObject == null)
+      if (this.MimeReader.ReaderState == MimeReaderState.HeaderStart)
+        this.MimeReader.TryCompleteCurrentHeader(true);
+      if (this.MimeReader.CurrentHeaderObject == null)
         return DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
-      DateHeader dateHeader = this.reader.CurrentHeaderObject as DateHeader;
+      DateHeader dateHeader = this.MimeReader.CurrentHeaderObject as DateHeader;
       if (dateHeader != null)
         return dateHeader.DateTime;
-      return DateHeader.ParseDateHeaderValue(this.reader.CurrentHeaderObject.Value);
+      return DateHeader.ParseDateHeaderValue(this.MimeReader.CurrentHeaderObject.Value);
     }
 
     public bool ReadNextHeader()
     {
       this.AssertGood(false);
-      while (this.reader.ReadNextHeader())
+      while (this.MimeReader.ReadNextHeader())
       {
-        if (this.reader.HeaderName != null)
+        if (this.MimeReader.HeaderName != null)
           return true;
       }
       return false;
@@ -122,17 +121,17 @@ namespace Butler.Schema.Data.Mime
     public bool TryGetValue(out string value)
     {
       DecodingResults decodingResults;
-      return this.TryGetValue(this.reader.HeaderDecodingOptions, out decodingResults, out value);
+      return this.TryGetValue(this.MimeReader.HeaderDecodingOptions, out decodingResults, out value);
     }
 
     public bool TryGetValue(DecodingOptions decodingOptions, out DecodingResults decodingResults, out string value)
     {
       this.AssertGood(true);
-      if (this.reader.ReaderState == MimeReaderState.HeaderStart)
-        this.reader.TryCompleteCurrentHeader(true);
-      if (this.reader.CurrentHeaderObject != null)
+      if (this.MimeReader.ReaderState == MimeReaderState.HeaderStart)
+        this.MimeReader.TryCompleteCurrentHeader(true);
+      if (this.MimeReader.CurrentHeaderObject != null)
       {
-        TextHeader textHeader = this.reader.CurrentHeaderObject as TextHeader;
+        TextHeader textHeader = this.MimeReader.CurrentHeaderObject as TextHeader;
         if (textHeader != null)
         {
           value = textHeader.GetDecodedValue(decodingOptions, out decodingResults);
@@ -141,7 +140,7 @@ namespace Butler.Schema.Data.Mime
           value = (string) null;
           return false;
         }
-        value = this.reader.CurrentHeaderObject.Value;
+        value = this.MimeReader.CurrentHeaderObject.Value;
       }
       else
         value = (string) null;
@@ -151,12 +150,12 @@ namespace Butler.Schema.Data.Mime
 
     private void AssertGood(bool checkPositionedOnHeader)
     {
-      if (this.reader == null)
+      if (this.MimeReader == null)
         throw new NotSupportedException(CtsResources.Strings.HeaderReaderNotInitialized);
-      this.reader.AssertGoodToUse(true, true);
-      if (!MimeReader.StateIsOneOf(this.reader.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
+      this.MimeReader.AssertGoodToUse(true, true);
+      if (!MimeReader.StateIsOneOf(this.MimeReader.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
         throw new NotSupportedException(CtsResources.Strings.HeaderReaderCannotBeUsedInThisState);
-      if (checkPositionedOnHeader && MimeReader.StateIsOneOf(this.reader.ReaderState, MimeReaderState.PartStart | MimeReaderState.EndOfHeaders))
+      if (checkPositionedOnHeader && MimeReader.StateIsOneOf(this.MimeReader.ReaderState, MimeReaderState.PartStart | MimeReaderState.EndOfHeaders))
         throw new InvalidOperationException(CtsResources.Strings.HeaderReaderIsNotPositionedOnAHeader);
     }
   }

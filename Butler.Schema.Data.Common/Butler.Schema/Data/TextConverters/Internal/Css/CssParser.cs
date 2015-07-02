@@ -31,15 +31,14 @@ namespace Butler.Schema.Data.TextConverters.Internal.Css
     private int parseCurrent;
     private int parseEnd;
     private int ruleDepth;
-    private CssToken token;
 
-    public CssToken Token => this.token;
+      public CssToken Token { get; private set; }
 
       public CssParser(ConverterInput input, int maxRuns, bool testBoundaryConditions)
     {
       this.input = input;
       this.tokenBuilder = new CssTokenBuilder((char[]) null, 256, 256, maxRuns, testBoundaryConditions);
-      this.token = this.tokenBuilder.Token;
+      this.Token = this.tokenBuilder.Token;
     }
 
     public void Dispose()
@@ -54,7 +53,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Css
         this.input.Dispose();
       this.input = (ConverterInput) null;
       this.parseBuffer = (char[]) null;
-      this.token = (CssToken) null;
+      this.Token = (CssToken) null;
     }
 
     public void Reset()
@@ -118,7 +117,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Css
       }
       this.endOfFile = parseCurrent == num1;
       this.parseCurrent = parseCurrent;
-      return this.token.CssTokenId;
+      return this.Token.CssTokenId;
     }
 
     private static bool IsNameCharacterNoEscape(char ch, CharClass charClass)

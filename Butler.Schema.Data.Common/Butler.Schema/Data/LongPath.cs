@@ -17,9 +17,7 @@ namespace Butler.Schema.Data
   {
     private string pathName;
     private bool isValid;
-    private bool isLocalFull;
-    private bool isUnc;
-    private string driveName;
+      private string driveName;
     private string serverName;
 
     public string PathName
@@ -46,9 +44,9 @@ namespace Butler.Schema.Data
       }
     }
 
-    public bool IsLocalFull => this.isLocalFull;
+    public bool IsLocalFull { get; private set; }
 
-      public bool IsUnc => this.isUnc;
+      public bool IsUnc { get; private set; }
 
       public string DriveName
     {
@@ -135,9 +133,9 @@ namespace Butler.Schema.Data
             path += (string) (object) Path.DirectorySeparatorChar;
           if (LongPath.IsLongPath(path))
           {
-            if (!(this.isLocalFull = LongPath.IsLocalFullPath(path, out this.driveName)))
+            if (!(this.IsLocalFull = LongPath.IsLocalFullPath(path, out this.driveName)))
             {
-              if (!(this.isUnc = LongPath.IsUncPath(path, out this.serverName)))
+              if (!(this.IsUnc = LongPath.IsUncPath(path, out this.serverName)))
                 goto label_14;
             }
             string path1 = Path.GetFullPath(path);

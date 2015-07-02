@@ -24,10 +24,7 @@ namespace Butler.Schema.Data.TextConverters
     private int testMaxHtmlTagAttributes = 64;
     private int testMaxHtmlRestartOffset = 4096;
     private int testMaxHtmlNormalizerNesting = 4096;
-    private bool outputAnchorLinks = true;
-    private bool outputImageLinks = true;
-    private TextExtractionMode mode;
-    private Encoding inputEncoding;
+      private Encoding inputEncoding;
     private bool normalizeInputHtml;
     private Encoding outputEncoding;
     private bool wrapFlowed;
@@ -45,7 +42,7 @@ namespace Butler.Schema.Data.TextConverters
     private int testNormalizerTraceStopOnTokenNum;
     private Stream testFormatTraceStream;
 
-    public TextExtractionMode TextExtractionMode => this.mode;
+    public TextExtractionMode TextExtractionMode { get; }
 
       public Encoding InputEncoding
     {
@@ -196,38 +193,18 @@ namespace Butler.Schema.Data.TextConverters
 
     public bool ShouldUseNarrowGapForPTagHtmlToTextConversion { get; set; }
 
-    public bool OutputAnchorLinks
-    {
-      get
-      {
-        return this.outputAnchorLinks;
-      }
-      set
-      {
-        this.outputAnchorLinks = value;
-      }
-    }
+    public bool OutputAnchorLinks { get; set; } = true;
 
-    public bool OutputImageLinks
-    {
-      get
-      {
-        return this.outputImageLinks;
-      }
-      set
-      {
-        this.outputImageLinks = value;
-      }
-    }
+      public bool OutputImageLinks { get; set; } = true;
 
-    public HtmlToText()
+      public HtmlToText()
     {
-      this.mode = TextExtractionMode.NormalConversion;
+      this.TextExtractionMode = TextExtractionMode.NormalConversion;
     }
 
     public HtmlToText(TextExtractionMode mode)
     {
-      this.mode = mode;
+      this.TextExtractionMode = mode;
     }
 
     internal HtmlToText SetInputEncoding(Encoding value)
@@ -470,7 +447,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       this.locked = true;
       Internal.Html.HtmlParser parser1 = new Internal.Html.HtmlParser(input, this.detectEncodingFromMetaTag, false, this.testMaxTokenRuns, this.testMaxHtmlTagAttributes, this.testBoundaryConditions);
-      if (this.mode == TextExtractionMode.ExtractText)
+      if (this.TextExtractionMode == TextExtractionMode.ExtractText)
         return (IProducerConsumer) new Internal.Html.HtmlTextExtractionConverter((Internal.Html.IHtmlParser) parser1, output, this.testTraceStream, this.testTraceShowTokenNum, this.testTraceStopOnTokenNum);
       Injection injection = (Injection) null;
       if (this.injectHead != null || this.injectTail != null)
@@ -507,7 +484,7 @@ namespace Butler.Schema.Data.TextConverters
     private void AssertNotLockedAndNotTextExtraction()
     {
       this.AssertNotLocked();
-      if (this.mode == TextExtractionMode.ExtractText)
+      if (this.TextExtractionMode == TextExtractionMode.ExtractText)
         throw new InvalidOperationException(CtsResources.TextConvertersStrings.PropertyNotValidForTextExtractionMode);
     }
   }

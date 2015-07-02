@@ -16,65 +16,47 @@ namespace Butler.Schema.Data.Mime
     private MimeParser.ParseState state;
     private int currentOffset;
     private int lineOffset;
-    private bool mime;
-    private MimeParser.ParseLevel currentLevel;
+      private MimeParser.ParseLevel currentLevel;
     private MimeParser.ParseLevel[] parseStack;
-    private int parseStackTop;
-    private int position;
-    private int lastTokenLength;
+      private int lastTokenLength;
     private bool firstHeader;
     private bool parseEmbeddedMessages;
     private bool parseInlineAttachments;
     private int nextBoundaryLevel;
     private bool nextBoundaryEnd;
-    private MimeComplianceStatus compliance;
-    private bool expectBinaryContent;
-    private int headerNameLength;
-    private int headerDataOffset;
-    private bool headerComplete;
-    private ContentTransferEncoding inlineFormat;
+      private bool expectBinaryContent;
 
-    public bool IsEndOfFile => this.state == MimeParser.ParseState.EndOfFile;
+      public bool IsEndOfFile => this.state == MimeParser.ParseState.EndOfFile;
 
-      public int Position => this.position;
+      public int Position { get; private set; }
 
-      public int Depth => this.parseStackTop;
+      public int Depth { get; private set; }
 
       public int PartDepth
     {
       get
       {
-        if (this.parseStackTop != 0)
-          return this.parseStack[this.parseStackTop - 1].PartDepth;
+        if (this.Depth != 0)
+          return this.parseStack[this.Depth - 1].PartDepth;
         return 0;
       }
     }
 
-    public int HeaderNameLength => this.headerNameLength;
+    public int HeaderNameLength { get; private set; }
 
-      public int HeaderDataOffset => this.headerDataOffset;
+      public int HeaderDataOffset { get; private set; }
 
-      public bool IsHeaderComplete => this.headerComplete;
+      public bool IsHeaderComplete { get; private set; }
 
-      public MimeComplianceStatus ComplianceStatus
-    {
-      get
-      {
-        return this.compliance;
-      }
-      set
-      {
-        this.compliance = value;
-      }
-    }
+      public MimeComplianceStatus ComplianceStatus { get; set; }
 
-    public bool IsMime => this.mime;
+      public bool IsMime { get; private set; }
 
       public MajorContentType ContentType => this.currentLevel.ContentType;
 
       public ContentTransferEncoding TransferEncoding => this.currentLevel.TransferEncoding;
 
-      public ContentTransferEncoding InlineFormat => this.inlineFormat;
+      public ContentTransferEncoding InlineFormat { get; private set; }
 
       public MimeParser(bool expectBinaryContent)
     {
@@ -96,27 +78,27 @@ namespace Butler.Schema.Data.Mime
       this.state = MimeParser.ParseState.Headers;
       this.currentOffset = 0;
       this.lineOffset = 0;
-      this.mime = false;
+      this.IsMime = false;
       this.currentLevel.Reset(true);
-      this.parseStackTop = 0;
-      this.position = 0;
+      this.Depth = 0;
+      this.Position = 0;
       this.lastTokenLength = 0;
       this.firstHeader = true;
       this.nextBoundaryLevel = -1;
       this.nextBoundaryEnd = false;
-      this.headerNameLength = 0;
-      this.headerDataOffset = 0;
-      this.headerComplete = false;
-      this.inlineFormat = ContentTransferEncoding.Unknown;
-      this.compliance = MimeComplianceStatus.Compliant;
+      this.HeaderNameLength = 0;
+      this.HeaderDataOffset = 0;
+      this.IsHeaderComplete = false;
+      this.InlineFormat = ContentTransferEncoding.Unknown;
+      this.ComplianceStatus = MimeComplianceStatus.Compliant;
     }
 
     public void SetMIME()
     {
-      if (this.parseStackTop != 0 && this.parseStack[this.parseStackTop - 1].ContentType != MajorContentType.MessageRfc822)
+      if (this.Depth != 0 && this.parseStack[this.Depth - 1].ContentType != MajorContentType.MessageRfc822)
         return;
-      if (this.parseStackTop == 0)
-        this.mime = true;
+      if (this.Depth == 0)
+        this.IsMime = true;
       this.currentLevel.IsMime = true;
     }
 
@@ -142,7 +124,7 @@ namespace Butler.Schema.Data.Mime
     public void ReportConsumedData(int lengthConsumed)
     {
       this.lastTokenLength -= lengthConsumed;
-      this.position += lengthConsumed;
+      this.Position += lengthConsumed;
     }
 
     public MimeToken Parse(byte[] data, int start, int end, bool flush)
@@ -166,17 +148,17 @@ namespace Butler.Schema.Data.Mime
           }
           else if (nextNL == start || (int) data[nextNL - 1] != 13)
           {
-            this.compliance |= MimeComplianceStatus.BareLinefeedInHeader;
+            this.ComplianceStatus |= MimeComplianceStatus.BareLinefeedInHeader;
             flag = true;
           }
           else
             --nextNL;
-          this.headerNameLength = 0;
-          this.headerDataOffset = 0;
+          this.HeaderNameLength = 0;
+          this.HeaderDataOffset = 0;
           int num2;
           if (nextNL - start > 998)
           {
-            this.compliance |= MimeComplianceStatus.InvalidWrapping;
+            this.ComplianceStatus |= MimeComplianceStatus.InvalidWrapping;
             this.currentOffset = nextNL - (start + 998);
             this.lineOffset = line - (start + 998);
             nextNL = start + 998;
@@ -194,7 +176,7 @@ namespace Butler.Schema.Data.Mime
             this.lastTokenLength = num2;
             return new MimeToken(MimeTokenId.EndOfHeaders, this.lastTokenLength);
           }
-          this.headerComplete = num2 != 0 && nextNL + num2 < end && ((int) data[nextNL + num2] != 32 && (int) data[nextNL + num2] != 9);
+          this.IsHeaderComplete = num2 != 0 && nextNL + num2 < end && ((int) data[nextNL + num2] != 32 && (int) data[nextNL + num2] != 9);
           if (!this.firstHeader && (line < start || (int) data[line] == 32 || (int) data[line] == 9))
           {
             this.lastTokenLength = nextNL + num2 - start;
@@ -202,41 +184,41 @@ namespace Butler.Schema.Data.Mime
           }
           this.firstHeader = false;
           int characterCount = 0;
-          this.headerNameLength = MimeScan.FindEndOf(MimeScan.Token.Field, data, start, nextNL - start, out characterCount, false);
-          if (this.headerNameLength == 0)
+          this.HeaderNameLength = MimeScan.FindEndOf(MimeScan.Token.Field, data, start, nextNL - start, out characterCount, false);
+          if (this.HeaderNameLength == 0)
           {
-            this.compliance |= MimeComplianceStatus.InvalidHeader;
+            this.ComplianceStatus |= MimeComplianceStatus.InvalidHeader;
             this.lastTokenLength = nextNL + num2 - start;
             return new MimeToken(MimeTokenId.Header, this.lastTokenLength);
           }
-          int offset = start + this.headerNameLength;
+          int offset = start + this.HeaderNameLength;
           if (offset == nextNL || (int) data[offset] != 58)
           {
             offset += MimeScan.SkipLwsp(data, offset, nextNL - offset);
             if (offset == nextNL || (int) data[offset] != 58)
             {
-              this.headerNameLength = 0;
-              if (this.mime && (this.parseStackTop > 0 || this.currentLevel.ContentType == MajorContentType.Multipart) && (nextNL - line > 2 && (int) data[line] == 45 && ((int) data[line + 1] == 45 && this.FindBoundary(data, line, nextNL, out this.nextBoundaryLevel, out this.nextBoundaryEnd))))
+              this.HeaderNameLength = 0;
+              if (this.IsMime && (this.Depth > 0 || this.currentLevel.ContentType == MajorContentType.Multipart) && (nextNL - line > 2 && (int) data[line] == 45 && ((int) data[line + 1] == 45 && this.FindBoundary(data, line, nextNL, out this.nextBoundaryLevel, out this.nextBoundaryEnd))))
               {
-                this.compliance |= MimeComplianceStatus.MissingBodySeparator;
-                if (this.nextBoundaryLevel != this.parseStackTop)
-                  this.compliance |= MimeComplianceStatus.MissingBoundary;
+                this.ComplianceStatus |= MimeComplianceStatus.MissingBodySeparator;
+                if (this.nextBoundaryLevel != this.Depth)
+                  this.ComplianceStatus |= MimeComplianceStatus.MissingBoundary;
                 this.lineOffset = 0;
                 this.currentOffset = nextNL - start;
                 this.state = MimeParser.ParseState.EndOfHeaders;
                 return new MimeToken(MimeTokenId.EndOfHeaders, 0);
               }
-              this.compliance |= MimeComplianceStatus.InvalidHeader;
+              this.ComplianceStatus |= MimeComplianceStatus.InvalidHeader;
               this.lastTokenLength = nextNL + num2 - start;
               return new MimeToken(MimeTokenId.Header, this.lastTokenLength);
             }
           }
-          this.headerDataOffset = offset + 1 - start;
+          this.HeaderDataOffset = offset + 1 - start;
           this.lastTokenLength = nextNL + num2 - start;
           return new MimeToken(MimeTokenId.Header, this.lastTokenLength);
         case MimeParser.ParseState.EndOfHeaders:
           this.CheckMimeConstraints();
-          if (this.mime && this.parseEmbeddedMessages && (this.currentLevel.ContentType == MajorContentType.MessageRfc822 && !this.currentLevel.StreamMode))
+          if (this.IsMime && this.parseEmbeddedMessages && (this.currentLevel.ContentType == MajorContentType.MessageRfc822 && !this.currentLevel.StreamMode))
           {
             this.PushLevel(false);
             this.lastTokenLength = 0;
@@ -285,7 +267,7 @@ namespace Butler.Schema.Data.Mime
           bool containsBinary;
           nextNL = Internal.ByteString.IndexOf(data, (byte) 10, current, end - current, out containsBinary);
           if (containsBinary)
-            this.compliance |= MimeComplianceStatus.UnexpectedBinaryContent;
+            this.ComplianceStatus |= MimeComplianceStatus.UnexpectedBinaryContent;
         }
         if (nextNL == -1)
           nextNL = end;
@@ -301,7 +283,7 @@ namespace Butler.Schema.Data.Mime
         else if (nextNL == start || (int) data[nextNL - 1] != 13)
         {
           if (this.currentLevel.TransferEncoding != ContentTransferEncoding.Binary)
-            this.compliance |= MimeComplianceStatus.BareLinefeedInBody;
+            this.ComplianceStatus |= MimeComplianceStatus.BareLinefeedInBody;
           sizeNL = 1;
         }
         else
@@ -310,12 +292,12 @@ namespace Butler.Schema.Data.Mime
           sizeNL = 2;
         }
         if (nextNL - line > 998 && this.currentLevel.TransferEncoding != ContentTransferEncoding.Binary)
-          this.compliance |= MimeComplianceStatus.InvalidWrapping;
+          this.ComplianceStatus |= MimeComplianceStatus.InvalidWrapping;
         if (this.nextBoundaryLevel == -1)
         {
-          if (!this.mime || line < start || nextNL != end && nextNL == line || (nextNL != line && (int) data[line] != 45 || nextNL - line > 998))
+          if (!this.IsMime || line < start || nextNL != end && nextNL == line || (nextNL != line && (int) data[line] != 45 || nextNL - line > 998))
           {
-            if (!this.parseInlineAttachments || this.currentLevel.IsMime || line < start || nextNL != end && nextNL == line || nextNL != line && (this.inlineFormat == ContentTransferEncoding.Unknown && ((int) data[line] | 32) != 98 || this.inlineFormat == ContentTransferEncoding.UUEncode && ((int) data[line] | 32) != 101) || nextNL - line > 998)
+            if (!this.parseInlineAttachments || this.currentLevel.IsMime || line < start || nextNL != end && nextNL == line || nextNL != line && (this.InlineFormat == ContentTransferEncoding.Unknown && ((int) data[line] | 32) != 98 || this.InlineFormat == ContentTransferEncoding.UUEncode && ((int) data[line] | 32) != 101) || nextNL - line > 998)
             {
               if (nextNL != end)
               {
@@ -332,7 +314,7 @@ namespace Butler.Schema.Data.Mime
             flag = true;
           if (nextNL != end || flush)
           {
-            if (!flag || nextNL - line <= 2 || this.parseStackTop == 0 && this.currentLevel.ContentType != MajorContentType.Multipart || ((int) data[line + 1] != 45 || !this.FindBoundary(data, line, nextNL, out this.nextBoundaryLevel, out this.nextBoundaryEnd)))
+            if (!flag || nextNL - line <= 2 || this.Depth == 0 && this.currentLevel.ContentType != MajorContentType.Multipart || ((int) data[line + 1] != 45 || !this.FindBoundary(data, line, nextNL, out this.nextBoundaryLevel, out this.nextBoundaryEnd)))
             {
               if (!this.parseInlineAttachments || this.currentLevel.IsMime || !this.IsInlineBoundary(data, line, nextNL, end, out this.nextBoundaryLevel, out this.nextBoundaryEnd))
               {
@@ -348,9 +330,9 @@ namespace Butler.Schema.Data.Mime
               else
                 flag = false;
             }
-            if (this.nextBoundaryLevel == this.parseStackTop && (this.currentLevel.Epilogue || this.nextBoundaryEnd))
+            if (this.nextBoundaryLevel == this.Depth && (this.currentLevel.Epilogue || this.nextBoundaryEnd))
             {
-              this.compliance |= MimeComplianceStatus.MissingBoundary;
+              this.ComplianceStatus |= MimeComplianceStatus.MissingBoundary;
               this.nextBoundaryLevel = -1;
               this.currentLevel.Epilogue = true;
               if (nextNL != end)
@@ -405,18 +387,18 @@ label_40:
 
     private void PushLevel(bool inheritMime)
     {
-      if (this.parseStack == null || this.parseStackTop == this.parseStack.Length)
+      if (this.parseStack == null || this.Depth == this.parseStack.Length)
       {
         MimeParser.ParseLevel[] parseLevelArray = new MimeParser.ParseLevel[this.parseStack == null ? 4 : this.parseStack.Length * 2];
         if (this.parseStack != null)
-          Array.Copy((Array) this.parseStack, 0, (Array) parseLevelArray, 0, this.parseStackTop);
-        for (int index = 0; index < this.parseStackTop; ++index)
+          Array.Copy((Array) this.parseStack, 0, (Array) parseLevelArray, 0, this.Depth);
+        for (int index = 0; index < this.Depth; ++index)
           this.parseStack[index] = new MimeParser.ParseLevel();
         this.parseStack = parseLevelArray;
       }
       if (this.currentLevel.ContentType != MajorContentType.MessageRfc822)
-        this.currentLevel.PartDepth = this.parseStackTop == 0 ? 1 : this.parseStack[this.parseStackTop - 1].PartDepth + 1;
-      this.parseStack[this.parseStackTop++] = this.currentLevel;
+        this.currentLevel.PartDepth = this.Depth == 0 ? 1 : this.parseStack[this.Depth - 1].PartDepth + 1;
+      this.parseStack[this.Depth++] = this.currentLevel;
       this.currentLevel.Reset(!inheritMime);
       this.state = MimeParser.ParseState.Headers;
       this.firstHeader = true;
@@ -424,7 +406,7 @@ label_40:
 
     private void CheckMimeConstraints()
     {
-      if (!this.mime)
+      if (!this.IsMime)
       {
         this.currentLevel.SetContentType(MajorContentType.Other, new MimeString());
         this.currentLevel.TransferEncoding = ContentTransferEncoding.SevenBit;
@@ -432,10 +414,10 @@ label_40:
       else
       {
         if ((this.currentLevel.ContentType == MajorContentType.Multipart || this.currentLevel.ContentType == MajorContentType.MessageRfc822 || this.currentLevel.ContentType == MajorContentType.Message) && this.currentLevel.TransferEncoding > ContentTransferEncoding.Binary)
-          this.compliance |= MimeComplianceStatus.InvalidTransferEncoding;
-        if (this.parseStackTop == 0 || this.currentLevel.TransferEncoding > ContentTransferEncoding.Binary || this.currentLevel.TransferEncoding <= this.parseStack[this.parseStackTop - 1].TransferEncoding)
+          this.ComplianceStatus |= MimeComplianceStatus.InvalidTransferEncoding;
+        if (this.Depth == 0 || this.currentLevel.TransferEncoding > ContentTransferEncoding.Binary || this.currentLevel.TransferEncoding <= this.parseStack[this.Depth - 1].TransferEncoding)
           return;
-        this.compliance |= MimeComplianceStatus.InvalidTransferEncoding;
+        this.ComplianceStatus |= MimeComplianceStatus.InvalidTransferEncoding;
       }
     }
 
@@ -447,11 +429,11 @@ label_40:
       bool term;
       if (this.currentLevel.IsBoundary(data, line, nextNL - line, (long) crc, out term))
       {
-        nextBoundaryLevel = this.parseStackTop;
+        nextBoundaryLevel = this.Depth;
         nextBoundaryEnd = term;
         return true;
       }
-      for (int index = this.parseStackTop - 1; index >= 0; --index)
+      for (int index = this.Depth - 1; index >= 0; --index)
       {
         if (this.parseStack[index].IsBoundary(data, line, nextNL - line, (long) crc, out term))
         {
@@ -467,7 +449,7 @@ label_40:
 
     private bool IsInlineBoundary(byte[] data, int line, int nextNL, int end, out int nextBoundaryLevel, out bool nextBoundaryEnd)
     {
-      switch (this.inlineFormat)
+      switch (this.InlineFormat)
       {
         case ContentTransferEncoding.Unknown:
           if (((int) data[line] | 32) == 98 && nextNL - line >= 11 && (nextNL != end && MimeParser.IsUUEncodeBegin(data, line, nextNL)))
@@ -499,17 +481,17 @@ label_40:
         this.currentOffset = 0;
         if (!this.nextBoundaryEnd)
         {
-          this.inlineFormat = this.nextBoundaryLevel == -100 ? ContentTransferEncoding.UUEncode : ContentTransferEncoding.BinHex;
+          this.InlineFormat = this.nextBoundaryLevel == -100 ? ContentTransferEncoding.UUEncode : ContentTransferEncoding.BinHex;
           this.nextBoundaryLevel = -1;
           this.lastTokenLength = nextNL + sizeNL - start;
           return new MimeToken(MimeTokenId.InlineStart, this.lastTokenLength);
         }
-        this.inlineFormat = ContentTransferEncoding.Unknown;
+        this.InlineFormat = ContentTransferEncoding.Unknown;
         this.nextBoundaryLevel = -1;
         this.lastTokenLength = nextNL + sizeNL - start;
         return new MimeToken(MimeTokenId.InlineEnd, this.lastTokenLength);
       }
-      if (this.nextBoundaryLevel == this.parseStackTop)
+      if (this.nextBoundaryLevel == this.Depth)
       {
         this.lineOffset = 0;
         this.currentOffset = 0;
@@ -518,18 +500,18 @@ label_40:
         this.lastTokenLength = nextNL + sizeNL - start;
         return new MimeToken(MimeTokenId.NestedStart, this.lastTokenLength);
       }
-      if (this.nextBoundaryLevel == this.parseStackTop - 1)
+      if (this.nextBoundaryLevel == this.Depth - 1)
       {
         if (this.currentLevel.ContentType == MajorContentType.Multipart && !this.currentLevel.Epilogue)
-          this.compliance |= MimeComplianceStatus.MissingBoundary;
+          this.ComplianceStatus |= MimeComplianceStatus.MissingBoundary;
         this.lineOffset = 0;
         this.currentOffset = 0;
         this.nextBoundaryLevel = -1;
         if (this.nextBoundaryEnd)
         {
-          this.currentLevel = this.parseStack[--this.parseStackTop];
+          this.currentLevel = this.parseStack[--this.Depth];
           this.currentLevel.Epilogue = true;
-          this.parseStack[this.parseStackTop].Reset(false);
+          this.parseStack[this.Depth].Reset(false);
           this.lastTokenLength = nextNL + sizeNL - start;
           return new MimeToken(MimeTokenId.NestedEnd, this.lastTokenLength);
         }
@@ -541,37 +523,37 @@ label_40:
       }
       this.lineOffset = line - start;
       this.currentOffset = nextNL - start;
-      if (this.inlineFormat != ContentTransferEncoding.Unknown)
+      if (this.InlineFormat != ContentTransferEncoding.Unknown)
       {
-        this.compliance |= MimeComplianceStatus.MissingBoundary;
-        this.inlineFormat = ContentTransferEncoding.Unknown;
+        this.ComplianceStatus |= MimeComplianceStatus.MissingBoundary;
+        this.InlineFormat = ContentTransferEncoding.Unknown;
         return new MimeToken(MimeTokenId.InlineEnd, 0);
       }
-      this.currentLevel = this.parseStack[--this.parseStackTop];
+      this.currentLevel = this.parseStack[--this.Depth];
       this.currentLevel.Epilogue = true;
-      this.parseStack[this.parseStackTop].Reset(false);
+      this.parseStack[this.Depth].Reset(false);
       if (this.currentLevel.ContentType == MajorContentType.MessageRfc822)
         return new MimeToken(MimeTokenId.EmbeddedEnd, 0);
-      this.compliance |= MimeComplianceStatus.MissingBoundary;
+      this.ComplianceStatus |= MimeComplianceStatus.MissingBoundary;
       return new MimeToken(MimeTokenId.NestedEnd, 0);
     }
 
     private MimeToken ProcessEOF()
     {
-      if (this.inlineFormat != ContentTransferEncoding.Unknown)
+      if (this.InlineFormat != ContentTransferEncoding.Unknown)
       {
-        this.compliance |= MimeComplianceStatus.MissingBoundary;
-        this.inlineFormat = ContentTransferEncoding.Unknown;
+        this.ComplianceStatus |= MimeComplianceStatus.MissingBoundary;
+        this.InlineFormat = ContentTransferEncoding.Unknown;
         return new MimeToken(MimeTokenId.InlineEnd, 0);
       }
-      if (this.parseStackTop != 0)
+      if (this.Depth != 0)
       {
-        this.currentLevel = this.parseStack[--this.parseStackTop];
+        this.currentLevel = this.parseStack[--this.Depth];
         this.currentLevel.Epilogue = true;
-        this.parseStack[this.parseStackTop].Reset(false);
+        this.parseStack[this.Depth].Reset(false);
         if (this.currentLevel.ContentType == MajorContentType.MessageRfc822)
           return new MimeToken(MimeTokenId.EmbeddedEnd, 0);
-        this.compliance |= MimeComplianceStatus.MissingBoundary;
+        this.ComplianceStatus |= MimeComplianceStatus.MissingBoundary;
         return new MimeToken(MimeTokenId.NestedEnd, 0);
       }
       this.state = MimeParser.ParseState.EndOfFile;
@@ -590,65 +572,32 @@ label_40:
 
       private struct ParseLevel {
 
-          private bool mime;
-          private bool streamMode;
-          private MajorContentType contentType;
           public bool Epilogue;
-          private ContentTransferEncoding transferEncoding;
           private MimeString boundaryValue;
-          private int partDepth;
           private uint boundaryCrc;
           private uint endBoundaryCrc;
 
-          public MajorContentType ContentType => this.contentType;
+          public MajorContentType ContentType { get; private set; }
 
-          public ContentTransferEncoding TransferEncoding {
-              get {
-                  return this.transferEncoding;
-              }
-              set {
-                  this.transferEncoding = value;
-              }
-          }
+          public ContentTransferEncoding TransferEncoding { get; set; }
 
-          public int PartDepth {
-              get {
-                  return this.partDepth;
-              }
-              set {
-                  this.partDepth = value;
-              }
-          }
+          public int PartDepth { get; set; }
 
-          public bool IsMime {
-              get {
-                  return this.mime;
-              }
-              set {
-                  this.mime = value;
-              }
-          }
+          public bool IsMime { get; set; }
 
-          public bool StreamMode {
-              get {
-                  return this.streamMode;
-              }
-              set {
-                  this.streamMode = value;
-              }
-          }
+          public bool StreamMode { get; set; }
 
           public void Reset(bool cleanMimeState) {
-              this.streamMode = false;
-              this.contentType = MajorContentType.Other;
+              this.StreamMode = false;
+              this.ContentType = MajorContentType.Other;
               this.Epilogue = false;
-              this.transferEncoding = ContentTransferEncoding.SevenBit;
+              this.TransferEncoding = ContentTransferEncoding.SevenBit;
               if (cleanMimeState)
-                  this.mime = false;
+                  this.IsMime = false;
               this.boundaryValue = new MimeString();
               this.boundaryCrc = 0U;
               this.endBoundaryCrc = 0U;
-              this.partDepth = 0;
+              this.PartDepth = 0;
           }
 
           public void SetContentType(MajorContentType contentType, MimeString boundaryValue) {
@@ -671,7 +620,7 @@ label_40:
                   this.boundaryCrc = 0U;
                   this.endBoundaryCrc = 0U;
               }
-              this.contentType = contentType;
+              this.ContentType = contentType;
           }
 
           //public bool IsBoundary(byte[] bytes, int offset, int length, long crc, out bool term)

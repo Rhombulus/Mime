@@ -13,12 +13,12 @@ namespace Butler.Schema.Data.ContentTypes.Internal
 {
   internal class ContentLineWriter : IDisposable
   {
-    private ContentLineWriteState state = ContentLineWriteState.Start;
-    private const string FoldingTagString = "\r\n ";
+
+      private const string FoldingTagString = "\r\n ";
     private ContentLineWriter.FoldingTextWriter foldingTextWriter;
     private bool emptyParamName;
 
-    public ContentLineWriteState State => this.state;
+    public ContentLineWriteState State { get; private set; } = ContentLineWriteState.Start;
 
       public ContentLineWriter(Stream s, Encoding encoding)
     {
@@ -39,7 +39,7 @@ namespace Butler.Schema.Data.ContentTypes.Internal
         this.foldingTextWriter.Dispose();
         this.foldingTextWriter = (ContentLineWriter.FoldingTextWriter) null;
       }
-      this.state = ContentLineWriteState.Closed;
+      this.State = ContentLineWriteState.Closed;
     }
 
     public void Flush()
@@ -51,21 +51,21 @@ namespace Butler.Schema.Data.ContentTypes.Internal
     {
       this.AssertValidState(ContentLineWriteState.Start | ContentLineWriteState.PropertyEnd);
       this.WriteToStream(property + ":" + data + "\r\n");
-      this.state = ContentLineWriteState.PropertyEnd;
+      this.State = ContentLineWriteState.PropertyEnd;
     }
 
     public void StartProperty(string property)
     {
       this.AssertValidState(ContentLineWriteState.Start | ContentLineWriteState.PropertyEnd);
       this.WriteToStream(property);
-      this.state = ContentLineWriteState.Property;
+      this.State = ContentLineWriteState.Property;
     }
 
     public void EndProperty()
     {
       this.AssertValidState(ContentLineWriteState.PropertyValue);
       this.WriteToStream("\r\n");
-      this.state = ContentLineWriteState.PropertyEnd;
+      this.State = ContentLineWriteState.PropertyEnd;
     }
 
     public void StartParameter(string parameter)
@@ -75,13 +75,13 @@ namespace Butler.Schema.Data.ContentTypes.Internal
       if (parameter != null)
         this.WriteToStream(parameter);
       this.emptyParamName = parameter == null;
-      this.state = ContentLineWriteState.Parameter;
+      this.State = ContentLineWriteState.Parameter;
     }
 
     public void EndParameter()
     {
       this.AssertValidState(ContentLineWriteState.Parameter | ContentLineWriteState.ParameterValue);
-      this.state = ContentLineWriteState.ParameterEnd;
+      this.State = ContentLineWriteState.ParameterEnd;
     }
 
     public void WriteNextValue(ContentLineParser.Separators separator)
@@ -97,7 +97,7 @@ namespace Butler.Schema.Data.ContentTypes.Internal
           throw new ArgumentException();
         data = ";";
       }
-      switch (this.state)
+      switch (this.State)
       {
         case ContentLineWriteState.PropertyValue:
         case ContentLineWriteState.ParameterValue:
@@ -110,17 +110,17 @@ namespace Butler.Schema.Data.ContentTypes.Internal
 
     public void WriteStartValue()
     {
-      switch (this.state)
+      switch (this.State)
       {
         case ContentLineWriteState.ParameterEnd:
         case ContentLineWriteState.Property:
           this.WriteToStream(":");
-          this.state = ContentLineWriteState.PropertyValue;
+          this.State = ContentLineWriteState.PropertyValue;
           break;
         case ContentLineWriteState.Parameter:
           if (!this.emptyParamName)
             this.WriteToStream("=");
-          this.state = ContentLineWriteState.ParameterValue;
+          this.State = ContentLineWriteState.ParameterValue;
           break;
         default:
           throw new InvalidOperationException(CtsResources.CalendarStrings.InvalidState);
@@ -158,7 +158,7 @@ namespace Butler.Schema.Data.ContentTypes.Internal
 
     private void AssertValidState(ContentLineWriteState state)
     {
-      if ((state & this.state) == (ContentLineWriteState) 0)
+      if ((state & this.State) == (ContentLineWriteState) 0)
         throw new InvalidOperationException(CtsResources.CalendarStrings.InvalidStateForOperation);
     }
 

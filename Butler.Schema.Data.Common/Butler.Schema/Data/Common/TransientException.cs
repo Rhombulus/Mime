@@ -13,9 +13,8 @@ namespace Butler.Schema.Data.Common
   [Serializable]
   public class TransientException : LocalizedException
   {
-    private LocalizedString localizedString;
 
-    public new LocalizedString LocalizedString => this.localizedString;
+      public new LocalizedString LocalizedString { get; }
 
       public TransientException(LocalizedString localizedString)
       : this(localizedString, (Exception) null)
@@ -25,7 +24,7 @@ namespace Butler.Schema.Data.Common
     public TransientException(LocalizedString localizedString, Exception innerException)
       : base(localizedString, innerException)
     {
-      this.localizedString = localizedString;
+      this.LocalizedString = localizedString;
     }
 
     protected TransientException(SerializationInfo serializationInfo, StreamingContext context)

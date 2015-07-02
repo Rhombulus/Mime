@@ -12,24 +12,13 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
 {
   public struct CalendarPeriod
   {
-    private DateTime start;
-    private DateTime end;
+
+      private DateTime end;
     private TimeSpan duration;
-    private bool isExplicitPeriod;
 
-    public DateTime Start
-    {
-      get
-      {
-        return this.start;
-      }
-      set
-      {
-        this.start = value;
-      }
-    }
+      public DateTime Start { get; set; }
 
-    public DateTime End
+      public DateTime End
     {
       get
       {
@@ -38,7 +27,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       set
       {
         this.end = value;
-        this.isExplicitPeriod = true;
+        this.IsExplicit = true;
       }
     }
 
@@ -51,26 +40,26 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       set
       {
         this.duration = value;
-        this.isExplicitPeriod = false;
+        this.IsExplicit = false;
       }
     }
 
-    public bool IsExplicit => this.isExplicitPeriod;
+    public bool IsExplicit { get; private set; }
 
       public CalendarPeriod(DateTime start, DateTime end)
     {
-      this.start = start;
+      this.Start = start;
       this.end = end;
       this.duration = start - end;
-      this.isExplicitPeriod = true;
+      this.IsExplicit = true;
     }
 
     public CalendarPeriod(DateTime start, TimeSpan duration)
     {
-      this.start = start;
+      this.Start = start;
       this.end = start + duration;
       this.duration = duration;
-      this.isExplicitPeriod = false;
+      this.IsExplicit = false;
     }
 
     internal CalendarPeriod(string s, Internal.ComplianceTracker tracker)
@@ -79,10 +68,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       if (length <= 0 || s.Length - 1 == length)
       {
         tracker.SetComplianceStatus(Internal.ComplianceStatus.InvalidValueFormat, CtsResources.CalendarStrings.InvalidTimeFormat);
-        this.start = CalendarCommon.MinDateTime;
+        this.Start = CalendarCommon.MinDateTime;
         this.end = CalendarCommon.MinDateTime;
         this.duration = TimeSpan.Zero;
-        this.isExplicitPeriod = false;
+        this.IsExplicit = false;
       }
       else
       {
@@ -93,17 +82,17 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
           case '-':
           case 'P':
             TimeSpan timeSpan = CalendarCommon.ParseDuration(s.Substring(length + 1), tracker);
-            this.start = dateTime1;
+            this.Start = dateTime1;
             this.end = dateTime1 + timeSpan;
             this.duration = timeSpan;
-            this.isExplicitPeriod = false;
+            this.IsExplicit = false;
             break;
           default:
             DateTime dateTime2 = CalendarCommon.ParseDateTime(s.Substring(length + 1), tracker);
-            this.start = dateTime1;
+            this.Start = dateTime1;
             this.end = dateTime2;
             this.duration = dateTime1 - dateTime2;
-            this.isExplicitPeriod = true;
+            this.IsExplicit = true;
             break;
         }
       }
@@ -112,9 +101,9 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
     public override string ToString()
     {
       StringBuilder stringBuilder = new StringBuilder();
-      stringBuilder.Append(CalendarCommon.FormatDateTime(this.start));
+      stringBuilder.Append(CalendarCommon.FormatDateTime(this.Start));
       stringBuilder.Append('/');
-      if (this.isExplicitPeriod)
+      if (this.IsExplicit)
         stringBuilder.Append(CalendarCommon.FormatDateTime(this.end));
       else
         stringBuilder.Append(CalendarCommon.FormatDuration(this.duration));

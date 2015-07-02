@@ -30,8 +30,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
     private int[] byWeekNumber;
     private int[] byMonth;
     private int[] bySetPos;
-    private RecurrenceProperties props;
-    private Internal.ComplianceTracker tracker;
+      private Internal.ComplianceTracker tracker;
 
     public Frequency Frequency
     {
@@ -41,7 +40,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       }
       set
       {
-        this.props |= RecurrenceProperties.Frequency;
+        this.AvailableProperties |= RecurrenceProperties.Frequency;
         this.freq = value;
       }
     }
@@ -54,8 +53,8 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       }
       set
       {
-        this.props &= ~RecurrenceProperties.UntilDateTime;
-        this.props |= RecurrenceProperties.UntilDate;
+        this.AvailableProperties &= ~RecurrenceProperties.UntilDateTime;
+        this.AvailableProperties |= RecurrenceProperties.UntilDate;
         this.untilDate = value;
       }
     }
@@ -68,8 +67,8 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       }
       set
       {
-        this.props &= ~RecurrenceProperties.UntilDate;
-        this.props |= RecurrenceProperties.UntilDateTime;
+        this.AvailableProperties &= ~RecurrenceProperties.UntilDate;
+        this.AvailableProperties |= RecurrenceProperties.UntilDateTime;
         this.untilDateTime = value;
       }
     }
@@ -82,7 +81,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       }
       set
       {
-        this.props |= RecurrenceProperties.Count;
+        this.AvailableProperties |= RecurrenceProperties.Count;
         this.count = value;
       }
     }
@@ -95,7 +94,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       }
       set
       {
-        this.props |= RecurrenceProperties.Interval;
+        this.AvailableProperties |= RecurrenceProperties.Interval;
         this.interval = value;
       }
     }
@@ -110,7 +109,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       {
         if (value == null)
           throw new ArgumentNullException();
-        this.props |= RecurrenceProperties.BySecond;
+        this.AvailableProperties |= RecurrenceProperties.BySecond;
         this.bySecond = value;
       }
     }
@@ -125,7 +124,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       {
         if (value == null)
           throw new ArgumentNullException();
-        this.props |= RecurrenceProperties.ByMinute;
+        this.AvailableProperties |= RecurrenceProperties.ByMinute;
         this.byMinute = value;
       }
     }
@@ -140,7 +139,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       {
         if (value == null)
           throw new ArgumentNullException();
-        this.props |= RecurrenceProperties.ByHour;
+        this.AvailableProperties |= RecurrenceProperties.ByHour;
         this.byHour = value;
       }
     }
@@ -155,7 +154,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       {
         if (value == null)
           throw new ArgumentNullException();
-        this.props |= RecurrenceProperties.ByDay;
+        this.AvailableProperties |= RecurrenceProperties.ByDay;
         this.byDay = value;
       }
     }
@@ -170,7 +169,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       {
         if (value == null)
           throw new ArgumentNullException();
-        this.props |= RecurrenceProperties.ByMonthDay;
+        this.AvailableProperties |= RecurrenceProperties.ByMonthDay;
         this.byMonthDay = value;
       }
     }
@@ -185,7 +184,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       {
         if (value == null)
           throw new ArgumentNullException();
-        this.props |= RecurrenceProperties.ByYearDay;
+        this.AvailableProperties |= RecurrenceProperties.ByYearDay;
         this.byYearDay = value;
       }
     }
@@ -200,7 +199,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       {
         if (value == null)
           throw new ArgumentNullException();
-        this.props |= RecurrenceProperties.ByWeek;
+        this.AvailableProperties |= RecurrenceProperties.ByWeek;
         this.byWeekNumber = value;
       }
     }
@@ -215,7 +214,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       {
         if (value == null)
           throw new ArgumentNullException();
-        this.props |= RecurrenceProperties.ByMonth;
+        this.AvailableProperties |= RecurrenceProperties.ByMonth;
         this.byMonth = value;
       }
     }
@@ -230,7 +229,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       {
         if (value == null)
           throw new ArgumentNullException();
-        this.props |= RecurrenceProperties.BySetPosition;
+        this.AvailableProperties |= RecurrenceProperties.BySetPosition;
         this.bySetPos = value;
       }
     }
@@ -243,24 +242,14 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       }
       set
       {
-        this.props |= RecurrenceProperties.WeekStart;
+        this.AvailableProperties |= RecurrenceProperties.WeekStart;
         this.workWeekStart = value;
       }
     }
 
-    public RecurrenceProperties AvailableProperties
-    {
-      get
-      {
-        return this.props;
-      }
-      set
-      {
-        this.props = value;
-      }
-    }
+    public RecurrenceProperties AvailableProperties { get; set; }
 
-    static Recurrence()
+      static Recurrence()
     {
       Recurrence.frequencyToEnumTable.Add("SECONDLY", Frequency.Secondly);
       Recurrence.frequencyToEnumTable.Add("MINUTELY", Frequency.Minutely);
@@ -355,7 +344,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
               switch (Recurrence.GetRecurProp(s1))
               {
                 case RecurrenceProperties.ByMonth:
-                  if ((this.props & RecurrenceProperties.ByMonth) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.ByMonth) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.ByMonthOnlyPermittedOnce);
                     return;
@@ -373,10 +362,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                       return;
                     }
                   }
-                  this.props |= RecurrenceProperties.ByMonth;
+                  this.AvailableProperties |= RecurrenceProperties.ByMonth;
                   break;
                 case RecurrenceProperties.BySetPosition:
-                  if ((this.props & RecurrenceProperties.BySetPosition) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.BySetPosition) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.BySetPosOnlyPermittedOnce);
                     return;
@@ -394,10 +383,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                       return;
                     }
                   }
-                  this.props |= RecurrenceProperties.BySetPosition;
+                  this.AvailableProperties |= RecurrenceProperties.BySetPosition;
                   break;
                 case RecurrenceProperties.WeekStart:
-                  if ((this.props & RecurrenceProperties.WeekStart) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.WeekStart) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.WkStOnlyPermittedOnce);
                     return;
@@ -408,10 +397,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                     return;
                   }
                   this.workWeekStart = this.GetDayOfWeek(list[0]);
-                  this.props |= RecurrenceProperties.WeekStart;
+                  this.AvailableProperties |= RecurrenceProperties.WeekStart;
                   break;
                 case RecurrenceProperties.ByMonthDay:
-                  if ((this.props & RecurrenceProperties.ByMonthDay) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.ByMonthDay) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.ByMonthDayOnlyPermittedOnce);
                     return;
@@ -429,10 +418,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                       return;
                     }
                   }
-                  this.props |= RecurrenceProperties.ByMonthDay;
+                  this.AvailableProperties |= RecurrenceProperties.ByMonthDay;
                   break;
                 case RecurrenceProperties.ByYearDay:
-                  if ((this.props & RecurrenceProperties.ByYearDay) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.ByYearDay) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.ByYearDayOnlyPermittedOnce);
                     return;
@@ -450,10 +439,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                       return;
                     }
                   }
-                  this.props |= RecurrenceProperties.ByYearDay;
+                  this.AvailableProperties |= RecurrenceProperties.ByYearDay;
                   break;
                 case RecurrenceProperties.ByWeek:
-                  if ((this.props & RecurrenceProperties.ByWeek) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.ByWeek) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.ByWeekNoOnlyPermittedOnce);
                     return;
@@ -471,10 +460,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                       return;
                     }
                   }
-                  this.props |= RecurrenceProperties.ByWeek;
+                  this.AvailableProperties |= RecurrenceProperties.ByWeek;
                   break;
                 case RecurrenceProperties.ByMinute:
-                  if ((this.props & RecurrenceProperties.ByMinute) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.ByMinute) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.ByMinuteOnlyPermittedOnce);
                     return;
@@ -490,10 +479,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                       return;
                     }
                   }
-                  this.props |= RecurrenceProperties.ByMinute;
+                  this.AvailableProperties |= RecurrenceProperties.ByMinute;
                   break;
                 case RecurrenceProperties.ByHour:
-                  if ((this.props & RecurrenceProperties.ByHour) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.ByHour) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.ByHourOnlyPermittedOnce);
                     return;
@@ -509,10 +498,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                       return;
                     }
                   }
-                  this.props |= RecurrenceProperties.ByHour;
+                  this.AvailableProperties |= RecurrenceProperties.ByHour;
                   break;
                 case RecurrenceProperties.ByDay:
-                  if ((this.props & RecurrenceProperties.ByDay) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.ByDay) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.ByDayOnlyPermittedOnce);
                     return;
@@ -553,7 +542,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                       }
                     }
                   }
-                  this.props |= RecurrenceProperties.ByDay;
+                  this.AvailableProperties |= RecurrenceProperties.ByDay;
                   break;
                 case RecurrenceProperties.Frequency:
                   if (count > 1)
@@ -567,7 +556,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                     this.SetComplianceStatus(CtsResources.CalendarStrings.UnknownFrequencyValue);
                     return;
                   }
-                  this.props |= RecurrenceProperties.Frequency;
+                  this.AvailableProperties |= RecurrenceProperties.Frequency;
                   break;
                 case RecurrenceProperties.UntilDate:
                   if (count > 1)
@@ -575,12 +564,12 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                     this.SetComplianceStatus(CtsResources.CalendarStrings.MultivalueNotPermittedOnUntil);
                     return;
                   }
-                  if ((this.props & RecurrenceProperties.UntilDate) != RecurrenceProperties.None || (this.props & RecurrenceProperties.UntilDateTime) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.UntilDate) != RecurrenceProperties.None || (this.AvailableProperties & RecurrenceProperties.UntilDateTime) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.UntilOnlyPermittedOnce);
                     return;
                   }
-                  if ((this.props & RecurrenceProperties.Count) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.Count) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.UntilNotPermittedWithCount);
                     return;
@@ -588,19 +577,19 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                   if (list[0].Length > 8)
                   {
                     this.untilDateTime = CalendarCommon.ParseDateTime(list[0], tracker);
-                    this.props |= RecurrenceProperties.UntilDateTime;
+                    this.AvailableProperties |= RecurrenceProperties.UntilDateTime;
                     break;
                   }
                   this.untilDate = CalendarCommon.ParseDate(list[0], tracker);
-                  this.props |= RecurrenceProperties.UntilDate;
+                  this.AvailableProperties |= RecurrenceProperties.UntilDate;
                   break;
                 case RecurrenceProperties.Count:
-                  if ((this.props & RecurrenceProperties.Count) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.Count) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.CountOnlyPermittedOnce);
                     return;
                   }
-                  if ((this.props & RecurrenceProperties.UntilDate) != RecurrenceProperties.None || (this.props & RecurrenceProperties.UntilDateTime) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.UntilDate) != RecurrenceProperties.None || (this.AvailableProperties & RecurrenceProperties.UntilDateTime) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.CountNotPermittedWithUntil);
                     return;
@@ -612,10 +601,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                   }
                   if (!int.TryParse(list[0], out this.count))
                     this.SetComplianceStatus(CtsResources.CalendarStrings.InvalidValueFormat);
-                  this.props |= RecurrenceProperties.Count;
+                  this.AvailableProperties |= RecurrenceProperties.Count;
                   break;
                 case RecurrenceProperties.Interval:
-                  if ((this.props & RecurrenceProperties.Interval) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.Interval) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.IntervalOnlyPermittedOnce);
                     return;
@@ -632,10 +621,10 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                     this.SetComplianceStatus(CtsResources.CalendarStrings.IntervalMustBePositive);
                     return;
                   }
-                  this.props |= RecurrenceProperties.Interval;
+                  this.AvailableProperties |= RecurrenceProperties.Interval;
                   break;
                 case RecurrenceProperties.BySecond:
-                  if ((this.props & RecurrenceProperties.BySecond) != RecurrenceProperties.None)
+                  if ((this.AvailableProperties & RecurrenceProperties.BySecond) != RecurrenceProperties.None)
                   {
                     this.SetComplianceStatus(CtsResources.CalendarStrings.BySecondOnlyPermittedOnce);
                     return;
@@ -651,7 +640,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
                       return;
                     }
                   }
-                  this.props |= RecurrenceProperties.BySecond;
+                  this.AvailableProperties |= RecurrenceProperties.BySecond;
                   break;
                 default:
                   this.SetComplianceStatus(CtsResources.CalendarStrings.UnknownRecurrenceProperty);
@@ -670,55 +659,55 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
     public override string ToString()
     {
       StringBuilder s = new StringBuilder();
-      if ((this.props & RecurrenceProperties.Frequency) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.Frequency) != RecurrenceProperties.None)
       {
         s.Append("FREQ");
         s.Append('=');
         s.Append(Recurrence.GetFrequencyString(this.freq));
       }
-      if ((this.props & RecurrenceProperties.UntilDate) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.UntilDate) != RecurrenceProperties.None)
       {
         s.Append(";UNTIL");
         s.Append('=');
         s.Append(CalendarCommon.FormatDate(this.untilDate));
       }
-      if ((this.props & RecurrenceProperties.UntilDateTime) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.UntilDateTime) != RecurrenceProperties.None)
       {
         s.Append(";UNTIL");
         s.Append('=');
         s.Append(CalendarCommon.FormatDateTime(this.untilDateTime));
       }
-      if ((this.props & RecurrenceProperties.Count) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.Count) != RecurrenceProperties.None)
       {
         s.Append(";COUNT");
         s.Append('=');
         s.Append(this.count);
       }
-      if ((this.props & RecurrenceProperties.Interval) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.Interval) != RecurrenceProperties.None)
       {
         s.Append(";INTERVAL");
         s.Append('=');
         s.Append(this.interval);
       }
-      if ((this.props & RecurrenceProperties.BySecond) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.BySecond) != RecurrenceProperties.None)
       {
         s.Append(";BYSECOND");
         s.Append('=');
         this.OutputList(this.bySecond, s);
       }
-      if ((this.props & RecurrenceProperties.ByMinute) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.ByMinute) != RecurrenceProperties.None)
       {
         s.Append(";BYMINUTE");
         s.Append('=');
         this.OutputList(this.byMinute, s);
       }
-      if ((this.props & RecurrenceProperties.ByHour) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.ByHour) != RecurrenceProperties.None)
       {
         s.Append(";BYHOUR");
         s.Append('=');
         this.OutputList(this.byHour, s);
       }
-      if ((this.props & RecurrenceProperties.ByDay) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.ByDay) != RecurrenceProperties.None)
       {
         s.Append(";BYDAY");
         s.Append('=');
@@ -731,37 +720,37 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
           s.Append(this.byDay[index].ToString());
         }
       }
-      if ((this.props & RecurrenceProperties.ByMonthDay) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.ByMonthDay) != RecurrenceProperties.None)
       {
         s.Append(";BYMONTHDAY");
         s.Append('=');
         this.OutputList(this.byMonthDay, s);
       }
-      if ((this.props & RecurrenceProperties.ByYearDay) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.ByYearDay) != RecurrenceProperties.None)
       {
         s.Append(";BYYEARDAY");
         s.Append('=');
         this.OutputList(this.byYearDay, s);
       }
-      if ((this.props & RecurrenceProperties.ByWeek) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.ByWeek) != RecurrenceProperties.None)
       {
         s.Append(";BYWEEKNO");
         s.Append('=');
         this.OutputList(this.byWeekNumber, s);
       }
-      if ((this.props & RecurrenceProperties.ByMonth) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.ByMonth) != RecurrenceProperties.None)
       {
         s.Append(";BYMONTH");
         s.Append('=');
         this.OutputList(this.byMonth, s);
       }
-      if ((this.props & RecurrenceProperties.BySetPosition) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.BySetPosition) != RecurrenceProperties.None)
       {
         s.Append(";BYSETPOS");
         s.Append('=');
         this.OutputList(this.bySetPos, s);
       }
-      if ((this.props & RecurrenceProperties.WeekStart) != RecurrenceProperties.None)
+      if ((this.AvailableProperties & RecurrenceProperties.WeekStart) != RecurrenceProperties.None)
       {
         s.Append(";WKST");
         s.Append('=');
@@ -883,44 +872,22 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
 
     public struct ByDay
     {
-      private int occurrenceNumber;
-      private DayOfWeek day;
 
-      public int OccurrenceNumber
-      {
-        get
-        {
-          return this.occurrenceNumber;
-        }
-        set
-        {
-          this.occurrenceNumber = value;
-        }
-      }
+        public int OccurrenceNumber { get; set; }
 
-      public DayOfWeek Day
-      {
-        get
-        {
-          return this.day;
-        }
-        set
-        {
-          this.day = value;
-        }
-      }
+        public DayOfWeek Day { get; set; }
 
-      public ByDay(DayOfWeek day, int occurrenceNumber)
+        public ByDay(DayOfWeek day, int occurrenceNumber)
       {
-        this.day = day;
-        this.occurrenceNumber = occurrenceNumber;
+        this.Day = day;
+        this.OccurrenceNumber = occurrenceNumber;
       }
 
       public override string ToString()
       {
-        string dayOfWeekString = Recurrence.GetDayOfWeekString(this.day);
-        if (this.occurrenceNumber != 0)
-          return this.occurrenceNumber.ToString() + dayOfWeekString;
+        string dayOfWeekString = Recurrence.GetDayOfWeekString(this.Day);
+        if (this.OccurrenceNumber != 0)
+          return this.OccurrenceNumber.ToString() + dayOfWeekString;
         return dayOfWeekString;
       }
     }

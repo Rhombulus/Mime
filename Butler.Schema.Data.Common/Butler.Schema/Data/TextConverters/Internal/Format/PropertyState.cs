@@ -19,9 +19,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private FlagProperties distinctFlagProperties;
     private PropertyBitMask propertyMask;
     private PropertyBitMask distinctPropertyMask;
-    private int propertyUndoStackTop;
 
-    public int UndoStackTop => this.propertyUndoStackTop;
+      public int UndoStackTop { get; private set; }
 
       public FlagProperties GetEffectiveFlags()
     {
@@ -78,7 +77,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public int ApplyProperties(FlagProperties flagProperties, Property[] propList, FlagProperties flagInheritanceMask, PropertyBitMask propertyInheritanceMask)
     {
-      int num = this.propertyUndoStackTop;
+      int num = this.UndoStackTop;
       FlagProperties flagProperties1 = this.flagProperties & flagInheritanceMask;
       FlagProperties flagProperties2 = flagProperties1 | flagProperties;
       if (flagProperties2 != this.flagProperties)
@@ -138,7 +137,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public void UndoProperties(int undoLevel)
     {
-      for (int index = this.propertyUndoStackTop - 1; index >= undoLevel; --index)
+      for (int index = this.UndoStackTop - 1; index >= undoLevel; --index)
       {
         if (this.propertyUndoStack[index].IsFlags)
           this.flagProperties = this.propertyUndoStack[index].Flags.Flags;
@@ -158,7 +157,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
           this.propertyMask.Set(this.propertyUndoStack[index].Property.Id);
         }
       }
-      this.propertyUndoStackTop = undoLevel;
+      this.UndoStackTop = undoLevel;
     }
 
     public override string ToString()
@@ -168,42 +167,42 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     private void PushUndoEntry(PropertyId id, PropertyValue value)
     {
-      if (this.propertyUndoStackTop == this.propertyUndoStack.Length)
+      if (this.UndoStackTop == this.propertyUndoStack.Length)
       {
         if (this.propertyUndoStack.Length >= 8960)
           throw new TextConvertersException("property undo stack is too large");
         PropertyState.PropertyUndoEntry[] propertyUndoEntryArray = new PropertyState.PropertyUndoEntry[Math.Min(this.propertyUndoStack.Length * 2, 8960)];
-        Array.Copy((Array) this.propertyUndoStack, 0, (Array) propertyUndoEntryArray, 0, this.propertyUndoStackTop);
+        Array.Copy((Array) this.propertyUndoStack, 0, (Array) propertyUndoEntryArray, 0, this.UndoStackTop);
         this.propertyUndoStack = propertyUndoEntryArray;
       }
-      this.propertyUndoStack[this.propertyUndoStackTop++].Set(id, value);
+      this.propertyUndoStack[this.UndoStackTop++].Set(id, value);
     }
 
     private void PushUndoEntry(PropertyId fakePropId, FlagProperties flagProperties)
     {
-      if (this.propertyUndoStackTop == this.propertyUndoStack.Length)
+      if (this.UndoStackTop == this.propertyUndoStack.Length)
       {
         if (this.propertyUndoStack.Length >= 8960)
           throw new TextConvertersException("property undo stack is too large");
         PropertyState.PropertyUndoEntry[] propertyUndoEntryArray = new PropertyState.PropertyUndoEntry[Math.Min(this.propertyUndoStack.Length * 2, 8960)];
-        Array.Copy((Array) this.propertyUndoStack, 0, (Array) propertyUndoEntryArray, 0, this.propertyUndoStackTop);
+        Array.Copy((Array) this.propertyUndoStack, 0, (Array) propertyUndoEntryArray, 0, this.UndoStackTop);
         this.propertyUndoStack = propertyUndoEntryArray;
       }
-      this.propertyUndoStack[this.propertyUndoStackTop++].Set(fakePropId, flagProperties);
+      this.propertyUndoStack[this.UndoStackTop++].Set(fakePropId, flagProperties);
     }
 
     private void PushUndoEntry(PropertyBitMask propertyMask)
     {
-      if (this.propertyUndoStackTop + 1 >= this.propertyUndoStack.Length)
+      if (this.UndoStackTop + 1 >= this.propertyUndoStack.Length)
       {
-        if (this.propertyUndoStackTop + 2 >= 8960)
+        if (this.UndoStackTop + 2 >= 8960)
           throw new TextConvertersException("property undo stack is too large");
         PropertyState.PropertyUndoEntry[] propertyUndoEntryArray = new PropertyState.PropertyUndoEntry[Math.Min(this.propertyUndoStack.Length * 2, 8960)];
-        Array.Copy((Array) this.propertyUndoStack, 0, (Array) propertyUndoEntryArray, 0, this.propertyUndoStackTop);
+        Array.Copy((Array) this.propertyUndoStack, 0, (Array) propertyUndoEntryArray, 0, this.UndoStackTop);
         this.propertyUndoStack = propertyUndoEntryArray;
       }
-      this.propertyUndoStack[this.propertyUndoStackTop++].Set((PropertyId) 73, propertyMask.Bits1);
-      this.propertyUndoStack[this.propertyUndoStackTop++].Set((PropertyId) 74, propertyMask.Bits2);
+      this.propertyUndoStack[this.UndoStackTop++].Set((PropertyId) 73, propertyMask.Bits1);
+      this.propertyUndoStack[this.UndoStackTop++].Set((PropertyId) 74, propertyMask.Bits2);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 2)]

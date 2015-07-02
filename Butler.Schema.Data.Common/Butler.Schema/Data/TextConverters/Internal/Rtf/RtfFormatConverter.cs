@@ -2369,21 +2369,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       private RtfFormatConverter.RtfState.ParagraphProperties paragraph;
       private RtfFormatConverter.RtfState.ParagraphProperties[] paragraphStack;
       private int paragraphStackTop;
-      private bool textPropertiesChanged;
 
-      public bool TextPropertiesChanged
-      {
-        get
-        {
-          return this.textPropertiesChanged;
-        }
-        set
-        {
-          this.textPropertiesChanged = value;
-        }
-      }
+        public bool TextPropertiesChanged { get; set; }
 
-      public RtfDestination Destination
+        public RtfDestination Destination
       {
         get
         {
@@ -3198,7 +3187,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         if ((int) --this.font.Depth == 0)
         {
           this.font = this.fontStack[--this.fontStackTop];
-          this.textPropertiesChanged = true;
+          this.TextPropertiesChanged = true;
         }
         if ((int) --this.paragraph.Depth == 0)
           this.paragraph = this.paragraphStack[--this.paragraphStackTop];
@@ -3212,7 +3201,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
 
       private void DirtyFontProps()
       {
-        this.textPropertiesChanged = true;
+        this.TextPropertiesChanged = true;
         if ((int) this.font.Depth <= 1)
           return;
         this.PushFontProps();

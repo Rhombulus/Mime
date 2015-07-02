@@ -12,48 +12,47 @@ namespace Butler.Schema.Data.Globalization
 {
   internal class Iso2022JpEncoding : Encoding
   {
-    private Encoding defaultEncoding;
 
-    internal Iso2022DecodingMode KillSwitch => Iso2022JpEncoding.InternalReadKillSwitch();
+      internal Iso2022DecodingMode KillSwitch => Iso2022JpEncoding.InternalReadKillSwitch();
 
-      public override int CodePage => this.defaultEncoding.CodePage;
+      public override int CodePage => this.DefaultEncoding.CodePage;
 
-      public override string BodyName => this.defaultEncoding.BodyName;
+      public override string BodyName => this.DefaultEncoding.BodyName;
 
-      public override string EncodingName => this.defaultEncoding.EncodingName;
+      public override string EncodingName => this.DefaultEncoding.EncodingName;
 
-      public override string HeaderName => this.defaultEncoding.HeaderName;
+      public override string HeaderName => this.DefaultEncoding.HeaderName;
 
-      public override string WebName => this.defaultEncoding.WebName;
+      public override string WebName => this.DefaultEncoding.WebName;
 
-      public override int WindowsCodePage => this.defaultEncoding.WindowsCodePage;
+      public override int WindowsCodePage => this.DefaultEncoding.WindowsCodePage;
 
-      public override bool IsBrowserDisplay => this.defaultEncoding.IsBrowserDisplay;
+      public override bool IsBrowserDisplay => this.DefaultEncoding.IsBrowserDisplay;
 
-      public override bool IsBrowserSave => this.defaultEncoding.IsBrowserSave;
+      public override bool IsBrowserSave => this.DefaultEncoding.IsBrowserSave;
 
-      public override bool IsMailNewsDisplay => this.defaultEncoding.IsMailNewsDisplay;
+      public override bool IsMailNewsDisplay => this.DefaultEncoding.IsMailNewsDisplay;
 
-      public override bool IsMailNewsSave => this.defaultEncoding.IsMailNewsSave;
+      public override bool IsMailNewsSave => this.DefaultEncoding.IsMailNewsSave;
 
-      public override bool IsSingleByte => this.defaultEncoding.IsSingleByte;
+      public override bool IsSingleByte => this.DefaultEncoding.IsSingleByte;
 
-      internal Encoding DefaultEncoding => this.defaultEncoding;
+      internal Encoding DefaultEncoding { get; }
 
       public Iso2022JpEncoding(int codePage)
       : base(codePage)
     {
       if (codePage == 50220)
-        this.defaultEncoding = Encoding.GetEncoding(50220);
+        this.DefaultEncoding = Encoding.GetEncoding(50220);
       else if (codePage == 50221)
       {
-        this.defaultEncoding = Encoding.GetEncoding(50221);
+        this.DefaultEncoding = Encoding.GetEncoding(50221);
       }
       else
       {
         if (codePage != 50222)
           throw new ArgumentException("codePage", string.Format("Iso2022JpEncoding does not support codepage {0}", (object) codePage));
-        this.defaultEncoding = Encoding.GetEncoding(50222);
+        this.DefaultEncoding = Encoding.GetEncoding(50222);
       }
     }
 
@@ -72,12 +71,12 @@ namespace Butler.Schema.Data.Globalization
 
     public override byte[] GetPreamble()
     {
-      return this.defaultEncoding.GetPreamble();
+      return this.DefaultEncoding.GetPreamble();
     }
 
     public override int GetMaxByteCount(int charCount)
     {
-      return this.defaultEncoding.GetMaxByteCount(charCount);
+      return this.DefaultEncoding.GetMaxByteCount(charCount);
     }
 
     public override int GetMaxCharCount(int byteCount)
@@ -85,9 +84,9 @@ namespace Butler.Schema.Data.Globalization
       switch (this.KillSwitch)
       {
         case Iso2022DecodingMode.Default:
-          return this.defaultEncoding.GetMaxCharCount(byteCount);
+          return this.DefaultEncoding.GetMaxCharCount(byteCount);
         case Iso2022DecodingMode.Override:
-          return this.defaultEncoding.GetMaxCharCount(byteCount);
+          return this.DefaultEncoding.GetMaxCharCount(byteCount);
         case Iso2022DecodingMode.Throw:
           throw new NotImplementedException();
         default:
@@ -97,32 +96,32 @@ namespace Butler.Schema.Data.Globalization
 
     public override int GetByteCount(char[] chars, int index, int count)
     {
-      return this.defaultEncoding.GetByteCount(chars, index, count);
+      return this.DefaultEncoding.GetByteCount(chars, index, count);
     }
 
     public override int GetByteCount(string s)
     {
-      return this.defaultEncoding.GetByteCount(s);
+      return this.DefaultEncoding.GetByteCount(s);
     }
 
     public override unsafe int GetByteCount(char* chars, int count)
     {
-      return this.defaultEncoding.GetByteCount(chars, count);
+      return this.DefaultEncoding.GetByteCount(chars, count);
     }
 
     public override int GetBytes(string s, int charIndex, int charCount, byte[] bytes, int byteIndex)
     {
-      return this.defaultEncoding.GetBytes(s, charIndex, charCount, bytes, byteIndex);
+      return this.DefaultEncoding.GetBytes(s, charIndex, charCount, bytes, byteIndex);
     }
 
     public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
     {
-      return this.defaultEncoding.GetBytes(chars, charIndex, charCount, bytes, byteIndex);
+      return this.DefaultEncoding.GetBytes(chars, charIndex, charCount, bytes, byteIndex);
     }
 
     public override unsafe int GetBytes(char* chars, int charCount, byte* bytes, int byteCount)
     {
-      return this.defaultEncoding.GetBytes(chars, charCount, bytes, byteCount);
+      return this.DefaultEncoding.GetBytes(chars, charCount, bytes, byteCount);
     }
 
     public override int GetCharCount(byte[] bytes, int index, int count)
@@ -130,7 +129,7 @@ namespace Butler.Schema.Data.Globalization
       switch (this.KillSwitch)
       {
         case Iso2022DecodingMode.Default:
-          return this.defaultEncoding.GetCharCount(bytes, index, count);
+          return this.DefaultEncoding.GetCharCount(bytes, index, count);
         case Iso2022DecodingMode.Override:
           return this.GetDecoder().GetCharCount(bytes, index, count);
         case Iso2022DecodingMode.Throw:
@@ -145,7 +144,7 @@ namespace Butler.Schema.Data.Globalization
       switch (this.KillSwitch)
       {
         case Iso2022DecodingMode.Default:
-          return this.defaultEncoding.GetCharCount(bytes, count);
+          return this.DefaultEncoding.GetCharCount(bytes, count);
         case Iso2022DecodingMode.Override:
           throw new NotImplementedException();
         case Iso2022DecodingMode.Throw:
@@ -160,7 +159,7 @@ namespace Butler.Schema.Data.Globalization
       switch (this.KillSwitch)
       {
         case Iso2022DecodingMode.Default:
-          return this.defaultEncoding.GetChars(bytes, byteIndex, byteCount, chars, charIndex);
+          return this.DefaultEncoding.GetChars(bytes, byteIndex, byteCount, chars, charIndex);
         case Iso2022DecodingMode.Override:
           return this.GetDecoder().GetChars(bytes, byteIndex, byteCount, chars, charIndex);
         case Iso2022DecodingMode.Throw:
@@ -175,7 +174,7 @@ namespace Butler.Schema.Data.Globalization
       switch (this.KillSwitch)
       {
         case Iso2022DecodingMode.Default:
-          return this.defaultEncoding.GetChars(bytes, byteCount, chars, charCount);
+          return this.DefaultEncoding.GetChars(bytes, byteCount, chars, charCount);
         case Iso2022DecodingMode.Override:
           throw new NotImplementedException();
         case Iso2022DecodingMode.Throw:
@@ -190,7 +189,7 @@ namespace Butler.Schema.Data.Globalization
       switch (this.KillSwitch)
       {
         case Iso2022DecodingMode.Default:
-          return this.defaultEncoding.GetString(bytes, index, count);
+          return this.DefaultEncoding.GetString(bytes, index, count);
         case Iso2022DecodingMode.Override:
           Decoder decoder = this.GetDecoder();
           char[] chars1 = new char[this.GetMaxCharCount(count)];
@@ -219,7 +218,7 @@ namespace Butler.Schema.Data.Globalization
 
     public override Encoder GetEncoder()
     {
-      return this.defaultEncoding.GetEncoder();
+      return this.DefaultEncoding.GetEncoder();
     }
 
     public override object Clone()

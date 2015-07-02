@@ -13,22 +13,19 @@ namespace Butler.Schema.Data.Mime
   public class MimeReader : IDisposable
   {
     private bool FixBadMimeBoundary = true;
-    private MimeReaderState state = MimeReaderState.Start;
-    private int partCount = 1;
+      private int partCount = 1;
     private bool eofMeansEndOfFile = true;
     private const int DataBufferSize = 5120;
     private Stream mimeStream;
     private IMimeHandlerInternal handler;
     private bool inferMime;
     private bool parseEmbeddedMessages;
-    private DecodingOptions decodingOptions;
-    private MimeLimits limits;
+      private MimeLimits limits;
     private MimeParser parser;
     private int depth;
     private int cleanupDepth;
     private int embeddedDepth;
-    private bool dataExhausted;
-    private bool dataEOF;
+      private bool dataEOF;
     private byte[] data;
     private int dataOffset;
     private int dataCount;
@@ -36,8 +33,7 @@ namespace Butler.Schema.Data.Mime
     private HeaderId currentHeaderId;
     private string currentHeaderName;
     private bool createHeader;
-    private Header currentHeader;
-    private bool currentHeaderEmpty;
+      private bool currentHeaderEmpty;
     private bool currentHeaderConsumed;
     private bool currentChildConsumed;
     private MimeNode currentChild;
@@ -45,8 +41,7 @@ namespace Butler.Schema.Data.Mime
     private MajorContentType currentPartMajorType;
     private string currentPartContentType;
     private ContentTransferEncoding currentPartContentTransferEncoding;
-    private LineTerminationState currentLineTerminationState;
-    private MimeString inlineFileName;
+      private MimeString inlineFileName;
     private Encoders.ByteEncoder decoder;
     private bool readRawData;
     private Stream contentStream;
@@ -72,7 +67,7 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public DecodingOptions HeaderDecodingOptions => this.decodingOptions;
+    public DecodingOptions HeaderDecodingOptions { get; }
 
       public MimeComplianceStatus ComplianceStatus
     {
@@ -121,18 +116,18 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    internal MimeReaderState ReaderState => this.state;
+    internal MimeReaderState ReaderState { get; private set; } = MimeReaderState.Start;
 
-      internal bool DataExhausted => this.dataExhausted;
+      internal bool DataExhausted { get; private set; }
 
-      internal bool EndOfFile => this.state == MimeReaderState.End;
+      internal bool EndOfFile => this.ReaderState == MimeReaderState.End;
 
       public MimeHeaderReader HeaderReader
     {
       get
       {
         this.AssertGoodToUse(true, true);
-        if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
+        if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         return new MimeHeaderReader(this);
       }
@@ -143,7 +138,7 @@ namespace Butler.Schema.Data.Mime
       get
       {
         this.AssertGoodToUse(false, true);
-        if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete))
+        if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete))
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         return this.currentHeaderId;
       }
@@ -154,7 +149,7 @@ namespace Butler.Schema.Data.Mime
       get
       {
         this.AssertGoodToUse(false, true);
-        if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete))
+        if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete))
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         return this.currentHeaderName;
       }
@@ -165,9 +160,9 @@ namespace Butler.Schema.Data.Mime
       get
       {
         this.AssertGoodToUse(false, true);
-        if (this.state == MimeReaderState.InlineStart)
+        if (this.ReaderState == MimeReaderState.InlineStart)
           return false;
-        if (this.state != MimeReaderState.EndOfHeaders)
+        if (this.ReaderState != MimeReaderState.EndOfHeaders)
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         if (this.currentPartMajorType == MajorContentType.Multipart)
           return this.parser.IsMime;
@@ -180,9 +175,9 @@ namespace Butler.Schema.Data.Mime
       get
       {
         this.AssertGoodToUse(false, true);
-        if (this.state == MimeReaderState.InlineStart)
+        if (this.ReaderState == MimeReaderState.InlineStart)
           return false;
-        if (this.state != MimeReaderState.EndOfHeaders)
+        if (this.ReaderState != MimeReaderState.EndOfHeaders)
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         if (this.currentPartMajorType == MajorContentType.MessageRfc822)
           return this.parser.IsMime;
@@ -195,9 +190,9 @@ namespace Butler.Schema.Data.Mime
       get
       {
         this.AssertGoodToUse(false, true);
-        if (this.state == MimeReaderState.InlineStart)
+        if (this.ReaderState == MimeReaderState.InlineStart)
           return "application/octet-stream";
-        if (this.state != MimeReaderState.EndOfHeaders)
+        if (this.ReaderState != MimeReaderState.EndOfHeaders)
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         return this.currentPartContentType;
       }
@@ -208,7 +203,7 @@ namespace Butler.Schema.Data.Mime
       get
       {
         this.AssertGoodToUse(false, true);
-        if (this.state != MimeReaderState.EndOfHeaders && this.state != MimeReaderState.InlineStart)
+        if (this.ReaderState != MimeReaderState.EndOfHeaders && this.ReaderState != MimeReaderState.InlineStart)
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         return this.currentPartContentTransferEncoding;
       }
@@ -219,9 +214,9 @@ namespace Butler.Schema.Data.Mime
       get
       {
         this.AssertGoodToUse(false, true);
-        if (MimeReader.StateIsOneOf(this.state, MimeReaderState.Start | MimeReaderState.End))
+        if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.Start | MimeReaderState.End))
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
-        return MimeReader.StateIsOneOf(this.state, MimeReaderState.InlineStart | MimeReaderState.InlineBody | MimeReaderState.InlineEnd);
+        return MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.InlineStart | MimeReaderState.InlineBody | MimeReaderState.InlineEnd);
       }
     }
 
@@ -236,9 +231,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    internal LineTerminationState LineTerminationState => this.currentLineTerminationState;
+    internal LineTerminationState LineTerminationState { get; private set; }
 
-      internal Header CurrentHeaderObject => this.currentHeader;
+      internal Header CurrentHeaderObject { get; private set; }
 
       internal bool GroupInProgress
     {
@@ -277,7 +272,7 @@ namespace Butler.Schema.Data.Mime
       this.parser = new MimeParser(true, parseInline, expectBinaryContent);
       this.data = new byte[5120];
       this.inferMime = inferMime;
-      this.decodingOptions = decodingOptions;
+      this.HeaderDecodingOptions = decodingOptions;
       this.limits = mimeLimits;
       this.parseEmbeddedMessages = parseEmbeddedMessages;
     }
@@ -296,7 +291,7 @@ namespace Butler.Schema.Data.Mime
       this.outerContentDepth = -1;
       this.inferMime = parent.inferMime;
       this.limits = parent.limits;
-      this.decodingOptions = parent.decodingOptions;
+      this.HeaderDecodingOptions = parent.HeaderDecodingOptions;
       this.partCount = parent.partCount;
       this.headerCount = parent.headerCount;
       this.cumulativeHeaderBytes = parent.cumulativeHeaderBytes;
@@ -311,7 +306,7 @@ namespace Butler.Schema.Data.Mime
       this.parser = new MimeParser(true, parseInline, true);
       this.data = new byte[5120];
       this.inferMime = inferMime;
-      this.decodingOptions = decodingOptions;
+      this.HeaderDecodingOptions = decodingOptions;
       this.limits = mimeLimits;
       this.parseEmbeddedMessages = true;
     }
@@ -345,7 +340,7 @@ namespace Butler.Schema.Data.Mime
           this.parentReader.dataEOF = this.dataEOF;
           this.parentReader.currentToken = this.currentToken;
           this.parentReader.cleanupDepth = this.depth + this.cleanupDepth;
-          this.parentReader.state = MimeReaderState.EmbeddedEnd;
+          this.parentReader.ReaderState = MimeReaderState.EmbeddedEnd;
           this.parentReader.childReader = (MimeReader) null;
           this.parentReader = (MimeReader) null;
         }
@@ -356,14 +351,14 @@ namespace Butler.Schema.Data.Mime
           int num = this.outerContentDepth;
         }
       }
-      this.state = MimeReaderState.End;
+      this.ReaderState = MimeReaderState.End;
       this.mimeStream = (Stream) null;
       this.handler = (IMimeHandlerInternal) null;
       this.contentStream = (Stream) null;
       this.outerContentStream = (Stream) null;
       this.data = (byte[]) null;
       this.parser = (MimeParser) null;
-      this.currentHeader = (Header) null;
+      this.CurrentHeaderObject = (Header) null;
       this.currentChild = (MimeNode) null;
       this.currentGrandChild = (MimeNode) null;
     }
@@ -382,53 +377,53 @@ namespace Butler.Schema.Data.Mime
     {
       this.AssertGoodToUse(true, true);
       this.TrySkipToNextPartBoundary(false);
-      return MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.InlineStart);
+      return MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart);
     }
 
     public bool ReadFirstChildPart()
     {
       this.AssertGoodToUse(true, true);
-      if (this.state == MimeReaderState.InlineStart)
+      if (this.ReaderState == MimeReaderState.InlineStart)
         return false;
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.Start | MimeReaderState.EndOfHeaders))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.Start | MimeReaderState.EndOfHeaders))
       {
-        if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
+        if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         do
         {
           this.TryReachNextState();
         }
-        while (this.state != MimeReaderState.EndOfHeaders);
+        while (this.ReaderState != MimeReaderState.EndOfHeaders);
       }
-      if (this.state == MimeReaderState.EndOfHeaders && !this.IsMultipart && (!this.IsEmbeddedMessage || !this.parseEmbeddedMessages))
+      if (this.ReaderState == MimeReaderState.EndOfHeaders && !this.IsMultipart && (!this.IsEmbeddedMessage || !this.parseEmbeddedMessages))
         return false;
       this.TrySkipToNextPartBoundary(true);
-      return this.state == MimeReaderState.PartStart;
+      return this.ReaderState == MimeReaderState.PartStart;
     }
 
     public bool ReadNextSiblingPart()
     {
       this.AssertGoodToUse(true, true);
-      if (this.state == MimeReaderState.End)
+      if (this.ReaderState == MimeReaderState.End)
         return false;
-      if (MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders))
+      if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders))
       {
         this.createHeader = false;
-        while (this.state != MimeReaderState.EndOfHeaders)
+        while (this.ReaderState != MimeReaderState.EndOfHeaders)
           this.TryReachNextState();
         this.parser.SetContentType(MajorContentType.Other, new MimeString());
       }
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.Start | MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.Start | MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
       {
         int num = this.depth;
         do
         {
           this.TrySkipToNextPartBoundary(true);
         }
-        while (this.depth > num || !MimeReader.StateIsOneOf(this.state, MimeReaderState.PartEnd | MimeReaderState.InlineEnd));
+        while (this.depth > num || !MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartEnd | MimeReaderState.InlineEnd));
       }
       this.TrySkipToNextPartBoundary(true);
-      return MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.InlineStart);
+      return MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart);
     }
 
     public void EnableReadingUnparsedHeaders()
@@ -439,40 +434,40 @@ namespace Butler.Schema.Data.Mime
     public void ReadHeaders()
     {
       this.AssertGoodToUse(true, true);
-      if (MimeReader.StateIsOneOf(this.state, MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
+      if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
         return;
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
         throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
       this.createHeader = false;
       do
       {
         this.TryReachNextState();
       }
-      while (this.state != MimeReaderState.EndOfHeaders);
+      while (this.ReaderState != MimeReaderState.EndOfHeaders);
     }
 
     internal bool ReadNextHeader()
     {
       this.AssertGoodToUse(true, true);
-      if (MimeReader.StateIsOneOf(this.state, MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
+      if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
         return false;
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
         throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
       do
       {
         this.TryReachNextState();
       }
-      while (!MimeReader.StateIsOneOf(this.state, MimeReaderState.HeaderStart | MimeReaderState.EndOfHeaders));
-      return this.state == MimeReaderState.HeaderStart;
+      while (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.EndOfHeaders));
+      return this.ReaderState == MimeReaderState.HeaderStart;
     }
 
     internal Header ReadHeaderObject()
     {
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
         throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
-      if (this.state == MimeReaderState.HeaderStart)
+      if (this.ReaderState == MimeReaderState.HeaderStart)
         this.TryCompleteCurrentHeader(true);
-      return this.currentHeader;
+      return this.CurrentHeaderObject;
     }
 
     internal bool TryCompleteCurrentHeader(bool createHeader)
@@ -491,16 +486,16 @@ namespace Butler.Schema.Data.Mime
     {
       this.mimeStream = stream;
       this.parser.Reset();
-      this.state = MimeReaderState.Start;
+      this.ReaderState = MimeReaderState.Start;
       this.depth = 0;
       this.cleanupDepth = 0;
       this.embeddedDepth = 0;
-      this.dataExhausted = false;
+      this.DataExhausted = false;
       this.dataEOF = false;
       this.dataOffset = 0;
       this.dataCount = 0;
       this.currentToken = new MimeToken();
-      this.currentHeader = (Header) null;
+      this.CurrentHeaderObject = (Header) null;
       this.currentChild = (MimeNode) null;
       this.currentGrandChild = (MimeNode) null;
       this.decoder = (Encoders.ByteEncoder) null;
@@ -528,27 +523,27 @@ namespace Butler.Schema.Data.Mime
     internal HeaderList ReadHeaderList()
     {
       this.AssertGoodToUse(true, true);
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.InlineStart))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart))
         throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
       HeaderList headerList = new HeaderList((MimeNode) null);
-      if (this.state == MimeReaderState.InlineStart)
+      if (this.ReaderState == MimeReaderState.InlineStart)
         return headerList;
       do
       {
         this.TryReachNextState();
-        if (this.state == MimeReaderState.HeaderStart)
+        if (this.ReaderState == MimeReaderState.HeaderStart)
           this.createHeader = true;
-        else if (this.state == MimeReaderState.HeaderComplete && this.currentHeader != null)
-          headerList.InternalAppendChild((MimeNode) this.currentHeader);
+        else if (this.ReaderState == MimeReaderState.HeaderComplete && this.CurrentHeaderObject != null)
+          headerList.InternalAppendChild((MimeNode) this.CurrentHeaderObject);
       }
-      while (this.state != MimeReaderState.EndOfHeaders);
+      while (this.ReaderState != MimeReaderState.EndOfHeaders);
       return headerList;
     }
 
     internal bool ReadNextDescendant(bool topLevel)
     {
       this.AssertGoodToUse(true, true);
-      if (this.state != MimeReaderState.HeaderComplete)
+      if (this.ReaderState != MimeReaderState.HeaderComplete)
         throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
       if (topLevel)
       {
@@ -556,7 +551,7 @@ namespace Butler.Schema.Data.Mime
           return false;
         if (this.currentChild == null)
         {
-          this.currentChild = this.currentHeader.FirstChild;
+          this.currentChild = this.CurrentHeaderObject.FirstChild;
         }
         else
         {
@@ -593,7 +588,7 @@ namespace Butler.Schema.Data.Mime
         throw new ArgumentNullException(nameof(stream));
       if (!stream.CanWrite)
         throw new ArgumentException(CtsResources.Strings.StreamMustSupportWriting, nameof(stream));
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.InlineStart))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart))
         throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
       if (this.outerContentStream != null)
         throw new NotSupportedException(CtsResources.Strings.OnlyOneOuterContentPushStreamAllowed);
@@ -605,9 +600,9 @@ namespace Butler.Schema.Data.Mime
     {
       this.AssertGoodToUse(true, true);
       MimeCommon.CheckBufferArguments(buffer, offset, count);
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartBody | MimeReaderState.InlineBody))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartBody | MimeReaderState.InlineBody))
       {
-        if (MimeReader.StateIsOneOf(this.state, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
+        if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
           return 0;
         this.TryInitializeReadContent(false);
       }
@@ -624,9 +619,9 @@ namespace Butler.Schema.Data.Mime
     {
       this.AssertGoodToUse(true, true);
       MimeCommon.CheckBufferArguments(buffer, offset, count);
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartBody | MimeReaderState.InlineBody))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartBody | MimeReaderState.InlineBody))
       {
-        if (MimeReader.StateIsOneOf(this.state, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
+        if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
           return 0;
         if (!this.TryInitializeReadContent(true))
           throw new MimeException(CtsResources.Strings.CannotDecodeContentStream);
@@ -671,29 +666,29 @@ namespace Butler.Schema.Data.Mime
 
     private bool TryInitializeReadContent(bool decode)
     {
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
       {
-        if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
+        if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
-        if (this.state == MimeReaderState.PartStart && this.enableReadingOuterContent)
+        if (this.ReaderState == MimeReaderState.PartStart && this.enableReadingOuterContent)
         {
           this.parser.SetStreamMode();
-          this.state = MimeReaderState.PartBody;
+          this.ReaderState = MimeReaderState.PartBody;
           this.decoder = (Encoders.ByteEncoder) null;
           this.readRawData = !decode;
           return true;
         }
         while (this.TryReachNextState())
         {
-          if (this.state == MimeReaderState.EndOfHeaders)
+          if (this.ReaderState == MimeReaderState.EndOfHeaders)
             goto label_8;
         }
         return false;
       }
 label_8:
-      MimeReaderState mimeReaderState1 = this.state;
+      MimeReaderState mimeReaderState1 = this.ReaderState;
       MimeReaderState mimeReaderState2;
-      if (this.state == MimeReaderState.EndOfHeaders)
+      if (this.ReaderState == MimeReaderState.EndOfHeaders)
       {
         this.parser.SetContentType(MajorContentType.Other, new MimeString());
         mimeReaderState2 = MimeReaderState.PartBody;
@@ -723,22 +718,22 @@ label_8:
         this.decoder = (Encoders.ByteEncoder) null;
         this.readRawData = true;
       }
-      this.state = mimeReaderState2;
+      this.ReaderState = mimeReaderState2;
       return true;
     }
 
     public MimeReader GetEmbeddedMessageReader()
     {
       this.AssertGoodToUse(true, true);
-      if (this.state != MimeReaderState.EndOfHeaders)
+      if (this.ReaderState != MimeReaderState.EndOfHeaders)
       {
-        if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
+        if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         do
         {
           this.TryReachNextState();
         }
-        while (this.state != MimeReaderState.EndOfHeaders);
+        while (this.ReaderState != MimeReaderState.EndOfHeaders);
       }
       if (this.currentPartMajorType != MajorContentType.MessageRfc822 || !this.parser.IsMime)
         throw new InvalidOperationException(CtsResources.Strings.CurrentPartIsNotEmbeddedMessage);
@@ -880,7 +875,7 @@ label_8:
         throw new InvalidOperationException(CtsResources.Strings.CannotWriteAfterFlush);
       while (true)
       {
-        while (this.currentToken.Id == MimeTokenId.None && this.state != MimeReaderState.Start)
+        while (this.currentToken.Id == MimeTokenId.None && this.ReaderState != MimeReaderState.Start)
         {
           this.ParseAndCheckSize();
           if (this.currentToken.Id == MimeTokenId.None)
@@ -905,20 +900,20 @@ label_8:
       this.dataEOF = true;
       do
       {
-        if (this.currentToken.Id == MimeTokenId.None && this.state != MimeReaderState.Start)
+        if (this.currentToken.Id == MimeTokenId.None && this.ReaderState != MimeReaderState.Start)
           this.ParseAndCheckSize();
         this.HandleTokenInPushMode();
       }
-      while (this.state != MimeReaderState.End);
+      while (this.ReaderState != MimeReaderState.End);
     }
 
     private void HandleTokenInPushMode()
     {
-      if (MimeReader.StateIsOneOf(this.state, MimeReaderState.PartBody | MimeReaderState.InlineBody) && !this.skipPart && (this.currentToken.Id == MimeTokenId.PartData || this.state == MimeReaderState.InlineBody && (this.currentToken.Id == MimeTokenId.InlineStart || this.currentToken.Id == MimeTokenId.InlineEnd)))
+      if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartBody | MimeReaderState.InlineBody) && !this.skipPart && (this.currentToken.Id == MimeTokenId.PartData || this.ReaderState == MimeReaderState.InlineBody && (this.currentToken.Id == MimeTokenId.InlineStart || this.currentToken.Id == MimeTokenId.InlineEnd)))
         this.handler.PartContent(this.data, this.dataOffset, (int) this.currentToken.Length);
       if (!this.RunStateMachine())
         return;
-      switch (this.state)
+      switch (this.ReaderState)
       {
         case MimeReaderState.InlineEnd:
         case MimeReaderState.PartEnd:
@@ -933,7 +928,7 @@ label_8:
           this.skipHeaders = false;
           PartParseOptionInternal partParseOption;
           Stream outerContentWriteStream;
-          this.handler.PartStart(this.state == MimeReaderState.InlineStart, this.state == MimeReaderState.InlineStart ? this.InlineFileName : (string) null, out partParseOption, out outerContentWriteStream);
+          this.handler.PartStart(this.ReaderState == MimeReaderState.InlineStart, this.ReaderState == MimeReaderState.InlineStart ? this.InlineFileName : (string) null, out partParseOption, out outerContentWriteStream);
           if (outerContentWriteStream != null)
           {
             if (this.outerContentStream != null)
@@ -945,34 +940,34 @@ label_8:
           {
             this.skipPart = true;
             this.parser.SetStreamMode();
-            this.state = this.state == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
+            this.ReaderState = this.ReaderState == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
           }
           else if (partParseOption == PartParseOptionInternal.ParseSkipHeaders)
             this.skipHeaders = true;
           else if (partParseOption == PartParseOptionInternal.ParseRawOuterContent)
           {
             this.parser.SetStreamMode();
-            this.state = this.state == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
+            this.ReaderState = this.ReaderState == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
           }
-          if (this.skipPart || this.state != MimeReaderState.InlineStart)
+          if (this.skipPart || this.ReaderState != MimeReaderState.InlineStart)
             break;
           goto case MimeReaderState.EndOfHeaders;
         case MimeReaderState.EndOfHeaders:
           PartContentParseOptionInternal partContentParseOption;
-          this.handler.EndOfHeaders(this.parser.IsMime ? this.currentPartContentType : (this.state == MimeReaderState.InlineStart ? "application/octet-stream" : "text/plain"), this.parser.TransferEncoding, out partContentParseOption);
+          this.handler.EndOfHeaders(this.parser.IsMime ? this.currentPartContentType : (this.ReaderState == MimeReaderState.InlineStart ? "application/octet-stream" : "text/plain"), this.parser.TransferEncoding, out partContentParseOption);
           if (partContentParseOption == PartContentParseOptionInternal.Skip)
           {
-            if (this.state != MimeReaderState.InlineStart)
+            if (this.ReaderState != MimeReaderState.InlineStart)
               this.parser.SetContentType(MajorContentType.Other, new MimeString());
-            this.state = this.state == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
+            this.ReaderState = this.ReaderState == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
             this.skipPart = true;
             break;
           }
           if (partContentParseOption == PartContentParseOptionInternal.ParseRawContent)
           {
-            if (this.state != MimeReaderState.InlineStart)
+            if (this.ReaderState != MimeReaderState.InlineStart)
               this.parser.SetContentType(MajorContentType.Other, new MimeString());
-            this.state = this.state == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
+            this.ReaderState = this.ReaderState == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
             break;
           }
           if (partContentParseOption == PartContentParseOptionInternal.ParseEmbeddedMessage)
@@ -985,7 +980,7 @@ label_8:
             this.parser.SetContentType(MajorContentType.Other, new MimeString());
           if (this.currentPartMajorType == MajorContentType.Multipart && this.parser.IsMime)
             break;
-          this.state = this.state == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
+          this.ReaderState = this.ReaderState == MimeReaderState.InlineStart ? MimeReaderState.InlineBody : MimeReaderState.PartBody;
           break;
         case MimeReaderState.HeaderStart:
           if (!this.skipHeaders)
@@ -1001,20 +996,20 @@ label_8:
           this.skipHeader = true;
           break;
         case MimeReaderState.HeaderComplete:
-          if (this.currentHeader == null || this.skipHeader)
+          if (this.CurrentHeaderObject == null || this.skipHeader)
             break;
-          this.handler.Header(this.currentHeader);
+          this.handler.Header(this.CurrentHeaderObject);
           break;
       }
     }
 
     private bool TrySkipToNextPartBoundary(bool stopAtPartEnd)
     {
-      while (this.state != MimeReaderState.End)
+      while (this.ReaderState != MimeReaderState.End)
       {
         if (!this.TryReachNextState())
           return false;
-        if (MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.InlineStart) || stopAtPartEnd && MimeReader.StateIsOneOf(this.state, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
+        if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart) || stopAtPartEnd && MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
           break;
       }
       return true;
@@ -1022,11 +1017,11 @@ label_8:
 
     internal bool TryReachNextState()
     {
-      while (this.state != MimeReaderState.End)
+      while (this.ReaderState != MimeReaderState.End)
       {
         if (this.currentToken.Id == MimeTokenId.None)
         {
-          if (this.state == MimeReaderState.Start)
+          if (this.ReaderState == MimeReaderState.Start)
           {
             this.RunStateMachine();
             break;
@@ -1036,7 +1031,7 @@ label_8:
           {
             if (this.mimeStream == null || !this.ReadMoreData())
             {
-              this.dataExhausted = true;
+              this.DataExhausted = true;
               return false;
             }
             continue;
@@ -1045,13 +1040,13 @@ label_8:
         if (this.RunStateMachine())
           break;
       }
-      this.dataExhausted = false;
+      this.DataExhausted = false;
       return true;
     }
 
     private bool RunStateMachine()
     {
-      switch (this.state)
+      switch (this.ReaderState)
       {
         case MimeReaderState.InlineJunk:
           if (this.currentToken.Id == MimeTokenId.PartData)
@@ -1064,17 +1059,17 @@ label_8:
             ++this.depth;
             this.StartPart();
             this.ParseInlineFileName();
-            this.state = MimeReaderState.InlineStart;
+            this.ReaderState = MimeReaderState.InlineStart;
             return true;
           }
           if (this.currentToken.Id == MimeTokenId.EmbeddedEnd && this.parseEmbeddedMessages)
           {
             this.ConsumeCurrentToken();
             this.EndPart();
-            this.state = MimeReaderState.PartEnd;
+            this.ReaderState = MimeReaderState.PartEnd;
             return true;
           }
-          this.state = MimeReaderState.End;
+          this.ReaderState = MimeReaderState.End;
           return true;
         case MimeReaderState.EmbeddedEnd:
           if (this.currentToken.Id == MimeTokenId.EmbeddedEnd)
@@ -1083,7 +1078,7 @@ label_8:
             {
               this.ConsumeCurrentToken();
               this.EndPart();
-              this.state = MimeReaderState.PartEnd;
+              this.ReaderState = MimeReaderState.PartEnd;
               return true;
             }
             --this.cleanupDepth;
@@ -1099,14 +1094,14 @@ label_8:
           {
             this.ConsumeCurrentToken();
             this.EndPart();
-            this.state = MimeReaderState.InlineEnd;
+            this.ReaderState = MimeReaderState.InlineEnd;
             return true;
           }
           this.ConsumeCurrentToken();
           break;
         case MimeReaderState.InlineEnd:
           --this.depth;
-          this.state = MimeReaderState.InlineJunk;
+          this.ReaderState = MimeReaderState.InlineJunk;
           goto case MimeReaderState.InlineJunk;
         case MimeReaderState.PartEpilogue:
           if (this.currentToken.Id == MimeTokenId.PartData)
@@ -1115,28 +1110,28 @@ label_8:
             break;
           }
           this.EndPart();
-          this.state = MimeReaderState.PartEnd;
+          this.ReaderState = MimeReaderState.PartEnd;
           return true;
         case MimeReaderState.PartEnd:
           if (this.currentToken.Id == MimeTokenId.NestedNext)
           {
             this.StartPart();
             this.ConsumeCurrentToken();
-            this.state = MimeReaderState.PartStart;
+            this.ReaderState = MimeReaderState.PartStart;
             return true;
           }
           if (this.currentToken.Id == MimeTokenId.NestedEnd)
           {
             this.ConsumeCurrentToken();
             --this.depth;
-            this.state = MimeReaderState.PartEpilogue;
+            this.ReaderState = MimeReaderState.PartEpilogue;
             break;
           }
           if (this.currentToken.Id == MimeTokenId.InlineStart)
           {
             this.StartPart();
             this.ParseInlineFileName();
-            this.state = MimeReaderState.InlineStart;
+            this.ReaderState = MimeReaderState.InlineStart;
             return true;
           }
           if (this.currentToken.Id == MimeTokenId.EmbeddedEnd && this.parseEmbeddedMessages)
@@ -1148,10 +1143,10 @@ label_8:
             return true;
           }
           --this.depth;
-          this.state = MimeReaderState.End;
+          this.ReaderState = MimeReaderState.End;
           return true;
         case MimeReaderState.InlineStart:
-          this.state = MimeReaderState.InlineBody;
+          this.ReaderState = MimeReaderState.InlineBody;
           return true;
         case MimeReaderState.EndOfHeaders:
           if (this.currentToken.Id == MimeTokenId.EmbeddedStart)
@@ -1162,10 +1157,10 @@ label_8:
               ++this.depth;
               ++this.embeddedDepth;
               this.StartPart();
-              this.state = MimeReaderState.PartStart;
+              this.ReaderState = MimeReaderState.PartStart;
               return true;
             }
-            this.state = MimeReaderState.Embedded;
+            this.ReaderState = MimeReaderState.Embedded;
             return true;
           }
           if (this.currentToken.Id == MimeTokenId.NestedStart)
@@ -1173,26 +1168,26 @@ label_8:
             ++this.depth;
             this.StartPart();
             this.ConsumeCurrentToken();
-            this.state = MimeReaderState.PartStart;
+            this.ReaderState = MimeReaderState.PartStart;
             return true;
           }
           if (this.currentToken.Id == MimeTokenId.PartData)
           {
             if (this.parser.ContentType == MajorContentType.Multipart)
             {
-              this.state = MimeReaderState.PartPrologue;
+              this.ReaderState = MimeReaderState.PartPrologue;
               goto case MimeReaderState.PartPrologue;
             }
             else
             {
-              this.state = MimeReaderState.PartBody;
+              this.ReaderState = MimeReaderState.PartBody;
               return true;
             }
           }
           else
           {
             this.EndPart();
-            this.state = MimeReaderState.PartEnd;
+            this.ReaderState = MimeReaderState.PartEnd;
             return true;
           }
         case MimeReaderState.PartPrologue:
@@ -1201,7 +1196,7 @@ label_8:
             ++this.depth;
             this.StartPart();
             this.ConsumeCurrentToken();
-            this.state = MimeReaderState.PartStart;
+            this.ReaderState = MimeReaderState.PartStart;
             return true;
           }
           if (this.currentToken.Id == MimeTokenId.PartData)
@@ -1210,7 +1205,7 @@ label_8:
             break;
           }
           this.EndPart();
-          this.state = MimeReaderState.PartEnd;
+          this.ReaderState = MimeReaderState.PartEnd;
           return true;
         case MimeReaderState.PartBody:
           if (this.currentToken.Id == MimeTokenId.PartData)
@@ -1219,23 +1214,23 @@ label_8:
             break;
           }
           this.EndPart();
-          this.state = MimeReaderState.PartEnd;
+          this.ReaderState = MimeReaderState.PartEnd;
           return true;
         case MimeReaderState.Start:
           ++this.depth;
           this.StartPart();
-          this.state = MimeReaderState.PartStart;
+          this.ReaderState = MimeReaderState.PartStart;
           return true;
         case MimeReaderState.PartStart:
         case MimeReaderState.HeaderComplete:
           if (this.currentToken.Id == MimeTokenId.Header)
           {
             this.StartHeader();
-            this.state = MimeReaderState.HeaderStart;
+            this.ReaderState = MimeReaderState.HeaderStart;
             return true;
           }
           this.ConsumeCurrentToken();
-          this.state = MimeReaderState.EndOfHeaders;
+          this.ReaderState = MimeReaderState.EndOfHeaders;
           return true;
         case MimeReaderState.HeaderStart:
           this.CreateHeader();
@@ -1244,11 +1239,11 @@ label_8:
           {
             this.EndHeader();
             this.ConsumeCurrentToken();
-            this.state = MimeReaderState.HeaderComplete;
+            this.ReaderState = MimeReaderState.HeaderComplete;
             return true;
           }
           this.ConsumeCurrentToken();
-          this.state = MimeReaderState.HeaderIncomplete;
+          this.ReaderState = MimeReaderState.HeaderIncomplete;
           break;
         case MimeReaderState.HeaderIncomplete:
           if (this.currentToken.Id == MimeTokenId.HeaderContinuation)
@@ -1258,13 +1253,13 @@ label_8:
             if (this.parser.IsHeaderComplete)
             {
               this.EndHeader();
-              this.state = MimeReaderState.HeaderComplete;
+              this.ReaderState = MimeReaderState.HeaderComplete;
               return true;
             }
             break;
           }
           this.EndHeader();
-          this.state = MimeReaderState.HeaderComplete;
+          this.ReaderState = MimeReaderState.HeaderComplete;
           return true;
         default:
           throw new InvalidOperationException();
@@ -1278,7 +1273,7 @@ label_8:
       {
         if (this.outerContentStream != null)
           this.outerContentStream.Write(this.data, this.dataOffset, (int) this.currentToken.Length);
-        this.currentLineTerminationState = MimeCommon.AdvanceLineTerminationState(this.currentLineTerminationState, this.data, this.dataOffset, (int) this.currentToken.Length);
+        this.LineTerminationState = MimeCommon.AdvanceLineTerminationState(this.LineTerminationState, this.data, this.dataOffset, (int) this.currentToken.Length);
         this.parser.ReportConsumedData((int) this.currentToken.Length);
         this.dataOffset += (int) this.currentToken.Length;
         this.dataCount -= (int) this.currentToken.Length;
@@ -1294,7 +1289,7 @@ label_8:
       this.currentPartContentType = (string) null;
       this.currentPartContentTransferEncoding = ContentTransferEncoding.SevenBit;
       this.enableReadingOuterContent = false;
-      this.currentHeader = (Header) null;
+      this.CurrentHeaderObject = (Header) null;
       this.createHeader = false;
       this.inlineFileName = new MimeString();
       this.decoder = (Encoders.ByteEncoder) null;
@@ -1332,7 +1327,7 @@ label_8:
         throw new MimeException(CtsResources.Strings.TooManyHeaders(this.headerCount, this.MimeLimits.MaxHeaders));
       this.currentHeaderId = this.parser.HeaderNameLength == 0 ? HeaderId.Unknown : Header.GetHeaderId(this.data, this.dataOffset, this.parser.HeaderNameLength);
       this.currentHeaderName = this.parser.HeaderNameLength == 0 ? (string) null : Internal.ByteString.BytesToString(this.data, this.dataOffset, this.parser.HeaderNameLength, false);
-      this.currentHeader = (Header) null;
+      this.CurrentHeaderObject = (Header) null;
       bool flag = false;
       if (this.currentHeaderId == HeaderId.ContentType || this.currentHeaderId == HeaderId.ContentTransferEncoding || this.currentHeaderId == HeaderId.MimeVersion)
         flag = true;
@@ -1347,14 +1342,14 @@ label_8:
 
     private void CreateHeader()
     {
-      this.currentHeader = !this.createHeader || this.parser.HeaderNameLength == 0 ? (Header) null : (this.currentHeaderId == HeaderId.Unknown ? Header.CreateGeneralHeader(this.currentHeaderName) : Header.Create(this.currentHeaderName, this.currentHeaderId));
+      this.CurrentHeaderObject = !this.createHeader || this.parser.HeaderNameLength == 0 ? (Header) null : (this.currentHeaderId == HeaderId.Unknown ? Header.CreateGeneralHeader(this.currentHeaderName) : Header.Create(this.currentHeaderName, this.currentHeaderId));
       this.currentHeaderEmpty = true;
     }
 
     private void ContinueHeader()
     {
       this.CheckHeaderBytesLimits();
-      if (this.currentHeader == null)
+      if (this.CurrentHeaderObject == null)
         return;
       int offset = this.dataOffset + this.parser.HeaderDataOffset;
       int length = (int) this.currentToken.Length - this.parser.HeaderDataOffset;
@@ -1368,38 +1363,38 @@ label_8:
       if (num1 == 0)
         return;
       this.currentHeaderEmpty = false;
-      this.currentHeader.AppendLine(MimeString.CopyData(this.data, offset, num1), false);
+      this.CurrentHeaderObject.AppendLine(MimeString.CopyData(this.data, offset, num1), false);
     }
 
     private void EndHeader()
     {
-      if (this.currentHeader == null)
+      if (this.CurrentHeaderObject == null)
         return;
-      if (this.currentHeader is ComplexHeader)
+      if (this.CurrentHeaderObject is ComplexHeader)
       {
         if (this.MimeLimits.MaxParametersPerHeader < int.MaxValue || this.MimeLimits.MaxTextValueBytesPerValue < int.MaxValue)
-          this.currentHeader.CheckChildrenLimit(this.MimeLimits.MaxParametersPerHeader, this.MimeLimits.MaxTextValueBytesPerValue);
+          this.CurrentHeaderObject.CheckChildrenLimit(this.MimeLimits.MaxParametersPerHeader, this.MimeLimits.MaxTextValueBytesPerValue);
       }
-      else if (this.currentHeader is AddressHeader && (this.MimeLimits.MaxAddressItemsPerHeader < int.MaxValue || this.MimeLimits.MaxTextValueBytesPerValue < int.MaxValue))
-        this.currentHeader.CheckChildrenLimit(this.MimeLimits.MaxAddressItemsPerHeader, this.MimeLimits.MaxTextValueBytesPerValue);
-      if (this.currentHeader.HeaderId == HeaderId.MimeVersion && this.PartDepth == 1)
+      else if (this.CurrentHeaderObject is AddressHeader && (this.MimeLimits.MaxAddressItemsPerHeader < int.MaxValue || this.MimeLimits.MaxTextValueBytesPerValue < int.MaxValue))
+        this.CurrentHeaderObject.CheckChildrenLimit(this.MimeLimits.MaxAddressItemsPerHeader, this.MimeLimits.MaxTextValueBytesPerValue);
+      if (this.CurrentHeaderObject.HeaderId == HeaderId.MimeVersion && this.PartDepth == 1)
         this.parser.SetMIME();
-      else if (this.currentHeader.HeaderId == HeaderId.ContentTransferEncoding)
+      else if (this.CurrentHeaderObject.HeaderId == HeaderId.ContentTransferEncoding)
       {
         if (this.inferMime && this.PartDepth == 1)
           this.parser.SetMIME();
-        ContentTransferEncoding encodingType = MimePart.GetEncodingType(this.currentHeader.FirstRawToken);
+        ContentTransferEncoding encodingType = MimePart.GetEncodingType(this.CurrentHeaderObject.FirstRawToken);
         this.parser.SetTransferEncoding(encodingType);
         this.currentPartContentTransferEncoding = encodingType;
       }
       else
       {
-        if (this.currentHeader.HeaderId != HeaderId.ContentType)
+        if (this.CurrentHeaderObject.HeaderId != HeaderId.ContentType)
           return;
         MajorContentType contentType = MajorContentType.Other;
         string str = (string) null;
         MimeString boundaryValue = new MimeString();
-        ContentTypeHeader contentTypeHeader = this.currentHeader as ContentTypeHeader;
+        ContentTypeHeader contentTypeHeader = this.CurrentHeaderObject as ContentTypeHeader;
         if (contentTypeHeader != null)
         {
           if (contentTypeHeader.IsMultipart)
@@ -1465,7 +1460,7 @@ label_8:
     internal bool ReadPartData(byte[] buffer, int offset, int count, out int readCount)
     {
       readCount = 0;
-      this.dataExhausted = false;
+      this.DataExhausted = false;
       bool completed = true;
       while (count != 0)
       {
@@ -1476,7 +1471,7 @@ label_8:
           {
             if (this.mimeStream == null || !this.ReadMoreData())
             {
-              this.dataExhausted = true;
+              this.DataExhausted = true;
               return false;
             }
             continue;
@@ -1484,7 +1479,7 @@ label_8:
         }
         int inputUsed;
         int outputUsed;
-        if (this.currentToken.Id != MimeTokenId.PartData && this.currentToken.Id != MimeTokenId.InlineStart && this.currentToken.Id != MimeTokenId.InlineEnd || this.state == MimeReaderState.PartBody && this.currentToken.Id == MimeTokenId.InlineStart)
+        if (this.currentToken.Id != MimeTokenId.PartData && this.currentToken.Id != MimeTokenId.InlineStart && this.currentToken.Id != MimeTokenId.InlineEnd || this.ReaderState == MimeReaderState.PartBody && this.currentToken.Id == MimeTokenId.InlineStart)
         {
           if (this.decoder != null)
           {
@@ -1496,7 +1491,7 @@ label_8:
               break;
           }
           this.EndPart();
-          this.state = MimeReaderState.PartEnd;
+          this.ReaderState = MimeReaderState.PartEnd;
           break;
         }
         if (this.decoder != null)
@@ -1524,7 +1519,7 @@ label_8:
         {
           if (this.outerContentStream != null)
             this.outerContentStream.Write(this.data, this.dataOffset, inputUsed);
-          this.currentLineTerminationState = MimeCommon.AdvanceLineTerminationState(this.currentLineTerminationState, this.data, this.dataOffset, inputUsed);
+          this.LineTerminationState = MimeCommon.AdvanceLineTerminationState(this.LineTerminationState, this.data, this.dataOffset, inputUsed);
           this.parser.ReportConsumedData(inputUsed);
           this.dataOffset += inputUsed;
           this.dataCount -= inputUsed;
@@ -1538,7 +1533,7 @@ label_8:
             {
               this.EndPart();
               this.currentToken.Id = MimeTokenId.None;
-              this.state = MimeReaderState.InlineEnd;
+              this.ReaderState = MimeReaderState.InlineEnd;
               break;
             }
             break;
@@ -1576,52 +1571,52 @@ label_8:
       this.AssertGoodToUse(false, true);
       if (!this.TrySkipToNextPartBoundary(false))
         return false;
-      return MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.InlineStart);
+      return MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart);
     }
 
     internal bool TryReadFirstChildPart()
     {
       this.AssertGoodToUse(false, true);
-      if (this.state == MimeReaderState.InlineStart)
+      if (this.ReaderState == MimeReaderState.InlineStart)
         return false;
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.Start | MimeReaderState.EndOfHeaders | MimeReaderState.PartPrologue))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.Start | MimeReaderState.EndOfHeaders | MimeReaderState.PartPrologue))
       {
-        if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete))
+        if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete))
           throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
         while (this.TryReachNextState())
         {
-          if (this.state == MimeReaderState.EndOfHeaders)
+          if (this.ReaderState == MimeReaderState.EndOfHeaders)
             goto label_8;
         }
         return false;
       }
 label_8:
-      if (this.state == MimeReaderState.EndOfHeaders && !this.IsMultipart && (!this.IsEmbeddedMessage || !this.parseEmbeddedMessages) || !this.TrySkipToNextPartBoundary(true))
+      if (this.ReaderState == MimeReaderState.EndOfHeaders && !this.IsMultipart && (!this.IsEmbeddedMessage || !this.parseEmbeddedMessages) || !this.TrySkipToNextPartBoundary(true))
         return false;
-      return this.state == MimeReaderState.PartStart;
+      return this.ReaderState == MimeReaderState.PartStart;
     }
 
     internal bool TryReadNextSiblingPart()
     {
       this.AssertGoodToUse(false, true);
-      if (this.state == MimeReaderState.End)
+      if (this.ReaderState == MimeReaderState.End)
         return false;
-      if (MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders))
+      if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders))
       {
         this.createHeader = false;
-        while (this.state != MimeReaderState.EndOfHeaders)
+        while (this.ReaderState != MimeReaderState.EndOfHeaders)
         {
           if (!this.TryReachNextState())
             return false;
         }
         this.parser.SetContentType(MajorContentType.Other, new MimeString());
       }
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.Start | MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.Start | MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
       {
         int num = this.depth;
         while (this.TrySkipToNextPartBoundary(true))
         {
-          if (this.depth <= num && MimeReader.StateIsOneOf(this.state, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
+          if (this.depth <= num && MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
             goto label_13;
         }
         return false;
@@ -1629,15 +1624,15 @@ label_8:
 label_13:
       if (!this.TrySkipToNextPartBoundary(true))
         return false;
-      return MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.InlineStart);
+      return MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart);
     }
 
     internal HeaderList TryReadHeaderList()
     {
       this.AssertGoodToUse(false, true);
-      if (!MimeReader.StateIsOneOf(this.state, MimeReaderState.PartStart | MimeReaderState.InlineStart) && (!MimeReader.StateIsOneOf(this.state, MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete) || this.headerList == null))
+      if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart) && (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete) || this.headerList == null))
         throw new InvalidOperationException(CtsResources.Strings.OperationNotValidInThisReaderState);
-      if (this.state == MimeReaderState.InlineStart)
+      if (this.ReaderState == MimeReaderState.InlineStart)
         return new HeaderList((MimeNode) null);
       HeaderList headerList;
       if (this.headerList == null)
@@ -1651,11 +1646,11 @@ label_13:
       }
       while (this.TryReachNextState())
       {
-        if (this.state == MimeReaderState.HeaderStart)
+        if (this.ReaderState == MimeReaderState.HeaderStart)
           this.createHeader = true;
-        else if (this.state == MimeReaderState.HeaderComplete && this.currentHeader != null)
-          headerList.InternalAppendChild((MimeNode) this.currentHeader);
-        if (this.state == MimeReaderState.EndOfHeaders)
+        else if (this.ReaderState == MimeReaderState.HeaderComplete && this.CurrentHeaderObject != null)
+          headerList.InternalAppendChild((MimeNode) this.CurrentHeaderObject);
+        if (this.ReaderState == MimeReaderState.EndOfHeaders)
           return headerList;
       }
       this.headerList = headerList;
@@ -1711,9 +1706,9 @@ label_13:
         MimeCommon.CheckBufferArguments(buffer, offset, count);
         if (this.reader.contentStream != this)
           throw new NotSupportedException(CtsResources.Strings.StreamNoLongerValid);
-        if (!MimeReader.StateIsOneOf(this.reader.state, MimeReaderState.PartBody | MimeReaderState.InlineBody))
+        if (!MimeReader.StateIsOneOf(this.reader.ReaderState, MimeReaderState.PartBody | MimeReaderState.InlineBody))
         {
-          if (MimeReader.StateIsOneOf(this.reader.state, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
+          if (MimeReader.StateIsOneOf(this.reader.ReaderState, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
             return 0;
           throw new NotSupportedException(CtsResources.Strings.StreamNoLongerValid);
         }

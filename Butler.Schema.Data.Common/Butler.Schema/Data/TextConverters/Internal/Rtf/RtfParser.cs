@@ -21,15 +21,14 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     private RtfRunEntry[] runQueue;
     private int runQueueTail;
     private bool overflowRun;
-    private RtfToken token;
-    private short fontsCount;
+      private short fontsCount;
     private RtfParser.RtfParserFont[] fonts;
     private short[] fontDirectory;
     private RtfParser.RtfParserState state;
     private short defaultFontHandle;
     private RecognizeInterestingFontName fontNameRecognizer;
 
-    public RtfToken Token => this.token;
+    public RtfToken Token { get; }
 
       public short CurrentFontIndex => this.state.FontIndex;
 
@@ -64,7 +63,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       else
         this.pullSource = input;
       this.runQueue = new RtfRunEntry[testBoundaryConditions ? 15 : 256];
-      this.token = new RtfToken(this.ParseBuffer, this.runQueue);
+      this.Token = new RtfToken(this.ParseBuffer, this.runQueue);
       this.fonts = new RtfParser.RtfParserFont[testBoundaryConditions ? 5 : 16];
       this.fontDirectory = new short[testBoundaryConditions ? 9 : 65];
       this.Initialize();
@@ -76,7 +75,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       this.progressMonitor = progressMonitor;
       this.pullSource = input;
       this.runQueue = new RtfRunEntry[testBoundaryConditions ? 15 : 256];
-      this.token = new RtfToken(this.ParseBuffer, this.runQueue);
+      this.Token = new RtfToken(this.ParseBuffer, this.runQueue);
       this.fonts = new RtfParser.RtfParserFont[testBoundaryConditions ? 5 : 16];
       this.fontDirectory = new short[testBoundaryConditions ? 9 : 65];
       this.Initialize();
@@ -145,7 +144,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         if (tokenId <= RtfTokenId.Binary)
         {
           int length = this.ParseOffset - this.ParseStart;
-          this.token.Initialize(tokenId, this.runQueueTail, this.ParseStart, this.ParseOffset - this.ParseStart);
+          this.Token.Initialize(tokenId, this.runQueueTail, this.ParseStart, this.ParseOffset - this.ParseStart);
           this.ReportConsumed(length);
           return tokenId;
         }
@@ -154,7 +153,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       {
         if (this.runQueueTail != 0)
           this.overflowRun = true;
-        this.token.Reset();
+        this.Token.Reset();
         return RtfTokenId.None;
       }
       ushort num = (ushort) 0;
@@ -183,7 +182,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         tokenId = RtfTokenId.Keywords;
       else if (tokenId == RtfTokenId.Text)
       {
-        this.token.SetCodePage((int) this.currentCodePage, this.currentTextMapping);
+        this.Token.SetCodePage((int) this.currentCodePage, this.currentTextMapping);
         if (this.state.Destination == RtfParser.RtfParserDestination.FontTable && !this.fontNameRecognizer.IsRejected)
         {
           int parseStart = this.ParseStart;
@@ -207,7 +206,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         }
       }
       int length1 = this.ParseOffset - (int) num - this.ParseStart;
-      this.token.Initialize(tokenId, this.runQueueTail, this.ParseStart, length1);
+      this.Token.Initialize(tokenId, this.runQueueTail, this.ParseStart, length1);
       this.ReportConsumed(length1);
       return tokenId;
     }
@@ -257,7 +256,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     {
       this.runQueueTail = 0;
       this.overflowRun = false;
-      this.token.Reset();
+      this.Token.Reset();
       this.fonts[0].Initialize((short) -1, (ushort) 1252);
       this.fonts[0].Family = RtfFontFamily.Swiss;
       this.fontsCount = (short) 1;
@@ -738,12 +737,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       public RtfParser.RtfParserState.State Current;
       private RtfParser.RtfParserState.State[] stack;
       private int stackTop;
-      private bool codePageFixed;
-      private short defaultFontIndex;
-      private short defaultLanguage;
-      private short defaultLanguageFE;
-      private RtfSupport.CharRep charRepBiDi;
-      private bool detectSingleChpRtl;
+        private bool detectSingleChpRtl;
       private bool detectAssocRtl;
       private bool detectAssocSA;
       private bool inAssocRtl;
@@ -783,67 +777,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         }
       }
 
-      public bool CodePageFixed
-      {
-        get
-        {
-          return this.codePageFixed;
-        }
-        set
-        {
-          this.codePageFixed = value;
-        }
-      }
+      public bool CodePageFixed { get; set; }
 
-      public short DefaultFontIndex
-      {
-        get
-        {
-          return this.defaultFontIndex;
-        }
-        set
-        {
-          this.defaultFontIndex = value;
-        }
-      }
+        public short DefaultFontIndex { get; set; }
 
-      public short DefaultLanguage
-      {
-        get
-        {
-          return this.defaultLanguage;
-        }
-        set
-        {
-          this.defaultLanguage = value;
-        }
-      }
+        public short DefaultLanguage { get; set; }
 
-      public short DefaultLanguageFE
-      {
-        get
-        {
-          return this.defaultLanguageFE;
-        }
-        set
-        {
-          this.defaultLanguageFE = value;
-        }
-      }
+        public short DefaultLanguageFE { get; set; }
 
-      public RtfSupport.CharRep CharRepBiDi
-      {
-        get
-        {
-          return this.charRepBiDi;
-        }
-        set
-        {
-          this.charRepBiDi = value;
-        }
-      }
+        public RtfSupport.CharRep CharRepBiDi { get; set; }
 
-      public RtfParser.RtfParserDestination Destination
+        public RtfParser.RtfParserDestination Destination
       {
         get
         {
@@ -1237,11 +1181,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       {
         this.Level = 0;
         this.stackTop = 0;
-        this.defaultFontIndex = (short) 0;
-        this.defaultLanguage = (short) -1;
-        this.defaultLanguageFE = (short) -1;
-        this.charRepBiDi = RtfSupport.CharRep.ANSI_INDEX;
-        this.codePageFixed = false;
+        this.DefaultFontIndex = (short) 0;
+        this.DefaultLanguage = (short) -1;
+        this.DefaultLanguageFE = (short) -1;
+        this.CharRepBiDi = RtfSupport.CharRep.ANSI_INDEX;
+        this.CodePageFixed = false;
         this.Current.Depth = (short) 1;
         this.Current.Dest = RtfParser.RtfParserDestination.Default;
         this.Current.BytesSkipForUnicodeEscape = (byte) 1;
@@ -1272,17 +1216,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         this.SetDirty();
         this.Current.Flags = RtfParser.RtfParserState.StateFlags.None;
         this.Current.RunKind = RtfTextRunKind.None;
-        this.Current.FontIndex = this.defaultFontIndex;
+        this.Current.FontIndex = this.DefaultFontIndex;
         this.Current.FontIndexCS = (short) -1;
         this.Current.FontIndexAscii = (short) -1;
         this.Current.FontIndexDbCh = (short) -1;
-        this.Current.FontIndexOther = this.defaultFontIndex;
+        this.Current.FontIndexOther = this.DefaultFontIndex;
         this.Current.FontSize = RtfParserBase.TwelvePointsInTwips;
         this.Current.FontSizeCS = (short) 0;
         this.Current.FontSizeOther = (short) 0;
         this.Current.CodePage = (ushort) 0;
         this.Current.TextMapping = TextMapping.Unicode;
-        this.Current.Language = (int) this.defaultLanguageFE != -1 ? this.defaultLanguageFE : this.defaultLanguage;
+        this.Current.Language = (int) this.DefaultLanguageFE != -1 ? this.DefaultLanguageFE : this.DefaultLanguage;
         this.Current.CharRep = RtfSupport.CharRep.DEFAULT_INDEX;
       }
 

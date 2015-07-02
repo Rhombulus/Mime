@@ -39,27 +39,16 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private const int TypeShift = 27;
     private const uint ValueMask = 134217727U;
     private const int ValueShift = 5;
-    private uint rawValue;
 
-    public uint RawValue
-    {
-      get
-      {
-        return this.rawValue;
-      }
-      set
-      {
-        this.rawValue = value;
-      }
-    }
+      public uint RawValue { get; }
 
-    public uint RawType => this.rawValue & 4160749568U;
+      public uint RawType => this.RawValue & 4160749568U;
 
-      public PropertyType Type => (PropertyType) ((this.rawValue & 4160749568U) >> 27);
+      public PropertyType Type => (PropertyType) ((this.RawValue & 4160749568U) >> 27);
 
-      public int Value => ((int) this.rawValue & 134217727) << 5 >> 5;
+      public int Value => ((int) this.RawValue & 134217727) << 5 >> 5;
 
-      public uint UnsignedValue => this.rawValue & 134217727U;
+      public uint UnsignedValue => this.RawValue & 134217727U;
 
       public bool IsNull => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Null);
 
@@ -189,57 +178,57 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
       public PropertyValue(uint rawValue)
     {
-      this.rawValue = rawValue;
+      this.RawValue = rawValue;
     }
 
     public PropertyValue(bool value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(value);
+      this.RawValue = PropertyValue.ComposeRawValue(value);
     }
 
     public PropertyValue(PropertyType type, int value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(type, value);
+      this.RawValue = PropertyValue.ComposeRawValue(type, value);
     }
 
     public PropertyValue(PropertyType type, uint value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(type, value);
+      this.RawValue = PropertyValue.ComposeRawValue(type, value);
     }
 
     public PropertyValue(LengthUnits lengthUnits, float value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(lengthUnits, value);
+      this.RawValue = PropertyValue.ComposeRawValue(lengthUnits, value);
     }
 
     public PropertyValue(LengthUnits lengthUnits, int value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(lengthUnits, value);
+      this.RawValue = PropertyValue.ComposeRawValue(lengthUnits, value);
     }
 
     public PropertyValue(PropertyType type, float value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(type, value);
+      this.RawValue = PropertyValue.ComposeRawValue(type, value);
     }
 
     public PropertyValue(RGBT color)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(color);
+      this.RawValue = PropertyValue.ComposeRawValue(color);
     }
 
     public PropertyValue(System.Enum value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(value);
+      this.RawValue = PropertyValue.ComposeRawValue(value);
     }
 
     public static bool operator ==(PropertyValue x, PropertyValue y)
     {
-      return (int) x.rawValue == (int) y.rawValue;
+      return (int) x.RawValue == (int) y.RawValue;
     }
 
     public static bool operator !=(PropertyValue x, PropertyValue y)
     {
-      return (int) x.rawValue != (int) y.rawValue;
+      return (int) x.RawValue != (int) y.RawValue;
     }
 
     public static uint GetRawType(PropertyType type)
@@ -249,42 +238,42 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public void Set(uint rawValue)
     {
-      this.rawValue = rawValue;
+      this.RawValue = rawValue;
     }
 
     public void Set(bool value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(value);
+      this.RawValue = PropertyValue.ComposeRawValue(value);
     }
 
     public void Set(PropertyType type, int value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(type, value);
+      this.RawValue = PropertyValue.ComposeRawValue(type, value);
     }
 
     public void Set(PropertyType type, uint value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(type, value);
+      this.RawValue = PropertyValue.ComposeRawValue(type, value);
     }
 
     public void Set(LengthUnits lengthUnits, float value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(lengthUnits, value);
+      this.RawValue = PropertyValue.ComposeRawValue(lengthUnits, value);
     }
 
     public void Set(PropertyType type, float value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(type, value);
+      this.RawValue = PropertyValue.ComposeRawValue(type, value);
     }
 
     public void Set(RGBT color)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(color);
+      this.RawValue = PropertyValue.ComposeRawValue(color);
     }
 
     public void Set(System.Enum value)
     {
-      this.rawValue = PropertyValue.ComposeRawValue(value);
+      this.RawValue = PropertyValue.ComposeRawValue(value);
     }
 
     public override string ToString()
@@ -341,13 +330,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     public override bool Equals(object obj)
     {
       if (obj is PropertyValue)
-        return (int) this.rawValue == (int) ((PropertyValue) obj).rawValue;
+        return (int) this.RawValue == (int) ((PropertyValue) obj).RawValue;
       return false;
     }
 
     public override int GetHashCode()
     {
-      return (int) this.rawValue;
+      return (int) this.RawValue;
     }
 
     internal static int ConvertHtmlFontUnitsToTwips(int nHtmlSize)

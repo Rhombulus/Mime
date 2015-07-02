@@ -794,16 +794,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       internal const int MaxPlanes = 256;
       internal const int InitialPlanes = 16;
       internal const int InitialElements = 16;
-      private FormatStore store;
-      private FormatStore.MultiValueEntry[][] planes;
+        private FormatStore.MultiValueEntry[][] planes;
       private int freeListHead;
       private int top;
 
-      public FormatStore Store => this.store;
+      public FormatStore Store { get; }
 
         public MultiValueStore(FormatStore store, FormatStore.MultiValueEntry[] globaMultiValues)
       {
-        this.store = store;
+        this.Store = store;
         this.planes = new FormatStore.MultiValueEntry[16][];
         this.planes[0] = new FormatStore.MultiValueEntry[Math.Max(16, globaMultiValues.Length + 1)];
         this.freeListHead = 0;
@@ -884,7 +883,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
           for (int index2 = 0; index2 < multiValueEntryArray[index1].Values.Length; ++index2)
           {
             if (multiValueEntryArray[index1].Values[index2].IsRefCountedHandle)
-              this.store.ReleaseValue(multiValueEntryArray[index1].Values[index2]);
+              this.Store.ReleaseValue(multiValueEntryArray[index1].Values[index2]);
           }
         }
         multiValueEntryArray[index1].NextFree = this.freeListHead;
@@ -945,13 +944,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       internal const int MaxRunEffectivelength = 4095;
       private Globalization.OutboundCodePageDetector detector;
       private char[][] planes;
-      private uint position;
-      private TextRunType lastRunType;
-      private uint lastRunPosition;
+        private uint lastRunPosition;
 
-      public uint CurrentPosition => this.position;
+      public uint CurrentPosition { get; private set; }
 
-        public TextRunType LastRunType => this.lastRunType;
+        public TextRunType LastRunType { get; private set; }
 
         public TextStore()
       {
@@ -976,8 +973,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
       public void Initialize()
       {
-        this.position = 0U;
-        this.lastRunType = TextRunType.Invalid;
+        this.CurrentPosition = 0U;
+        this.LastRunType = TextRunType.Invalid;
         this.lastRunPosition = 0U;
           this.detector?.Reset();
       }
@@ -1003,9 +1000,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       {
         if (this.detector != null && runType != TextRunType.Markup)
           this.detector.AddText(textBuffer, offset, count);
-        int num1 = (int) this.position & (int) short.MaxValue;
-        int index1 = (int) (this.position >> 15);
-        if (this.lastRunType == runType && num1 != 0)
+        int num1 = (int) this.CurrentPosition & (int) short.MaxValue;
+        int index1 = (int) (this.CurrentPosition >> 15);
+        if (this.LastRunType == runType && num1 != 0)
         {
           char[] chArray1 = this.planes[index1];
           int index2 = (int) this.lastRunPosition & (int) short.MaxValue;
@@ -1015,24 +1012,24 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
             if (index1 == 0 && num1 + num2 > chArray1.Length)
             {
               char[] chArray2 = new char[Math.Min(Math.Max(this.planes[0].Length * 2, num1 + num2), 32768)];
-              Buffer.BlockCopy((Array) this.planes[0], 0, (Array) chArray2, 0, (int) this.position * 2);
+              Buffer.BlockCopy((Array) this.planes[0], 0, (Array) chArray2, 0, (int) this.CurrentPosition * 2);
               this.planes[0] = chArray1 = chArray2;
             }
             chArray1[index2] = this.MakeTextRunHeader(runType, num2 + FormatStore.TextStore.LengthFromRunHeader(chArray1[index2]));
             Buffer.BlockCopy((Array) textBuffer, offset * 2, (Array) chArray1, num1 * 2, num2 * 2);
             offset += num2;
             count -= num2;
-            this.position += (uint) num2;
+            this.CurrentPosition += (uint) num2;
           }
         }
         while (count != 0)
         {
-          int index2 = (int) this.position & (int) short.MaxValue;
-          int index3 = (int) (this.position >> 15);
+          int index2 = (int) this.CurrentPosition & (int) short.MaxValue;
+          int index3 = (int) (this.CurrentPosition >> 15);
           if (32768 - index2 < 21)
           {
             this.planes[index3][index2] = this.MakeTextRunHeader(TextRunType.Invalid, 32768 - index2 - 1);
-            this.position += (uint) (32768 - index2);
+            this.CurrentPosition += (uint) (32768 - index2);
           }
           else
           {
@@ -1040,7 +1037,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
             if (index3 == 0 && index2 + length + 1 > this.planes[0].Length)
             {
               char[] chArray = new char[Math.Min(Math.Max(this.planes[0].Length * 2, index2 + length + 1), 32768)];
-              Buffer.BlockCopy((Array) this.planes[0], 0, (Array) chArray, 0, (int) this.position * 2);
+              Buffer.BlockCopy((Array) this.planes[0], 0, (Array) chArray, 0, (int) this.CurrentPosition * 2);
               this.planes[0] = chArray;
             }
             else if (index2 == 0)
@@ -1056,20 +1053,20 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
               if (this.planes[index3] == null)
                 this.planes[index3] = new char[32768];
             }
-            this.lastRunType = runType;
-            this.lastRunPosition = this.position;
+            this.LastRunType = runType;
+            this.lastRunPosition = this.CurrentPosition;
             this.planes[index3][index2] = this.MakeTextRunHeader(runType, length);
             Buffer.BlockCopy((Array) textBuffer, offset * 2, (Array) this.planes[index3], (index2 + 1) * 2, length * 2);
             offset += length;
             count -= length;
-            this.position += (uint) (length + 1);
+            this.CurrentPosition += (uint) (length + 1);
           }
         }
       }
 
       public void AddSimpleRun(TextRunType runType, int count)
       {
-        if (this.lastRunType == runType)
+        if (this.LastRunType == runType)
         {
           char[] chArray = this.planes[(this.lastRunPosition >> 15)];
           int index = (int) this.lastRunPosition & (int) short.MaxValue;
@@ -1082,8 +1079,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
         }
         if (count == 0)
           return;
-        int index1 = (int) this.position & (int) short.MaxValue;
-        int index2 = (int) (this.position >> 15);
+        int index1 = (int) this.CurrentPosition & (int) short.MaxValue;
+        int index2 = (int) (this.CurrentPosition >> 15);
         if (index1 == 0)
         {
           if (index2 == this.planes.Length)
@@ -1097,16 +1094,16 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
           if (this.planes[index2] == null)
             this.planes[index2] = new char[32768];
         }
-        else if (index2 == 0 && (long) (this.position + 1U) > (long) this.planes[0].Length)
+        else if (index2 == 0 && (long) (this.CurrentPosition + 1U) > (long) this.planes[0].Length)
         {
           char[] chArray = new char[Math.Min(this.planes[0].Length * 2, 32768)];
-          Buffer.BlockCopy((Array) this.planes[0], 0, (Array) chArray, 0, (int) this.position * 2);
+          Buffer.BlockCopy((Array) this.planes[0], 0, (Array) chArray, 0, (int) this.CurrentPosition * 2);
           this.planes[0] = chArray;
         }
-        this.lastRunType = runType;
-        this.lastRunPosition = this.position;
+        this.LastRunType = runType;
+        this.lastRunPosition = this.CurrentPosition;
         this.planes[index2][index1] = this.MakeTextRunHeader(runType, count);
-        ++this.position;
+        ++this.CurrentPosition;
       }
 
       public void ConvertToInvalid(uint startPosition)
@@ -1135,18 +1132,18 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
       public void DoNotMergeNextRun()
       {
-        if (this.lastRunType == TextRunType.BlockBoundary)
+        if (this.LastRunType == TextRunType.BlockBoundary)
           return;
-        this.lastRunType = TextRunType.Invalid;
+        this.LastRunType = TextRunType.Invalid;
       }
 
       public long DumpStat(TextWriter dumpWriter)
       {
-        int num1 = (int) ((uint) ((int) this.position + 32768 - 1) >> 15);
+        int num1 = (int) ((uint) ((int) this.CurrentPosition + 32768 - 1) >> 15);
         if (num1 == 0)
           num1 = 1;
         long num2 = num1 == 1 ? (long) this.planes[0].Length : (long) (num1 * 32768);
-        long num3 = (long) this.position;
+        long num3 = (long) this.CurrentPosition;
         long num4 = (long) (12 + this.planes.Length * 4 + num1 * 12) + num2 * 2L;
         if (dumpWriter != null)
         {

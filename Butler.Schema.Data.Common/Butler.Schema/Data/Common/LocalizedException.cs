@@ -18,9 +18,8 @@ namespace Butler.Schema.Data.Common
   {
     internal static LocalizedException.TraceExceptionDelegate TraceExceptionCallback;
     private IFormatProvider formatProvider;
-    private LocalizedString localizedString;
 
-    public override string Message => this.LocalizedString.ToString(this.FormatProvider);
+      public override string Message => this.LocalizedString.ToString(this.FormatProvider);
 
       public IFormatProvider FormatProvider
     {
@@ -34,7 +33,7 @@ namespace Butler.Schema.Data.Common
       }
     }
 
-    public LocalizedString LocalizedString => this.localizedString;
+    public LocalizedString LocalizedString { get; }
 
       public int ErrorCode
     {
@@ -48,9 +47,9 @@ namespace Butler.Schema.Data.Common
       }
     }
 
-    public string StringId => this.localizedString.StringId;
+    public string StringId => this.LocalizedString.StringId;
 
-      public ReadOnlyCollection<object> StringFormatParameters => this.localizedString.FormatParameters;
+      public ReadOnlyCollection<object> StringFormatParameters => this.LocalizedString.FormatParameters;
 
       public LocalizedException(LocalizedString localizedString)
       : this(localizedString, (Exception) null)
@@ -61,14 +60,14 @@ namespace Butler.Schema.Data.Common
     public LocalizedException(LocalizedString localizedString, Exception innerException)
       : base((string) localizedString, innerException)
     {
-      this.localizedString = localizedString;
+      this.LocalizedString = localizedString;
       LocalizedException.TraceException("Created LocalizedException({0}, innerException)", (object) localizedString);
     }
 
     protected LocalizedException(SerializationInfo info, StreamingContext context)
       : base(info, context)
     {
-      this.localizedString = (LocalizedString) info.GetValue("localizedString", typeof (LocalizedString));
+      this.LocalizedString = (LocalizedString) info.GetValue("localizedString", typeof (LocalizedString));
       LocalizedException.TraceException("Created LocalizedException(info, context)");
     }
 

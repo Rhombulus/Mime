@@ -11,65 +11,53 @@ namespace Butler.Schema.Data.TextConverters
 {
   internal struct ScratchBuffer
   {
-    private char[] buffer;
-    private int count;
 
-    public char[] Buffer => this.buffer;
+      public char[] Buffer { get; private set; }
 
       public int Offset => 0;
 
-      public int Length
-    {
-      get
-      {
-        return this.count;
-      }
-      set
-      {
-        this.count = value;
-      }
-    }
+      public int Length { get; set; }
 
-    public int Capacity
+      public int Capacity
     {
       get
       {
-        if (this.buffer != null)
-          return this.buffer.Length;
+        if (this.Buffer != null)
+          return this.Buffer.Length;
         return 64;
       }
     }
 
-    public BufferString BufferString => new BufferString(this.buffer, 0, this.count);
+    public BufferString BufferString => new BufferString(this.Buffer, 0, this.Length);
 
       public char this[int offset]
     {
       get
       {
-        return this.buffer[offset];
+        return this.Buffer[offset];
       }
       set
       {
-        this.buffer[offset] = value;
+        this.Buffer[offset] = value;
       }
     }
 
     public BufferString SubString(int offset, int count)
     {
-      return new BufferString(this.buffer, offset, count);
+      return new BufferString(this.Buffer, offset, count);
     }
 
     public void Reset()
     {
-      this.count = 0;
+      this.Length = 0;
     }
 
     public void Reset(int space)
     {
-      this.count = 0;
-      if (this.buffer != null && this.buffer.Length >= space)
+      this.Length = 0;
+      if (this.Buffer != null && this.Buffer.Length >= space)
         return;
-      this.buffer = new char[space];
+      this.Buffer = new char[space];
     }
 
     public bool AppendRtfTokenText(Internal.Rtf.RtfToken token, int maxSize)
@@ -80,9 +68,9 @@ namespace Butler.Schema.Data.TextConverters
       {
         Internal.Rtf.RtfToken.TextReader text = token.Text;
         int num2;
-        if ((num2 = text.Read(this.buffer, this.count, space)) != 0)
+        if ((num2 = text.Read(this.Buffer, this.Length, space)) != 0)
         {
-          this.count += num2;
+          this.Length += num2;
           num1 += num2;
         }
         else
@@ -99,9 +87,9 @@ namespace Butler.Schema.Data.TextConverters
       {
         Token.TextReader text = token.Text;
         int num2;
-        if ((num2 = text.Read(this.buffer, this.count, space)) != 0)
+        if ((num2 = text.Read(this.Buffer, this.Length, space)) != 0)
         {
-          this.count += num2;
+          this.Length += num2;
           num1 += num2;
         }
         else
@@ -118,9 +106,9 @@ namespace Butler.Schema.Data.TextConverters
       {
         Internal.Html.HtmlToken.AttributeValueTextReader attributeValueTextReader = attr.Value;
         int num2;
-        if ((num2 = attributeValueTextReader.Read(this.buffer, this.count, space)) != 0)
+        if ((num2 = attributeValueTextReader.Read(this.Buffer, this.Length, space)) != 0)
         {
-          this.count += num2;
+          this.Length += num2;
           num1 += num2;
         }
         else
@@ -137,9 +125,9 @@ namespace Butler.Schema.Data.TextConverters
       {
         Internal.Css.CssToken.PropertyValueTextReader propertyValueTextReader = prop.Value;
         int num2;
-        if ((num2 = propertyValueTextReader.Read(this.buffer, this.count, space)) != 0)
+        if ((num2 = propertyValueTextReader.Read(this.Buffer, this.Length, space)) != 0)
         {
-          this.count += num2;
+          this.Length += num2;
           num1 += num2;
         }
         else
@@ -167,20 +155,20 @@ namespace Butler.Schema.Data.TextConverters
         ++space;
       }
       this.EnsureSpace(space);
-      int num2 = this.count + space;
+      int num2 = this.Length + space;
       while (value >= 10)
       {
-        this.buffer[--num2] = (char) (value % 10 + 48);
+        this.Buffer[--num2] = (char) (value % 10 + 48);
         value /= 10;
       }
       int num3;
-      this.buffer[num3 = num2 - 1] = (char) (value + 48);
+      this.Buffer[num3 = num2 - 1] = (char) (value + 48);
       if (flag)
       {
         int num4;
-        this.buffer[num4 = num3 - 1] = '-';
+        this.Buffer[num4 = num3 - 1] = '-';
       }
-      this.count += space;
+      this.Length += space;
       return space;
     }
 
@@ -207,9 +195,9 @@ namespace Butler.Schema.Data.TextConverters
     {
       this.EnsureSpace(2);
       uint num1 = value >> 4 & 15U;
-      this.buffer[this.count++] = num1 >= 10U ? (char) ((int) num1 - 10 + 65) : (char) (num1 + 48U);
+      this.Buffer[this.Length++] = num1 >= 10U ? (char) ((int) num1 - 10 + 65) : (char) (num1 + 48U);
       uint num2 = value & 15U;
-      this.buffer[this.count++] = num2 >= 10U ? (char) ((int) num2 - 10 + 65) : (char) (num2 + 48U);
+      this.Buffer[this.Length++] = num2 >= 10U ? (char) ((int) num2 - 10 + 65) : (char) (num2 + 48U);
       return 2;
     }
 
@@ -222,7 +210,7 @@ namespace Butler.Schema.Data.TextConverters
     {
       if (this.GetSpace(maxSize) == 0)
         return 0;
-      this.buffer[this.count++] = ch;
+      this.Buffer[this.Length++] = ch;
       return 1;
     }
 
@@ -237,8 +225,8 @@ namespace Butler.Schema.Data.TextConverters
       int count;
       while ((count = Math.Min(this.GetSpace(maxSize), str.Length - sourceIndex)) != 0)
       {
-        str.CopyTo(sourceIndex, this.buffer, this.count, count);
-        this.count += count;
+        str.CopyTo(sourceIndex, this.Buffer, this.Length, count);
+        this.Length += count;
         sourceIndex += count;
       }
       return sourceIndex;
@@ -255,8 +243,8 @@ namespace Butler.Schema.Data.TextConverters
       int num2;
       while ((num2 = Math.Min(this.GetSpace(maxSize), length)) != 0)
       {
-        System.Buffer.BlockCopy((Array) buffer, offset * 2, (Array) this.buffer, this.count * 2, num2 * 2);
-        this.count += num2;
+        System.Buffer.BlockCopy((Array) buffer, offset * 2, (Array) this.Buffer, this.Length * 2, num2 * 2);
+        this.Length += num2;
         offset += num2;
         length -= num2;
         num1 += num2;
@@ -266,43 +254,43 @@ namespace Butler.Schema.Data.TextConverters
 
     public string ToString(int offset, int count)
     {
-      return new string(this.buffer, offset, count);
+      return new string(this.Buffer, offset, count);
     }
 
     public void DisposeBuffer()
     {
-      this.buffer = (char[]) null;
-      this.count = 0;
+      this.Buffer = (char[]) null;
+      this.Length = 0;
     }
 
     private int GetSpace(int maxSize)
     {
-      if (this.count >= maxSize)
+      if (this.Length >= maxSize)
         return 0;
-      if (this.buffer == null)
-        this.buffer = new char[64];
-      else if (this.buffer.Length == this.count)
+      if (this.Buffer == null)
+        this.Buffer = new char[64];
+      else if (this.Buffer.Length == this.Length)
       {
-        char[] chArray = new char[this.buffer.Length * 2];
-        System.Buffer.BlockCopy((Array) this.buffer, 0, (Array) chArray, 0, this.count * 2);
-        this.buffer = chArray;
+        char[] chArray = new char[this.Buffer.Length * 2];
+        System.Buffer.BlockCopy((Array) this.Buffer, 0, (Array) chArray, 0, this.Length * 2);
+        this.Buffer = chArray;
       }
-      return this.buffer.Length - this.count;
+      return this.Buffer.Length - this.Length;
     }
 
     private void EnsureSpace(int space)
     {
-      if (this.buffer == null)
+      if (this.Buffer == null)
       {
-        this.buffer = new char[Math.Max(space, 64)];
+        this.Buffer = new char[Math.Max(space, 64)];
       }
       else
       {
-        if (this.buffer.Length - this.count >= space)
+        if (this.Buffer.Length - this.Length >= space)
           return;
-        char[] chArray = new char[Math.Max(this.buffer.Length * 2, this.count + space)];
-        System.Buffer.BlockCopy((Array) this.buffer, 0, (Array) chArray, 0, this.count * 2);
-        this.buffer = chArray;
+        char[] chArray = new char[Math.Max(this.Buffer.Length * 2, this.Length + space)];
+        System.Buffer.BlockCopy((Array) this.Buffer, 0, (Array) chArray, 0, this.Length * 2);
+        this.Buffer = chArray;
       }
     }
   }

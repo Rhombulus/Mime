@@ -17,13 +17,12 @@ namespace Butler.Schema.Data.Mime
     public const int MaxSubDomainName = 63;
     public const int MaxInternetName = 571;
     public const int MaxX400InternetName = 1860;
-    private bool parserInit;
-    private bool ignoreComments;
+      private bool ignoreComments;
     private bool useSquareBrackets;
     private ValueParser valueParser;
     private bool groupInProgress;
 
-    public bool Initialized => this.parserInit;
+    public bool Initialized { get; private set; }
 
       public MimeAddressParser()
     {
@@ -31,7 +30,7 @@ namespace Butler.Schema.Data.Mime
 
     public MimeAddressParser(MimeStringList lines, MimeAddressParser source)
     {
-      this.parserInit = source.parserInit;
+      this.Initialized = source.Initialized;
       this.ignoreComments = source.ignoreComments;
       this.useSquareBrackets = source.useSquareBrackets;
       this.valueParser = new ValueParser(lines, source.valueParser);
@@ -422,13 +421,13 @@ namespace Butler.Schema.Data.Mime
       this.ignoreComments = ignoreComments;
       this.useSquareBrackets = useSquareBrackets;
       this.valueParser = new ValueParser(lines, allowUTF8);
-      this.parserInit = true;
+      this.Initialized = true;
     }
 
     public void Reset()
     {
       this.groupInProgress = false;
-      this.parserInit = false;
+      this.Initialized = false;
     }
 
     public AddressParserResult ParseNextMailbox(ref MimeStringList displayName, ref MimeStringList address)
@@ -441,7 +440,7 @@ namespace Butler.Schema.Data.Mime
       bool flag1 = true;
       bool flag2 = false;
       bool ignoreNextByte = false;
-      if (!this.parserInit)
+      if (!this.Initialized)
         throw new InvalidOperationException(CtsResources.Strings.AddressParserNotInitialized);
       while (true)
       {

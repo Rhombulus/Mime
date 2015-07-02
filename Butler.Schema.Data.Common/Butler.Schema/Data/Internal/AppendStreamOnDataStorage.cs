@@ -12,20 +12,20 @@ namespace Butler.Schema.Data.Internal
 {
   internal class AppendStreamOnDataStorage : StreamOnDataStorage
   {
-    private ReadableWritableDataStorage storage;
-    private long position;
 
-    public override DataStorage Storage => (DataStorage) this.storage;
+      private long position;
+
+    public override DataStorage Storage => (DataStorage) this.ReadableWritableStorage;
 
       public override long Start => 0L;
 
       public override long End => this.position;
 
-      public ReadableWritableDataStorage ReadableWritableStorage => this.storage;
+      public ReadableWritableDataStorage ReadableWritableStorage { get; private set; }
 
       public override bool CanRead => false;
 
-      public override bool CanWrite => this.storage != null;
+      public override bool CanWrite => this.ReadableWritableStorage != null;
 
       public override bool CanSeek => false;
 
@@ -52,7 +52,7 @@ namespace Butler.Schema.Data.Internal
     public AppendStreamOnDataStorage(ReadableWritableDataStorage storage)
     {
       storage.AddRef();
-      this.storage = storage;
+      this.ReadableWritableStorage = storage;
       this.position = storage.Length;
     }
 
@@ -63,7 +63,7 @@ namespace Butler.Schema.Data.Internal
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-      if (this.storage == null)
+      if (this.ReadableWritableStorage == null)
         throw new ObjectDisposedException("AppendStreamOnDataStorage");
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
@@ -73,7 +73,7 @@ namespace Butler.Schema.Data.Internal
         throw new ArgumentOutOfRangeException(nameof(count), CtsResources.SharedStrings.CountOutOfRange);
       if (count + offset > buffer.Length)
         throw new ArgumentOutOfRangeException(nameof(count), CtsResources.SharedStrings.CountTooLarge);
-      this.storage.Write(this.position, buffer, offset, count);
+      this.ReadableWritableStorage.Write(this.position, buffer, offset, count);
       this.position += (long) count;
     }
 
@@ -84,7 +84,7 @@ namespace Butler.Schema.Data.Internal
 
     public override void Flush()
     {
-      if (this.storage == null)
+      if (this.ReadableWritableStorage == null)
         throw new ObjectDisposedException("AppendStreamOnDataStorage");
     }
 
@@ -95,10 +95,10 @@ namespace Butler.Schema.Data.Internal
 
     protected override void Dispose(bool disposing)
     {
-      if (disposing && this.storage != null)
+      if (disposing && this.ReadableWritableStorage != null)
       {
-        this.storage.Release();
-        this.storage = (ReadableWritableDataStorage) null;
+        this.ReadableWritableStorage.Release();
+        this.ReadableWritableStorage = (ReadableWritableDataStorage) null;
       }
       base.Dispose(disposing);
     }

@@ -11,57 +11,54 @@ namespace Butler.Schema.Data.Mime
 {
   internal struct ValueIterator
   {
-    private MimeStringList lines;
-    private uint linesMask;
-    private int currentLine;
-    private int currentOffset;
-    private int lineStart;
+
+      private int currentLine;
+      private int lineStart;
     private int lineEnd;
-    private byte[] lineBytes;
-    private int endLine;
+      private int endLine;
     private int endOffset;
 
-    public ValuePosition CurrentPosition => new ValuePosition(this.currentLine, this.currentOffset);
+    public ValuePosition CurrentPosition => new ValuePosition(this.currentLine, this.Offset);
 
-      public byte[] Bytes => this.lineBytes;
+      public byte[] Bytes { get; private set; }
 
-      public int Offset => this.currentOffset;
+      public int Offset { get; private set; }
 
-      public int Length => this.lineEnd - this.currentOffset;
+      public int Length => this.lineEnd - this.Offset;
 
-      public int TotalLength => this.lines.Length;
+      public int TotalLength => this.Lines.Length;
 
-      public MimeStringList Lines => this.lines;
+      public MimeStringList Lines { get; }
 
-      public uint LinesMask => this.linesMask;
+      public uint LinesMask { get; }
 
       public bool Eof
     {
       get
       {
         if (this.currentLine == this.endLine)
-          return this.currentOffset == this.lineEnd;
+          return this.Offset == this.lineEnd;
         return false;
       }
     }
 
     public ValueIterator(MimeStringList lines, uint linesMask)
     {
-      this.lines = lines;
-      this.linesMask = linesMask;
-      this.lineStart = this.lineEnd = this.currentLine = this.currentOffset = 0;
-      this.lineBytes = (byte[]) null;
-      this.endLine = this.lines.Count;
+      this.Lines = lines;
+      this.LinesMask = linesMask;
+      this.lineStart = this.lineEnd = this.currentLine = this.Offset = 0;
+      this.Bytes = (byte[]) null;
+      this.endLine = this.Lines.Count;
       this.endOffset = 0;
       for (; this.currentLine != this.endLine; ++this.currentLine)
       {
-        MimeString mimeString = this.lines[this.currentLine];
-        if (((int) mimeString.Mask & (int) this.linesMask) != 0)
+        MimeString mimeString = this.Lines[this.currentLine];
+        if (((int) mimeString.Mask & (int) this.LinesMask) != 0)
         {
           int count;
-          this.lineBytes = mimeString.GetData(out this.lineStart, out count);
+          this.Bytes = mimeString.GetData(out this.lineStart, out count);
           this.lineEnd = this.lineStart + count;
-          this.currentOffset = this.lineStart;
+          this.Offset = this.lineStart;
           break;
         }
       }
@@ -69,29 +66,29 @@ namespace Butler.Schema.Data.Mime
 
     public ValueIterator(MimeStringList lines, uint linesMask, ValuePosition startPosition, ValuePosition endPosition)
     {
-      this.lines = lines;
-      this.linesMask = linesMask;
+      this.Lines = lines;
+      this.LinesMask = linesMask;
       this.currentLine = startPosition.Line;
-      this.currentOffset = startPosition.Offset;
+      this.Offset = startPosition.Offset;
       this.endLine = endPosition.Line;
       this.endOffset = endPosition.Offset;
       if (startPosition != endPosition)
       {
         int count;
-        this.lineBytes = this.lines[this.currentLine].GetData(out this.lineStart, out count);
+        this.Bytes = this.Lines[this.currentLine].GetData(out this.lineStart, out count);
         this.lineEnd = this.currentLine == this.endLine ? this.endOffset : this.lineStart + count;
       }
       else
       {
-        this.lineStart = this.lineEnd = this.currentOffset;
-        this.lineBytes = (byte[]) null;
+        this.lineStart = this.lineEnd = this.Offset;
+        this.Bytes = (byte[]) null;
       }
     }
 
     public void Get(int length)
     {
-      this.currentOffset += length;
-      if (this.currentOffset != this.lineEnd)
+      this.Offset += length;
+      if (this.Offset != this.lineEnd)
         return;
       this.NextLine();
     }
@@ -100,8 +97,8 @@ namespace Butler.Schema.Data.Mime
     {
       if (this.Eof)
         return -1;
-      byte num = this.lineBytes[this.currentOffset++];
-      if (this.currentOffset == this.lineEnd)
+      byte num = this.Bytes[this.Offset++];
+      if (this.Offset == this.lineEnd)
         this.NextLine();
       return (int) num;
     }
@@ -110,24 +107,24 @@ namespace Butler.Schema.Data.Mime
     {
       if (this.Eof)
         return -1;
-      return (int) this.lineBytes[this.currentOffset];
+      return (int) this.Bytes[this.Offset];
     }
 
     public void Unget()
     {
-      if (this.currentOffset == this.lineStart)
+      if (this.Offset == this.lineStart)
       {
         MimeString mimeString;
         do
         {
-          mimeString = this.lines[--this.currentLine];
+          mimeString = this.Lines[--this.currentLine];
         }
-        while (((int) mimeString.Mask & (int) this.linesMask) == 0);
+        while (((int) mimeString.Mask & (int) this.LinesMask) == 0);
         int count;
-        this.lineBytes = mimeString.GetData(out this.lineStart, out count);
-        this.currentOffset = this.lineEnd = this.lineStart + count;
+        this.Bytes = mimeString.GetData(out this.lineStart, out count);
+        this.Offset = this.lineEnd = this.lineStart + count;
       }
-      --this.currentOffset;
+      --this.Offset;
     }
 
     public void SkipToEof()
@@ -144,17 +141,17 @@ namespace Butler.Schema.Data.Mime
       do
       {
         ++this.currentLine;
-        if (this.currentLine == this.lines.Count)
+        if (this.currentLine == this.Lines.Count)
         {
-          this.lineEnd = this.lineStart = this.currentOffset = 0;
+          this.lineEnd = this.lineStart = this.Offset = 0;
           return;
         }
-        mimeString = this.lines[this.currentLine];
+        mimeString = this.Lines[this.currentLine];
       }
-      while (((int) mimeString.Mask & (int) this.linesMask) == 0);
+      while (((int) mimeString.Mask & (int) this.LinesMask) == 0);
       int count;
-      this.lineBytes = mimeString.GetData(out this.lineStart, out count);
-      this.currentOffset = this.lineStart;
+      this.Bytes = mimeString.GetData(out this.lineStart, out count);
+      this.Offset = this.lineStart;
       this.lineEnd = this.currentLine == this.endLine ? this.endOffset : this.lineStart + count;
     }
   }

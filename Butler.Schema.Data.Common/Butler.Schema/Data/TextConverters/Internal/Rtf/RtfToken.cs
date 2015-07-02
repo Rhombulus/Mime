@@ -14,38 +14,25 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
 {
   internal class RtfToken
   {
-    private RtfTokenId id;
-    private byte[] dataBuffer;
-    private int offset;
-    private int length;
-    private RtfRunEntry[] runQueue;
-    private int runQueueTail;
-    private int textCodePage;
-    private TextMapping textMapping;
-    private int currentRun;
-    private int currentRunOffset;
-    private int currentRunDelta;
+
+      private int runQueueTail;
+      private int currentRunDelta;
     private byte[] byteBuffer;
     private int byteBufferOffet;
     private int byteBufferCount;
-    private char[] charBuffer;
-    private int charBufferOffet;
+      private int charBufferOffet;
     private int charBufferCount;
-    private RunTextType elementTextType;
-    private int elementOffset;
-    private int elementLength;
-    private RtfToken.DecoderMruEntry[] mruDecoders;
+      private RtfToken.DecoderMruEntry[] mruDecoders;
     private int mruDecodersLastIndex;
-    private bool stripZeroBytes;
-    private Dictionary<int, Decoder> decoderCache;
+      private Dictionary<int, Decoder> decoderCache;
 
-    public RtfTokenId Id => this.id;
+    public RtfTokenId Id { get; private set; }
 
-      public byte[] Buffer => this.dataBuffer;
+      public byte[] Buffer { get; }
 
-      public int Offset => this.offset;
+      public int Offset { get; private set; }
 
-      public int Length => this.length;
+      public int Length { get; private set; }
 
       public bool IsEmpty => this.runQueueTail == 0;
 
@@ -53,54 +40,44 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
 
       public RtfToken.KeywordEnumerator Keywords => new RtfToken.KeywordEnumerator(this);
 
-      public TextMapping TextMapping => this.textMapping;
+      public TextMapping TextMapping { get; private set; }
 
-      public int TextCodePage => this.textCodePage;
+      public int TextCodePage { get; private set; }
 
       public RtfToken.TextReader Text => new RtfToken.TextReader(this);
 
       public RtfToken.TextEnumerator TextElements => new RtfToken.TextEnumerator(this);
 
-      public bool StripZeroBytes
-    {
-      get
-      {
-        return this.stripZeroBytes;
-      }
-      set
-      {
-        this.stripZeroBytes = value;
-      }
-    }
+      public bool StripZeroBytes { get; set; }
 
-    internal RtfRunEntry[] RunQueue => this.runQueue;
+      internal RtfRunEntry[] RunQueue { get; }
 
-      internal int CurrentRun => this.currentRun;
+      internal int CurrentRun { get; private set; }
 
-      internal int CurrentRunOffset => this.currentRunOffset;
+      internal int CurrentRunOffset { get; private set; }
 
-      internal char[] CharBuffer => this.charBuffer;
+      internal char[] CharBuffer { get; private set; }
 
       internal bool IsTextEof
     {
       get
       {
         if (this.charBufferCount == 0 && this.byteBufferCount == 0)
-          return this.currentRun == this.runQueueTail;
+          return this.CurrentRun == this.runQueueTail;
         return false;
       }
     }
 
-    internal RunTextType ElementTextType => this.elementTextType;
+    internal RunTextType ElementTextType { get; private set; }
 
-      internal int ElementOffset => this.elementOffset;
+      internal int ElementOffset { get; private set; }
 
-      internal int ElementLength => this.elementLength;
+      internal int ElementLength { get; private set; }
 
       public RtfToken(byte[] buffer, RtfRunEntry[] runQueue)
     {
-      this.dataBuffer = buffer;
-      this.runQueue = runQueue;
+      this.Buffer = buffer;
+      this.RunQueue = runQueue;
     }
 
     public static RtfTokenId TokenIdFromRunKind(RtfRunKind runKind)
@@ -112,44 +89,44 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
 
     public void Reset()
     {
-      this.id = RtfTokenId.None;
-      this.offset = 0;
-      this.length = 0;
+      this.Id = RtfTokenId.None;
+      this.Offset = 0;
+      this.Length = 0;
       this.runQueueTail = 0;
-      this.textCodePage = 0;
+      this.TextCodePage = 0;
       this.Rewind();
     }
 
     public void Initialize(RtfTokenId tokenId, int queueTail, int offset, int length)
     {
-      this.id = tokenId;
-      this.offset = offset;
-      this.length = length;
+      this.Id = tokenId;
+      this.Offset = offset;
+      this.Length = length;
       this.runQueueTail = queueTail;
       this.Rewind();
     }
 
     public void SetCodePage(int codePage, TextMapping textMapping)
     {
-      this.textCodePage = codePage;
-      this.textMapping = textMapping;
+      this.TextCodePage = codePage;
+      this.TextMapping = textMapping;
     }
 
     internal void Rewind()
     {
       this.charBufferOffet = this.charBufferCount = 0;
       this.byteBufferOffet = this.byteBufferCount = 0;
-      this.currentRun = -1;
-      this.currentRunOffset = this.offset;
+      this.CurrentRun = -1;
+      this.CurrentRunOffset = this.Offset;
       this.currentRunDelta = 0;
-      this.elementOffset = this.elementLength = 0;
+      this.ElementOffset = this.ElementLength = 0;
     }
 
     private bool DecodeMore()
     {
-      if (this.charBuffer == null)
-        this.charBuffer = new char[1025];
-      int charCount = this.charBuffer.Length - 1;
+      if (this.CharBuffer == null)
+        this.CharBuffer = new char[1025];
+      int charCount = this.CharBuffer.Length - 1;
       int charIndex = 0;
       this.charBufferOffet = 0;
       while (charCount >= 32)
@@ -160,8 +137,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         if (this.byteBufferCount != 0 || this.byteBufferOffet != 0)
         {
           Decoder decoder = this.GetDecoder();
-          bool flush = this.NeedToFlushDecoderBeforeRun(this.currentRun);
-          decoder.Convert(this.byteBuffer, this.byteBufferOffet, this.byteBufferCount, this.charBuffer, charIndex, charCount, flush, out bytesUsed, out charsUsed, out completed);
+          bool flush = this.NeedToFlushDecoderBeforeRun(this.CurrentRun);
+          decoder.Convert(this.byteBuffer, this.byteBufferOffet, this.byteBufferCount, this.CharBuffer, charIndex, charCount, flush, out bytesUsed, out charsUsed, out completed);
           charIndex += charsUsed;
           charCount -= charsUsed;
           this.byteBufferOffet += bytesUsed;
@@ -175,16 +152,16 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           else
             break;
         }
-        if (this.currentRun != this.runQueueTail)
+        if (this.CurrentRun != this.runQueueTail)
         {
-          if (this.currentRun == -1 || this.CurrentRunIsSkiped())
+          if (this.CurrentRun == -1 || this.CurrentRunIsSkiped())
           {
             do
             {
               this.MoveToNextRun();
             }
-            while (this.currentRun != this.runQueueTail && this.CurrentRunIsSkiped());
-            if (this.currentRun == this.runQueueTail)
+            while (this.CurrentRun != this.runQueueTail && this.CurrentRunIsSkiped());
+            if (this.CurrentRun == this.runQueueTail)
               break;
           }
           if (this.CurrentRunIsSmall())
@@ -192,17 +169,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
             while (this.CurrentRunIsSkiped() || this.CurrentRunIsSmall() && this.CopyCurrentRunToBuffer())
             {
               this.MoveToNextRun();
-              if (this.currentRun == this.runQueueTail)
+              if (this.CurrentRun == this.runQueueTail)
                 break;
             }
           }
           else if (!this.CurrentRunIsUnicode())
           {
-            int byteIndex = this.currentRunOffset + this.currentRunDelta;
-            int byteCount = (int) this.runQueue[this.currentRun].Length - this.currentRunDelta;
+            int byteIndex = this.CurrentRunOffset + this.currentRunDelta;
+            int byteCount = (int) this.RunQueue[this.CurrentRun].Length - this.currentRunDelta;
             Decoder decoder = this.GetDecoder();
-            bool flush = this.NeedToFlushDecoderBeforeRun((this.currentRun + 1) % this.runQueue.Length);
-            decoder.Convert(this.dataBuffer, byteIndex, byteCount, this.charBuffer, charIndex, charCount, flush, out bytesUsed, out charsUsed, out completed);
+            bool flush = this.NeedToFlushDecoderBeforeRun((this.CurrentRun + 1) % this.RunQueue.Length);
+            decoder.Convert(this.Buffer, byteIndex, byteCount, this.CharBuffer, charIndex, charCount, flush, out bytesUsed, out charsUsed, out completed);
             charIndex += charsUsed;
             charCount -= charsUsed;
             int num1 = byteIndex + bytesUsed;
@@ -221,18 +198,18 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
               {
                 if (this.CurrentRunIsUnicode())
                 {
-                  int ich = this.runQueue[this.currentRun].Value;
+                  int ich = this.RunQueue[this.CurrentRun].Value;
                   if (charCount >= 2)
                   {
                     if (ich > (int) ushort.MaxValue)
                     {
-                      char[] chArray1 = this.charBuffer;
+                      char[] chArray1 = this.CharBuffer;
                       int index1 = charIndex;
                       int num1 = 1;
                       int num2 = index1 + num1;
                       int num3 = (int) ParseSupport.HighSurrogateCharFromUcs4(ich);
                       chArray1[index1] = (char) num3;
-                      char[] chArray2 = this.charBuffer;
+                      char[] chArray2 = this.CharBuffer;
                       int index2 = num2;
                       int num4 = 1;
                       charIndex = index2 + num4;
@@ -242,7 +219,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
                     }
                     else
                     {
-                      this.charBuffer[charIndex++] = (char) ich;
+                      this.CharBuffer[charIndex++] = (char) ich;
                       --charCount;
                     }
                   }
@@ -254,14 +231,14 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
               }
               this.MoveToNextRun();
             }
-            while (this.currentRun != this.runQueueTail);
+            while (this.CurrentRun != this.runQueueTail);
           }
         }
         else
           break;
       }
       this.charBufferCount = charIndex;
-      this.charBuffer[this.charBufferCount] = char.MinValue;
+      this.CharBuffer[this.charBufferCount] = char.MinValue;
       return charIndex != 0;
     }
 
@@ -270,22 +247,22 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       if (this.charBufferCount == 0 && !this.DecodeMore())
         return false;
       int index = this.charBufferOffet;
-      this.elementOffset = index;
-      char ch1 = this.charBuffer[index];
+      this.ElementOffset = index;
+      char ch1 = this.CharBuffer[index];
       if ((int) ch1 > 32 && (int) ch1 != 160)
       {
-        this.elementTextType = RunTextType.NonSpace;
+        this.ElementTextType = RunTextType.NonSpace;
         char ch2;
         do
         {
-          ch2 = this.charBuffer[++index];
+          ch2 = this.CharBuffer[++index];
         }
         while ((int) ch2 > 32 && (int) ch2 != 160);
       }
       else if ((int) ch1 == 32)
       {
-        this.elementTextType = RunTextType.Space;
-        while ((int) this.charBuffer[++index] == 32)
+        this.ElementTextType = RunTextType.Space;
+        while ((int) this.CharBuffer[++index] == 32)
           ;
       }
       else
@@ -297,37 +274,37 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           case '\v':
           case '\f':
           case '\r':
-            this.elementTextType = RunTextType.UnusualWhitespace;
+            this.ElementTextType = RunTextType.UnusualWhitespace;
             char ch3;
-            while (ParseSupport.WhitespaceCharacter(ParseSupport.GetCharClass(ch3 = this.charBuffer[++index])) && (int) ch3 != 32)
+            while (ParseSupport.WhitespaceCharacter(ParseSupport.GetCharClass(ch3 = this.CharBuffer[++index])) && (int) ch3 != 32)
               ;
             break;
           case ' ':
-            if (this.textMapping == TextMapping.Unicode)
+            if (this.TextMapping == TextMapping.Unicode)
             {
-              this.elementTextType = RunTextType.Nbsp;
-              while ((int) this.charBuffer[++index] == 160)
+              this.ElementTextType = RunTextType.Nbsp;
+              while ((int) this.CharBuffer[++index] == 160)
                 ;
               break;
             }
-            this.elementTextType = RunTextType.NonSpace;
+            this.ElementTextType = RunTextType.NonSpace;
             char ch4;
             do
             {
-              ch4 = this.charBuffer[++index];
+              ch4 = this.CharBuffer[++index];
             }
             while ((int) ch4 > 32 && (int) ch4 != 160);
             break;
           default:
-            this.elementTextType = RunTextType.NonSpace;
-            while (ParseSupport.ControlCharacter(ParseSupport.GetCharClass(this.charBuffer[++index])))
+            this.ElementTextType = RunTextType.NonSpace;
+            while (ParseSupport.ControlCharacter(ParseSupport.GetCharClass(this.CharBuffer[++index])))
               ;
             break;
         }
       }
-      this.elementLength = index - this.elementOffset;
+      this.ElementLength = index - this.ElementOffset;
       this.charBufferOffet = index;
-      this.charBufferCount -= this.elementLength;
+      this.charBufferCount -= this.ElementLength;
       return true;
     }
 
@@ -336,7 +313,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       int num = 0;
       while (this.charBufferCount != 0 || this.DecodeMore())
       {
-        sink.Write(this.charBuffer, this.charBufferOffet, this.charBufferCount);
+        sink.Write(this.CharBuffer, this.charBufferOffet, this.charBufferCount);
         this.charBufferOffet = 0;
         this.charBufferCount = 0;
         num += this.charBufferCount;
@@ -355,7 +332,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           if (this.DecodeMore())
           {
             index = this.charBufferOffet;
-            ch = this.charBuffer[index];
+            ch = this.CharBuffer[index];
           }
           else
             break;
@@ -365,16 +342,16 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         {
           do
           {
-            ch = this.charBuffer[++index];
+            ch = this.CharBuffer[++index];
           }
           while ((int) ch > 32 && (int) ch != 160);
-          output.OutputNonspace(this.charBuffer, offset, index - offset, this.textMapping);
+          output.OutputNonspace(this.CharBuffer, offset, index - offset, this.TextMapping);
         }
         else if ((int) ch == 32)
         {
           do
           {
-            ch = this.charBuffer[++index];
+            ch = this.CharBuffer[++index];
           }
           while ((int) ch == 32);
           output.OutputSpace(index - offset);
@@ -392,17 +369,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
             case '\r':
               do
               {
-                ch = this.charBuffer[++index];
+                ch = this.CharBuffer[++index];
               }
               while (ParseSupport.WhitespaceCharacter(ParseSupport.GetCharClass(ch)) && (int) ch != 32);
               output.OutputSpace(1);
               break;
             case ' ':
-              if (this.textMapping == TextMapping.Unicode)
+              if (this.TextMapping == TextMapping.Unicode)
               {
                 do
                 {
-                  ch = this.charBuffer[++index];
+                  ch = this.CharBuffer[++index];
                 }
                 while ((int) ch == 160);
                 if (treatNbspAsBreakable)
@@ -415,18 +392,18 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
               }
               do
               {
-                ch = this.charBuffer[++index];
+                ch = this.CharBuffer[++index];
               }
               while ((int) ch > 32);
-              output.OutputNonspace(this.charBuffer, offset, index - offset, this.textMapping);
+              output.OutputNonspace(this.CharBuffer, offset, index - offset, this.TextMapping);
               break;
             default:
               do
               {
-                ch = this.charBuffer[++index];
+                ch = this.CharBuffer[++index];
               }
               while (ParseSupport.ControlCharacter(ParseSupport.GetCharClass(ch)));
-              output.OutputNonspace(this.charBuffer, offset, index - offset, this.textMapping);
+              output.OutputNonspace(this.CharBuffer, offset, index - offset, this.TextMapping);
               break;
           }
         }
@@ -437,8 +414,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
 
     private bool NeedToFlushDecoderBeforeRun(int run)
     {
-      if (run != this.runQueueTail && this.runQueue[run].Kind != RtfRunKind.Unicode)
-        return this.runQueue[run].Kind == RtfRunKind.Ignore;
+      if (run != this.runQueueTail && this.RunQueue[run].Kind != RtfRunKind.Unicode)
+        return this.RunQueue[run].Kind == RtfRunKind.Ignore;
       return true;
     }
 
@@ -449,24 +426,24 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         this.mruDecoders = new RtfToken.DecoderMruEntry[4];
         this.mruDecodersLastIndex = this.mruDecoders.Length - 1;
       }
-      if (this.textCodePage == 0)
-        this.textCodePage = 1252;
-      if (this.mruDecoders[this.mruDecodersLastIndex].CodePage == this.textCodePage)
+      if (this.TextCodePage == 0)
+        this.TextCodePage = 1252;
+      if (this.mruDecoders[this.mruDecodersLastIndex].CodePage == this.TextCodePage)
         return this.mruDecoders[this.mruDecodersLastIndex].Decoder;
       for (int index = 0; index < this.mruDecoders.Length; ++index)
       {
-        if (this.mruDecoders[index].CodePage == this.textCodePage)
+        if (this.mruDecoders[index].CodePage == this.TextCodePage)
         {
           this.mruDecodersLastIndex = index;
           return this.mruDecoders[index].Decoder;
         }
       }
       Decoder decoder = (Decoder) null;
-      if (this.decoderCache != null && this.decoderCache.ContainsKey(this.textCodePage))
-        decoder = this.decoderCache[this.textCodePage];
+      if (this.decoderCache != null && this.decoderCache.ContainsKey(this.TextCodePage))
+        decoder = this.decoderCache[this.TextCodePage];
       if (decoder == null)
       {
-        int codePage = this.textCodePage;
+        int codePage = this.TextCodePage;
         if (codePage == 42)
           codePage = 28591;
         decoder = Globalization.Charset.GetEncoding(codePage).GetDecoder();
@@ -480,31 +457,31 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           this.decoderCache[this.mruDecoders[this.mruDecodersLastIndex].CodePage] = this.mruDecoders[this.mruDecodersLastIndex].Decoder;
       }
       this.mruDecoders[this.mruDecodersLastIndex].Decoder = decoder;
-      this.mruDecoders[this.mruDecodersLastIndex].CodePage = this.textCodePage;
+      this.mruDecoders[this.mruDecodersLastIndex].CodePage = this.TextCodePage;
       return decoder;
     }
 
     private void MoveToNextRun()
     {
-      if (this.currentRun >= 0)
-        this.currentRunOffset += (int) this.runQueue[this.currentRun].Length;
+      if (this.CurrentRun >= 0)
+        this.CurrentRunOffset += (int) this.RunQueue[this.CurrentRun].Length;
       this.currentRunDelta = 0;
-      ++this.currentRun;
+      ++this.CurrentRun;
     }
 
     private bool CurrentRunIsSkiped()
     {
-      return this.runQueue[this.currentRun].IsSkiped;
+      return this.RunQueue[this.CurrentRun].IsSkiped;
     }
 
     private bool CurrentRunIsSmall()
     {
-      return this.runQueue[this.currentRun].IsSmall;
+      return this.RunQueue[this.CurrentRun].IsSmall;
     }
 
     private bool CurrentRunIsUnicode()
     {
-      return this.runQueue[this.currentRun].IsUnicode;
+      return this.RunQueue[this.CurrentRun].IsUnicode;
     }
 
     private bool CopyCurrentRunToBuffer()
@@ -513,21 +490,21 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         this.byteBuffer = new byte[256];
       if (this.byteBuffer.Length == this.byteBufferCount)
         return false;
-      switch (this.runQueue[this.currentRun].Kind)
+      switch (this.RunQueue[this.CurrentRun].Kind)
       {
         case RtfRunKind.Text:
-          int count = Math.Min((int) this.runQueue[this.currentRun].Length - this.currentRunDelta, this.byteBuffer.Length - this.byteBufferCount);
-          System.Buffer.BlockCopy((Array) this.dataBuffer, this.currentRunOffset + this.currentRunDelta, (Array) this.byteBuffer, this.byteBufferOffet + this.byteBufferCount, count);
+          int count = Math.Min((int) this.RunQueue[this.CurrentRun].Length - this.currentRunDelta, this.byteBuffer.Length - this.byteBufferCount);
+          System.Buffer.BlockCopy((Array) this.Buffer, this.CurrentRunOffset + this.currentRunDelta, (Array) this.byteBuffer, this.byteBufferOffet + this.byteBufferCount, count);
           this.byteBufferCount += count;
           this.currentRunDelta += count;
           break;
         case RtfRunKind.Escape:
-          this.byteBuffer[this.byteBufferOffet + this.byteBufferCount] = (byte) this.runQueue[this.currentRun].Value;
+          this.byteBuffer[this.byteBufferOffet + this.byteBufferCount] = (byte) this.RunQueue[this.CurrentRun].Value;
           ++this.byteBufferCount;
           return true;
         case RtfRunKind.Zero:
-          int num = Math.Min((int) this.runQueue[this.currentRun].Length - this.currentRunDelta, this.byteBuffer.Length - this.byteBufferCount);
-          if (!this.stripZeroBytes)
+          int num = Math.Min((int) this.RunQueue[this.CurrentRun].Length - this.currentRunDelta, this.byteBuffer.Length - this.byteBufferCount);
+          if (!this.StripZeroBytes)
           {
             for (int index = 0; index < num; ++index)
             {
@@ -538,7 +515,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
           this.currentRunDelta += num;
           break;
       }
-      return this.currentRunDelta == (int) this.runQueue[this.currentRun].Length;
+      return this.currentRunDelta == (int) this.RunQueue[this.CurrentRun].Length;
     }
 
     internal struct RunEnumerator
@@ -556,10 +533,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
 
       public bool MoveNext()
       {
-        if (this.token.currentRun != this.token.runQueueTail)
+        if (this.token.CurrentRun != this.token.runQueueTail)
         {
           this.token.MoveToNextRun();
-          if (this.token.currentRun != this.token.runQueueTail)
+          if (this.token.CurrentRun != this.token.runQueueTail)
             return true;
         }
         return false;
@@ -596,10 +573,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
 
       public bool MoveNext()
       {
-        if (this.token.currentRun != this.token.runQueueTail)
+        if (this.token.CurrentRun != this.token.runQueueTail)
         {
           this.token.MoveToNextRun();
-          if (this.token.currentRun != this.token.runQueueTail)
+          if (this.token.CurrentRun != this.token.runQueueTail)
             return true;
         }
         return false;
@@ -640,7 +617,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
             if (this.token.charBufferCount != 0)
             {
               int num2 = Math.Min(count, this.token.charBufferCount);
-              System.Buffer.BlockCopy((Array) this.token.charBuffer, this.token.charBufferOffet * 2, (Array) buffer, offset * 2, num2 * 2);
+              System.Buffer.BlockCopy((Array) this.token.CharBuffer, this.token.charBufferOffet * 2, (Array) buffer, offset * 2, num2 * 2);
               offset += num2;
               count -= num2;
               this.token.charBufferOffet += num2;

@@ -14,9 +14,8 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
   public struct CalendarPropertyReader
   {
     private Internal.ContentLineReader reader;
-    private CalendarValueSeparators lastSeparator;
 
-    internal CalendarValueSeparators LastValueSeparator => this.lastSeparator;
+      internal CalendarValueSeparators LastValueSeparator { get; private set; }
 
       public PropertyId PropertyId
     {
@@ -57,7 +56,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
     internal CalendarPropertyReader(Internal.ContentLineReader reader)
     {
       this.reader = reader;
-      this.lastSeparator = CalendarValueSeparators.None;
+      this.LastValueSeparator = CalendarValueSeparators.None;
     }
 
     internal object ReadValue(CalendarValueSeparators expectedSeparators)
@@ -124,7 +123,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       this.reader.AssertValidState(Internal.ContentLineNodeType.Parameter | Internal.ContentLineNodeType.Property);
       Internal.ContentLineParser.Separators endSeparator;
       string str = !expectedSeparators.HasValue ? this.reader.ReadPropertyValue(true, Internal.ContentLineParser.Separators.None, true, out endSeparator) : this.reader.ReadPropertyValue(true, (Internal.ContentLineParser.Separators) expectedSeparators.Value, false, out endSeparator);
-      this.lastSeparator = (CalendarValueSeparators) endSeparator;
+      this.LastValueSeparator = (CalendarValueSeparators) endSeparator;
       return str;
     }
 
@@ -381,7 +380,7 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
     public Stream GetValueReadStream()
     {
       this.reader.AssertValidState(Internal.ContentLineNodeType.Parameter | Internal.ContentLineNodeType.Property);
-      this.lastSeparator = CalendarValueSeparators.None;
+      this.LastValueSeparator = CalendarValueSeparators.None;
       return this.reader.GetValueReadStream();
     }
 

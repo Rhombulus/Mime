@@ -13,61 +13,59 @@ namespace Butler.Schema.Data.Globalization
   [Serializable]
   public class InvalidCharsetException : ExchangeDataException
   {
-    private int codePage;
-    private string charsetName;
 
-    public int CodePage => this.codePage;
+      public int CodePage { get; }
 
-      public string CharsetName => this.charsetName;
+      public string CharsetName { get; }
 
       public InvalidCharsetException(int codePage)
       : base(CtsResources.GlobalizationStrings.InvalidCodePage(codePage))
     {
-      this.codePage = codePage;
+      this.CodePage = codePage;
     }
 
     public InvalidCharsetException(string charsetName)
       : base(CtsResources.GlobalizationStrings.InvalidCharset(charsetName == null ? "<null>" : charsetName))
     {
-      this.charsetName = charsetName;
+      this.CharsetName = charsetName;
     }
 
     public InvalidCharsetException(int codePage, string message)
       : base(message)
     {
-      this.codePage = codePage;
+      this.CodePage = codePage;
     }
 
     public InvalidCharsetException(string charsetName, string message)
       : base(message)
     {
-      this.charsetName = charsetName;
+      this.CharsetName = charsetName;
     }
 
     internal InvalidCharsetException(string charsetName, int codePage, string message)
       : base(message)
     {
-      this.codePage = codePage;
-      this.charsetName = charsetName;
+      this.CodePage = codePage;
+      this.CharsetName = charsetName;
     }
 
     public InvalidCharsetException(int codePage, string message, Exception innerException)
       : base(message, innerException)
     {
-      this.codePage = codePage;
+      this.CodePage = codePage;
     }
 
     public InvalidCharsetException(string charsetName, string message, Exception innerException)
       : base(message, innerException)
     {
-      this.charsetName = charsetName;
+      this.CharsetName = charsetName;
     }
 
     protected InvalidCharsetException(SerializationInfo info, StreamingContext context)
       : base(info, context)
     {
-      this.codePage = info.GetInt32("codePage");
-      this.charsetName = info.GetString("charsetName");
+      this.CodePage = info.GetInt32("codePage");
+      this.CharsetName = info.GetString("charsetName");
     }
   }
 }

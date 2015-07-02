@@ -11,57 +11,14 @@ namespace Butler.Schema.Data.Mime
 {
   public struct DecodingResults
   {
-    private string charsetName;
-    private string cultureName;
-    private EncodingScheme encodingScheme;
-    private bool decodingFailed;
 
-    public string CharsetName
-    {
-      get
-      {
-        return this.charsetName;
-      }
-      internal set
-      {
-        this.charsetName = value;
-      }
-    }
+      public string CharsetName { get; internal set; }
 
-    public string CultureName
-    {
-      get
-      {
-        return this.cultureName;
-      }
-      internal set
-      {
-        this.cultureName = value;
-      }
-    }
+      public string CultureName { get; internal set; }
 
-    public EncodingScheme EncodingScheme
-    {
-      get
-      {
-        return this.encodingScheme;
-      }
-      internal set
-      {
-        this.encodingScheme = value;
-      }
-    }
+      public EncodingScheme EncodingScheme { get; internal set; }
 
-    public bool DecodingFailed
-    {
-      get
-      {
-        return this.decodingFailed;
-      }
-      internal set
-      {
-        this.decodingFailed = value;
-      }
-    }
+      public bool DecodingFailed { get; internal set; }
+
   }
 }

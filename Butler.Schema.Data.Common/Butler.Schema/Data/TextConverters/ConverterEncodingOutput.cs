@@ -24,8 +24,7 @@ namespace Butler.Schema.Data.TextConverters
     private bool endOfFile;
     private bool restartablePushSink;
     private long restartPosition;
-    private bool encodingSameAsInput;
-    private bool restartable;
+      private bool restartable;
     private bool canRestart;
     private bool lineModeEncoding;
     private int minCharsEncode;
@@ -53,7 +52,7 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    public bool CodePageSameAsInput => this.encodingSameAsInput;
+    public bool CodePageSameAsInput { get; }
 
       public override bool CanAcceptMore
     {
@@ -85,7 +84,7 @@ namespace Butler.Schema.Data.TextConverters
       this.restartable = this.canRestart = restartable;
       this.lineBuffer = new char[4096];
       this.minCharsEncode = testBoundaryConditions ? 1 : 256;
-      this.encodingSameAsInput = encodingSameAsInput;
+      this.CodePageSameAsInput = encodingSameAsInput;
       this.originalEncoding = encoding;
       this.ChangeEncoding(encoding);
       if (this.resultFeedback == null)

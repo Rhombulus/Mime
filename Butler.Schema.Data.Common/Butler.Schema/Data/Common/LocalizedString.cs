@@ -25,13 +25,10 @@ namespace Butler.Schema.Data.Common
     internal readonly string Id;
     private readonly object[] Inserts;
     private readonly string stringId;
-    private readonly bool showStringIdInUIIfError;
-    private readonly bool showAssistanceInfoInUIIfError;
-    private readonly ExchangeResourceManager ResourceManager;
+      private readonly ExchangeResourceManager ResourceManager;
     private readonly string DeserializedFallback;
-    private ReadOnlyCollection<object> formatParameters;
 
-    public bool IsEmpty => null == this.Id;
+      public bool IsEmpty => null == this.Id;
 
       public string FullId => (this.ResourceManager != null ? this.ResourceManager.BaseName : string.Empty) + this.Id;
 
@@ -47,13 +44,13 @@ namespace Butler.Schema.Data.Common
       }
     }
 
-    public bool ShowStringIdInUIIfError => this.showStringIdInUIIfError;
+    public bool ShowStringIdInUIIfError { get; }
 
-      public bool ShowAssistanceInfoInUIIfError => this.showAssistanceInfoInUIIfError;
+      public bool ShowAssistanceInfoInUIIfError { get; }
 
       LocalizedString ILocalizedString.LocalizedString => this;
 
-      public ReadOnlyCollection<object> FormatParameters => this.formatParameters;
+      public ReadOnlyCollection<object> FormatParameters { get; }
 
       public LocalizedString(string id, ExchangeResourceManager resourceManager, params object[] inserts)
     {
@@ -68,47 +65,47 @@ namespace Butler.Schema.Data.Common
         throw new ArgumentNullException(nameof(resourceManager));
       this.Id = id;
       this.stringId = stringId;
-      this.showStringIdInUIIfError = showStringIdIfError;
-      this.showAssistanceInfoInUIIfError = showAssistanceInfoIfError;
+      this.ShowStringIdInUIIfError = showStringIdIfError;
+      this.ShowAssistanceInfoInUIIfError = showAssistanceInfoIfError;
       this.ResourceManager = resourceManager;
       this.DeserializedFallback = (string) null;
       this.Inserts = inserts == null || inserts.Length <= 0 ? (object[]) null : inserts;
-      this.formatParameters = this.Inserts != null ? new ReadOnlyCollection<object>((IList<object>) this.Inserts) : (ReadOnlyCollection<object>) null;
+      this.FormatParameters = this.Inserts != null ? new ReadOnlyCollection<object>((IList<object>) this.Inserts) : (ReadOnlyCollection<object>) null;
     }
 
     public LocalizedString(string value)
     {
       this.Id = value;
       this.stringId = (string) null;
-      this.showStringIdInUIIfError = false;
-      this.showAssistanceInfoInUIIfError = false;
+      this.ShowStringIdInUIIfError = false;
+      this.ShowAssistanceInfoInUIIfError = false;
       this.Inserts = (object[]) null;
       this.ResourceManager = (ExchangeResourceManager) null;
       this.DeserializedFallback = (string) null;
-      this.formatParameters = (ReadOnlyCollection<object>) null;
+      this.FormatParameters = (ReadOnlyCollection<object>) null;
     }
 
     private LocalizedString(string format, object[] inserts)
     {
       this.Id = format;
       this.stringId = (string) null;
-      this.showStringIdInUIIfError = false;
-      this.showAssistanceInfoInUIIfError = false;
+      this.ShowStringIdInUIIfError = false;
+      this.ShowAssistanceInfoInUIIfError = false;
       this.Inserts = inserts;
       this.ResourceManager = (ExchangeResourceManager) null;
       this.DeserializedFallback = (string) null;
-      this.formatParameters = this.Inserts != null ? new ReadOnlyCollection<object>((IList<object>) this.Inserts) : (ReadOnlyCollection<object>) null;
+      this.FormatParameters = this.Inserts != null ? new ReadOnlyCollection<object>((IList<object>) this.Inserts) : (ReadOnlyCollection<object>) null;
     }
 
     private LocalizedString(SerializationInfo info, StreamingContext context)
     {
       this.Inserts = (object[]) info.GetValue("inserts", typeof (object[]));
-      this.formatParameters = this.Inserts != null ? new ReadOnlyCollection<object>((IList<object>) this.Inserts) : (ReadOnlyCollection<object>) null;
+      this.FormatParameters = this.Inserts != null ? new ReadOnlyCollection<object>((IList<object>) this.Inserts) : (ReadOnlyCollection<object>) null;
       this.ResourceManager = (ExchangeResourceManager) null;
       this.Id = (string) null;
       this.stringId = (string) null;
-      this.showStringIdInUIIfError = false;
-      this.showAssistanceInfoInUIIfError = false;
+      this.ShowStringIdInUIIfError = false;
+      this.ShowAssistanceInfoInUIIfError = false;
       this.DeserializedFallback = (string) null;
       string str = (string) null;
       try
@@ -130,14 +127,14 @@ namespace Butler.Schema.Data.Common
             try
             {
               this.stringId = info.GetString("stringId");
-              this.showStringIdInUIIfError = info.GetBoolean("showStringIdInUIIfError");
-              this.showAssistanceInfoInUIIfError = info.GetBoolean("showAssistanceInfoInUIIfError");
+              this.ShowStringIdInUIIfError = info.GetBoolean("showStringIdInUIIfError");
+              this.ShowAssistanceInfoInUIIfError = info.GetBoolean("showAssistanceInfoInUIIfError");
             }
             catch (SerializationException ex)
             {
               this.stringId = (string) null;
-              this.showStringIdInUIIfError = false;
-              this.showAssistanceInfoInUIIfError = false;
+              this.ShowStringIdInUIIfError = false;
+              this.ShowAssistanceInfoInUIIfError = false;
             }
           }
         }
@@ -228,8 +225,8 @@ namespace Butler.Schema.Data.Common
         info.AddValue("assemblyName", (object) this.ResourceManager.AssemblyName);
         info.AddValue("id", (object) this.Id);
         info.AddValue("stringId", (object) this.stringId);
-        info.AddValue("showStringIdInUIIfError", this.showStringIdInUIIfError);
-        info.AddValue("showAssistanceInfoInUIIfError", this.showAssistanceInfoInUIIfError);
+        info.AddValue("showStringIdInUIIfError", this.ShowStringIdInUIIfError);
+        info.AddValue("showAssistanceInfoInUIIfError", this.ShowAssistanceInfoInUIIfError);
         if (this.DeserializedFallback == null)
           info.AddValue("fallback", (object) this.ResourceManager.GetString(this.Id, CultureInfo.InvariantCulture));
         else
@@ -306,7 +303,7 @@ namespace Butler.Schema.Data.Common
 
     public bool Equals(LocalizedString that)
     {
-      if (!string.Equals(this.Id, that.Id, StringComparison.OrdinalIgnoreCase) || !string.Equals(this.stringId, that.stringId, StringComparison.OrdinalIgnoreCase) || (this.showStringIdInUIIfError != that.showStringIdInUIIfError || this.showAssistanceInfoInUIIfError != that.showAssistanceInfoInUIIfError) || (null != this.ResourceManager ^ null != that.ResourceManager || this.ResourceManager != null && !this.ResourceManager.Equals((object) that.ResourceManager)) || null != this.Inserts ^ null != that.Inserts)
+      if (!string.Equals(this.Id, that.Id, StringComparison.OrdinalIgnoreCase) || !string.Equals(this.stringId, that.stringId, StringComparison.OrdinalIgnoreCase) || (this.ShowStringIdInUIIfError != that.ShowStringIdInUIIfError || this.ShowAssistanceInfoInUIIfError != that.ShowAssistanceInfoInUIIfError) || (null != this.ResourceManager ^ null != that.ResourceManager || this.ResourceManager != null && !this.ResourceManager.Equals((object) that.ResourceManager)) || null != this.Inserts ^ null != that.Inserts)
         return false;
       if (this.Inserts != null && that.Inserts != null)
       {

@@ -11,36 +11,33 @@ namespace Butler.Schema.Data.ContentTypes.Internal
 {
   internal class ComplianceTracker
   {
-    private FormatType format;
-    private ComplianceMode complianceMode;
-    private ComplianceStatus complianceStatus;
 
-    public ComplianceStatus Status => this.complianceStatus;
+      public ComplianceStatus Status { get; private set; }
 
-      public ComplianceMode Mode => this.complianceMode;
+      public ComplianceMode Mode { get; }
 
-      public FormatType Format => this.format;
+      public FormatType Format { get; }
 
       public ComplianceTracker(FormatType format, ComplianceMode complianceMode)
     {
-      this.format = format;
-      this.complianceMode = complianceMode;
+      this.Format = format;
+      this.Mode = complianceMode;
     }
 
     public void SetComplianceStatus(ComplianceStatus status, string message)
     {
-      this.complianceStatus |= status;
-      if (ComplianceMode.Strict != this.complianceMode)
+      this.Status |= status;
+      if (ComplianceMode.Strict != this.Mode)
         return;
-      if (this.format == FormatType.Calendar)
+      if (this.Format == FormatType.Calendar)
         throw new iCalendar.InvalidCalendarDataException(message);
-      if (FormatType.VCard == this.format)
+      if (FormatType.VCard == this.Format)
         throw new vCard.InvalidContactDataException(message);
     }
 
     public void Reset()
     {
-      this.complianceStatus = ComplianceStatus.Compliant;
+      this.Status = ComplianceStatus.Compliant;
     }
   }
 }

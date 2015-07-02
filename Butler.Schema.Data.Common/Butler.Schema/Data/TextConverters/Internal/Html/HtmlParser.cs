@@ -26,23 +26,21 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private int parseStart;
     private int parseCurrent;
     private int parseEnd;
-    private int parseDocumentOffset;
-    private char scanQuote;
+      private char scanQuote;
     private char valueQuote;
     private CharClass lastCharClass;
     private int nameLength;
     private HtmlTokenBuilder tokenBuilder;
-    private HtmlToken token;
-    private IRestartable restartConsumer;
+      private IRestartable restartConsumer;
     private bool detectEncodingFromMetaTag;
     private short[] hashValuesTable;
     private bool rightMeta;
     private Encoding newEncoding;
     private HtmlParser.SavedParserState savedState;
 
-    public HtmlToken Token => this.token;
+    public HtmlToken Token { get; private set; }
 
-      public int CurrentOffset => this.parseDocumentOffset;
+      public int CurrentOffset { get; private set; }
 
       public bool ParsingFragment
     {
@@ -60,10 +58,10 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       this.detectEncodingFromMetaTag = detectEncodingFromMetaTag;
       input.SetRestartConsumer((IRestartable) this);
       this.tokenBuilder = new HtmlTokenBuilder((char[]) null, maxRuns, maxAttrs, testBoundaryConditions);
-      this.token = this.tokenBuilder.Token;
+      this.Token = this.tokenBuilder.Token;
       this.plaintext = preformatedText;
       this.literalEntities = preformatedText;
-      this.parseDocumentOffset = 0;
+      this.CurrentOffset = 0;
     }
 
     public void SetRestartConsumer(IRestartable restartConsumer)
@@ -74,7 +72,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private void ReportProcessed(int processedSize)
     {
       this.input.ReportProcessed(processedSize);
-      this.parseDocumentOffset += processedSize;
+      this.CurrentOffset += processedSize;
     }
 
     private static void ProcessNumericEntityValue(int entityValue, out int literal)
@@ -175,7 +173,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       this.parseCurrent = 0;
       this.parseEnd = 0;
       this.parseThreshold = 1;
-      this.parseDocumentOffset = 0;
+      this.CurrentOffset = 0;
       this.slowParse = true;
       this.scanQuote = char.MinValue;
       this.valueQuote = char.MinValue;
@@ -241,7 +239,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       this.input = (ConverterInput) null;
       this.restartConsumer = (IRestartable) null;
       this.parseBuffer = (char[]) null;
-      this.token = (HtmlToken) null;
+      this.Token = (HtmlToken) null;
       this.tokenBuilder = (HtmlTokenBuilder) null;
       this.hashValuesTable = (short[]) null;
       GC.SuppressFinalize((object) this);
@@ -488,7 +486,7 @@ label_19:
           }
           this.parseCurrent = end;
           this.HandleSpecialTag();
-          return this.token.HtmlTokenId;
+          return this.Token.HtmlTokenId;
         }
 label_68:
         this.parseCurrent = num3;
@@ -550,7 +548,7 @@ Label_0067:
             if (ParseSupport.InvalidUnicodeCharacter(charClass) || (this.parseThreshold > 1))
             {
                 bool flag2 = this.SkipInvalidCharacters(ref ch, ref charClass, ref this.parseCurrent);
-                if (this.token.IsEmpty)
+                if (this.Token.IsEmpty)
                 {
                     this.ReportProcessed(this.parseCurrent - this.parseStart);
                     this.parseStart = this.parseCurrent;
@@ -576,7 +574,7 @@ Label_0067:
             {
                 goto Label_0067;
             }
-            return this.token.HtmlTokenId;
+            return this.Token.HtmlTokenId;
         }
 
         //        public bool ParseStateMachine(char ch, CharClass charClass, bool forceFlushToken)
@@ -1344,7 +1342,7 @@ Label_0067:
 Label_00A0:
             tokenBuilder.StartText(baseOffset);
             this.ParseText(ch, charClass, ref parseCurrent);
-            if (this.token.IsEmpty && !forceFlushToken)
+            if (this.Token.IsEmpty && !forceFlushToken)
             {
                 tokenBuilder.Reset();
                 this.slowParse = true;
@@ -1477,7 +1475,7 @@ Label_0358:
             goto Label_03D1;
 Label_03D1:
             tokenBuilder.EndTagName(this.nameLength);
-            if (this.literalTags && (this.token.NameIndex != this.literalTagNameId))
+            if (this.literalTags && (this.Token.NameIndex != this.literalTagNameId))
             {
                 goto Label_0A80;
             }
@@ -1800,7 +1798,7 @@ Label_09F3:
                     }
                     parseCurrent = parseEnd;
                 }
-                if (!this.token.IsTagBegin)
+                if (!this.Token.IsTagBegin)
                 {
                     tokenBuilder.EndTag(true);
                     this.parseCurrent = parseCurrent;
@@ -1811,7 +1809,7 @@ Label_09F3:
                 goto Label_0A80;
             }
 Label_0A53:
-            if (!this.literalTags || (this.token.NameIndex != HtmlNameIndex.Unknown))
+            if (!this.literalTags || (this.Token.NameIndex != HtmlNameIndex.Unknown))
             {
                 tokenBuilder.EndTag(false);
                 this.parseCurrent = parseCurrent;
@@ -2661,28 +2659,28 @@ label_31:
 
     private void HandleSpecialTag()
     {
-      if (HtmlNameData.Names[(int) this.token.NameIndex].LiteralTag)
+      if (HtmlNameData.Names[(int) this.Token.NameIndex].LiteralTag)
       {
-        this.literalTags = !this.token.IsEndTag;
-        this.literalTagNameId = this.literalTags ? this.token.NameIndex : HtmlNameIndex.Unknown;
-        if (HtmlNameData.Names[(int) this.token.NameIndex].LiteralEnt)
-          this.literalEntities = !this.token.IsEndTag && !this.token.IsEmptyScope;
+        this.literalTags = !this.Token.IsEndTag;
+        this.literalTagNameId = this.literalTags ? this.Token.NameIndex : HtmlNameIndex.Unknown;
+        if (HtmlNameData.Names[(int) this.Token.NameIndex].LiteralEnt)
+          this.literalEntities = !this.Token.IsEndTag && !this.Token.IsEmptyScope;
         this.slowParse = this.slowParse || this.literalTags;
       }
-      switch (this.token.NameIndex)
+      switch (this.Token.NameIndex)
       {
         case HtmlNameIndex.Meta:
           if (!(this.input is ConverterDecodingInput) || !this.detectEncodingFromMetaTag || !((IRestartable) this).CanRestart())
             break;
-          if (this.token.IsTagBegin)
+          if (this.Token.IsTagBegin)
           {
             this.rightMeta = false;
             this.newEncoding = (Encoding) null;
           }
-          this.token.Attributes.Rewind();
+          this.Token.Attributes.Rewind();
           int index = -1;
           bool lookForWordCharset = false;
-          foreach (HtmlAttribute htmlAttribute in this.token.Attributes)
+          foreach (HtmlAttribute htmlAttribute in this.Token.Attributes)
           {
             if (htmlAttribute.NameIndex == HtmlNameIndex.HttpEquiv)
             {
@@ -2712,20 +2710,20 @@ label_31:
           }
           if (index != -1)
           {
-            string name = HtmlParser.CharsetFromString(this.token.Attributes[index].Value.GetString(100), lookForWordCharset);
+            string name = HtmlParser.CharsetFromString(this.Token.Attributes[index].Value.GetString(100), lookForWordCharset);
             if (name != null)
               Globalization.Charset.TryGetEncoding(name, out this.newEncoding);
           }
           if (this.rightMeta && this.newEncoding != null)
             (this.input as ConverterDecodingInput).RestartWithNewEncoding(this.newEncoding);
-          this.token.Attributes.Rewind();
+          this.Token.Attributes.Rewind();
           break;
         case HtmlNameIndex.PlainText:
-          if (this.token.IsEndTag)
+          if (this.Token.IsEndTag)
             break;
           this.plaintext = true;
           this.literalEntities = true;
-          if (!this.token.IsTagEnd)
+          if (!this.Token.IsTagEnd)
             break;
           this.parseState = HtmlParser.ParseState.Text;
           break;
@@ -2791,7 +2789,7 @@ label_31:
         this.parseCurrent = parser.parseCurrent;
         this.parseEnd = parser.parseEnd;
         this.parseThreshold = parser.parseThreshold;
-        this.parseDocumentOffset = parser.parseDocumentOffset;
+        this.parseDocumentOffset = parser.CurrentOffset;
         parser.input = newInput;
         parser.endOfFile = false;
         parser.parseState = HtmlParser.ParseState.Text;
@@ -2822,7 +2820,7 @@ label_31:
         parser.parseCurrent = this.parseCurrent;
         parser.parseEnd = this.parseEnd;
         parser.parseThreshold = this.parseThreshold;
-        parser.parseDocumentOffset = this.parseDocumentOffset;
+        parser.CurrentOffset = this.parseDocumentOffset;
         this.input = (ConverterInput) null;
         this.parseBuffer = (char[]) null;
       }

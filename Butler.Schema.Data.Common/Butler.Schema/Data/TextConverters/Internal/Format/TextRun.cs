@@ -15,20 +15,19 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     public static readonly TextRun Invalid = new TextRun();
     public const int MaxEffectiveLength = 4095;
     private FormatStore.TextStore text;
-    private uint position;
-    private bool isImmutable;
+      private bool isImmutable;
 
-    public uint Position => this.position;
+    public uint Position { get; private set; }
 
-      public TextRunType Type => FormatStore.TextStore.TypeFromRunHeader(this.text.Pick(this.position));
+      public TextRunType Type => FormatStore.TextStore.TypeFromRunHeader(this.text.Pick(this.Position));
 
-      public int EffectiveLength => FormatStore.TextStore.LengthFromRunHeader(this.text.Pick(this.position));
+      public int EffectiveLength => FormatStore.TextStore.LengthFromRunHeader(this.text.Pick(this.Position));
 
       public int Length
     {
       get
       {
-        char runHeader = this.text.Pick(this.position);
+        char runHeader = this.text.Pick(this.Position);
         if ((int) runHeader < 12288)
           return FormatStore.TextStore.LengthFromRunHeader(runHeader) + 1;
         return 1;
@@ -48,13 +47,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     private bool IsLong => this.Type < TextRunType.FirstShort;
 
-      public char this[int index] => this.text.Plane(this.position)[this.text.Index(this.position) + 1 + index];
+      public char this[int index] => this.text.Plane(this.Position)[this.text.Index(this.Position) + 1 + index];
 
       internal TextRun(FormatStore.TextStore text, uint position)
     {
       this.isImmutable = false;
       this.text = text;
-      this.position = position;
+      this.Position = position;
     }
 
     public char GetWordChar(int index)
@@ -81,7 +80,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     {
       if (this.isImmutable)
         throw new InvalidOperationException("This run is immutable");
-      this.position += (uint) this.Length;
+      this.Position += (uint) this.Length;
     }
 
     public void SkipInvalid()
@@ -94,43 +93,43 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
 
     public bool IsEnd()
     {
-      return this.position >= this.text.CurrentPosition;
+      return this.Position >= this.text.CurrentPosition;
     }
 
     public TextRun GetNext()
     {
-      return new TextRun(this.text, this.position + (uint) this.Length);
+      return new TextRun(this.text, this.Position + (uint) this.Length);
     }
 
     public void GetChunk(int start, out char[] buffer, out int offset, out int count)
     {
-      buffer = this.text.Plane(this.position);
-      offset = this.text.Index(this.position) + 1 + start;
+      buffer = this.text.Plane(this.Position);
+      offset = this.text.Index(this.Position) + 1 + start;
       count = this.EffectiveLength - start;
     }
 
     public int AppendFragment(int start, ref ScratchBuffer scratchBuffer, int maxLength)
     {
-      int offset = this.text.Index(this.position) + 1 + start;
+      int offset = this.text.Index(this.Position) + 1 + start;
       int length = Math.Min(this.EffectiveLength - start, maxLength);
       if (length != 0)
-        scratchBuffer.Append(this.text.Plane(this.position), offset, length);
+        scratchBuffer.Append(this.text.Plane(this.Position), offset, length);
       return length;
     }
 
     public void ConvertToInvalid()
     {
-      this.text.ConvertToInvalid(this.position);
+      this.text.ConvertToInvalid(this.Position);
     }
 
     public void ConvertToInvalid(int count)
     {
-      this.text.ConvertToInvalid(this.position, count);
+      this.text.ConvertToInvalid(this.Position, count);
     }
 
     public void ConvertShort(TextRunType type, int newEffectiveLength)
     {
-      this.text.ConvertShortRun(this.position, type, newEffectiveLength);
+      this.text.ConvertShortRun(this.Position, type, newEffectiveLength);
     }
 
     public override string ToString()

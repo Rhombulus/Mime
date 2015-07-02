@@ -12,11 +12,9 @@ namespace Butler.Schema.Data.Mime
   public class EncodingOptions
   {
     internal static readonly Globalization.Charset DefaultCharset = DecodingOptions.DefaultCharset;
-    private EncodingFlags encodingFlags;
-    private Globalization.Charset charset;
-    private string cultureName;
+      private Globalization.Charset charset;
 
-    public string CharsetName
+      public string CharsetName
     {
       get
       {
@@ -26,16 +24,16 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public string CultureName => this.cultureName;
+    public string CultureName { get; }
 
-      public EncodingFlags EncodingFlags => this.encodingFlags;
+      public EncodingFlags EncodingFlags { get; }
 
-      public bool AllowUTF8 => (this.encodingFlags & EncodingFlags.AllowUTF8) == EncodingFlags.AllowUTF8;
+      public bool AllowUTF8 => (this.EncodingFlags & EncodingFlags.AllowUTF8) == EncodingFlags.AllowUTF8;
 
       public EncodingOptions(string charsetName, string cultureName, EncodingFlags encodingFlags)
     {
-      this.cultureName = cultureName;
-      this.encodingFlags = encodingFlags;
+      this.CultureName = cultureName;
+      this.EncodingFlags = encodingFlags;
       this.charset = charsetName == null ? (Globalization.Charset) null : Globalization.Charset.GetCharset(charsetName);
       if (this.charset == null)
         return;
@@ -45,8 +43,8 @@ namespace Butler.Schema.Data.Mime
     internal EncodingOptions(Globalization.Charset charset)
     {
       this.charset = charset;
-      this.cultureName = (string) null;
-      this.encodingFlags = EncodingFlags.None;
+      this.CultureName = (string) null;
+      this.EncodingFlags = EncodingFlags.None;
     }
 
     internal Globalization.Charset GetEncodingCharset()

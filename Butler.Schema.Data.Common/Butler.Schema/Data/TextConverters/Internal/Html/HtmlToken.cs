@@ -12,8 +12,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 {
   internal class HtmlToken : Token
   {
-    private HtmlToken.TagFlags flags;
-    protected internal HtmlTagIndex TagIndex;
+
+      protected internal HtmlTagIndex TagIndex;
     protected internal HtmlTagIndex OriginalTagIndex;
     protected internal HtmlNameIndex NameIndex;
     protected internal HtmlToken.TagPartMajor PartMajor;
@@ -41,21 +41,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       }
     }
 
-    public HtmlToken.TagFlags Flags
-    {
-      get
-      {
-        return this.flags;
-      }
-      set
-      {
-        this.flags = value;
-      }
-    }
+    public HtmlToken.TagFlags Flags { get; set; }
 
-    public bool IsEndTag => HtmlToken.TagFlags.None != (this.flags & HtmlToken.TagFlags.EndTag);
+      public bool IsEndTag => HtmlToken.TagFlags.None != (this.Flags & HtmlToken.TagFlags.EndTag);
 
-      public bool IsEmptyScope => HtmlToken.TagFlags.None != (this.flags & HtmlToken.TagFlags.EmptyScope);
+      public bool IsEmptyScope => HtmlToken.TagFlags.None != (this.Flags & HtmlToken.TagFlags.EmptyScope);
 
       public HtmlToken.TagPartMajor MajorPart => this.PartMajor;
 
@@ -67,7 +57,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 
       public bool IsTagEnd => (this.PartMajor & HtmlToken.TagPartMajor.End) == HtmlToken.TagPartMajor.End;
 
-      public bool IsTagNameEmpty => HtmlToken.TagFlags.None != (this.flags & HtmlToken.TagFlags.EmptyTagName);
+      public bool IsTagNameEmpty => HtmlToken.TagFlags.None != (this.Flags & HtmlToken.TagFlags.EmptyTagName);
 
       public bool IsTagNameBegin => (this.PartMinor & HtmlToken.TagPartMinor.BeginName) == HtmlToken.TagPartMinor.BeginName;
 
@@ -81,9 +71,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
 
       public HtmlTagIndex OriginalTagId => this.OriginalTagIndex;
 
-      public bool IsAllowWspLeft => (this.flags & HtmlToken.TagFlags.AllowWspLeft) == HtmlToken.TagFlags.AllowWspLeft;
+      public bool IsAllowWspLeft => (this.Flags & HtmlToken.TagFlags.AllowWspLeft) == HtmlToken.TagFlags.AllowWspLeft;
 
-      public bool IsAllowWspRight => (this.flags & HtmlToken.TagFlags.AllowWspRight) == HtmlToken.TagFlags.AllowWspRight;
+      public bool IsAllowWspRight => (this.Flags & HtmlToken.TagFlags.AllowWspRight) == HtmlToken.TagFlags.AllowWspRight;
 
       public HtmlToken.AttributeEnumerator Attributes => new HtmlToken.AttributeEnumerator(this);
 
@@ -96,7 +86,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     {
       this.TagIndex = this.OriginalTagIndex = HtmlTagIndex._NULL;
       this.NameIndex = HtmlNameIndex._NOTANAME;
-      this.flags = HtmlToken.TagFlags.None;
+      this.Flags = HtmlToken.TagFlags.None;
       this.PartMajor = HtmlToken.TagPartMajor.None;
       this.PartMinor = HtmlToken.TagPartMinor.Empty;
       this.NameInternal.Reset();

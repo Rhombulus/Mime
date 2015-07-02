@@ -15,10 +15,8 @@ namespace Butler.Schema.Data.Mime
     public static readonly DecodingOptions None = new DecodingOptions();
     public static readonly DecodingOptions Default = new DecodingOptions(DecodingFlags.AllEncodings);
     private static Globalization.Charset defaultCharset;
-    private DecodingFlags decodingFlags;
-    private Globalization.Charset charset;
 
-    internal static Globalization.Charset DefaultCharset
+      internal static Globalization.Charset DefaultCharset
     {
       get
       {
@@ -33,24 +31,14 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public DecodingFlags DecodingFlags
-    {
-      get
-      {
-        return this.decodingFlags;
-      }
-      internal set
-      {
-        this.decodingFlags = value;
-      }
-    }
+    public DecodingFlags DecodingFlags { get; internal set; }
 
-    public string CharsetName
+      public string CharsetName
     {
       get
       {
-        if (this.charset != null)
-          return this.charset.Name;
+        if (this.Charset != null)
+          return this.Charset.Name;
         return (string) null;
       }
     }
@@ -59,41 +47,31 @@ namespace Butler.Schema.Data.Mime
     {
       get
       {
-        if (this.charset != null && this.charset.IsAvailable)
-          return this.charset.GetEncoding();
+        if (this.Charset != null && this.Charset.IsAvailable)
+          return this.Charset.GetEncoding();
         return (Encoding) null;
       }
     }
 
-    public bool AllowUTF8 => (this.decodingFlags & DecodingFlags.Utf8) == DecodingFlags.Utf8;
+    public bool AllowUTF8 => (this.DecodingFlags & DecodingFlags.Utf8) == DecodingFlags.Utf8;
 
-      internal Globalization.Charset Charset
-    {
-      get
-      {
-        return this.charset;
-      }
-      set
-      {
-        this.charset = value;
-      }
-    }
+      internal Globalization.Charset Charset { get; set; }
 
-    public DecodingOptions(DecodingFlags decodingFlags)
+      public DecodingOptions(DecodingFlags decodingFlags)
     {
       this = new DecodingOptions(decodingFlags, (string) null);
     }
 
     public DecodingOptions(DecodingFlags decodingFlags, Encoding encoding)
     {
-      this.decodingFlags = decodingFlags;
-      this.charset = encoding == null ? (Globalization.Charset) null : Globalization.Charset.GetCharset(encoding);
+      this.DecodingFlags = decodingFlags;
+      this.Charset = encoding == null ? (Globalization.Charset) null : Globalization.Charset.GetCharset(encoding);
     }
 
     public DecodingOptions(DecodingFlags decodingFlags, string charsetName)
     {
-      this.decodingFlags = decodingFlags;
-      this.charset = charsetName == null ? (Globalization.Charset) null : Globalization.Charset.GetCharset(charsetName);
+      this.DecodingFlags = decodingFlags;
+      this.Charset = charsetName == null ? (Globalization.Charset) null : Globalization.Charset.GetCharset(charsetName);
     }
 
     internal DecodingOptions(string charsetName)

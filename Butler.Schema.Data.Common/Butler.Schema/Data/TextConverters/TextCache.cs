@@ -11,12 +11,12 @@ namespace Butler.Schema.Data.TextConverters
 {
   internal class TextCache
   {
-    private int cachedLength;
-    private TextCache.CacheEntry headEntry;
+
+      private TextCache.CacheEntry headEntry;
     private TextCache.CacheEntry tailEntry;
     private TextCache.CacheEntry freeList;
 
-    public int Length => this.cachedLength;
+    public int Length { get; private set; }
 
       public void Reset()
     {
@@ -30,7 +30,7 @@ namespace Butler.Schema.Data.TextConverters
         cacheEntry.Next = this.freeList;
         this.freeList = cacheEntry;
       }
-      this.cachedLength = 0;
+      this.Length = 0;
     }
 
     public void GetBuffer(int size, out char[] buffer, out int offset, out int realSize)
@@ -44,7 +44,7 @@ namespace Butler.Schema.Data.TextConverters
     public void Commit(int count)
     {
       this.tailEntry.Commit(count);
-      this.cachedLength += count;
+      this.Length += count;
     }
 
     public void GetData(out char[] outputBuffer, out int outputOffset, out int outputCount)
@@ -55,7 +55,7 @@ namespace Butler.Schema.Data.TextConverters
     public void ReportRead(int count)
     {
       this.headEntry.ReportRead(count);
-      this.cachedLength -= count;
+      this.Length -= count;
       if (this.headEntry.Length != 0)
         return;
       TextCache.CacheEntry cacheEntry = this.headEntry;
@@ -75,7 +75,7 @@ namespace Butler.Schema.Data.TextConverters
         offset += num2;
         count -= num2;
         num1 += num2;
-        this.cachedLength -= num2;
+        this.Length -= num2;
         if (this.headEntry.Length == 0)
         {
           TextCache.CacheEntry cacheEntry = this.headEntry;
@@ -112,55 +112,43 @@ namespace Butler.Schema.Data.TextConverters
     {
       private const int DefaultMaxLength = 4096;
       private char[] buffer;
-      private int count;
-      private int offset;
-      private TextCache.CacheEntry next;
+        private int offset;
 
-      public int Length => this.count;
+        public int Length { get; private set; }
 
-        public TextCache.CacheEntry Next
-      {
-        get
-        {
-          return this.next;
-        }
-        set
-        {
-          this.next = value;
-        }
-      }
+        public TextCache.CacheEntry Next { get; set; }
 
-      public CacheEntry(int size)
+        public CacheEntry(int size)
       {
         this.AllocateBuffer(size);
       }
 
       public void Reset()
       {
-        this.count = 0;
+        this.Length = 0;
       }
 
       public bool GetBuffer(int size, out char[] buffer, out int offset, out int realSize)
       {
-        if (this.count == 0)
+        if (this.Length == 0)
         {
           this.offset = 0;
           if (this.buffer.Length < size)
             this.AllocateBuffer(size);
         }
-        if (this.buffer.Length - (this.offset + this.count) >= size)
+        if (this.buffer.Length - (this.offset + this.Length) >= size)
         {
           buffer = this.buffer;
-          offset = this.offset + this.count;
+          offset = this.offset + this.Length;
           realSize = this.buffer.Length - offset;
           return true;
         }
-        if (this.count < 64 && this.buffer.Length - this.count >= size)
+        if (this.Length < 64 && this.buffer.Length - this.Length >= size)
         {
-          Buffer.BlockCopy((Array) this.buffer, this.offset * 2, (Array) this.buffer, 0, this.count * 2);
+          Buffer.BlockCopy((Array) this.buffer, this.offset * 2, (Array) this.buffer, 0, this.Length * 2);
           this.offset = 0;
           buffer = this.buffer;
-          offset = this.offset + this.count;
+          offset = this.offset + this.Length;
           realSize = this.buffer.Length - offset;
           return true;
         }
@@ -172,27 +160,27 @@ namespace Butler.Schema.Data.TextConverters
 
       public void Commit(int count)
       {
-        this.count += count;
+        this.Length += count;
       }
 
       public void GetData(out char[] outputBuffer, out int outputOffset, out int outputCount)
       {
         outputBuffer = this.buffer;
         outputOffset = this.offset;
-        outputCount = this.count;
+        outputCount = this.Length;
       }
 
       public void ReportRead(int count)
       {
         this.offset += count;
-        this.count -= count;
+        this.Length -= count;
       }
 
       public int Read(char[] buffer, int offset, int count)
       {
-        int num = Math.Min(count, this.count);
+        int num = Math.Min(count, this.Length);
         Buffer.BlockCopy((Array) this.buffer, this.offset * 2, (Array) buffer, offset * 2, num * 2);
-        this.count -= num;
+        this.Length -= num;
         this.offset += num;
         count -= num;
         offset += num;

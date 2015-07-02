@@ -317,44 +317,22 @@ namespace Butler.Schema.Data.Mime
     private struct ListEntry
     {
       private object obj;
-      private int int1;
-      private int int2;
 
-      public int HeaderCount
+        public int HeaderCount { get; set; }
+
+        public int HeaderTotalLength { get; set; }
+
+        public MimeString Str
       {
         get
         {
-          return this.int1;
-        }
-        set
-        {
-          this.int1 = value;
-        }
-      }
-
-      public int HeaderTotalLength
-      {
-        get
-        {
-          return this.int2;
-        }
-        set
-        {
-          this.int2 = value;
-        }
-      }
-
-      public MimeString Str
-      {
-        get
-        {
-          return new MimeString((byte[]) this.obj, this.int1, (uint) this.int2);
+          return new MimeString((byte[]) this.obj, this.HeaderCount, (uint) this.HeaderTotalLength);
         }
         set
         {
           this.obj = (object) value.Data;
-          this.int1 = value.Offset;
-          this.int2 = (int) value.LengthAndMask;
+          this.HeaderCount = value.Offset;
+          this.HeaderTotalLength = (int) value.LengthAndMask;
         }
       }
 
@@ -367,16 +345,16 @@ namespace Butler.Schema.Data.Mime
         set
         {
           this.obj = (object) value;
-          this.int1 = 0;
-          this.int2 = 0;
+          this.HeaderCount = 0;
+          this.HeaderTotalLength = 0;
         }
       }
 
       public void Reset()
       {
         this.obj = (object) null;
-        this.int1 = 0;
-        this.int2 = 0;
+        this.HeaderCount = 0;
+        this.HeaderTotalLength = 0;
       }
 
       public bool StrMergeIfAdjacent(MimeString refLine)

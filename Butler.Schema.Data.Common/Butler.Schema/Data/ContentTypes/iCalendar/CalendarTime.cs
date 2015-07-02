@@ -14,46 +14,24 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
   {
     private const string TimeFormatUtc = "HHmmss\\Z";
     private const string TimeFormat = "HHmmss";
-    private TimeSpan time;
-    private bool isUtc;
 
-    public TimeSpan Time
-    {
-      get
-      {
-        return this.time;
-      }
-      set
-      {
-        this.time = value;
-      }
-    }
+      public TimeSpan Time { get; set; }
 
-    public bool IsUtc
-    {
-      get
-      {
-        return this.isUtc;
-      }
-      set
-      {
-        this.isUtc = value;
-      }
-    }
+      public bool IsUtc { get; set; }
 
-    public CalendarTime(TimeSpan time, bool isUtc)
+      public CalendarTime(TimeSpan time, bool isUtc)
     {
-      this.time = time;
-      this.isUtc = isUtc;
+      this.Time = time;
+      this.IsUtc = isUtc;
     }
 
     internal CalendarTime(string s, Internal.ComplianceTracker tracker)
     {
-      this.isUtc = false;
+      this.IsUtc = false;
       if (s.Length != 6 && s.Length != 7)
       {
         tracker.SetComplianceStatus(Internal.ComplianceStatus.InvalidValueFormat, CtsResources.CalendarStrings.InvalidTimeStringLength);
-        this.time = TimeSpan.Zero;
+        this.Time = TimeSpan.Zero;
       }
       else
       {
@@ -62,26 +40,26 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
           if ((int) s[6] != 90)
           {
             tracker.SetComplianceStatus(Internal.ComplianceStatus.InvalidValueFormat, CtsResources.CalendarStrings.ExpectedZ);
-            this.time = TimeSpan.Zero;
+            this.Time = TimeSpan.Zero;
             return;
           }
-          this.isUtc = true;
+          this.IsUtc = true;
           s = s.Substring(0, 6);
         }
         DateTime result;
         if (!DateTime.TryParseExact(s, "HHmmss", (IFormatProvider) CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
         {
           tracker.SetComplianceStatus(Internal.ComplianceStatus.InvalidValueFormat, CtsResources.CalendarStrings.InvalidTimeFormat);
-          this.time = TimeSpan.Zero;
+          this.Time = TimeSpan.Zero;
         }
         else
-          this.time = new TimeSpan(result.Hour, result.Minute, result.Second);
+          this.Time = new TimeSpan(result.Hour, result.Minute, result.Second);
       }
     }
 
     public override string ToString()
     {
-      return new DateTime(1, 1, 1, this.time.Hours, this.time.Minutes, this.time.Seconds).ToString(this.isUtc ? "HHmmss\\Z" : "HHmmss");
+      return new DateTime(1, 1, 1, this.Time.Hours, this.Time.Minutes, this.Time.Seconds).ToString(this.IsUtc ? "HHmmss\\Z" : "HHmmss");
     }
   }
 }

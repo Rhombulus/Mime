@@ -14,54 +14,44 @@ namespace Butler.Schema.Data.Mime
   {
     private static object configurationLockObject = new object();
     private static MimeLimits unlimitedLimits = new MimeLimits();
-    private int partDepth = int.MaxValue;
-    private int embeddedDepth = int.MaxValue;
-    private int size = int.MaxValue;
-    private int headerBytes = int.MaxValue;
-    private int parts = int.MaxValue;
-    private int headers = int.MaxValue;
-    private int addressItemsPerHeader = int.MaxValue;
-    private int textValueBytesPerValue = int.MaxValue;
-    private int parametersPerHeader = int.MaxValue;
-    private static volatile MimeLimits defaultLimits;
-    private int encodedWordLength;
+      private static volatile MimeLimits defaultLimits;
 
-    public static MimeLimits Default => MimeLimits.GetDefaultMimeDocumentLimits();
+      public static MimeLimits Default => MimeLimits.GetDefaultMimeDocumentLimits();
 
       public static MimeLimits Unlimited => MimeLimits.unlimitedLimits;
 
-      public int MaxPartDepth => this.partDepth;
+      public int MaxPartDepth { get; } = int.MaxValue;
 
-      public int MaxEmbeddedDepth => this.embeddedDepth;
+      public int MaxEmbeddedDepth { get; } = int.MaxValue;
 
-      public int MaxSize => this.size;
+      public int MaxSize { get; } = int.MaxValue;
 
-      public int MaxHeaderBytes => this.headerBytes;
+      public int MaxHeaderBytes { get; } = int.MaxValue;
 
-      public int MaxParts => this.parts;
+      public int MaxParts { get; } = int.MaxValue;
 
-      public int MaxHeaders => this.headers;
+      public int MaxHeaders { get; } = int.MaxValue;
 
-      public int MaxAddressItemsPerHeader => this.addressItemsPerHeader;
+      public int MaxAddressItemsPerHeader { get; } = int.MaxValue;
 
-      public int MaxTextValueBytesPerValue => this.textValueBytesPerValue;
+      public int MaxTextValueBytesPerValue { get; } = int.MaxValue;
 
-      public int MaxParametersPerHeader => this.parametersPerHeader;
+      public int MaxParametersPerHeader { get; } = int.MaxValue;
 
-      internal int MaxEncodedWordLength => this.encodedWordLength;
+      internal int MaxEncodedWordLength { get; }
 
       internal MimeLimits(int partDepth, int embeddedDepth, int size, int headerBytes, int parts, int headers, int addressItemsPerHeader, int textValueBytesPerValue, int parametersPerHeader, int encodedWordLength)
     {
-      this.partDepth = partDepth;
-      this.embeddedDepth = embeddedDepth;
-      this.size = size;
-      this.headerBytes = headerBytes;
-      this.parts = parts;
-      this.headers = headers;
-      this.addressItemsPerHeader = addressItemsPerHeader;
-      this.textValueBytesPerValue = textValueBytesPerValue;
-      this.parametersPerHeader = parametersPerHeader;
-      this.encodedWordLength = encodedWordLength;
+      this.MaxPartDepth = partDepth;
+      this.MaxEmbeddedDepth = embeddedDepth;
+      this.MaxSize = size;
+      this.MaxHeaderBytes = headerBytes;
+      this.MaxParts = parts;
+      this.MaxHeaders = headers;
+      this.MaxAddressItemsPerHeader = addressItemsPerHeader;
+      this.MaxTextValueBytesPerValue = textValueBytesPerValue;
+      this.MaxParametersPerHeader = parametersPerHeader;
+      this.MaxEncodedWordLength = encodedWordLength;
     }
 
     private MimeLimits()
