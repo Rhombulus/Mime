@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2523D0A2-09EF-421C-A5FD-A88DFC7BC806}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Butler.Schema.Mime.Encoders</RootNamespace>
+    <AssemblyName>Butler.Schema.Mime.Encoders</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Base64Decoder.cs" />
+    <Compile Include="Base64Encoder.cs" />
+    <Compile Include="BinHexDecoder.cs" />
+    <Compile Include="BinHexEncoder.cs" />
+    <Compile Include="BinHexHeader.cs" />
+    <Compile Include="BinHexUtils.cs" />
+    <Compile Include="ByteEncoder.cs" />
+    <Compile Include="ByteEncoderException.cs" />
+    <Compile Include="EncoderStream.cs" />
+    <Compile Include="EncoderStreamAccess.cs" />
+    <Compile Include="MacBinaryHeader.cs" />
+    <Compile Include="QPDecoder.cs" />
+    <Compile Include="QPEncoder.cs" />
+    <Compile Include="UUDecoder.cs" />
+    <Compile Include="UUEncoder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Butler.Schema.Common\Butler.Schema.Common.csproj">
+      <Project>{1D000363-E9A9-457A-973E-5A59C09E0E6E}</Project>
+      <Name>Butler.Schema.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Butler.Schema\Butler.Schema.csproj">
+      <Project>{AC5448AB-4CC9-47E9-AB8F-31E79B62D660}</Project>
+      <Name>Butler.Schema</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

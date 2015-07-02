@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A965BECA-784C-4ACE-AB67-9D6ED183BDF9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Butler.Schema.Globalization</RootNamespace>
+    <AssemblyName>Butler.Schema.Globalization</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AsciiEncoderFallback.cs" />
+    <Compile Include="Charset.cs" />
+    <Compile Include="CharsetNotInstalledException.cs" />
+    <Compile Include="CodePageAsciiSupport.cs" />
+    <Compile Include="CodePageDetect.cs" />
+    <Compile Include="CodePageDetectData.cs" />
+    <Compile Include="CodePageFlags.cs" />
+    <Compile Include="CodePageKind.cs" />
+    <Compile Include="CodePageMap.cs" />
+    <Compile Include="CodePageMapData.cs" />
+    <Compile Include="CodePageUnicodeCoverage.cs" />
+    <Compile Include="Culture.cs" />
+    <Compile Include="CultureCharsetDatabase.cs" />
+    <Compile Include="FailedToProgressException.cs" />
+    <Compile Include="FallbackExceptions.cs" />
+    <Compile Include="FEData.cs" />
+    <Compile Include="FeInboundCharsetDetector.cs" />
+    <Compile Include="InvalidCharsetException.cs" />
+    <Compile Include="Iso2022DecodingMode.cs" />
+    <Compile Include="Iso2022JpEncoding.cs" />
+    <Compile Include="Iso2022Jp\DecodeJisX0201_1976ToCp932.cs" />
+    <Compile Include="Iso2022Jp\DecodeJisX0208_1983ToCp932.cs" />
+    <Compile Include="Iso2022Jp\DecodeLastChanceToCp932.cs" />
+    <Compile Include="Iso2022Jp\DecodeToCp932.cs" />
+    <Compile Include="Iso2022Jp\DecodeUsAsciiToCp932.cs" />
+    <Compile Include="Iso2022Jp\Escape.cs" />
+    <Compile Include="Iso2022Jp\EscapeSequence.cs" />
+    <Compile Include="Iso2022Jp\EscapeState.cs" />
+    <Compile Include="Iso2022Jp\Iso2022JpDecoder.cs" />
+    <Compile Include="Iso2022Jp\JisX0208PairClass.cs" />
+    <Compile Include="Iso2022Jp\ValidationResult.cs" />
+    <Compile Include="LocaleMap.cs" />
+    <Compile Include="OutboundCodePageDetector.cs" />
+    <Compile Include="RemapEncoding.cs" />
+    <Compile Include="SimpleCodepageDetector.cs" />
+    <Compile Include="UnknownCultureException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Butler.Schema.Common\Butler.Schema.Common.csproj">
+      <Project>{1D000363-E9A9-457A-973E-5A59C09E0E6E}</Project>
+      <Name>Butler.Schema.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Butler.Schema\Butler.Schema.csproj">
+      <Project>{AC5448AB-4CC9-47E9-AB8F-31E79B62D660}</Project>
+      <Name>Butler.Schema</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

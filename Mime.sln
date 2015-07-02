@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butler.Schema.Data.Mime", "Butler.Schema.Data.Common\Butler.Schema.Data.Mime.csproj", "{FB2E8B59-CF57-472E-A11F-F066F209B5B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butler.Schema", "Butler.Schema\Butler.Schema.csproj", "{AC5448AB-4CC9-47E9-AB8F-31E79B62D660}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butler.Schema.Mime", "Butler.Schema.Mime\Butler.Schema.Mime.csproj", "{4BF03588-1B4E-471C-9CBD-0A123D314C41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butler.Schema.Common", "Butler.Schema.Common\Butler.Schema.Common.csproj", "{1D000363-E9A9-457A-973E-5A59C09E0E6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butler.Schema.Globalization", "Butler.Schema.Globalization\Butler.Schema.Globalization.csproj", "{A965BECA-784C-4ACE-AB67-9D6ED183BDF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Butler.Schema.Mime.Encoders", "Butler.Schema.Mime.Encoders\Butler.Schema.Mime.Encoders.csproj", "{2523D0A2-09EF-421C-A5FD-A88DFC7BC806}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +19,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FB2E8B59-CF57-472E-A11F-F066F209B5B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB2E8B59-CF57-472E-A11F-F066F209B5B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB2E8B59-CF57-472E-A11F-F066F209B5B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB2E8B59-CF57-472E-A11F-F066F209B5B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC5448AB-4CC9-47E9-AB8F-31E79B62D660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC5448AB-4CC9-47E9-AB8F-31E79B62D660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC5448AB-4CC9-47E9-AB8F-31E79B62D660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC5448AB-4CC9-47E9-AB8F-31E79B62D660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BF03588-1B4E-471C-9CBD-0A123D314C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BF03588-1B4E-471C-9CBD-0A123D314C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BF03588-1B4E-471C-9CBD-0A123D314C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BF03588-1B4E-471C-9CBD-0A123D314C41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D000363-E9A9-457A-973E-5A59C09E0E6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D000363-E9A9-457A-973E-5A59C09E0E6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D000363-E9A9-457A-973E-5A59C09E0E6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D000363-E9A9-457A-973E-5A59C09E0E6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A965BECA-784C-4ACE-AB67-9D6ED183BDF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A965BECA-784C-4ACE-AB67-9D6ED183BDF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A965BECA-784C-4ACE-AB67-9D6ED183BDF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A965BECA-784C-4ACE-AB67-9D6ED183BDF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2523D0A2-09EF-421C-A5FD-A88DFC7BC806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2523D0A2-09EF-421C-A5FD-A88DFC7BC806}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2523D0A2-09EF-421C-A5FD-A88DFC7BC806}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2523D0A2-09EF-421C-A5FD-A88DFC7BC806}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

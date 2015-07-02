@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4BF03588-1B4E-471C-9CBD-0A123D314C41}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Butler.Schema.Mime</RootNamespace>
+    <AssemblyName>Butler.Schema.Mime</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AddressHeader.cs" />
+    <Compile Include="AddressItem.cs" />
+    <Compile Include="AddressParserFlags.cs" />
+    <Compile Include="AddressParserResult.cs" />
+    <Compile Include="AsciiTextHeader.cs" />
+    <Compile Include="CachingMode.cs" />
+    <Compile Include="ComplexHeader.cs" />
+    <Compile Include="ContentDispositionHeader.cs" />
+    <Compile Include="ContentTransferEncoding.cs" />
+    <Compile Include="ContentTypeHeader.cs" />
+    <Compile Include="DateHeader.cs" />
+    <Compile Include="DecodingFlags.cs" />
+    <Compile Include="DecodingOptions.cs" />
+    <Compile Include="DecodingResults.cs" />
+    <Compile Include="EncodingFlags.cs" />
+    <Compile Include="EncodingOptions.cs" />
+    <Compile Include="EncodingScheme.cs" />
+    <Compile Include="Header.cs" />
+    <Compile Include="HeaderId.cs" />
+    <Compile Include="HeaderList.cs" />
+    <Compile Include="HeaderNameIndex.cs" />
+    <Compile Include="HeaderParseOptionInternal.cs" />
+    <Compile Include="HeaderType.cs" />
+    <Compile Include="IMimeHandlerInternal.cs" />
+    <Compile Include="LineTerminationState.cs" />
+    <Compile Include="MajorContentType.cs" />
+    <Compile Include="MimeAddressParser.cs" />
+    <Compile Include="MimeAddressReader.cs" />
+    <Compile Include="MimeCommon.cs" />
+    <Compile Include="MimeComplianceMode.cs" />
+    <Compile Include="MimeComplianceStatus.cs" />
+    <Compile Include="MimeData.cs" />
+    <Compile Include="MimeDocument.cs" />
+    <Compile Include="MimeException.cs" />
+    <Compile Include="MimeGroup.cs" />
+    <Compile Include="MimeHeaderReader.cs" />
+    <Compile Include="MimeLimits.cs" />
+    <Compile Include="MimeNode.cs" />
+    <Compile Include="MimeOutputFilter.cs" />
+    <Compile Include="MimeParameter.cs" />
+    <Compile Include="MimeParameterReader.cs" />
+    <Compile Include="MimeParser.cs" />
+    <Compile Include="MimePart.CountingWriteStream.cs" />
+    <Compile Include="MimePart.cs" />
+    <Compile Include="MimePart.DataStorageInfo.cs">
+      <DependentUpon>MimePart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MimePart.EncodingEntry.cs">
+      <DependentUpon>MimePart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MimePart.MimePartThreadAccessToken.cs">
+      <DependentUpon>MimePart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MimePart.PartContentWriteStream.cs">
+      <DependentUpon>MimePart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MimePart.PartSubtree.cs">
+      <DependentUpon>MimePart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MimePart.SubtreeEnumerationOptions.cs">
+      <DependentUpon>MimePart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MimePart.SubtreeEnumerator.cs">
+      <DependentUpon>MimePart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MimeReader.cs" />
+    <Compile Include="MimeReaderState.cs" />
+    <Compile Include="MimeRecipient.cs" />
+    <Compile Include="MimeScan.cs" />
+    <Compile Include="MimeString.cs" />
+    <Compile Include="MimeStringLength.cs" />
+    <Compile Include="MimeStringList.cs" />
+    <Compile Include="MimeToken.cs" />
+    <Compile Include="MimeTokenId.cs" />
+    <Compile Include="MimeWriter.cs" />
+    <Compile Include="MimeWriteState.cs" />
+    <Compile Include="ObjectThreadAccessToken.cs" />
+    <Compile Include="PartContentParseOptionInternal.cs" />
+    <Compile Include="PartParseOptionInternal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadOnlyMimeException.cs" />
+    <Compile Include="ReceivedHeader.cs" />
+    <Compile Include="TextHeader.cs" />
+    <Compile Include="ThreadAccessGuard.cs" />
+    <Compile Include="ValueDecoder.cs" />
+    <Compile Include="ValueEncodingStyle.cs" />
+    <Compile Include="ValueIterator.cs" />
+    <Compile Include="ValueParser.cs" />
+    <Compile Include="ValuePosition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Butler.Schema.Common\Butler.Schema.Common.csproj">
+      <Project>{1D000363-E9A9-457A-973E-5A59C09E0E6E}</Project>
+      <Name>Butler.Schema.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Butler.Schema.Globalization\Butler.Schema.Globalization.csproj">
+      <Project>{A965BECA-784C-4ACE-AB67-9D6ED183BDF9}</Project>
+      <Name>Butler.Schema.Globalization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Butler.Schema.Mime.Encoders\Butler.Schema.Mime.Encoders.csproj">
+      <Project>{2523D0A2-09EF-421C-A5FD-A88DFC7BC806}</Project>
+      <Name>Butler.Schema.Mime.Encoders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Butler.Schema\Butler.Schema.csproj">
+      <Project>{ac5448ab-4cc9-47e9-ab8f-31e79b62d660}</Project>
+      <Name>Butler.Schema</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
