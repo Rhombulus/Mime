@@ -60,7 +60,6 @@ namespace Butler.Schema.Data.Mime.Encoders {
         }
 
         public abstract void Reset();
-
         protected virtual void Dispose(bool disposing) {}
 
         internal static bool IsWhiteSpace(byte bT) {

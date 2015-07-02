@@ -10,8 +10,8 @@ namespace Butler.Schema.Data.Mime {
 
             public PartContentWriteStream(MimePart mimePart, ContentTransferEncoding contentTransferEncoding)
                 : base(new Internal.TemporaryDataStorage()) {
-                this._mimePart = mimePart;
-                this._contentTransferEncoding = contentTransferEncoding;
+                _mimePart = mimePart;
+                _contentTransferEncoding = contentTransferEncoding;
             }
 
             protected override void Dispose(bool disposing) {

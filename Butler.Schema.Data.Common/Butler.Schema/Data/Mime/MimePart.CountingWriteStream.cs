@@ -13,13 +13,9 @@ namespace Butler.Schema.Data.Mime {
             }
 
             public bool IsCountingOnly => _stream == Null;
-
             public long Count { get; private set; }
-
             public override bool CanRead => false;
-
             public override bool CanWrite => true;
-
             public override bool CanSeek => false;
 
             public override long Length {

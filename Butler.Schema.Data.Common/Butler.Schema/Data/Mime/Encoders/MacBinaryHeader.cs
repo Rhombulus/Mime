@@ -34,7 +34,6 @@ namespace Butler.Schema.Data.Mime.Encoders {
         }
 
         public int OldVersion => 0;
-
         public int FileNameLength { get; private set; }
 
         public string FileName {

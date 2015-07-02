@@ -52,7 +52,6 @@ namespace Butler.Schema.Data.Mime {
         }
 
         public int Length => (int) this.LengthAndMask & 268435455;
-
         public int Offset { get; }
         public byte[] Data { get; }
 
@@ -66,7 +65,6 @@ namespace Butler.Schema.Data.Mime {
         }
 
         public byte this[int index] => this.Data[this.Offset + index];
-
         internal uint LengthAndMask { get; set; }
 
         public static bool IsPureASCII(string str) {

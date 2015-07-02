@@ -165,7 +165,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             var byteCount = (dataCount + 3)/3*4;
             if (_lineMaximum == 0)
                 return byteCount;
-            return byteCount + 2 * (byteCount + _lineMaximum) / _lineMaximum;
+            return byteCount + 2*(byteCount + _lineMaximum)/_lineMaximum;
         }
 
         public override sealed void Reset() {

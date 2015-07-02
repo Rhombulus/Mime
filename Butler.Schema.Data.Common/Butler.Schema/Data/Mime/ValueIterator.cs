@@ -1,158 +1,126 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: Microsoft.Exchange.Data.Mime.ValueIterator
-// Assembly: Microsoft.Exchange.Data.Common, Version=15.0.1040.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
-// MVID: 60AF4FF7-547F-476B-8FAC-6C80D63CB41A
-// Assembly location: C:\Users\Thomas\Downloads\Microsoft.Exchange.Data.Common.dll
-
-using System;
+﻿using System;
 using System.Linq;
 
-namespace Butler.Schema.Data.Mime
-{
-  internal struct ValueIterator
-  {
+namespace Butler.Schema.Data.Mime {
 
-      private int currentLine;
-      private int lineStart;
-    private int lineEnd;
-      private int endLine;
-    private int endOffset;
+    internal struct ValueIterator {
 
-    public ValuePosition CurrentPosition => new ValuePosition(this.currentLine, this.Offset);
-
-      public byte[] Bytes { get; private set; }
-
-      public int Offset { get; private set; }
-
-      public int Length => this.lineEnd - this.Offset;
-
-      public int TotalLength => this.Lines.Length;
-
-      public MimeStringList Lines { get; }
-
-      public uint LinesMask { get; }
-
-      public bool Eof
-    {
-      get
-      {
-        if (this.currentLine == this.endLine)
-          return this.Offset == this.lineEnd;
-        return false;
-      }
-    }
-
-    public ValueIterator(MimeStringList lines, uint linesMask)
-    {
-      this.Lines = lines;
-      this.LinesMask = linesMask;
-      this.lineStart = this.lineEnd = this.currentLine = this.Offset = 0;
-      this.Bytes = (byte[]) null;
-      this.endLine = this.Lines.Count;
-      this.endOffset = 0;
-      for (; this.currentLine != this.endLine; ++this.currentLine)
-      {
-        MimeString mimeString = this.Lines[this.currentLine];
-        if (((int) mimeString.Mask & (int) this.LinesMask) != 0)
-        {
-          int count;
-          this.Bytes = mimeString.GetData(out this.lineStart, out count);
-          this.lineEnd = this.lineStart + count;
-          this.Offset = this.lineStart;
-          break;
+        public ValueIterator(MimeStringList lines, uint linesMask) {
+            this.Lines = lines;
+            this.LinesMask = linesMask;
+            lineStart = lineEnd = currentLine = this.Offset = 0;
+            this.Bytes = null;
+            endLine = this.Lines.Count;
+            endOffset = 0;
+            for (; currentLine != endLine; ++currentLine) {
+                var mimeString = this.Lines[currentLine];
+                if (((int) mimeString.Mask & (int) this.LinesMask) != 0) {
+                    int count;
+                    this.Bytes = mimeString.GetData(out lineStart, out count);
+                    lineEnd = lineStart + count;
+                    this.Offset = lineStart;
+                    break;
+                }
+            }
         }
-      }
-    }
 
-    public ValueIterator(MimeStringList lines, uint linesMask, ValuePosition startPosition, ValuePosition endPosition)
-    {
-      this.Lines = lines;
-      this.LinesMask = linesMask;
-      this.currentLine = startPosition.Line;
-      this.Offset = startPosition.Offset;
-      this.endLine = endPosition.Line;
-      this.endOffset = endPosition.Offset;
-      if (startPosition != endPosition)
-      {
-        int count;
-        this.Bytes = this.Lines[this.currentLine].GetData(out this.lineStart, out count);
-        this.lineEnd = this.currentLine == this.endLine ? this.endOffset : this.lineStart + count;
-      }
-      else
-      {
-        this.lineStart = this.lineEnd = this.Offset;
-        this.Bytes = (byte[]) null;
-      }
-    }
-
-    public void Get(int length)
-    {
-      this.Offset += length;
-      if (this.Offset != this.lineEnd)
-        return;
-      this.NextLine();
-    }
-
-    public int Get()
-    {
-      if (this.Eof)
-        return -1;
-      byte num = this.Bytes[this.Offset++];
-      if (this.Offset == this.lineEnd)
-        this.NextLine();
-      return (int) num;
-    }
-
-    public int Pick()
-    {
-      if (this.Eof)
-        return -1;
-      return (int) this.Bytes[this.Offset];
-    }
-
-    public void Unget()
-    {
-      if (this.Offset == this.lineStart)
-      {
-        MimeString mimeString;
-        do
-        {
-          mimeString = this.Lines[--this.currentLine];
+        public ValueIterator(MimeStringList lines, uint linesMask, ValuePosition startPosition, ValuePosition endPosition) {
+            this.Lines = lines;
+            this.LinesMask = linesMask;
+            currentLine = startPosition.Line;
+            this.Offset = startPosition.Offset;
+            endLine = endPosition.Line;
+            endOffset = endPosition.Offset;
+            if (startPosition != endPosition) {
+                int count;
+                this.Bytes = this.Lines[currentLine].GetData(out lineStart, out count);
+                lineEnd = currentLine == endLine ? endOffset : lineStart + count;
+            } else {
+                lineStart = lineEnd = this.Offset;
+                this.Bytes = null;
+            }
         }
-        while (((int) mimeString.Mask & (int) this.LinesMask) == 0);
-        int count;
-        this.Bytes = mimeString.GetData(out this.lineStart, out count);
-        this.Offset = this.lineEnd = this.lineStart + count;
-      }
-      --this.Offset;
-    }
 
-    public void SkipToEof()
-    {
-      while (!this.Eof)
-        this.Get(this.Length);
-    }
+        public ValuePosition CurrentPosition => new ValuePosition(currentLine, this.Offset);
+        public byte[] Bytes { get; private set; }
+        public int Offset { get; private set; }
+        public int Length => lineEnd - this.Offset;
+        public int TotalLength => this.Lines.Length;
+        public MimeStringList Lines { get; }
+        public uint LinesMask { get; }
 
-    private void NextLine()
-    {
-      if (this.Eof)
-        return;
-      MimeString mimeString;
-      do
-      {
-        ++this.currentLine;
-        if (this.currentLine == this.Lines.Count)
-        {
-          this.lineEnd = this.lineStart = this.Offset = 0;
-          return;
+        public bool Eof {
+            get {
+                if (currentLine == endLine)
+                    return this.Offset == lineEnd;
+                return false;
+            }
         }
-        mimeString = this.Lines[this.currentLine];
-      }
-      while (((int) mimeString.Mask & (int) this.LinesMask) == 0);
-      int count;
-      this.Bytes = mimeString.GetData(out this.lineStart, out count);
-      this.Offset = this.lineStart;
-      this.lineEnd = this.currentLine == this.endLine ? this.endOffset : this.lineStart + count;
+
+        public void Get(int length) {
+            this.Offset += length;
+            if (this.Offset != lineEnd)
+                return;
+            this.NextLine();
+        }
+
+        public int Get() {
+            if (this.Eof)
+                return -1;
+            var num = this.Bytes[this.Offset++];
+            if (this.Offset == lineEnd)
+                this.NextLine();
+            return num;
+        }
+
+        public int Pick() {
+            if (this.Eof)
+                return -1;
+            return this.Bytes[this.Offset];
+        }
+
+        public void Unget() {
+            if (this.Offset == lineStart) {
+                MimeString mimeString;
+                do {
+                    mimeString = this.Lines[--currentLine];
+                } while (((int) mimeString.Mask & (int) this.LinesMask) == 0);
+                int count;
+                this.Bytes = mimeString.GetData(out lineStart, out count);
+                this.Offset = lineEnd = lineStart + count;
+            }
+            --this.Offset;
+        }
+
+        public void SkipToEof() {
+            while (!this.Eof)
+                this.Get(this.Length);
+        }
+
+        private void NextLine() {
+            if (this.Eof)
+                return;
+            MimeString mimeString;
+            do {
+                ++currentLine;
+                if (currentLine == this.Lines.Count) {
+                    lineEnd = lineStart = this.Offset = 0;
+                    return;
+                }
+                mimeString = this.Lines[currentLine];
+            } while (((int) mimeString.Mask & (int) this.LinesMask) == 0);
+            int count;
+            this.Bytes = mimeString.GetData(out lineStart, out count);
+            this.Offset = lineStart;
+            lineEnd = currentLine == endLine ? endOffset : lineStart + count;
+        }
+
+        private readonly int endLine;
+        private readonly int endOffset;
+        private int currentLine;
+        private int lineEnd;
+        private int lineStart;
+
     }
-  }
+
 }

@@ -9,7 +9,7 @@ namespace Butler.Schema.Data.Mime {
         public struct PartSubtree : IEnumerable<MimePart> {
 
             internal PartSubtree(MimePart part) {
-                this._part = part;
+                _part = part;
             }
 
             IEnumerator<MimePart> IEnumerable<MimePart>.GetEnumerator() {

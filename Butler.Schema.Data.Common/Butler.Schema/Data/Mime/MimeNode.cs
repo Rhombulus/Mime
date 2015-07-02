@@ -11,9 +11,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         internal MimeNode() {}
-
         public bool HasChildren => null != this.FirstChild;
-
         public MimeNode Parent { get; private set; }
 
         public MimeNode FirstChild {
@@ -286,7 +284,6 @@ namespace Butler.Schema.Data.Mime {
         }
 
         internal abstract long WriteTo(System.IO.Stream stream, EncodingOptions encodingOptions, MimeOutputFilter filter, ref MimeStringLength currentLineLength, ref byte[] scratchBuffer);
-
         internal virtual void ChildRemoved(MimeNode oldChild) {}
 
         internal virtual void SetDirty() {
