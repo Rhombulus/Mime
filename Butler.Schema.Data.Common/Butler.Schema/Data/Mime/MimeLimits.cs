@@ -20,7 +20,6 @@ namespace Butler.Schema.Data.Mime {
         }
 
         private MimeLimits() {}
-
         public static MimeLimits Default => MimeLimits.GetDefaultMimeDocumentLimits();
         public static MimeLimits Unlimited { get; } = new MimeLimits();
         public int MaxPartDepth { get; } = int.MaxValue;

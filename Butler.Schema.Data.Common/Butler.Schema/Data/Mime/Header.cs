@@ -553,7 +553,6 @@ namespace Butler.Schema.Data.Mime {
         }
 
         internal virtual void RawValueAboutToChange() {}
-
         internal virtual void ForceParse() {}
 
         internal bool IsName(string name) {

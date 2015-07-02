@@ -1,112 +1,85 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: Microsoft.Exchange.Data.Common.ExchangeResourceManager
-// Assembly: Microsoft.Exchange.Data.Common, Version=15.0.1040.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
-// MVID: 60AF4FF7-547F-476B-8FAC-6C80D63CB41A
-// Assembly location: C:\Users\Thomas\Downloads\Microsoft.Exchange.Data.Common.dll
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Resources;
-using System.Threading;
 
-namespace Butler.Schema.Data.Common
-{
-  public sealed class ExchangeResourceManager : ResourceManager
-  {
-    private static Dictionary<string, ExchangeResourceManager> resourceManagers = new Dictionary<string, ExchangeResourceManager>();
-    private readonly TimeSpan resourceReleaseInterval = TimeSpan.FromMinutes(1.0);
-    private Stopwatch resourceReleaseStopwatch = new Stopwatch();
-    private ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim();
+namespace Butler.Schema.Data.Common {
 
-    public override string BaseName => base.BaseName;
+    public sealed class ExchangeResourceManager : System.Resources.ResourceManager {
 
-      public string AssemblyName => this.MainAssembly.GetName().FullName;
+        private ExchangeResourceManager(string baseName, System.Reflection.Assembly assembly)
+            : base(baseName, assembly) {
+            resourceReleaseStopwatch.Start();
+        }
 
-      private ExchangeResourceManager(string baseName, Assembly assembly)
-      : base(baseName, assembly)
-    {
-      this.resourceReleaseStopwatch.Start();
+        public override string BaseName => base.BaseName;
+
+        public string AssemblyName => MainAssembly.GetName()
+                                                  .FullName;
+
+        public static ExchangeResourceManager GetResourceManager(string baseName, System.Reflection.Assembly assembly) {
+            if (null == assembly)
+                throw new ArgumentNullException(nameof(assembly));
+            var key = baseName + assembly.GetName()
+                                         .Name;
+            lock (resourceManagers) {
+                ExchangeResourceManager local_1 = null;
+                if (!resourceManagers.TryGetValue(key, out local_1)) {
+                    local_1 = new ExchangeResourceManager(baseName, assembly);
+                    resourceManagers.Add(key, local_1);
+                }
+                return local_1;
+            }
+        }
+
+        public override string GetString(string name) {
+            return this.GetString(name, System.Globalization.CultureInfo.CurrentUICulture);
+        }
+
+        public override string GetString(string name, System.Globalization.CultureInfo culture) {
+            var culture1 = culture ?? System.Globalization.CultureInfo.CurrentUICulture;
+            var sipCultureInfoBase = culture1 as SipCultureInfoBase;
+            string stringInternal;
+            if (sipCultureInfoBase != null) {
+                var useSipName = sipCultureInfoBase.UseSipName;
+                try {
+                    sipCultureInfoBase.UseSipName = true;
+                    stringInternal = this.GetStringInternal(name, sipCultureInfoBase);
+                } finally {
+                    sipCultureInfoBase.UseSipName = useSipName;
+                }
+            } else
+                stringInternal = this.GetStringInternal(name, culture1);
+            return stringInternal;
+        }
+
+        private string GetStringInternal(string name, System.Globalization.CultureInfo culture) {
+            string str = null;
+            try {
+                readerWriterLock.EnterReadLock();
+                str = base.GetString(name, culture);
+            } finally {
+                readerWriterLock.ExitReadLock();
+            }
+            if (str == null) {
+                try {
+                    readerWriterLock.EnterWriteLock();
+                    if (resourceReleaseStopwatch.Elapsed > resourceReleaseInterval) {
+                        this.ReleaseAllResources();
+                        resourceReleaseStopwatch.Restart();
+                    }
+                    str = base.GetString(name, culture);
+                } finally {
+                    readerWriterLock.ExitWriteLock();
+                }
+            }
+            return str;
+        }
+
+        private static readonly Dictionary<string, ExchangeResourceManager> resourceManagers = new Dictionary<string, ExchangeResourceManager>();
+        private readonly System.Threading.ReaderWriterLockSlim readerWriterLock = new System.Threading.ReaderWriterLockSlim();
+        private readonly TimeSpan resourceReleaseInterval = TimeSpan.FromMinutes(1.0);
+        private readonly System.Diagnostics.Stopwatch resourceReleaseStopwatch = new System.Diagnostics.Stopwatch();
+
     }
 
-    public static ExchangeResourceManager GetResourceManager(string baseName, Assembly assembly)
-    {
-      if ((Assembly) null == assembly)
-        throw new ArgumentNullException(nameof(assembly));
-      string key = baseName + assembly.GetName().Name;
-      lock (ExchangeResourceManager.resourceManagers)
-      {
-        ExchangeResourceManager local_1 = (ExchangeResourceManager) null;
-        if (!ExchangeResourceManager.resourceManagers.TryGetValue(key, out local_1))
-        {
-          local_1 = new ExchangeResourceManager(baseName, assembly);
-          ExchangeResourceManager.resourceManagers.Add(key, local_1);
-        }
-        return local_1;
-      }
-    }
-
-    public override string GetString(string name)
-    {
-      return this.GetString(name, CultureInfo.CurrentUICulture);
-    }
-
-    public override string GetString(string name, CultureInfo culture)
-    {
-      CultureInfo culture1 = culture ?? CultureInfo.CurrentUICulture;
-      SipCultureInfoBase sipCultureInfoBase = culture1 as SipCultureInfoBase;
-      string stringInternal;
-      if (sipCultureInfoBase != null)
-      {
-        bool useSipName = sipCultureInfoBase.UseSipName;
-        try
-        {
-          sipCultureInfoBase.UseSipName = true;
-          stringInternal = this.GetStringInternal(name, (CultureInfo) sipCultureInfoBase);
-        }
-        finally
-        {
-          sipCultureInfoBase.UseSipName = useSipName;
-        }
-      }
-      else
-        stringInternal = this.GetStringInternal(name, culture1);
-      return stringInternal;
-    }
-
-    private string GetStringInternal(string name, CultureInfo culture)
-    {
-      string str = (string) null;
-      try
-      {
-        this.readerWriterLock.EnterReadLock();
-        str = base.GetString(name, culture);
-      }
-      finally
-      {
-        this.readerWriterLock.ExitReadLock();
-      }
-      if (str == null)
-      {
-        try
-        {
-          this.readerWriterLock.EnterWriteLock();
-          if (this.resourceReleaseStopwatch.Elapsed > this.resourceReleaseInterval)
-          {
-            this.ReleaseAllResources();
-            this.resourceReleaseStopwatch.Restart();
-          }
-          str = base.GetString(name, culture);
-        }
-        finally
-        {
-          this.readerWriterLock.ExitWriteLock();
-        }
-      }
-      return str;
-    }
-  }
 }
