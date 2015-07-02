@@ -25,12 +25,12 @@
 
         public static string FromEnum(System.Type enumType, object value, System.Globalization.CultureInfo culture) {
             if (enumType == null)
-                throw new System.ArgumentNullException("enumType");
+                throw new System.ArgumentNullException(nameof(enumType));
             if (!System.Reflection.IntrospectionExtensions.GetTypeInfo(enumType)
                        .IsEnum)
-                throw new System.ArgumentException("enumType must be an enum.", "enumType");
+                throw new System.ArgumentException("enumType must be an enum.", nameof(enumType));
             if (value == null)
-                throw new System.ArgumentNullException("value");
+                throw new System.ArgumentNullException(nameof(value));
             var key = System.Enum.ToObject(enumType, value);
             if (locEnumStringTable == null) {
                 var dictionary = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<object, string>>();
