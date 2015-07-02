@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     [System.Flags]
     public enum EncodingFlags : byte {

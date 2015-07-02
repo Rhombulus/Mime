@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-namespace Butler.Schema.Data.Common {
+
+namespace Butler.Schema.Common {
 
     [System.Serializable]
     public struct LocalizedString : System.Runtime.Serialization.ISerializable, ILocalizedString, System.IFormattable, System.IEquatable<LocalizedString> {

@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization.Iso2022Jp {
+﻿namespace Butler.Schema.Globalization.Iso2022Jp {
 
     internal class DecodeJisX0201_1976ToCp932 : DecodeToCp932 {
 

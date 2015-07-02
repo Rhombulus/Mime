@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     internal struct MimeString {
 
@@ -107,7 +107,7 @@ namespace Butler.Schema.Data.Mime {
 
         public static MimeString CopyData(byte[] data, int offset, int count) {
             var numArray = new byte[count];
-            Encoders.ByteEncoder.BlockCopy(data, offset, numArray, 0, count);
+            Schema.Mime.Encoders.ByteEncoder.BlockCopy(data, offset, numArray, 0, count);
             return new MimeString(numArray, 0, count);
         }
 

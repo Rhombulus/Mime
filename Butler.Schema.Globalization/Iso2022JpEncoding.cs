@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization {
+﻿namespace Butler.Schema.Globalization {
 
     internal class Iso2022JpEncoding : System.Text.Encoding {
 
@@ -15,7 +15,7 @@
             }
         }
 
-        internal Iso2022DecodingMode KillSwitch => Iso2022JpEncoding.InternalReadKillSwitch();
+        internal Schema.Globalization.Iso2022DecodingMode KillSwitch => Iso2022JpEncoding.InternalReadKillSwitch();
         public override int CodePage => this.DefaultEncoding.CodePage;
         public override string BodyName => this.DefaultEncoding.BodyName;
         public override string EncodingName => this.DefaultEncoding.EncodingName;
@@ -29,14 +29,14 @@
         public override bool IsSingleByte => this.DefaultEncoding.IsSingleByte;
         internal System.Text.Encoding DefaultEncoding { get; }
 
-        internal static Iso2022DecodingMode InternalReadKillSwitch() {
+        internal static Schema.Globalization.Iso2022DecodingMode InternalReadKillSwitch() {
             switch (Common.RegistryConfigManager.Iso2022JpEncodingOverride) {
                 case 1:
-                    return Iso2022DecodingMode.Override;
+                    return Schema.Globalization.Iso2022DecodingMode.Override;
                 case 2:
-                    return Iso2022DecodingMode.Throw;
+                    return Schema.Globalization.Iso2022DecodingMode.Throw;
                 default:
-                    return Iso2022DecodingMode.Default;
+                    return Schema.Globalization.Iso2022DecodingMode.Default;
             }
         }
 
@@ -50,11 +50,11 @@
 
         public override int GetMaxCharCount(int byteCount) {
             switch (this.KillSwitch) {
-                case Iso2022DecodingMode.Default:
+                case Schema.Globalization.Iso2022DecodingMode.Default:
                     return this.DefaultEncoding.GetMaxCharCount(byteCount);
-                case Iso2022DecodingMode.Override:
+                case Schema.Globalization.Iso2022DecodingMode.Override:
                     return this.DefaultEncoding.GetMaxCharCount(byteCount);
-                case Iso2022DecodingMode.Throw:
+                case Schema.Globalization.Iso2022DecodingMode.Throw:
                     throw new System.NotImplementedException();
                 default:
                     throw new System.InvalidOperationException();
@@ -87,12 +87,12 @@
 
         public override int GetCharCount(byte[] bytes, int index, int count) {
             switch (this.KillSwitch) {
-                case Iso2022DecodingMode.Default:
+                case Schema.Globalization.Iso2022DecodingMode.Default:
                     return this.DefaultEncoding.GetCharCount(bytes, index, count);
-                case Iso2022DecodingMode.Override:
+                case Schema.Globalization.Iso2022DecodingMode.Override:
                     return this.GetDecoder()
                                .GetCharCount(bytes, index, count);
-                case Iso2022DecodingMode.Throw:
+                case Schema.Globalization.Iso2022DecodingMode.Throw:
                     throw new System.NotImplementedException();
                 default:
                     throw new System.InvalidOperationException();
@@ -101,11 +101,11 @@
 
         public override unsafe int GetCharCount(byte* bytes, int count) {
             switch (this.KillSwitch) {
-                case Iso2022DecodingMode.Default:
+                case Schema.Globalization.Iso2022DecodingMode.Default:
                     return this.DefaultEncoding.GetCharCount(bytes, count);
-                case Iso2022DecodingMode.Override:
+                case Schema.Globalization.Iso2022DecodingMode.Override:
                     throw new System.NotImplementedException();
-                case Iso2022DecodingMode.Throw:
+                case Schema.Globalization.Iso2022DecodingMode.Throw:
                     throw new System.NotImplementedException();
                 default:
                     throw new System.InvalidOperationException();
@@ -114,12 +114,12 @@
 
         public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex) {
             switch (this.KillSwitch) {
-                case Iso2022DecodingMode.Default:
+                case Schema.Globalization.Iso2022DecodingMode.Default:
                     return this.DefaultEncoding.GetChars(bytes, byteIndex, byteCount, chars, charIndex);
-                case Iso2022DecodingMode.Override:
+                case Schema.Globalization.Iso2022DecodingMode.Override:
                     return this.GetDecoder()
                                .GetChars(bytes, byteIndex, byteCount, chars, charIndex);
-                case Iso2022DecodingMode.Throw:
+                case Schema.Globalization.Iso2022DecodingMode.Throw:
                     throw new System.NotImplementedException();
                 default:
                     throw new System.InvalidOperationException();
@@ -128,11 +128,11 @@
 
         public override unsafe int GetChars(byte* bytes, int byteCount, char* chars, int charCount) {
             switch (this.KillSwitch) {
-                case Iso2022DecodingMode.Default:
+                case Schema.Globalization.Iso2022DecodingMode.Default:
                     return this.DefaultEncoding.GetChars(bytes, byteCount, chars, charCount);
-                case Iso2022DecodingMode.Override:
+                case Schema.Globalization.Iso2022DecodingMode.Override:
                     throw new System.NotImplementedException();
-                case Iso2022DecodingMode.Throw:
+                case Schema.Globalization.Iso2022DecodingMode.Throw:
                     throw new System.NotImplementedException();
                 default:
                     throw new System.InvalidOperationException();
@@ -141,14 +141,14 @@
 
         public override string GetString(byte[] bytes, int index, int count) {
             switch (this.KillSwitch) {
-                case Iso2022DecodingMode.Default:
+                case Schema.Globalization.Iso2022DecodingMode.Default:
                     return this.DefaultEncoding.GetString(bytes, index, count);
-                case Iso2022DecodingMode.Override:
+                case Schema.Globalization.Iso2022DecodingMode.Override:
                     var decoder = this.GetDecoder();
                     var chars1 = new char[this.GetMaxCharCount(count)];
                     var chars2 = decoder.GetChars(bytes, index, count, chars1, 0);
                     return new string(chars1, 0, chars2);
-                case Iso2022DecodingMode.Throw:
+                case Schema.Globalization.Iso2022DecodingMode.Throw:
                     throw new System.NotImplementedException();
                 default:
                     throw new System.InvalidOperationException();
@@ -157,10 +157,10 @@
 
         public override System.Text.Decoder GetDecoder() {
             switch (this.KillSwitch) {
-                case Iso2022DecodingMode.Default:
-                case Iso2022DecodingMode.Override:
-                    return new Iso2022Jp.Iso2022JpDecoder(this);
-                case Iso2022DecodingMode.Throw:
+                case Schema.Globalization.Iso2022DecodingMode.Default:
+                case Schema.Globalization.Iso2022DecodingMode.Override:
+                    return new Schema.Globalization.Iso2022Jp.Iso2022JpDecoder(this);
+                case Schema.Globalization.Iso2022DecodingMode.Throw:
                     throw new System.NotImplementedException();
                 default:
                     throw new System.InvalidOperationException();

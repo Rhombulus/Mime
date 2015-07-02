@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Common {
+﻿namespace Butler.Schema.Common {
 
     public interface ILocalizedException : ILocalizedString {
 

@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Common {
+﻿namespace Butler.Schema.Common {
 
     internal class SipCultureInfoBase : System.Globalization.CultureInfo {
 

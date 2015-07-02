@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     public class AddressHeader : Header, System.Collections.Generic.IEnumerable<AddressItem>, System.Collections.IEnumerable {
 

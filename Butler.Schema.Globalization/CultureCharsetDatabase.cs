@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Butler.Schema.Data.Globalization
+namespace Butler.Schema.Globalization
 {
   [Serializable]
   internal static class CultureCharsetDatabase
@@ -23,7 +23,7 @@ namespace Butler.Schema.Data.Globalization
       CultureCharsetDatabase.Data = CultureCharsetDatabase.LoadGlobalizationData(defaultCultureName);
     }
 
-    internal static int[] GetCultureSpecificCodepageDetectionPriorityOrder(Culture culture, int[] originalPriorityList)
+    internal static int[] GetCultureSpecificCodepageDetectionPriorityOrder(Schema.Globalization.Culture culture, int[] originalPriorityList)
     {
       int[] list = new int[CodePageDetectData.codePages.Length];
       int num1 = 0;
@@ -119,7 +119,7 @@ namespace Butler.Schema.Data.Globalization
       return originalPriorityList;
     }
 
-    internal static int[] GetAdjustedCodepageDetectionPriorityOrder(Charset charset, int[] originalPriorityList)
+    internal static int[] GetAdjustedCodepageDetectionPriorityOrder(Schema.Globalization.Charset charset, int[] originalPriorityList)
     {
       if (!charset.IsDetectable && originalPriorityList != null)
         return originalPriorityList;
@@ -856,14 +856,14 @@ namespace Butler.Schema.Data.Globalization
         new CultureCharsetDatabase.CultureData(31770, "sr", 1251, 1251, 1251, (string) null, "Serbian")
       };
       CultureCharsetDatabase.GlobalizationData data = new CultureCharsetDatabase.GlobalizationData();
-      Culture parentCulture1 = (Culture) null;
+      Schema.Globalization.Culture parentCulture1 = (Schema.Globalization.Culture) null;
       CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
-      Culture culture1;
+      Schema.Globalization.Culture culture1;
       foreach (CultureInfo cultureInfo in cultures)
       {
         if (!data.LcidToCulture.TryGetValue(cultureInfo.LCID, out culture1))
         {
-          culture1 = new Culture(cultureInfo.LCID, cultureInfo.Name);
+          culture1 = new Schema.Globalization.Culture(cultureInfo.LCID, cultureInfo.Name);
           data.LcidToCulture.Add(cultureInfo.LCID, culture1);
           culture1.SetDescription(cultureInfo.EnglishName);
           culture1.SetNativeDescription(cultureInfo.NativeName);
@@ -878,7 +878,7 @@ namespace Butler.Schema.Data.Globalization
       {
         if (!data.LcidToCulture.TryGetValue(cultureData.LCID, out culture1))
         {
-          culture1 = new Culture(cultureData.LCID, cultureData.Name);
+          culture1 = new Schema.Globalization.Culture(cultureData.LCID, cultureData.Name);
           data.LcidToCulture.Add(cultureData.LCID, culture1);
           culture1.SetDescription(cultureData.Description);
           culture1.SetNativeDescription(cultureData.Description);
@@ -892,7 +892,7 @@ namespace Butler.Schema.Data.Globalization
         culture1 = data.LcidToCulture[cultureInfo.LCID];
         if (cultureInfo.Parent != null)
         {
-          Culture parentCulture2;
+          Schema.Globalization.Culture parentCulture2;
           if (data.LcidToCulture.TryGetValue(cultureInfo.Parent.LCID, out parentCulture2))
             culture1.SetParentCulture(parentCulture2);
           else
@@ -908,7 +908,7 @@ namespace Butler.Schema.Data.Globalization
         {
           if (cultureData.ParentCultureName != null)
           {
-            Culture parentCulture2;
+            Schema.Globalization.Culture parentCulture2;
             if (data.NameToCulture.TryGetValue(cultureData.ParentCultureName, out parentCulture2))
               culture1.SetParentCulture(parentCulture2);
             else
@@ -919,12 +919,12 @@ namespace Butler.Schema.Data.Globalization
         }
       }
       EncodingInfo[] encodings = Encoding.GetEncodings();
-      Charset charset1;
+      Schema.Globalization.Charset charset1;
       foreach (EncodingInfo encodingInfo in encodings)
       {
         if (!data.CodePageToCharset.TryGetValue(encodingInfo.CodePage, out charset1))
         {
-          charset1 = new Charset(encodingInfo.CodePage, encodingInfo.Name);
+          charset1 = new Schema.Globalization.Charset(encodingInfo.CodePage, encodingInfo.Name);
           charset1.SetDescription(encodingInfo.DisplayName);
           data.CodePageToCharset.Add(encodingInfo.CodePage, charset1);
         }
@@ -945,20 +945,20 @@ namespace Butler.Schema.Data.Globalization
           }
           else
           {
-            culture1 = new Culture(0, (string) null);
+            culture1 = new Schema.Globalization.Culture(0, (string) null);
             culture1.SetParentCulture(parentCulture1);
           }
           culture1.SetDescription(windowsCodePage.GenericCultureDescription);
         }
         else if (!data.LcidToCulture.TryGetValue(windowsCodePage.LCID, out culture1) && !data.NameToCulture.TryGetValue(windowsCodePage.CultureName, out culture1))
         {
-          culture1 = new Culture(windowsCodePage.LCID, windowsCodePage.CultureName);
+          culture1 = new Schema.Globalization.Culture(windowsCodePage.LCID, windowsCodePage.CultureName);
           data.LcidToCulture.Add(windowsCodePage.LCID, culture1);
           data.NameToCulture.Add(windowsCodePage.CultureName, culture1);
         }
         if (!data.CodePageToCharset.TryGetValue(windowsCodePage.CodePage, out charset1))
         {
-          charset1 = new Charset(windowsCodePage.CodePage, windowsCodePage.Name);
+          charset1 = new Schema.Globalization.Charset(windowsCodePage.CodePage, windowsCodePage.Name);
           data.NameToCharset.Add(charset1.Name, charset1);
           data.CodePageToCharset.Add(charset1.CodePage, charset1);
           if (charset1.Name.Length > data.MaxCharsetNameLength)
@@ -988,13 +988,13 @@ namespace Butler.Schema.Data.Globalization
         else if (charset1.CodePage != charsetName.CodePage && data.CodePageToCharset.TryGetValue(charsetName.CodePage, out charset1))
           data.NameToCharset[charsetName.Name] = charset1;
       }
-      for (int index = 0; index < CodePageMapData.codePages.Length; ++index)
+      for (int index = 0; index < Schema.Data.Globalization.CodePageMapData.codePages.Length; ++index)
       {
-        if (data.CodePageToCharset.TryGetValue((int) CodePageMapData.codePages[index].cpid, out charset1))
+        if (data.CodePageToCharset.TryGetValue((int) Schema.Data.Globalization.CodePageMapData.codePages[index].cpid, out charset1))
           charset1.SetMapIndex(index);
         if (charset1.Culture == null)
         {
-          Charset charset2 = data.CodePageToCharset[(int) CodePageMapData.codePages[index].windowsCpid];
+          Schema.Globalization.Charset charset2 = data.CodePageToCharset[(int) Schema.Data.Globalization.CodePageMapData.codePages[index].windowsCpid];
           charset1.SetCulture(charset2.Culture);
         }
       }
@@ -1053,7 +1053,7 @@ namespace Butler.Schema.Data.Globalization
           int windowsCodePage = cultureData.WindowsCodePage;
           charset1 = data.CodePageToCharset[windowsCodePage];
           culture1.SetWindowsCharset(charset1);
-          Charset charset2;
+          Schema.Globalization.Charset charset2;
           if (data.CodePageToCharset.TryGetValue(cultureData.MimeCodePage, out charset2))
             culture1.SetMimeCharset(charset2);
           if (data.CodePageToCharset.TryGetValue(cultureData.WebCodePage, out charset2))
@@ -1093,7 +1093,7 @@ namespace Butler.Schema.Data.Globalization
             if (!flag)
               index = 1200;
           }
-          Charset charset2 = data.CodePageToCharset[index];
+          Schema.Globalization.Charset charset2 = data.CodePageToCharset[index];
           charset1.SetCulture(charset2.Culture);
         }
       }
@@ -1111,7 +1111,7 @@ namespace Butler.Schema.Data.Globalization
         string name = configurationSetting.Name;
         IList<Internal.CtsConfigurationArgument> arguments = configurationSetting.Arguments;
         int result2;
-        Charset charset2;
+        Schema.Globalization.Charset charset2;
         int result3;
         switch (name.ToLower())
         {
@@ -1302,7 +1302,7 @@ namespace Butler.Schema.Data.Globalization
               Internal.ApplicationServices.Provider.LogConfigurationErrorEvent();
               continue;
             }
-            Culture culture2;
+            Schema.Globalization.Culture culture2;
             if (data.NameToCulture.TryGetValue(key2, out culture2))
             {
               if (culture1 != culture2)
@@ -1569,18 +1569,18 @@ namespace Butler.Schema.Data.Globalization
 
     internal class GlobalizationData
     {
-      internal Dictionary<string, Charset> NameToCharset = new Dictionary<string, Charset>((IEqualityComparer<string>) StringComparer.OrdinalIgnoreCase);
-      internal Dictionary<int, Charset> CodePageToCharset = new Dictionary<int, Charset>((IEqualityComparer<int>) CultureCharsetDatabase.IntComparerInstance);
-      internal Dictionary<string, Culture> NameToCulture = new Dictionary<string, Culture>((IEqualityComparer<string>) StringComparer.OrdinalIgnoreCase);
-      internal Dictionary<int, Culture> LcidToCulture = new Dictionary<int, Culture>((IEqualityComparer<int>) CultureCharsetDatabase.IntComparerInstance);
-      internal Culture DefaultCulture;
+      internal Dictionary<string, Schema.Globalization.Charset> NameToCharset = new Dictionary<string, Schema.Globalization.Charset>((IEqualityComparer<string>) StringComparer.OrdinalIgnoreCase);
+      internal Dictionary<int, Schema.Globalization.Charset> CodePageToCharset = new Dictionary<int, Schema.Globalization.Charset>((IEqualityComparer<int>) CultureCharsetDatabase.IntComparerInstance);
+      internal Dictionary<string, Schema.Globalization.Culture> NameToCulture = new Dictionary<string, Schema.Globalization.Culture>((IEqualityComparer<string>) StringComparer.OrdinalIgnoreCase);
+      internal Dictionary<int, Schema.Globalization.Culture> LcidToCulture = new Dictionary<int, Schema.Globalization.Culture>((IEqualityComparer<int>) CultureCharsetDatabase.IntComparerInstance);
+      internal Schema.Globalization.Culture DefaultCulture;
       internal bool FallbackToDefaultCharset;
-      internal Culture InvariantCulture;
+      internal Schema.Globalization.Culture InvariantCulture;
       internal int[] DefaultDetectionPriorityOrder;
       internal int MaxCharsetNameLength;
-      internal Charset Utf8Charset;
-      internal Charset AsciiCharset;
-      internal Charset UnicodeCharset;
+      internal Schema.Globalization.Charset Utf8Charset;
+      internal Schema.Globalization.Charset AsciiCharset;
+      internal Schema.Globalization.Charset UnicodeCharset;
     }
 
     private class IntComparer : IEqualityComparer<int>

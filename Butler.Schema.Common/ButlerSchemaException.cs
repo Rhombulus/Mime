@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Butler.Schema.Data
+namespace Butler.Schema
 {
   [Serializable]
   public class ButlerSchemaException : Common.LocalizedException

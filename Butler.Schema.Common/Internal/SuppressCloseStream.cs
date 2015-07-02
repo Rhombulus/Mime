@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Internal {
+﻿namespace Butler.Schema.Internal {
 
     internal sealed class SuppressCloseStream : System.IO.Stream, ICloneableStream {
 

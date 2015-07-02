@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization {
+﻿namespace Butler.Schema.Globalization {
 
     [System.Serializable]
     public class Charset {
@@ -11,21 +11,21 @@
             mapIndex = -1;
         }
 
-        public static Charset DefaultMimeCharset => Culture.Default.MimeCharset;
-        public static bool FallbackToDefaultCharset => Culture.FallbackToDefaultCharset;
-        public static Charset DefaultWebCharset => Culture.Default.WebCharset;
-        public static Charset DefaultWindowsCharset => Culture.Default.WindowsCharset;
+        public static Charset DefaultMimeCharset => Schema.Globalization.Culture.Default.MimeCharset;
+        public static bool FallbackToDefaultCharset => Schema.Globalization.Culture.FallbackToDefaultCharset;
+        public static Charset DefaultWebCharset => Schema.Globalization.Culture.Default.WebCharset;
+        public static Charset DefaultWindowsCharset => Schema.Globalization.Culture.Default.WindowsCharset;
         public static Charset ASCII => CultureCharsetDatabase.Data.AsciiCharset;
         public static Charset UTF8 => CultureCharsetDatabase.Data.Utf8Charset;
         public static Charset Unicode => CultureCharsetDatabase.Data.UnicodeCharset;
         public int CodePage { get; }
         public string Name { get; private set; }
-        public Culture Culture { get; private set; }
+        public Schema.Globalization.Culture Culture { get; private set; }
 
         public bool IsDetectable {
             get {
                 if (mapIndex >= 0)
-                    return CodePageFlags.None != (CodePageMapData.codePages[mapIndex].flags & CodePageFlags.Detectable);
+                    return Schema.Globalization.CodePageFlags.None != (Data.Globalization.CodePageMapData.codePages[mapIndex].flags & Schema.Globalization.CodePageFlags.Detectable);
                 return false;
             }
         }
@@ -45,34 +45,34 @@
         internal static int MaxCharsetNameLength => CultureCharsetDatabase.Data.MaxCharsetNameLength;
         internal int MapIndex => (int) mapIndex;
 
-        internal CodePageKind Kind {
+        internal Schema.Globalization.CodePageKind Kind {
             get {
                 if (mapIndex >= 0)
-                    return CodePageMapData.codePages[mapIndex].kind;
-                return CodePageKind.Unknown;
+                    return Data.Globalization.CodePageMapData.codePages[mapIndex].kind;
+                return Schema.Globalization.CodePageKind.Unknown;
             }
         }
 
-        internal CodePageAsciiSupport AsciiSupport {
+        internal Schema.Globalization.CodePageAsciiSupport AsciiSupport {
             get {
                 if (mapIndex >= 0)
-                    return CodePageMapData.codePages[mapIndex].asciiSupport;
-                return CodePageAsciiSupport.Unknown;
+                    return Data.Globalization.CodePageMapData.codePages[mapIndex].asciiSupport;
+                return Schema.Globalization.CodePageAsciiSupport.Unknown;
             }
         }
 
-        internal CodePageUnicodeCoverage UnicodeCoverage {
+        internal Schema.Globalization.CodePageUnicodeCoverage UnicodeCoverage {
             get {
                 if (mapIndex >= 0)
-                    return CodePageMapData.codePages[mapIndex].unicodeCoverage;
-                return CodePageUnicodeCoverage.Unknown;
+                    return Data.Globalization.CodePageMapData.codePages[mapIndex].unicodeCoverage;
+                return Schema.Globalization.CodePageUnicodeCoverage.Unknown;
             }
         }
 
         internal bool IsSevenBit {
             get {
                 if (mapIndex >= 0)
-                    return CodePageFlags.None != (CodePageMapData.codePages[mapIndex].flags & CodePageFlags.SevenBit);
+                    return Schema.Globalization.CodePageFlags.None != (Data.Globalization.CodePageMapData.codePages[mapIndex].flags & Schema.Globalization.CodePageFlags.SevenBit);
                 return false;
             }
         }
@@ -81,8 +81,8 @@
             get {
                 if (mapIndex < 0)
                     return 0;
-                if ((CodePageMapData.codePages[mapIndex].flags & CodePageFlags.Detectable) == CodePageFlags.None)
-                    return CodePageMapData.codePages[mapIndex].detectCpid;
+                if ((Data.Globalization.CodePageMapData.codePages[mapIndex].flags & Schema.Globalization.CodePageFlags.Detectable) == Schema.Globalization.CodePageFlags.None)
+                    return Data.Globalization.CodePageMapData.codePages[mapIndex].detectCpid;
                 return this.CodePage;
             }
         }
@@ -90,7 +90,7 @@
         public static Charset GetCharset(string name) {
             Charset charset;
             if (!Charset.TryGetCharset(name, out charset))
-                throw new InvalidCharsetException(name);
+                throw new Schema.Globalization.InvalidCharsetException(name);
             return charset;
         }
 
@@ -122,12 +122,12 @@
         public static Charset GetCharset(int codePage) {
             Charset charset;
             if (!Charset.TryGetCharset(codePage, out charset))
-                throw new InvalidCharsetException(codePage);
+                throw new Schema.Globalization.InvalidCharsetException(codePage);
             return charset;
         }
 
         public static Charset GetCharset(System.Text.Encoding encoding) {
-            return Charset.GetCharset(CodePageMap.GetCodePage(encoding));
+            return Charset.GetCharset(Schema.Globalization.CodePageMap.GetCodePage(encoding));
         }
 
         public static bool TryGetCharset(int codePage, out Charset charset) {
@@ -163,11 +163,11 @@
         public System.Text.Encoding GetEncoding() {
             System.Text.Encoding encoding;
             if (!this.TryGetEncoding(out encoding))
-                throw new CharsetNotInstalledException(this.CodePage, this.Name);
+                throw new Schema.Globalization.CharsetNotInstalledException(this.CodePage, this.Name);
             return encoding;
         }
 
-        internal void SetCulture(Culture culture) {
+        internal void SetCulture(Schema.Globalization.Culture culture) {
             this.Culture = culture;
         }
 
@@ -202,9 +202,9 @@
                     try {
                         this.encoding = this.CodePage != 20127
                                             ? (this.CodePage == 28591 || this.CodePage == 28599
-                                                   ? new RemapEncoding(this.CodePage)
-                                                   : (this.CodePage == 50220 || this.CodePage == 50221 || this.CodePage == 50222 ? new Iso2022JpEncoding(this.CodePage) : System.Text.Encoding.GetEncoding(this.CodePage)))
-                                            : System.Text.Encoding.GetEncoding(this.CodePage, new AsciiEncoderFallback(), System.Text.DecoderFallback.ReplacementFallback);
+                                                   ? new Schema.Globalization.RemapEncoding(this.CodePage)
+                                                   : (this.CodePage == 50220 || this.CodePage == 50221 || this.CodePage == 50222 ? new Schema.Globalization.Iso2022JpEncoding(this.CodePage) : System.Text.Encoding.GetEncoding(this.CodePage)))
+                                            : System.Text.Encoding.GetEncoding(this.CodePage, new Schema.Globalization.AsciiEncoderFallback(), System.Text.DecoderFallback.ReplacementFallback);
                     } catch (System.ArgumentException ex) {
                         this.encoding = null;
                     } catch (System.NotSupportedException ex) {

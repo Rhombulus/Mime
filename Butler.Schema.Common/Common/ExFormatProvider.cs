@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Common {
+﻿namespace Butler.Schema.Common {
 
     public class ExFormatProvider : System.IFormatProvider, System.ICustomFormatter {
 

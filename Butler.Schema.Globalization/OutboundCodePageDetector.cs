@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization {
+﻿namespace Butler.Schema.Globalization {
 
     public class OutboundCodePageDetector {
 
@@ -77,62 +77,62 @@
         }
 
         public int GetCodePage() {
-            return detector.GetCodePage(Culture.Default.CodepageDetectionPriorityOrder, false, false, true);
+            return detector.GetCodePage(Schema.Globalization.Culture.Default.CodepageDetectionPriorityOrder, false, false, true);
         }
 
-        public int GetCodePage(Culture culture, bool allowCommonFallbackExceptions) {
+        public int GetCodePage(Schema.Globalization.Culture culture, bool allowCommonFallbackExceptions) {
             if (culture == null)
-                culture = Culture.Default;
+                culture = Schema.Globalization.Culture.Default;
             return detector.GetCodePage(culture.CodepageDetectionPriorityOrder, allowCommonFallbackExceptions, false, true);
         }
 
         public int GetCodePage(Charset preferredCharset, bool allowCommonFallbackExceptions) {
-            var detectionPriorityOrder = Culture.Default.CodepageDetectionPriorityOrder;
+            var detectionPriorityOrder = Schema.Globalization.Culture.Default.CodepageDetectionPriorityOrder;
             if (preferredCharset != null)
                 detectionPriorityOrder = CultureCharsetDatabase.GetAdjustedCodepageDetectionPriorityOrder(preferredCharset, detectionPriorityOrder);
             return detector.GetCodePage(detectionPriorityOrder, allowCommonFallbackExceptions, false, true);
         }
 
-        internal int GetCodePage(int[] codePagePriorityList, FallbackExceptions fallbackExceptions, bool onlyValidCodePages) {
+        internal int GetCodePage(int[] codePagePriorityList, Schema.Globalization.FallbackExceptions fallbackExceptions, bool onlyValidCodePages) {
             if (codePagePriorityList != null) {
                 for (var index = 0; index < codePagePriorityList.Length; ++index) {
                     if (!CodePageDetect.IsCodePageDetectable(codePagePriorityList[index], false))
                         throw new System.ArgumentException(Resources.GlobalizationStrings.PriorityListIncludesNonDetectableCodePage, nameof(codePagePriorityList));
                 }
             }
-            return detector.GetCodePage(codePagePriorityList, fallbackExceptions > FallbackExceptions.None, fallbackExceptions > FallbackExceptions.Common, onlyValidCodePages);
+            return detector.GetCodePage(codePagePriorityList, fallbackExceptions > Schema.Globalization.FallbackExceptions.None, fallbackExceptions > Schema.Globalization.FallbackExceptions.Common, onlyValidCodePages);
         }
 
         public int[] GetCodePages() {
-            return detector.GetCodePages(Culture.Default.CodepageDetectionPriorityOrder, false, false, true);
+            return detector.GetCodePages(Schema.Globalization.Culture.Default.CodepageDetectionPriorityOrder, false, false, true);
         }
 
-        public int[] GetCodePages(Culture culture, bool allowCommonFallbackExceptions) {
+        public int[] GetCodePages(Schema.Globalization.Culture culture, bool allowCommonFallbackExceptions) {
             if (culture == null)
-                culture = Culture.Default;
+                culture = Schema.Globalization.Culture.Default;
             return detector.GetCodePages(culture.CodepageDetectionPriorityOrder, allowCommonFallbackExceptions, false, true);
         }
 
         public int[] GetCodePages(Charset preferredCharset, bool allowCommonFallbackExceptions) {
-            var detectionPriorityOrder = Culture.Default.CodepageDetectionPriorityOrder;
+            var detectionPriorityOrder = Schema.Globalization.Culture.Default.CodepageDetectionPriorityOrder;
             if (preferredCharset != null)
                 detectionPriorityOrder = CultureCharsetDatabase.GetAdjustedCodepageDetectionPriorityOrder(preferredCharset, detectionPriorityOrder);
             return detector.GetCodePages(detectionPriorityOrder, allowCommonFallbackExceptions, false, true);
         }
 
-        internal int[] GetCodePages(int[] codePagePriorityList, FallbackExceptions fallbackExceptions, bool onlyValidCodePages) {
+        internal int[] GetCodePages(int[] codePagePriorityList, Schema.Globalization.FallbackExceptions fallbackExceptions, bool onlyValidCodePages) {
             if (codePagePriorityList != null) {
                 for (var index = 0; index < codePagePriorityList.Length; ++index) {
                     if (!CodePageDetect.IsCodePageDetectable(codePagePriorityList[index], false))
                         throw new System.ArgumentException(Resources.GlobalizationStrings.PriorityListIncludesNonDetectableCodePage, nameof(codePagePriorityList));
                 }
             }
-            return detector.GetCodePages(codePagePriorityList, fallbackExceptions > FallbackExceptions.None, fallbackExceptions > FallbackExceptions.Common, onlyValidCodePages);
+            return detector.GetCodePages(codePagePriorityList, fallbackExceptions > Schema.Globalization.FallbackExceptions.None, fallbackExceptions > Schema.Globalization.FallbackExceptions.Common, onlyValidCodePages);
         }
 
         public int GetCodePageCoverage(int codePage) {
             var charset = Charset.GetCharset(codePage);
-            if (charset.UnicodeCoverage == CodePageUnicodeCoverage.Complete)
+            if (charset.UnicodeCoverage == Schema.Globalization.CodePageUnicodeCoverage.Complete)
                 return 100;
             if (!charset.IsDetectable) {
                 if (charset.DetectableCodePageWithEquivalentCoverage == 0)

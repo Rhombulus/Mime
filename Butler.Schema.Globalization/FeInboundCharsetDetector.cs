@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization {
+﻿namespace Butler.Schema.Globalization {
 
     internal struct FeInboundCharsetDetector {
 
@@ -189,7 +189,7 @@
             }
         }
 
-        public static bool IsSupportedFarEastCharset(Charset charset) {
+        public static bool IsSupportedFarEastCharset(Schema.Globalization.Charset charset) {
             switch (charset.CodePage) {
                 case 52936:
                 case 54936:

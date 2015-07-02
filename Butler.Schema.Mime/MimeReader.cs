@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     public class MimeReader : System.IDisposable {
 
@@ -1392,7 +1392,7 @@ namespace Butler.Schema.Data.Mime {
         private int dataCount;
         private bool dataEOF;
         private int dataOffset;
-        private Encoders.ByteEncoder decoder;
+        private Schema.Mime.Encoders.ByteEncoder decoder;
         private int depth;
         private int embeddedDepth;
         private bool enableReadingOuterContent;

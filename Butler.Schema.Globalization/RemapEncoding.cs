@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization {
+﻿namespace Butler.Schema.Globalization {
 
     [System.Serializable]
     internal class RemapEncoding : System.Text.Encoding {

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     internal static class MimeCommon {
 
@@ -124,11 +124,11 @@ namespace Butler.Schema.Data.Mime {
                 if (!Globalization.Charset.TryGetCharset(codePageDetector.GetCodePage(), out charset))
                     charset = DefaultEncodingOptions.GetEncodingCharset();
             }
-            var charClasses = Encoders.ByteEncoder.Tables.CharClasses.QEncode;
+            var charClasses = Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QEncode;
             if (style == ValueEncodingStyle.Phrase)
-                charClasses |= Encoders.ByteEncoder.Tables.CharClasses.QPhraseUnsafe;
+                charClasses |= Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QPhraseUnsafe;
             else if (style == ValueEncodingStyle.Comment)
-                charClasses |= Encoders.ByteEncoder.Tables.CharClasses.QCommentUnsafe;
+                charClasses |= Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QCommentUnsafe;
             var allowQEncoding = false;
             CalculateMethodAndChunkSize methodAndChunkSize;
             if (charset.Kind == Globalization.CodePageKind.Sbcs) {
@@ -246,13 +246,13 @@ namespace Butler.Schema.Data.Mime {
                                                 var index8 = num25;
                                                 var num27 = 1;
                                                 var num28 = index8 + num27;
-                                                int num29 = Encoders.ByteEncoder.NibbleToHex[num23 >> 4];
+                                                int num29 = Schema.Mime.Encoders.ByteEncoder.NibbleToHex[num23 >> 4];
                                                 numArray9[index8] = (byte) num29;
                                                 var numArray10 = numArray7;
                                                 var index9 = num28;
                                                 var num30 = 1;
                                                 outputOffset = index9 + num30;
-                                                int num31 = Encoders.ByteEncoder.NibbleToHex[num23 & 15];
+                                                int num31 = Schema.Mime.Encoders.ByteEncoder.NibbleToHex[num23 & 15];
                                                 numArray10[index9] = (byte) num31;
                                             } else
                                                 break;
@@ -303,18 +303,18 @@ namespace Butler.Schema.Data.Mime {
         internal static int Base64EncodeChunk(byte[] input, int offset, int length, byte[] encodedOutput, int outputOffset) {
             var num = 0;
             while (length >= 3) {
-                encodedOutput[outputOffset++] = Encoders.ByteEncoder.Tables.ByteToBase64[input[offset] >> 2 & 63];
-                encodedOutput[outputOffset++] = Encoders.ByteEncoder.Tables.ByteToBase64[(input[offset] << 4 | input[offset + 1] >> 4) & 63];
-                encodedOutput[outputOffset++] = Encoders.ByteEncoder.Tables.ByteToBase64[(input[offset + 1] << 2 | input[offset + 2] >> 6) & 63];
-                encodedOutput[outputOffset++] = Encoders.ByteEncoder.Tables.ByteToBase64[input[offset + 2] & 63];
+                encodedOutput[outputOffset++] = Schema.Mime.Encoders.ByteEncoder.Tables.ByteToBase64[input[offset] >> 2 & 63];
+                encodedOutput[outputOffset++] = Schema.Mime.Encoders.ByteEncoder.Tables.ByteToBase64[(input[offset] << 4 | input[offset + 1] >> 4) & 63];
+                encodedOutput[outputOffset++] = Schema.Mime.Encoders.ByteEncoder.Tables.ByteToBase64[(input[offset + 1] << 2 | input[offset + 2] >> 6) & 63];
+                encodedOutput[outputOffset++] = Schema.Mime.Encoders.ByteEncoder.Tables.ByteToBase64[input[offset + 2] & 63];
                 length -= 3;
                 offset += 3;
                 num += 4;
             }
             if (length > 0) {
-                encodedOutput[outputOffset++] = Encoders.ByteEncoder.Tables.ByteToBase64[input[offset] >> 2 & 63];
-                encodedOutput[outputOffset++] = Encoders.ByteEncoder.Tables.ByteToBase64[(input[offset] << 4 | (length < 2 ? 0 : input[offset + 1] >> 4)) & 63];
-                encodedOutput[outputOffset++] = length < 2 ? (byte) 61 : Encoders.ByteEncoder.Tables.ByteToBase64[input[offset + 1] << 2 & 63];
+                encodedOutput[outputOffset++] = Schema.Mime.Encoders.ByteEncoder.Tables.ByteToBase64[input[offset] >> 2 & 63];
+                encodedOutput[outputOffset++] = Schema.Mime.Encoders.ByteEncoder.Tables.ByteToBase64[(input[offset] << 4 | (length < 2 ? 0 : input[offset + 1] >> 4)) & 63];
+                encodedOutput[outputOffset++] = length < 2 ? (byte) 61 : Schema.Mime.Encoders.ByteEncoder.Tables.ByteToBase64[input[offset + 1] << 2 & 63];
                 encodedOutput[outputOffset++] = 61;
                 num += 4;
             }
@@ -322,7 +322,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         private static void CalculateMethodAndChunkSize_Sbcs(
-            bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
+            bool allowQEncoding, Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var num1 = encodedWordSpace/4*3;
             var chunkSize1 = System.Math.Min(num1, value.Length - valueOffset);
             if (chunkSize1 != value.Length - valueOffset && MimeCommon.IsHighSurrogate(value[valueOffset + chunkSize1 - 1]) && MimeCommon.IsLowSurrogate(value[valueOffset + chunkSize1]))
@@ -366,7 +366,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         private static void CalculateMethodAndChunkSize_Dbcs(
-            bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
+            bool allowQEncoding, Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var targetBytes = encodedWordSpace/4*3;
             var num1 = 0;
             var num2 = 0;
@@ -414,7 +414,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         private static void CalculateMethodAndChunkSize_Utf8(
-            bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
+            bool allowQEncoding, Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var targetBytes = encodedWordSpace/4*3;
             var num1 = 0;
             var num2 = 0;
@@ -463,7 +463,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         private static void CalculateMethodAndChunkSize_Unicode16(
-            bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
+            bool allowQEncoding, Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var targetBytes = encodedWordSpace/4*3;
             chunkSize = System.Math.Min(targetBytes/2, value.Length - valueOffset);
             if (chunkSize < value.Length - valueOffset && MimeCommon.IsLowSurrogate(value[valueOffset + chunkSize]) && MimeCommon.IsHighSurrogate(value[valueOffset + chunkSize - 1]))
@@ -473,7 +473,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         private static void CalculateMethodAndChunkSize_Unicode32(
-            bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
+            bool allowQEncoding, Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var targetBytes = encodedWordSpace/4*3;
             chunkSize = System.Math.Min(targetBytes/4, value.Length - valueOffset);
             if (chunkSize < value.Length - valueOffset && MimeCommon.IsLowSurrogate(value[valueOffset + chunkSize]) && MimeCommon.IsHighSurrogate(value[valueOffset + chunkSize - 1]))
@@ -483,7 +483,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         private static void CalculateMethodAndChunkSize_Mbcs(
-            bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
+            bool allowQEncoding, Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var num = encodedWordSpace/4*3;
             chunkSize = System.Math.Min(num, value.Length - valueOffset);
             if (chunkSize < value.Length - valueOffset && MimeCommon.IsLowSurrogate(value[valueOffset + chunkSize]) && MimeCommon.IsHighSurrogate(value[valueOffset + chunkSize - 1]))
@@ -527,12 +527,12 @@ namespace Butler.Schema.Data.Mime {
             return chunkSize;
         }
 
-        private static bool QEncodingRequired(char ch, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClasses) {
+        private static bool QEncodingRequired(char ch, Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses unsafeCharClasses) {
             if (ch < 128) {
                 return
-                    ~(Encoders.ByteEncoder.Tables.CharClasses.WSp | Encoders.ByteEncoder.Tables.CharClasses.QPEncode | Encoders.ByteEncoder.Tables.CharClasses.QPUnsafe | Encoders.ByteEncoder.Tables.CharClasses.QPWSp |
-                      Encoders.ByteEncoder.Tables.CharClasses.QEncode | Encoders.ByteEncoder.Tables.CharClasses.QPhraseUnsafe | Encoders.ByteEncoder.Tables.CharClasses.QCommentUnsafe | Encoders.ByteEncoder.Tables.CharClasses.Token2047) !=
-                    (Encoders.ByteEncoder.Tables.CharacterTraits[ch] & unsafeCharClasses);
+                    ~(Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.WSp | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QPEncode | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QPUnsafe | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QPWSp |
+                      Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QEncode | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QPhraseUnsafe | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QCommentUnsafe | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.Token2047) !=
+                    (Schema.Mime.Encoders.ByteEncoder.Tables.CharacterTraits[ch] & unsafeCharClasses);
             }
             return true;
         }
@@ -575,7 +575,7 @@ namespace Butler.Schema.Data.Mime {
 
 
         private delegate void CalculateMethodAndChunkSize(
-            bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize);
+            bool allowQEncoding, Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize);
 
     }
 

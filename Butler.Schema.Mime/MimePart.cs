@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     public partial class MimePart : MimeNode, System.IDisposable, System.Collections.Generic.IEnumerable<MimePart> {
 
@@ -474,11 +474,11 @@ namespace Butler.Schema.Data.Mime {
                     if (!MimePart.IsEqualContentTransferEncoding(desiredCte, transferEncoding)) {
                         if (!MimePart.EncodingIsTransparent(transferEncoding)) {
                             var decoder = MimePart.CreateDecoder(transferEncoding);
-                            result = new Encoders.EncoderStream(result, decoder, Encoders.EncoderStreamAccess.Read, true);
+                            result = new Schema.Mime.Encoders.EncoderStream(result, decoder, Schema.Mime.Encoders.EncoderStreamAccess.Read, true);
                         }
                         if (!MimePart.EncodingIsTransparent(desiredCte)) {
                             var encoder = MimePart.CreateEncoder(result, desiredCte);
-                            result = new Encoders.EncoderStream(result, encoder, Encoders.EncoderStreamAccess.Read, true);
+                            result = new Schema.Mime.Encoders.EncoderStream(result, encoder, Schema.Mime.Encoders.EncoderStreamAccess.Read, true);
                         }
                     }
                     flag = true;
@@ -799,17 +799,17 @@ namespace Butler.Schema.Data.Mime {
             return true;
         }
 
-        internal static Encoders.ByteEncoder CreateEncoder(System.IO.Stream stream, ContentTransferEncoding encoding) {
+        internal static Schema.Mime.Encoders.ByteEncoder CreateEncoder(System.IO.Stream stream, ContentTransferEncoding encoding) {
             switch (encoding) {
                 case ContentTransferEncoding.QuotedPrintable:
-                    return new Encoders.QPEncoder();
+                    return new Schema.Mime.Encoders.QPEncoder();
                 case ContentTransferEncoding.Base64:
-                    return new Encoders.Base64Encoder();
+                    return new Schema.Mime.Encoders.Base64Encoder();
                 case ContentTransferEncoding.UUEncode:
-                    return new Encoders.UUEncoder();
+                    return new Schema.Mime.Encoders.UUEncoder();
                 case ContentTransferEncoding.BinHex:
-                    return new Encoders.BinHexEncoder(
-                        new Encoders.MacBinaryHeader {
+                    return new Schema.Mime.Encoders.BinHexEncoder(
+                        new Schema.Mime.Encoders.MacBinaryHeader {
                             DataForkLength = stream.Length,
                             FileName = "binhex.dat"
                         });
@@ -818,16 +818,16 @@ namespace Butler.Schema.Data.Mime {
             }
         }
 
-        internal static Encoders.ByteEncoder CreateDecoder(ContentTransferEncoding encoding) {
+        internal static Schema.Mime.Encoders.ByteEncoder CreateDecoder(ContentTransferEncoding encoding) {
             switch (encoding) {
                 case ContentTransferEncoding.QuotedPrintable:
-                    return new Encoders.QPDecoder();
+                    return new Schema.Mime.Encoders.QPDecoder();
                 case ContentTransferEncoding.Base64:
-                    return new Encoders.Base64Decoder();
+                    return new Schema.Mime.Encoders.Base64Decoder();
                 case ContentTransferEncoding.UUEncode:
-                    return new Encoders.UUDecoder();
+                    return new Schema.Mime.Encoders.UUDecoder();
                 case ContentTransferEncoding.BinHex:
-                    return new Encoders.BinHexDecoder(true);
+                    return new Schema.Mime.Encoders.BinHexDecoder(true);
                 default:
                     return null;
             }

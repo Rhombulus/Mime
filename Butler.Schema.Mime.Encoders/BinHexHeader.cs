@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime.Encoders {
+namespace Butler.Schema.Mime.Encoders {
 
     internal class BinHexHeader {
 

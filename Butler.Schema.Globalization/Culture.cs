@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization {
+﻿namespace Butler.Schema.Globalization {
 
     [System.Serializable]
     public class Culture {
@@ -24,7 +24,7 @@
         public static Culture GetCulture(string name) {
             Culture culture;
             if (!Culture.TryGetCulture(name, out culture))
-                throw new UnknownCultureException(name);
+                throw new Schema.Globalization.UnknownCultureException(name);
             return culture;
         }
 
@@ -38,7 +38,7 @@
         public static Culture GetCulture(int lcid) {
             Culture culture;
             if (!Culture.TryGetCulture(lcid, out culture))
-                throw new UnknownCultureException(lcid);
+                throw new Schema.Globalization.UnknownCultureException(lcid);
             return culture;
         }
 

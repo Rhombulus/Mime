@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization.Iso2022Jp {
+﻿namespace Butler.Schema.Globalization.Iso2022Jp {
 
     internal enum EscapeSequence {
 

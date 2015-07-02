@@ -12,7 +12,7 @@ using System.Security.AccessControl;
 using System.Security.Permissions;
 using System.Security.Principal;
 
-namespace Butler.Schema.Data.Internal
+namespace Butler.Schema.Internal
 {
   internal class TemporaryDataStorage : ReadableWritableDataStorage
   {

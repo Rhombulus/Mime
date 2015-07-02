@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization.Iso2022Jp {
+﻿namespace Butler.Schema.Globalization.Iso2022Jp {
 
     [System.Flags]
     internal enum JisX0208PairClass {

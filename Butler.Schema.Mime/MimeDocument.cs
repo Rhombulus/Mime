@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     public class MimeDocument : System.IDisposable {
 
@@ -982,7 +982,7 @@ namespace Butler.Schema.Data.Mime {
                 var encoder = encode ? EncodingDataStorage.CreateEncoder(cte) : MimePart.CreateDecoder(cte);
                 if (encoder == null)
                     return storage.OpenReadStream(start, end);
-                return new Encoders.EncoderStream(storage.OpenReadStream(start, end), encoder, Encoders.EncoderStreamAccess.Read, true);
+                return new Schema.Mime.Encoders.EncoderStream(storage.OpenReadStream(start, end), encoder, Schema.Mime.Encoders.EncoderStreamAccess.Read, true);
             }
 
             protected override void Dispose(bool disposing) {
@@ -1007,14 +1007,14 @@ namespace Butler.Schema.Data.Mime {
             public EncodingDataStorage(Internal.DataStorage storage, long start, long end, ContentTransferEncoding cte)
                 : base(storage, start, end, cte, true) {}
 
-            internal static Encoders.ByteEncoder CreateEncoder(ContentTransferEncoding encoding) {
+            internal static Schema.Mime.Encoders.ByteEncoder CreateEncoder(ContentTransferEncoding encoding) {
                 switch (encoding) {
                     case ContentTransferEncoding.QuotedPrintable:
-                        return new Encoders.QPEncoder();
+                        return new Schema.Mime.Encoders.QPEncoder();
                     case ContentTransferEncoding.Base64:
-                        return new Encoders.Base64Encoder();
+                        return new Schema.Mime.Encoders.Base64Encoder();
                     case ContentTransferEncoding.UUEncode:
-                        return new Encoders.UUEncoder();
+                        return new Schema.Mime.Encoders.UUEncoder();
                     default:
                         return null;
                 }

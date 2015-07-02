@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     public abstract class MimeNode : System.Collections.Generic.IEnumerable<MimeNode> {
 

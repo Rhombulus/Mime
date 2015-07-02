@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Internal {
+﻿namespace Butler.Schema.Internal {
 
     [System.Runtime.InteropServices.ComVisible(false)]
     [System.Security.SuppressUnmanagedCodeSecurity]

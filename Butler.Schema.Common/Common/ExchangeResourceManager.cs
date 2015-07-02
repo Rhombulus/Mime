@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Common {
+﻿namespace Butler.Schema.Common {
 
     public sealed class ExchangeResourceManager : System.Resources.ResourceManager {
 

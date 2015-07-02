@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     public class MimeWriter : System.IDisposable {
 
@@ -426,7 +426,7 @@ namespace Butler.Schema.Data.Mime {
             var encoder = MimePart.CreateEncoder(null, contentTransferEncoding);
             if (encoder == null)
                 throw new System.NotSupportedException(Resources.Strings.UnrecognizedTransferEncodingUsed);
-            encodedPartContent = new Encoders.EncoderStream(contentWriteStream, encoder, Encoders.EncoderStreamAccess.Write);
+            encodedPartContent = new Schema.Mime.Encoders.EncoderStream(contentWriteStream, encoder, Schema.Mime.Encoders.EncoderStreamAccess.Write);
             return new Internal.SuppressCloseStream(encodedPartContent);
         }
 

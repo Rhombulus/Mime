@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Common {
+﻿namespace Butler.Schema.Common {
 
     [System.AttributeUsage(System.AttributeTargets.All)]
     [System.Serializable]

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     public class MimeGroup : AddressItem, System.Collections.Generic.IEnumerable<MimeRecipient>, System.Collections.IEnumerable {
 

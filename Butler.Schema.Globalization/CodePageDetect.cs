@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization {
+﻿namespace Butler.Schema.Globalization {
 
     internal struct CodePageDetect {
 
@@ -211,8 +211,8 @@
         private static uint InitializeValidCodePagesMask() {
             var num = 0U;
             for (var index = 0; index < CodePageDetectData.codePages.Length; ++index) {
-                Charset charset;
-                if (Charset.TryGetCharset(CodePageDetectData.codePages[index].cpid, out charset) && charset.IsAvailable)
+                Schema.Globalization.Charset charset;
+                if (Schema.Globalization.Charset.TryGetCharset(CodePageDetectData.codePages[index].cpid, out charset) && charset.IsAvailable)
                     num |= CodePageDetectData.codePages[index].mask;
             }
             return num;

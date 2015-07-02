@@ -1,4 +1,4 @@
-﻿namespace Butler.Schema.Data.Globalization {
+﻿namespace Butler.Schema.Globalization {
 
     internal class AsciiEncoderFallback : System.Text.EncoderFallback {
 

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Butler.Schema.Data.Mime {
+namespace Butler.Schema.Mime {
 
     internal struct ValueDecoder {
 
@@ -152,9 +152,9 @@ namespace Butler.Schema.Data.Mime {
         private static bool Is2047Token(byte bT) {
             if (bT < 128) {
                 return
-                    ~(Encoders.ByteEncoder.Tables.CharClasses.WSp | Encoders.ByteEncoder.Tables.CharClasses.QPEncode | Encoders.ByteEncoder.Tables.CharClasses.QPUnsafe | Encoders.ByteEncoder.Tables.CharClasses.QPWSp |
-                      Encoders.ByteEncoder.Tables.CharClasses.QEncode | Encoders.ByteEncoder.Tables.CharClasses.QPhraseUnsafe | Encoders.ByteEncoder.Tables.CharClasses.QCommentUnsafe | Encoders.ByteEncoder.Tables.CharClasses.Token2047) !=
-                    (Encoders.ByteEncoder.Tables.CharacterTraits[bT] & Encoders.ByteEncoder.Tables.CharClasses.Token2047);
+                    ~(Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.WSp | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QPEncode | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QPUnsafe | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QPWSp |
+                      Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QEncode | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QPhraseUnsafe | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.QCommentUnsafe | Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.Token2047) !=
+                    (Schema.Mime.Encoders.ByteEncoder.Tables.CharacterTraits[bT] & Schema.Mime.Encoders.ByteEncoder.Tables.CharClasses.Token2047);
             }
             return false;
         }
@@ -433,8 +433,8 @@ namespace Butler.Schema.Data.Mime {
                 var num2 = 0;
                 while (!valueIterator.Eof) {
                     var num3 = (byte) (valueIterator.Get() - 32);
-                    if (num3 < Encoders.ByteEncoder.Tables.Base64ToByte.Length) {
-                        var num4 = Encoders.ByteEncoder.Tables.Base64ToByte[num3];
+                    if (num3 < Schema.Mime.Encoders.ByteEncoder.Tables.Base64ToByte.Length) {
+                        var num4 = Schema.Mime.Encoders.ByteEncoder.Tables.Base64ToByte[num3];
                         if (num4 < 64) {
                             num2 = num2 << 6 | num4;
                             ++num1;
@@ -493,8 +493,8 @@ namespace Butler.Schema.Data.Mime {
                         case 61:
                             var index1 = valueIterator.Get();
                             var index2 = valueIterator.Get();
-                            int num2 = index1 < 0 ? byte.MaxValue : Encoders.ByteEncoder.Tables.NumFromHex[index1];
-                            int num3 = index2 < 0 ? byte.MaxValue : Encoders.ByteEncoder.Tables.NumFromHex[index2];
+                            int num2 = index1 < 0 ? byte.MaxValue : Schema.Mime.Encoders.ByteEncoder.Tables.NumFromHex[index1];
+                            int num3 = index2 < 0 ? byte.MaxValue : Schema.Mime.Encoders.ByteEncoder.Tables.NumFromHex[index2];
                             num1 = num2 == (int) byte.MaxValue || num3 == (int) byte.MaxValue ? (byte) 61 : (byte) (num2 << 4 | num3);
                             break;
                         case 95:

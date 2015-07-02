@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace Butler.Schema.Data.Globalization
+namespace Butler.Schema.Globalization
 {
 
     internal class CodePageDetectData
