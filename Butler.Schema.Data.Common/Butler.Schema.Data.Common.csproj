@@ -7,8 +7,8 @@
     <ProjectGuid>{FB2E8B59-CF57-472E-A11F-F066F209B5B9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Butler.Schema.Data.Common</RootNamespace>
-    <AssemblyName>Butler.Schema.Data.Common1</AssemblyName>
+    <RootNamespace></RootNamespace>
+    <AssemblyName>Butler.Schema.Data.Common</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
