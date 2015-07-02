@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddressParserNotInitialized" xml:space="preserve">
+    <value>Address parser is not initialized.</value>
+  </data>
+  <data name="ChildrenCannotBeAddedToTextHeader" xml:space="preserve">
+    <value>Children cannot be added to a TextHeader object.</value>
+  </data>
+  <data name="NewChildNotMimeParameter" xml:space="preserve">
+    <value>newChild is not a MimeParameter type.</value>
+  </data>
+  <data name="BinHexNotSupportedForThisMethod" xml:space="preserve">
+    <value>Cannot get content write stream for a BinHex-encoded part, because BinHex encoding requires knowing the length of data in advance. Use 'raw' content write methods and write encoded data.</value>
+  </data>
+  <data name="AddressReaderIsNotPositionedOnAddress" xml:space="preserve">
+    <value>MimeAddressReader is not positioned on address.</value>
+  </data>
+  <data name="RefChildIsNotMyChild" xml:space="preserve">
+    <value>refChild is not a child of this node.</value>
+  </data>
+  <data name="ParameterReaderIsNotPositionedOnParameter" xml:space="preserve">
+    <value>MimeParameterReader is not positioned on a parameter.</value>
+  </data>
+  <data name="HeaderCannotHaveParameters" xml:space="preserve">
+    <value>Current header cannot have parameters.</value>
+  </data>
+  <data name="DocumentCloneNotSupportedInThisState" xml:space="preserve">
+    <value>The document can't be cloned while it is parsing MIME data.</value>
+  </data>
+  <data name="RootPartCantHaveAParent" xml:space="preserve">
+    <value>Setting root part to a part that has a parent is not allowed.</value>
+  </data>
+  <data name="StreamMustAllowRead" xml:space="preserve">
+    <value>MIME stream must support read.</value>
+  </data>
+  <data name="NameNotValidForThisHeaderType" xml:space="preserve">
+    <value>Name {0} is reserved and cannot be used for a {1}. Use {2} instead.</value>
+  </data>
+  <data name="InvalidHeaderName" xml:space="preserve">
+    <value>Invalid header name "{0}" at character #{1}</value>
+  </data>
+  <data name="CannotWriteGroupStartHere" xml:space="preserve">
+    <value>MimeGroup start can only be written after an address header, group end, or recipient.</value>
+  </data>
+  <data name="CannotWriteHeaderValueHere" xml:space="preserve">
+    <value>Header value can only be written after header start.</value>
+  </data>
+  <data name="CantGetValueOfRfc2231ContinuationSegment" xml:space="preserve">
+    <value>Getting Value of RFC2231 continuation segment is not supported.</value>
+  </data>
+  <data name="TooManyHeaderBytes" xml:space="preserve">
+    <value>Cumulative number of header bytes ({0}) exceeded allowed maximum ({1}).</value>
+  </data>
+  <data name="ChildrenCannotBeAddedToReceivedHeader" xml:space="preserve">
+    <value>Children cannot be added to a received header.</value>
+  </data>
+  <data name="CannotWriteParametersOnThisHeader" xml:space="preserve">
+    <value>Parameters can only be written on headers that support parameters.</value>
+  </data>
+  <data name="ErrorBeforeFirst" xml:space="preserve">
+    <value>The enumerator is positioned before the first element of the collection.</value>
+  </data>
+  <data name="StrictComplianceViolation" xml:space="preserve">
+    <value>Compliance is strict and a compliance violation was found.</value>
+  </data>
+  <data name="CurrentAddressIsGroupAndCannotHaveEmail" xml:space="preserve">
+    <value>Current address is a group and cannot have e-mail.</value>
+  </data>
+  <data name="HeaderReaderIsNotPositionedOnAHeader" xml:space="preserve">
+    <value>MimeHeaderReader is not positioned on a header.</value>
+  </data>
+  <data name="NewChildCannotHaveDifferentParent" xml:space="preserve">
+    <value>Cannot insert a child whose parent is not null.</value>
+  </data>
+  <data name="CannotWriteHeaderValueMoreThanOnce" xml:space="preserve">
+    <value>Cannot write header value more than once.</value>
+  </data>
+  <data name="CannotWritePartContentNow" xml:space="preserve">
+    <value>Invalid state to write part content.</value>
+  </data>
+  <data name="NewChildIsNotAPart" xml:space="preserve">
+    <value>newChild is not a MimePart object.</value>
+  </data>
+  <data name="CannotLoadIntoNonEmptyDocument" xml:space="preserve">
+    <value>Loading into a non-empty document is not allowed.</value>
+  </data>
+  <data name="NewChildNotRecipientOrGroup" xml:space="preserve">
+    <value>newChild is not a MimeRecipient or a MimeGroup.</value>
+  </data>
+  <data name="ParametersCannotHaveChildNodes" xml:space="preserve">
+    <value>Children cannot be added to a MimeParameter object.</value>
+  </data>
+  <data name="CannotStartPartHere" xml:space="preserve">
+    <value>A part cannot be started if content is still being written or the writer is in Closed state.</value>
+  </data>
+  <data name="ErrorAfterLast" xml:space="preserve">
+    <value>The enumerator is positioned after the last element of the collection.</value>
+  </data>
+  <data name="BareLinefeedRejected" xml:space="preserve">
+    <value>This message contains bare linefeeds, prohibited by RFC 5321 section 4.1.1.4.</value>
+  </data>
+  <data name="UnicodeMimeHeaderAddressNotSupported" xml:space="preserve">
+    <value>Setting a Unicode value on an AddressHeader is not supported.</value>
+  </data>
+  <data name="AddingChildrenToAsciiTextHeader" xml:space="preserve">
+    <value>Adding children to AsciiTextHeader is not supported.</value>
+  </data>
+  <data name="StreamNoLongerValid" xml:space="preserve">
+    <value>This stream is no longer valid.</value>
+  </data>
+  <data name="ModifyingRawContentOfMultipartNotSupported" xml:space="preserve">
+    <value>Modifying the raw content of a multipart part is not supported.</value>
+  </data>
+  <data name="ContentAlreadyWritten" xml:space="preserve">
+    <value>Content has already been written for this part.</value>
+  </data>
+  <data name="CantSetRawValueOfRfc2231ContinuationSegment" xml:space="preserve">
+    <value>Setting RawValue of RFC2231 continuation segment is not supported.</value>
+  </data>
+  <data name="HeaderCannotHaveAddresses" xml:space="preserve">
+    <value>Current header is not an address header.</value>
+  </data>
+  <data name="CannotDecodeContentStream" xml:space="preserve">
+    <value>Cannot decode content stream because unrecognized content transfer encoding was used to encode it.</value>
+  </data>
+  <data name="NewChildIsNotARecipient" xml:space="preserve">
+    <value>newChild is not a MimeRecipient type.</value>
+  </data>
+  <data name="InvalidHeaderId" xml:space="preserve">
+    <value>Invalid header ID.</value>
+  </data>
+  <data name="TooManyHeaders" xml:space="preserve">
+    <value>Number of Header objects ({0}) exceeded allowed maximum ({1}).</value>
+  </data>
+  <data name="ValueTooLong" xml:space="preserve">
+    <value>The string is too long.</value>
+  </data>
+  <data name="HeaderReaderNotInitialized" xml:space="preserve">
+    <value>MimeHeaderReader is not properly initialized.</value>
+  </data>
+  <data name="CurrentPartIsNotEmbeddedMessage" xml:space="preserve">
+    <value>The current part is not an embedded message.</value>
+  </data>
+  <data name="UnrecognizedTransferEncodingUsed" xml:space="preserve">
+    <value>Cannot get content write stream because unrecognized Content-Transfer-Encoding header value was written. Use 'raw' content write methods and write encoded data.</value>
+  </data>
+  <data name="CannotReadContentWhileStreamIsActive" xml:space="preserve">
+    <value>Cannot use the ReadRawContent or ReadContent methods while content read stream is active.</value>
+  </data>
+  <data name="ReaderIsNotPositionedOnHeaderWithParameters" xml:space="preserve">
+    <value>MimeReader is not positioned on an header with parameters, MimeParameterReader cannot be used in this state.</value>
+  </data>
+  <data name="NewChildNotMimeHeader" xml:space="preserve">
+    <value>newChild is not a Header.</value>
+  </data>
+  <data name="OperationNotValidInThisReaderState" xml:space="preserve">
+    <value>This operation is not valid in the current reader state.</value>
+  </data>
+  <data name="NonMultiPartPartsCannotHaveChildren" xml:space="preserve">
+    <value>Non-multipart parts cannot have children.</value>
+  </data>
+  <data name="CannotWriteEmptyOrNullBoundary" xml:space="preserve">
+    <value>Cannot write boundary parameter with null or empty value.</value>
+  </data>
+  <data name="PartNestingTooDeep" xml:space="preserve">
+    <value>Part depth of nesting in the message ({0}) exceeded allowed maximum ({1}).</value>
+  </data>
+  <data name="TooManyTextValueBytes" xml:space="preserve">
+    <value>Single text value size ({0}) exceeded allowed maximum ({1}).</value>
+  </data>
+  <data name="ThisNodeDoesNotSupportCloning" xml:space="preserve">
+    <value>MimeNode of type {0} does not support cloning.</value>
+  </data>
+  <data name="AddressReaderIsNotPositionedOnAGroup" xml:space="preserve">
+    <value>The reader is not positioned on a MimeGroup.</value>
+  </data>
+  <data name="StreamMustSupportWriting" xml:space="preserve">
+    <value>Content stream must support writing.</value>
+  </data>
+  <data name="TooManyParameters" xml:space="preserve">
+    <value>Number of MimeParameter objects on a single header ({0}) exceeded allowed maximum ({1}).</value>
+  </data>
+  <data name="CannotWriteRecipientsHere" xml:space="preserve">
+    <value>Recipients can only be written after an address header, group start, group end, or another recipient.</value>
+  </data>
+  <data name="RefHeaderIsNotMyChild" xml:space="preserve">
+    <value>refHeader is not a child of this header list.</value>
+  </data>
+  <data name="CantCopyToDifferentObjectType" xml:space="preserve">
+    <value>Cannot copy this object to an object of different type.</value>
+  </data>
+  <data name="CannotWriteGroupEndHere" xml:space="preserve">
+    <value>MimeGroup end can only be written while group writing is in progress.</value>
+  </data>
+  <data name="StreamMustSupportRead" xml:space="preserve">
+    <value>Stream must support read.</value>
+  </data>
+  <data name="InputStreamTooLong" xml:space="preserve">
+    <value>The size of the input stream ({0}) exceeded allowed maximum ({1}).</value>
+  </data>
+  <data name="ParameterReaderNotInitialized" xml:space="preserve">
+    <value>MimeParameterReader is not properly initialized.</value>
+  </data>
+  <data name="UnicodeMimeHeaderReceivedNotSupported" xml:space="preserve">
+    <value>Setting a Unicode value on a ReceivedHeader is not supported.</value>
+  </data>
+  <data name="AddressReaderNotInitialized" xml:space="preserve">
+    <value>MimeAddressReader is not properly initialized.</value>
+  </data>
+  <data name="MimeHandlerErrorNotEmbeddedMessage" xml:space="preserve">
+    <value>MIME handler error: embedded message parsing requested for a body part that is not an embedded message.</value>
+  </data>
+  <data name="CannotMixReadRawContentAndReadContent" xml:space="preserve">
+    <value>Cannot use the ReadRawContent method and ReadContent method for the same part.</value>
+  </data>
+  <data name="MultipartCannotContainContent" xml:space="preserve">
+    <value>Multipart parts cannot contain content. They can only contain child parts.</value>
+  </data>
+  <data name="EmbeddedNestingTooDeep" xml:space="preserve">
+    <value>Embedded depth of nesting in the message ({0}) exceeded allowed maximum ({1}).</value>
+  </data>
+  <data name="TooManyAddressItems" xml:space="preserve">
+    <value>Number of AddressItem objects on a single header ({0}) exceeded allowed maximum ({1}).</value>
+  </data>
+  <data name="CantSetValueOfRfc2231ContinuationSegment" xml:space="preserve">
+    <value>Setting Value of Rfc2231 continuation segment is not supported.</value>
+  </data>
+  <data name="HeaderReaderCannotBeUsedInThisState" xml:space="preserve">
+    <value>MimeReader is not positioned in a part header section, MimeHeaderReader cannot be used in this state.</value>
+  </data>
+  <data name="ThisPartBelongsToSubtreeOfNewChild" xml:space="preserve">
+    <value>This part belongs to a subtree of the new child. Insertion of this part would create circular node references.</value>
+  </data>
+  <data name="CannotEndPartHere" xml:space="preserve">
+    <value>Part cannot be ended after the writer has been closed.</value>
+  </data>
+  <data name="EmbeddedMessageReaderNeedsToBeClosedFirst" xml:space="preserve">
+    <value>Embedded message reader needs to be closed before it resumes reading this message.</value>
+  </data>
+  <data name="CannotWriteHeadersHere" xml:space="preserve">
+    <value>Headers can only be written at the start of a part or after other headers.</value>
+  </data>
+  <data name="CannotGetLoadStreamMoreThanOnce" xml:space="preserve">
+    <value>Cannot get the load stream more than once.</value>
+  </data>
+  <data name="MimeVersionRequiredForMultipart" xml:space="preserve">
+    <value>A Mime-Version header must be present on the root part if it contains child parts.</value>
+  </data>
+  <data name="LengthExceeded" xml:space="preserve">
+    <value>The sum of offset and count ({0}) is larger than the array length ({1}).</value>
+  </data>
+  <data name="CannotWriteUnicodeHeaderValue" xml:space="preserve">
+    <value>Cannot write Unicode header value.</value>
+  </data>
+  <data name="CachingModeSourceButStreamCannotSeek" xml:space="preserve">
+    <value>CachingMode.Source is used, but source stream cannot seek. Random access to DOM objects cannot be provided.</value>
+  </data>
+  <data name="CannotWriteParametersHere" xml:space="preserve">
+    <value>Parameters can only be written after a header or another parameter.</value>
+  </data>
+  <data name="PartContentIsBeingWritten" xml:space="preserve">
+    <value>Part content is already in the process of being written.</value>
+  </data>
+  <data name="LoadingStopped" xml:space="preserve">
+    <value>Cannot resume parsing because loading has been aborted by the EndOfHeaders callback.</value>
+  </data>
+  <data name="CannotAddChildrenToMimeHeaderDate" xml:space="preserve">
+    <value>Adding children to DateHeader is not supported.</value>
+  </data>
+  <data name="TooManyParts" xml:space="preserve">
+    <value>Number of MimePart objects ({0}) exceeded allowed maximum ({1}).</value>
+  </data>
+  <data name="MimeHandlerErrorMoreThanOneOuterContentPushStream" xml:space="preserve">
+    <value>MIME handler error: cannot set more than one outer content write stream.</value>
+  </data>
+  <data name="RecipientsCannotHaveChildNodes" xml:space="preserve">
+    <value>Children cannot be added to a MimeRecipient object.</value>
+  </data>
+  <data name="ReaderIsNotPositionedOnAddressHeader" xml:space="preserve">
+    <value>MimeReader is not positioned on an address header, MimeAddressReader cannot be used in this state.</value>
+  </data>
+  <data name="OnlyOneOuterContentPushStreamAllowed" xml:space="preserve">
+    <value>Only one outer content push stream can be active at any given moment.</value>
+  </data>
+  <data name="CannotDetermineHeaderNameFromId" xml:space="preserve">
+    <value>Cannot determine header name from ID.</value>
+  </data>
+  <data name="OldChildIsNotMyChild" xml:space="preserve">
+    <value>oldChild is not a child of this node.</value>
+  </data>
+  <data name="InternalMimeError" xml:space="preserve">
+    <value>MIME content error:</value>
+  </data>
+  <data name="CannotWriteAfterFlush" xml:space="preserve">
+    <value>Writing more data is not permitted after the MIME stream is flushed.</value>
+  </data>
+  <data name="InvalidBoundary" xml:space="preserve">
+    <value>The boundary value is invalid.</value>
+  </data>
+</root>

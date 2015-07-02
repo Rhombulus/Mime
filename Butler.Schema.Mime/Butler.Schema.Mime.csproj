@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Butler.Schema.Mime</RootNamespace>
     <AssemblyName>Butler.Schema.Mime</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -135,10 +136,6 @@
     <ProjectReference Include="..\Butler.Schema.Mime.Encoders\Butler.Schema.Mime.Encoders.csproj">
       <Project>{2523D0A2-09EF-421C-A5FD-A88DFC7BC806}</Project>
       <Name>Butler.Schema.Mime.Encoders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Butler.Schema\Butler.Schema.csproj">
-      <Project>{ac5448ab-4cc9-47e9-ab8f-31e79b62d660}</Project>
-      <Name>Butler.Schema</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

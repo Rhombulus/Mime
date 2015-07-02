@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Butler.Schema.Globalization</RootNamespace>
     <AssemblyName>Butler.Schema.Globalization</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,10 +76,6 @@
     <ProjectReference Include="..\Butler.Schema.Common\Butler.Schema.Common.csproj">
       <Project>{1D000363-E9A9-457A-973E-5A59C09E0E6E}</Project>
       <Name>Butler.Schema.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Butler.Schema\Butler.Schema.csproj">
-      <Project>{AC5448AB-4CC9-47E9-AB8F-31E79B62D660}</Project>
-      <Name>Butler.Schema</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

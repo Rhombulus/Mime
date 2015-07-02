@@ -7,10 +7,12 @@
     <ProjectGuid>{1D000363-E9A9-457A-973E-5A59C09E0E6E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Butler.Schema.Common</RootNamespace>
-    <AssemblyName>Butler.Schema.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <RootNamespace>Butler.Schema</RootNamespace>
+    <AssemblyName>Butler.Schema</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,32 +22,104 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DataConstants.cs" />
-    <Compile Include="ExchangeResourceManager.cs" />
-    <Compile Include="ExFormatProvider.cs" />
-    <Compile Include="ILocalizedException.cs" />
-    <Compile Include="ILocalizedString.cs" />
-    <Compile Include="LocalizedDescriptionAttribute.cs" />
-    <Compile Include="LocalizedDisplayNameAttribute.cs" />
-    <Compile Include="LocalizedException.cs" />
-    <Compile Include="LocalizedString.cs" />
-    <Compile Include="RegistryConfigManager.cs" />
-    <Compile Include="SipCultureInfoBase.cs" />
-    <Compile Include="TransientException.cs" />
+    <Compile Include="ButlerSchemaException.cs" />
+    <Compile Include="Common\DataConstants.cs" />
+    <Compile Include="Common\ExchangeResourceManager.cs" />
+    <Compile Include="Common\ExFormatProvider.cs" />
+    <Compile Include="Common\ILocalizedException.cs" />
+    <Compile Include="Common\ILocalizedString.cs" />
+    <Compile Include="Common\LocalizedDescriptionAttribute.cs" />
+    <Compile Include="Common\LocalizedDisplayNameAttribute.cs" />
+    <Compile Include="Common\LocalizedException.cs" />
+    <Compile Include="Common\LocalizedString.cs" />
+    <Compile Include="Common\RegistryConfigManager.cs" />
+    <Compile Include="Common\SipCultureInfoBase.cs" />
+    <Compile Include="Common\TransientException.cs" />
+    <Compile Include="Internal\AppendStreamOnDataStorage.cs" />
+    <Compile Include="Internal\ApplicationServices.cs" />
+    <Compile Include="Internal\AutoPositionReadOnlyStream.cs" />
+    <Compile Include="Internal\ByteString.cs" />
+    <Compile Include="Internal\CtsConfigurationArgument.cs" />
+    <Compile Include="Internal\CtsConfigurationSection.cs" />
+    <Compile Include="Internal\CtsConfigurationSetting.cs" />
+    <Compile Include="Internal\DataStorage.cs" />
+    <Compile Include="Internal\DefaultApplicationServices.cs" />
+    <Compile Include="Internal\IApplicationServices.cs" />
+    <Compile Include="Internal\ICloneableStream.cs" />
+    <Compile Include="Internal\InternalDebug.cs" />
+    <Compile Include="Internal\NativeMethods.cs" />
+    <Compile Include="Internal\ReadableDataStorage.cs" />
+    <Compile Include="Internal\ReadableDataStorageOnStream.cs" />
+    <Compile Include="Internal\ReadableWritableDataStorage.cs" />
+    <Compile Include="Internal\ReadableWritableDataStorageOnStream.cs" />
+    <Compile Include="Internal\ReadWriteStreamOnDataStorage.cs" />
+    <Compile Include="Internal\RefCountable.cs" />
+    <Compile Include="Internal\ScratchPad.cs" />
+    <Compile Include="Internal\StreamOnDataStorage.cs" />
+    <Compile Include="Internal\StreamOnReadableDataStorage.cs" />
+    <Compile Include="Internal\SuppressCloseStream.cs" />
+    <Compile Include="Internal\TempFileStream.cs" />
+    <Compile Include="Internal\TemporaryDataStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\CalendarStrings.Designer.cs">
+      <DependentUpon>CalendarStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\DataStrings.cs" />
+    <Compile Include="Resources\EncodersStrings.cs" />
+    <Compile Include="Resources\GlobalizationStrings.cs" />
+    <Compile Include="Resources\SharedStrings.cs" />
+    <Compile Include="Resources\Strings.cs" />
+    <Compile Include="Resources\TextConvertersStrings.cs" />
+    <Compile Include="Resources\TnefStrings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CalendarStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CalendarStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\DataStrings.resx">
+      <DependentUpon>DataStrings.cs</DependentUpon>
+      <LastGenOutput>DataStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EncodersStrings.resx">
+      <DependentUpon>EncodersStrings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\GlobalizationStrings.resx">
+      <DependentUpon>GlobalizationStrings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\SharedStrings.resx">
+      <DependentUpon>SharedStrings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Strings.resx">
+      <DependentUpon>Strings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TextConvertersStrings.resx">
+      <DependentUpon>TextConvertersStrings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TnefStrings.resx">
+      <DependentUpon>TnefStrings.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

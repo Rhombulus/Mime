@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ByDayOnlyPermittedOnce" xml:space="preserve">
+    <value>BYDAY only permitted once.</value>
+  </data>
+  <data name="ByHourOnlyPermittedOnce" xml:space="preserve">
+    <value>BYHOUR only permitted once.</value>
+  </data>
+  <data name="ByHourOutOfRange" xml:space="preserve">
+    <value>BYHOUR value must be 0-23.</value>
+  </data>
+  <data name="ByMinuteOnlyPermittedOnce" xml:space="preserve">
+    <value>BYMINUTE only permitted once.</value>
+  </data>
+  <data name="ByMinuteOutOfRange" xml:space="preserve">
+    <value>BYMINUTE value must be 0-59.</value>
+  </data>
+  <data name="ByMonthDayOnlyPermittedOnce" xml:space="preserve">
+    <value>BYMONTHDAY only permitted once.</value>
+  </data>
+  <data name="ByMonthDayOutOfRange" xml:space="preserve">
+    <value>BYMONTHDAY value must be 1 to 31 or -1 to -31.</value>
+  </data>
+  <data name="ByMonthOnlyPermittedOnce" xml:space="preserve">
+    <value>BYMONTH only permitted once.</value>
+  </data>
+  <data name="ByMonthOutOfRange" xml:space="preserve">
+    <value>BYMONTH value must be 1 to 12.</value>
+  </data>
+  <data name="BySecondOnlyPermittedOnce" xml:space="preserve">
+    <value>BYSECOND only permitted once.</value>
+  </data>
+  <data name="BySecondOutOfRange" xml:space="preserve">
+    <value>BYSECOND value must be 0-59.</value>
+  </data>
+  <data name="BySetPosOnlyPermittedOnce" xml:space="preserve">
+    <value>BYSETPOS only permitted once.</value>
+  </data>
+  <data name="BySetPosOutOfRange" xml:space="preserve">
+    <value>BYSETPOS value must be 1 to 366 or -1 to -366.</value>
+  </data>
+  <data name="ByWeekNoOnlyPermittedOnce" xml:space="preserve">
+    <value>BYWEEKNO only permitted once.</value>
+  </data>
+  <data name="ByWeekNoOutOfRange" xml:space="preserve">
+    <value>BYWEEKNO value must be 1 to 53 or -1 to -53.</value>
+  </data>
+  <data name="ByYearDayOnlyPermittedOnce" xml:space="preserve">
+    <value>BYYEARDAY only permitted once.</value>
+  </data>
+  <data name="ByYearDayOutOfRange" xml:space="preserve">
+    <value>BYYEARDAY value must be 1 to 366 or -1 to -366.</value>
+  </data>
+  <data name="CannotStartOnProperty" xml:space="preserve">
+    <value>Can't start on a property.</value>
+  </data>
+  <data name="CannotStartPropertyInParameter" xml:space="preserve">
+    <value>Can't start a property in a parameter.</value>
+  </data>
+  <data name="ComponentNameMismatch" xml:space="preserve">
+    <value>Component name mismatch.</value>
+  </data>
+  <data name="CountLessThanZero" xml:space="preserve">
+    <value>Count &lt; 0.</value>
+  </data>
+  <data name="CountNotPermittedWithUntil" xml:space="preserve">
+    <value>COUNT not permitted with UNTIL.</value>
+  </data>
+  <data name="CountOnlyPermittedOnce" xml:space="preserve">
+    <value>COUNT only permitted once.</value>
+  </data>
+  <data name="DurationDataNotEndedProperly" xml:space="preserve">
+    <value>Duration data not ended properly.</value>
+  </data>
+  <data name="EmptyComponentName" xml:space="preserve">
+    <value>Component name cannot be empty.</value>
+  </data>
+  <data name="EmptyParameterName" xml:space="preserve">
+    <value>Empty parameter name.</value>
+  </data>
+  <data name="EmptyPropertyName" xml:space="preserve">
+    <value>The property name is empty.</value>
+  </data>
+  <data name="EndTagWithoutBegin" xml:space="preserve">
+    <value>END tag without BEGIN.</value>
+  </data>
+  <data name="ExpectedHMS" xml:space="preserve">
+    <value>Did not find H, M, or S to terminate integer.</value>
+  </data>
+  <data name="ExpectedM" xml:space="preserve">
+    <value>Did not find M to terminate integer.</value>
+  </data>
+  <data name="ExpectedP" xml:space="preserve">
+    <value>Expected P after + or -.</value>
+  </data>
+  <data name="ExpectedPlusMinus" xml:space="preserve">
+    <value>Expected +/- at start of offset.</value>
+  </data>
+  <data name="ExpectedS" xml:space="preserve">
+    <value>Did not find S to terminate integer.</value>
+  </data>
+  <data name="ExpectedT" xml:space="preserve">
+    <value>T expected.</value>
+  </data>
+  <data name="ExpectedTAfterDate" xml:space="preserve">
+    <value>Expected T after date.</value>
+  </data>
+  <data name="ExpectedWOrD" xml:space="preserve">
+    <value>Did not find W or D to terminate integer.</value>
+  </data>
+  <data name="ExpectedZ" xml:space="preserve">
+    <value>Expected Z at end of UTC time.</value>
+  </data>
+  <data name="IntervalMustBePositive" xml:space="preserve">
+    <value>Interval must be a positive integer.</value>
+  </data>
+  <data name="IntervalOnlyPermittedOnce" xml:space="preserve">
+    <value>INTERVAL only permitted once.</value>
+  </data>
+  <data name="InvalidCharacter" xml:space="preserve">
+    <value>Invalid character in string.</value>
+  </data>
+  <data name="InvalidCharacterInParameterName" xml:space="preserve">
+    <value>Invalid character in parameter name.</value>
+  </data>
+  <data name="InvalidCharacterInParameterText" xml:space="preserve">
+    <value>Invalid character in parameter text.</value>
+  </data>
+  <data name="InvalidCharacterInPropertyName" xml:space="preserve">
+    <value>Invalid character in property name.</value>
+  </data>
+  <data name="InvalidCharacterInPropertyValue" xml:space="preserve">
+    <value>Invalid character in property value.</value>
+  </data>
+  <data name="InvalidCharacterInQuotedString" xml:space="preserve">
+    <value>Invalid character in quoted string.</value>
+  </data>
+  <data name="InvalidCharacterInRecurrence" xml:space="preserve">
+    <value>Invalid character in recurrence.</value>
+  </data>
+  <data name="InvalidComponentId" xml:space="preserve">
+    <value>Invalid component ID.</value>
+  </data>
+  <data name="InvalidDateFormat" xml:space="preserve">
+    <value>Invalid date format.</value>
+  </data>
+  <data name="InvalidDateTimeLength" xml:space="preserve">
+    <value>Invalid length for DateTime.</value>
+  </data>
+  <data name="InvalidParameterId" xml:space="preserve">
+    <value>Invalid parameter ID.</value>
+  </data>
+  <data name="InvalidParameterValue" xml:space="preserve">
+    <value>Invalid parameter value.</value>
+  </data>
+  <data name="InvalidPropertyId" xml:space="preserve">
+    <value>Invalid property ID.</value>
+  </data>
+  <data name="InvalidReaderState" xml:space="preserve">
+    <value>This operation is not allowed in current reader state.</value>
+  </data>
+  <data name="InvalidState" xml:space="preserve">
+    <value>Invalid state encountered.</value>
+  </data>
+  <data name="InvalidStateForOperation" xml:space="preserve">
+    <value>Invalid state for operation.</value>
+  </data>
+  <data name="InvalidStateToWriteValue" xml:space="preserve">
+    <value>Invalid state to write a value.</value>
+  </data>
+  <data name="InvalidTimeFormat" xml:space="preserve">
+    <value>Invalid time format.</value>
+  </data>
+  <data name="InvalidTimeStringLength" xml:space="preserve">
+    <value>Invalid length for time string.</value>
+  </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>Invalid token in data.</value>
+  </data>
+  <data name="InvalidUtcOffsetLength" xml:space="preserve">
+    <value>Invalid length for UtcOffset data.</value>
+  </data>
+  <data name="InvalidValueFormat" xml:space="preserve">
+    <value>Invalid value format.</value>
+  </data>
+  <data name="InvalidValueTypeForProperty" xml:space="preserve">
+    <value>Invalid value type for property.</value>
+  </data>
+  <data name="MultivalueNotPermittedOnCount" xml:space="preserve">
+    <value>Multivalue not permitted on COUNT.</value>
+  </data>
+  <data name="MultivalueNotPermittedOnFreq" xml:space="preserve">
+    <value>Multivalue not permitted on FREQ.</value>
+  </data>
+  <data name="MultivalueNotPermittedOnInterval" xml:space="preserve">
+    <value>Multivalue not permitted on INTERVAL.</value>
+  </data>
+  <data name="MultivalueNotPermittedOnUntil" xml:space="preserve">
+    <value>Multivalue not permitted on UNTIL.</value>
+  </data>
+  <data name="MultivalueNotPermittedOnWkSt" xml:space="preserve">
+    <value>Multivalue not permitted on WKST.</value>
+  </data>
+  <data name="NonwritableStream" xml:space="preserve">
+    <value>Non-writable stream.</value>
+  </data>
+  <data name="NotAllComponentsClosed" xml:space="preserve">
+    <value>Not all components were closed correctly.</value>
+  </data>
+  <data name="OffsetOutOfRange" xml:space="preserve">
+    <value>Offset &lt; 0 or offset &gt; buffer.Length.</value>
+  </data>
+  <data name="ParameterNameMissing" xml:space="preserve">
+    <value>Parameter name is missing.</value>
+  </data>
+  <data name="ParametersNotPermittedOnComponentTag" xml:space="preserve">
+    <value>Parameters are not permitted on a component tag.</value>
+  </data>
+  <data name="ParameterValuesCannotContainDoubleQuote" xml:space="preserve">
+    <value>Parameter values cannot contain a double quote character.</value>
+  </data>
+  <data name="PropertyOutsideOfComponent" xml:space="preserve">
+    <value>A property was found that is not inside any component.</value>
+  </data>
+  <data name="PropertyTruncated" xml:space="preserve">
+    <value>Unexpected end of property.</value>
+  </data>
+  <data name="StateMustBeComponent" xml:space="preserve">
+    <value>State must be component.</value>
+  </data>
+  <data name="StreamHasAlreadyBeenClosed" xml:space="preserve">
+    <value>Stream has already been closed.</value>
+  </data>
+  <data name="StreamIsReadOnly" xml:space="preserve">
+    <value>This is a read-only stream.</value>
+  </data>
+  <data name="StreamMustAllowRead" xml:space="preserve">
+    <value>Stream must support read.</value>
+  </data>
+  <data name="StreamMustAllowWrite" xml:space="preserve">
+    <value>Stream must support write.</value>
+  </data>
+  <data name="UnexpectedEndOfStream" xml:space="preserve">
+    <value>Unexpected end of stream.</value>
+  </data>
+  <data name="UnknownDayOfWeek" xml:space="preserve">
+    <value>Unknown day of week.</value>
+  </data>
+  <data name="UnknownFrequencyValue" xml:space="preserve">
+    <value>Unknown frequency value.</value>
+  </data>
+  <data name="UnknownRecurrenceProperty" xml:space="preserve">
+    <value>Unknown Recurrence property.</value>
+  </data>
+  <data name="UntilNotPermittedWithCount" xml:space="preserve">
+    <value>UNTIL not permitted with COUNT.</value>
+  </data>
+  <data name="UntilOnlyPermittedOnce" xml:space="preserve">
+    <value>UNTIL only permitted once.</value>
+  </data>
+  <data name="UtcOffsetTimespanCannotContainDays" xml:space="preserve">
+    <value>Timespan for UTCOffset cannot contain days.</value>
+  </data>
+  <data name="ValueAlreadyRead" xml:space="preserve">
+    <value>Value has already been read.</value>
+  </data>
+  <data name="WkStOnlyPermittedOnce" xml:space="preserve">
+    <value>WKST only permitted once.</value>
+  </data>
+</root>

@@ -36,3 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("Butler.Schema.Globalization")]
 [assembly: InternalsVisibleTo("Butler.Schema.Mime")]
+[assembly: InternalsVisibleTo("Butler.Schema.Mime.Encoders")]
