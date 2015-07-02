@@ -13,39 +13,15 @@ namespace Butler.Schema.Data.TextConverters
   {
     private HtmlReader reader;
 
-    public HtmlAttributeId Id
-    {
-      get
-      {
-        return this.reader.AttributeReader_GetCurrentAttributeId();
-      }
-    }
+    public HtmlAttributeId Id => this.reader.AttributeReader_GetCurrentAttributeId();
 
-    public bool NameIsLong
-    {
-      get
-      {
-        return this.reader.AttributeReader_CurrentAttributeNameIsLong();
-      }
-    }
+      public bool NameIsLong => this.reader.AttributeReader_CurrentAttributeNameIsLong();
 
-    public bool HasValue
-    {
-      get
-      {
-        return this.reader.AttributeReader_CurrentAttributeHasValue();
-      }
-    }
+      public bool HasValue => this.reader.AttributeReader_CurrentAttributeHasValue();
 
-    public bool ValueIsLong
-    {
-      get
-      {
-        return this.reader.AttributeReader_CurrentAttributeValueIsLong();
-      }
-    }
+      public bool ValueIsLong => this.reader.AttributeReader_CurrentAttributeValueIsLong();
 
-    internal HtmlAttributeReader(HtmlReader reader)
+      internal HtmlAttributeReader(HtmlReader reader)
     {
       this.reader = reader;
     }

@@ -25,15 +25,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public override sealed bool RequiresSMTPUTF8
-    {
-      get
-      {
-        return !MimeString.IsPureASCII(this.Lines);
-      }
-    }
+    public override sealed bool RequiresSMTPUTF8 => !MimeString.IsPureASCII(this.Lines);
 
-    public AsciiTextHeader(string name, string value)
+      public AsciiTextHeader(string name, string value)
       : this(name, Header.GetHeaderId(name, true))
     {
       this.Value = value;

@@ -15,23 +15,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     internal FormatStore.StyleStore Styles;
     internal int StyleHandle;
 
-    public int Handle
-    {
-      get
-      {
-        return this.StyleHandle;
-      }
-    }
+    public int Handle => this.StyleHandle;
 
-    public bool IsNull
-    {
-      get
-      {
-        return this.StyleHandle == 0;
-      }
-    }
+      public bool IsNull => this.StyleHandle == 0;
 
-    public bool IsEmpty
+      public bool IsEmpty
     {
       get
       {
@@ -79,15 +67,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    internal int RefCount
-    {
-      get
-      {
-        return this.Styles.Plane(this.StyleHandle)[this.Styles.Index(this.StyleHandle)].RefCount;
-      }
-    }
+    internal int RefCount => this.Styles.Plane(this.StyleHandle)[this.Styles.Index(this.StyleHandle)].RefCount;
 
-    internal FormatStyle(FormatStore store, int styleHandle)
+      internal FormatStyle(FormatStore store, int styleHandle)
     {
       this.Styles = store.Styles;
       this.StyleHandle = styleHandle;

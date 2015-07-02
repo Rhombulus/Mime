@@ -17,47 +17,17 @@ namespace Butler.Schema.Data.TextConverters
     private int offset;
     private int count;
 
-    public char[] Buffer
-    {
-      get
-      {
-        return this.buffer;
-      }
-    }
+    public char[] Buffer => this.buffer;
 
-    public int Offset
-    {
-      get
-      {
-        return this.offset;
-      }
-    }
+      public int Offset => this.offset;
 
-    public int Length
-    {
-      get
-      {
-        return this.count;
-      }
-    }
+      public int Length => this.count;
 
-    public bool IsEmpty
-    {
-      get
-      {
-        return this.count == 0;
-      }
-    }
+      public bool IsEmpty => this.count == 0;
 
-    public char this[int index]
-    {
-      get
-      {
-        return this.buffer[this.offset + index];
-      }
-    }
+      public char this[int index] => this.buffer[this.offset + index];
 
-    public BufferString(char[] buffer, int offset, int count)
+      public BufferString(char[] buffer, int offset, int count)
     {
       this.buffer = buffer;
       this.offset = offset;

@@ -65,15 +65,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public bool AllowUTF8
-    {
-      get
-      {
-        return (this.decodingFlags & DecodingFlags.Utf8) == DecodingFlags.Utf8;
-      }
-    }
+    public bool AllowUTF8 => (this.decodingFlags & DecodingFlags.Utf8) == DecodingFlags.Utf8;
 
-    internal Globalization.Charset Charset
+      internal Globalization.Charset Charset
     {
       get
       {

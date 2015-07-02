@@ -29,23 +29,11 @@ namespace Butler.Schema.Data.Common
       }
     }
 
-    public override CultureInfo Parent
-    {
-      get
-      {
-        return this.parent;
-      }
-    }
+    public override CultureInfo Parent => this.parent;
 
-    public override string EnglishName
-    {
-      get
-      {
-        return this.description;
-      }
-    }
+      public override string EnglishName => this.description;
 
-    internal virtual bool UseSipName
+      internal virtual bool UseSipName
     {
       get
       {
@@ -57,23 +45,11 @@ namespace Butler.Schema.Data.Common
       }
     }
 
-    internal virtual string SipName
-    {
-      get
-      {
-        return this.sipName;
-      }
-    }
+    internal virtual string SipName => this.sipName;
 
-    internal virtual string SipSegmentID
-    {
-      get
-      {
-        return this.segmentID;
-      }
-    }
+      internal virtual string SipSegmentID => this.segmentID;
 
-    internal SipCultureInfoBase(CultureInfo parent, string segmentID)
+      internal SipCultureInfoBase(CultureInfo parent, string segmentID)
       : base(parent.Name)
     {
       this.parent = parent;

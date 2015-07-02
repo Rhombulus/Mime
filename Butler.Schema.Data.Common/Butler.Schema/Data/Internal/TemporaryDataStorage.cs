@@ -339,31 +339,13 @@ namespace Butler.Schema.Data.Internal
       private Func<int, byte[]> acquireBuffer;
       private Action<byte[]> releaseBuffer;
 
-      public int MaxBytes
-      {
-        get
-        {
-          return this.maximumSize;
-        }
-      }
+      public int MaxBytes => this.maximumSize;
 
-      public int BlockSize
-      {
-        get
-        {
-          return this.blockSize;
-        }
-      }
+        public int BlockSize => this.blockSize;
 
-      public int Length
-      {
-        get
-        {
-          return (int) this.length;
-        }
-      }
+        public int Length => (int) this.length;
 
-      public VirtualBuffer(int blockSize, int maximumSize)
+        public VirtualBuffer(int blockSize, int maximumSize)
       {
         this = new TemporaryDataStorage.VirtualBuffer(blockSize, maximumSize, (Func<int, byte[]>) null, (Action<byte[]>) null);
       }

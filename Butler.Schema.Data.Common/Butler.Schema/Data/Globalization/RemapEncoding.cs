@@ -16,95 +16,29 @@ namespace Butler.Schema.Data.Globalization
     private Encoding encodingEncoding;
     private Encoding decodingEncoding;
 
-    public override int CodePage
-    {
-      get
-      {
-        return this.encodingEncoding.CodePage;
-      }
-    }
+    public override int CodePage => this.encodingEncoding.CodePage;
 
-    public override string BodyName
-    {
-      get
-      {
-        return this.encodingEncoding.BodyName;
-      }
-    }
+      public override string BodyName => this.encodingEncoding.BodyName;
 
-    public override string EncodingName
-    {
-      get
-      {
-        return this.encodingEncoding.EncodingName;
-      }
-    }
+      public override string EncodingName => this.encodingEncoding.EncodingName;
 
-    public override string HeaderName
-    {
-      get
-      {
-        return this.encodingEncoding.HeaderName;
-      }
-    }
+      public override string HeaderName => this.encodingEncoding.HeaderName;
 
-    public override string WebName
-    {
-      get
-      {
-        return this.encodingEncoding.WebName;
-      }
-    }
+      public override string WebName => this.encodingEncoding.WebName;
 
-    public override int WindowsCodePage
-    {
-      get
-      {
-        return this.encodingEncoding.WindowsCodePage;
-      }
-    }
+      public override int WindowsCodePage => this.encodingEncoding.WindowsCodePage;
 
-    public override bool IsBrowserDisplay
-    {
-      get
-      {
-        return this.encodingEncoding.IsBrowserDisplay;
-      }
-    }
+      public override bool IsBrowserDisplay => this.encodingEncoding.IsBrowserDisplay;
 
-    public override bool IsBrowserSave
-    {
-      get
-      {
-        return this.encodingEncoding.IsBrowserSave;
-      }
-    }
+      public override bool IsBrowserSave => this.encodingEncoding.IsBrowserSave;
 
-    public override bool IsMailNewsDisplay
-    {
-      get
-      {
-        return this.encodingEncoding.IsMailNewsDisplay;
-      }
-    }
+      public override bool IsMailNewsDisplay => this.encodingEncoding.IsMailNewsDisplay;
 
-    public override bool IsMailNewsSave
-    {
-      get
-      {
-        return this.encodingEncoding.IsMailNewsSave;
-      }
-    }
+      public override bool IsMailNewsSave => this.encodingEncoding.IsMailNewsSave;
 
-    public override bool IsSingleByte
-    {
-      get
-      {
-        return this.encodingEncoding.IsSingleByte;
-      }
-    }
+      public override bool IsSingleByte => this.encodingEncoding.IsSingleByte;
 
-    public RemapEncoding(int codePage)
+      public RemapEncoding(int codePage)
       : base(codePage)
     {
       if (codePage == 28591)

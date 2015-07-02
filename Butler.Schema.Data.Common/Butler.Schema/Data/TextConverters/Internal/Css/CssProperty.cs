@@ -14,111 +14,33 @@ namespace Butler.Schema.Data.TextConverters.Internal.Css
   {
     private CssToken token;
 
-    public int Index
-    {
-      get
-      {
-        return this.token.CurrentProperty;
-      }
-    }
+    public int Index => this.token.CurrentProperty;
 
-    public bool IsCompleteProperty
-    {
-      get
-      {
-        return this.token.PropertyList[this.token.CurrentProperty].IsCompleteProperty;
-      }
-    }
+      public bool IsCompleteProperty => this.token.PropertyList[this.token.CurrentProperty].IsCompleteProperty;
 
-    public bool IsPropertyBegin
-    {
-      get
-      {
-        return this.token.PropertyList[this.token.CurrentProperty].IsPropertyBegin;
-      }
-    }
+      public bool IsPropertyBegin => this.token.PropertyList[this.token.CurrentProperty].IsPropertyBegin;
 
-    public bool IsPropertyEnd
-    {
-      get
-      {
-        return this.token.PropertyList[this.token.CurrentProperty].IsPropertyEnd;
-      }
-    }
+      public bool IsPropertyEnd => this.token.PropertyList[this.token.CurrentProperty].IsPropertyEnd;
 
-    public bool IsPropertyNameEnd
-    {
-      get
-      {
-        return this.token.PropertyList[this.token.CurrentProperty].IsPropertyNameEnd;
-      }
-    }
+      public bool IsPropertyNameEnd => this.token.PropertyList[this.token.CurrentProperty].IsPropertyNameEnd;
 
-    public bool IsDeleted
-    {
-      get
-      {
-        return this.token.PropertyList[this.token.CurrentProperty].IsPropertyDeleted;
-      }
-    }
+      public bool IsDeleted => this.token.PropertyList[this.token.CurrentProperty].IsPropertyDeleted;
 
-    public bool IsPropertyValueQuoted
-    {
-      get
-      {
-        return this.token.PropertyList[this.token.CurrentProperty].IsPropertyValueQuoted;
-      }
-    }
+      public bool IsPropertyValueQuoted => this.token.PropertyList[this.token.CurrentProperty].IsPropertyValueQuoted;
 
-    public CssNameIndex NameId
-    {
-      get
-      {
-        return this.token.PropertyList[this.token.CurrentProperty].NameId;
-      }
-    }
+      public CssNameIndex NameId => this.token.PropertyList[this.token.CurrentProperty].NameId;
 
-    public char QuoteChar
-    {
-      get
-      {
-        return (char) this.token.PropertyList[this.token.CurrentProperty].QuoteChar;
-      }
-    }
+      public char QuoteChar => (char) this.token.PropertyList[this.token.CurrentProperty].QuoteChar;
 
-    public bool HasNameFragment
-    {
-      get
-      {
-        return !this.token.PropertyList[this.token.CurrentProperty].Name.IsEmpty;
-      }
-    }
+      public bool HasNameFragment => !this.token.PropertyList[this.token.CurrentProperty].Name.IsEmpty;
 
-    public CssToken.PropertyNameTextReader Name
-    {
-      get
-      {
-        return new CssToken.PropertyNameTextReader(this.token);
-      }
-    }
+      public CssToken.PropertyNameTextReader Name => new CssToken.PropertyNameTextReader(this.token);
 
-    public bool HasValueFragment
-    {
-      get
-      {
-        return !this.token.PropertyList[this.token.CurrentProperty].Value.IsEmpty;
-      }
-    }
+      public bool HasValueFragment => !this.token.PropertyList[this.token.CurrentProperty].Value.IsEmpty;
 
-    public CssToken.PropertyValueTextReader Value
-    {
-      get
-      {
-        return new CssToken.PropertyValueTextReader(this.token);
-      }
-    }
+      public CssToken.PropertyValueTextReader Value => new CssToken.PropertyValueTextReader(this.token);
 
-    internal CssProperty(CssToken token)
+      internal CssProperty(CssToken token)
     {
       this.token = token;
     }

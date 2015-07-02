@@ -14,23 +14,11 @@ namespace Butler.Schema.Data.TextConverters
     private char[] buffer;
     private int count;
 
-    public char[] Buffer
-    {
-      get
-      {
-        return this.buffer;
-      }
-    }
+    public char[] Buffer => this.buffer;
 
-    public int Offset
-    {
-      get
-      {
-        return 0;
-      }
-    }
+      public int Offset => 0;
 
-    public int Length
+      public int Length
     {
       get
       {
@@ -52,15 +40,9 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    public BufferString BufferString
-    {
-      get
-      {
-        return new BufferString(this.buffer, 0, this.count);
-      }
-    }
+    public BufferString BufferString => new BufferString(this.buffer, 0, this.count);
 
-    public char this[int offset]
+      public char this[int offset]
     {
       get
       {

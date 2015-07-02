@@ -708,47 +708,17 @@ namespace Butler.Schema.Data.ContentTypes.Tnef
     internal const TnefPropertyId ReadReceiptSmtpAddress = (TnefPropertyId) 3725;
     private int tag;
 
-    public TnefPropertyId Id
-    {
-      get
-      {
-        return (TnefPropertyId) (this.tag >> 16);
-      }
-    }
+    public TnefPropertyId Id => (TnefPropertyId) (this.tag >> 16);
 
-    public TnefPropertyType TnefType
-    {
-      get
-      {
-        return (TnefPropertyType) (this.tag & (int) ushort.MaxValue);
-      }
-    }
+      public TnefPropertyType TnefType => (TnefPropertyType) (this.tag & (int) ushort.MaxValue);
 
-    public bool IsMultiValued
-    {
-      get
-      {
-        return (this.tag & 4096) != 0;
-      }
-    }
+      public bool IsMultiValued => (this.tag & 4096) != 0;
 
-    public TnefPropertyType ValueTnefType
-    {
-      get
-            {
-                return (TnefPropertyType)((short)(this.TnefType & ~TnefPropertyType.MultiValued));
-            }
-    }
+      public TnefPropertyType ValueTnefType => (TnefPropertyType)((short)(this.TnefType & ~TnefPropertyType.MultiValued));
 
-    public bool IsNamed
-    {
-      get
-      {
-        return ((long) this.tag & 2147483648L) != 0L;
-      }
-    }
+      public bool IsNamed => ((long) this.tag & 2147483648L) != 0L;
 
-    public bool IsTnefTypeValid
+      public bool IsTnefTypeValid
     {
       get
       {

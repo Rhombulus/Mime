@@ -18,15 +18,9 @@ namespace Butler.Schema.Data.ContentTypes.Internal
     private ContentLineWriter.FoldingTextWriter foldingTextWriter;
     private bool emptyParamName;
 
-    public ContentLineWriteState State
-    {
-      get
-      {
-        return this.state;
-      }
-    }
+    public ContentLineWriteState State => this.state;
 
-    public ContentLineWriter(Stream s, Encoding encoding)
+      public ContentLineWriter(Stream s, Encoding encoding)
     {
       this.foldingTextWriter = new ContentLineWriter.FoldingTextWriter(s, encoding, "\r\n ");
     }
@@ -183,15 +177,9 @@ namespace Butler.Schema.Data.ContentTypes.Internal
       private Decoder decoder;
       private ContentLineWriter.FoldingTextWriter.States state;
 
-      public override Encoding Encoding
-      {
-        get
-        {
-          return this.encoding;
-        }
-      }
+      public override Encoding Encoding => this.encoding;
 
-      public FoldingTextWriter(Stream s, Encoding encoding, string foldingString)
+        public FoldingTextWriter(Stream s, Encoding encoding, string foldingString)
       {
         this.baseStream = s;
         this.encoding = encoding;

@@ -612,13 +612,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
             return ((num + this.parseThreshold) <= parseEnd);
         }
 
-        public Html.HtmlToken Token
-        {
-            get
-            {
-                return this.token;
-            }
-        }
+        public Html.HtmlToken Token => this.token;
+
 
         private enum NewLineState
         {

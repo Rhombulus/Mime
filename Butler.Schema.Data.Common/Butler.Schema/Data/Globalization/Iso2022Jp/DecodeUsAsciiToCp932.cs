@@ -11,15 +11,9 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp
 {
   internal class DecodeUsAsciiToCp932 : DecodeToCp932
   {
-    public override char Abbreviation
-    {
-      get
-      {
-        return 'a';
-      }
-    }
+    public override char Abbreviation => 'a';
 
-    public override bool IsEscapeSequenceHandled(Escape escape)
+      public override bool IsEscapeSequenceHandled(Escape escape)
     {
       return escape.Sequence == EscapeSequence.Iso646Irv;
     }

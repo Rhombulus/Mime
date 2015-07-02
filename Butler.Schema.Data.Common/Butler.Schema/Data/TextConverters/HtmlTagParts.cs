@@ -14,71 +14,23 @@ namespace Butler.Schema.Data.TextConverters
     private Internal.Html.HtmlToken.TagPartMajor major;
     private Internal.Html.HtmlToken.TagPartMinor minor;
 
-    public bool Begin
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.TagPartMajor.Begin == (this.major & Internal.Html.HtmlToken.TagPartMajor.Begin);
-      }
-    }
+    public bool Begin => Internal.Html.HtmlToken.TagPartMajor.Begin == (this.major & Internal.Html.HtmlToken.TagPartMajor.Begin);
 
-    public bool End
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.TagPartMajor.End == (this.major & Internal.Html.HtmlToken.TagPartMajor.End);
-      }
-    }
+      public bool End => Internal.Html.HtmlToken.TagPartMajor.End == (this.major & Internal.Html.HtmlToken.TagPartMajor.End);
 
-    public bool Complete
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.TagPartMajor.Complete == this.major;
-      }
-    }
+      public bool Complete => Internal.Html.HtmlToken.TagPartMajor.Complete == this.major;
 
-    public bool NameBegin
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.TagPartMinor.BeginName == (this.minor & Internal.Html.HtmlToken.TagPartMinor.BeginName);
-      }
-    }
+      public bool NameBegin => Internal.Html.HtmlToken.TagPartMinor.BeginName == (this.minor & Internal.Html.HtmlToken.TagPartMinor.BeginName);
 
-    public bool Name
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.TagPartMinor.ContinueName == (this.minor & Internal.Html.HtmlToken.TagPartMinor.ContinueName);
-      }
-    }
+      public bool Name => Internal.Html.HtmlToken.TagPartMinor.ContinueName == (this.minor & Internal.Html.HtmlToken.TagPartMinor.ContinueName);
 
-    public bool NameEnd
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.TagPartMinor.EndName == (this.minor & Internal.Html.HtmlToken.TagPartMinor.EndName);
-      }
-    }
+      public bool NameEnd => Internal.Html.HtmlToken.TagPartMinor.EndName == (this.minor & Internal.Html.HtmlToken.TagPartMinor.EndName);
 
-    public bool NameComplete
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.TagPartMinor.CompleteName == (this.minor & Internal.Html.HtmlToken.TagPartMinor.CompleteName);
-      }
-    }
+      public bool NameComplete => Internal.Html.HtmlToken.TagPartMinor.CompleteName == (this.minor & Internal.Html.HtmlToken.TagPartMinor.CompleteName);
 
-    public bool Attributes
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.TagPartMinor.Empty != (this.minor & (Internal.Html.HtmlToken.TagPartMinor) 144);
-      }
-    }
+      public bool Attributes => Internal.Html.HtmlToken.TagPartMinor.Empty != (this.minor & (Internal.Html.HtmlToken.TagPartMinor) 144);
 
-    internal HtmlTagParts(Internal.Html.HtmlToken.TagPartMajor major, Internal.Html.HtmlToken.TagPartMinor minor)
+      internal HtmlTagParts(Internal.Html.HtmlToken.TagPartMajor major, Internal.Html.HtmlToken.TagPartMinor minor)
     {
       this.minor = minor;
       this.major = major;

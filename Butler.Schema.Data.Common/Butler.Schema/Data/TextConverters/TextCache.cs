@@ -16,15 +16,9 @@ namespace Butler.Schema.Data.TextConverters
     private TextCache.CacheEntry tailEntry;
     private TextCache.CacheEntry freeList;
 
-    public int Length
-    {
-      get
-      {
-        return this.cachedLength;
-      }
-    }
+    public int Length => this.cachedLength;
 
-    public void Reset()
+      public void Reset()
     {
       while (this.headEntry != null)
       {
@@ -122,15 +116,9 @@ namespace Butler.Schema.Data.TextConverters
       private int offset;
       private TextCache.CacheEntry next;
 
-      public int Length
-      {
-        get
-        {
-          return this.count;
-        }
-      }
+      public int Length => this.count;
 
-      public TextCache.CacheEntry Next
+        public TextCache.CacheEntry Next
       {
         get
         {

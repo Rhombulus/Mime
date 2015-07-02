@@ -30,15 +30,9 @@ namespace Butler.Schema.Data.TextConverters
     private int testTraceStopOnTokenNum;
     private Stream testFormatTraceStream;
 
-    public TextExtractionMode TextExtractionMode
-    {
-      get
-      {
-        return this.textExtractionMode;
-      }
-    }
+    public TextExtractionMode TextExtractionMode => this.textExtractionMode;
 
-    public Encoding OutputEncoding
+      public Encoding OutputEncoding
     {
       get
       {

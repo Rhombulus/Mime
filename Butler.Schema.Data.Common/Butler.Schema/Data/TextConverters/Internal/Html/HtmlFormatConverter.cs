@@ -35,15 +35,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private Format.PropertyId attributePropertyId;
     private IProgressMonitor progressMonitor;
 
-    private bool CanFlush
-    {
-      get
-      {
-        return this.output.CanAcceptMoreOutput;
-      }
-    }
+    private bool CanFlush => this.output.CanAcceptMoreOutput;
 
-    public HtmlFormatConverter(HtmlNormalizingParser parser, Format.FormatOutput output, bool testTreatNbspAsBreakable, Stream traceStream, bool traceShowTokenNum, int traceStopOnTokenNum, Stream formatConverterTraceStream, IProgressMonitor progressMonitor)
+      public HtmlFormatConverter(HtmlNormalizingParser parser, Format.FormatOutput output, bool testTreatNbspAsBreakable, Stream traceStream, bool traceShowTokenNum, int traceStopOnTokenNum, Stream formatConverterTraceStream, IProgressMonitor progressMonitor)
       : base(formatConverterTraceStream)
     {
       this.parser = parser;
@@ -988,15 +982,9 @@ label_16:
       public string Cls;
       public string Id;
 
-      public int Specificity
-      {
-        get
-        {
-          return (this.Id == null ? 0 : 4) + (this.Cls == null ? 0 : 2) + (this.NameId == HtmlNameIndex.Unknown ? 0 : 1);
-        }
-      }
+      public int Specificity => (this.Id == null ? 0 : 4) + (this.Cls == null ? 0 : 2) + (this.NameId == HtmlNameIndex.Unknown ? 0 : 1);
 
-      public StyleSelector(HtmlNameIndex nameId, string cls, string id)
+        public StyleSelector(HtmlNameIndex nameId, string cls, string id)
       {
         this.NameId = nameId;
         this.Cls = cls == null || cls.Length == 0 || cls.Equals("*") ? (string) null : cls;

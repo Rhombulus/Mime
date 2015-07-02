@@ -14,111 +14,33 @@ namespace Butler.Schema.Data.Globalization
   {
     private Encoding defaultEncoding;
 
-    internal Iso2022DecodingMode KillSwitch
-    {
-      get
-      {
-        return Iso2022JpEncoding.InternalReadKillSwitch();
-      }
-    }
+    internal Iso2022DecodingMode KillSwitch => Iso2022JpEncoding.InternalReadKillSwitch();
 
-    public override int CodePage
-    {
-      get
-      {
-        return this.defaultEncoding.CodePage;
-      }
-    }
+      public override int CodePage => this.defaultEncoding.CodePage;
 
-    public override string BodyName
-    {
-      get
-      {
-        return this.defaultEncoding.BodyName;
-      }
-    }
+      public override string BodyName => this.defaultEncoding.BodyName;
 
-    public override string EncodingName
-    {
-      get
-      {
-        return this.defaultEncoding.EncodingName;
-      }
-    }
+      public override string EncodingName => this.defaultEncoding.EncodingName;
 
-    public override string HeaderName
-    {
-      get
-      {
-        return this.defaultEncoding.HeaderName;
-      }
-    }
+      public override string HeaderName => this.defaultEncoding.HeaderName;
 
-    public override string WebName
-    {
-      get
-      {
-        return this.defaultEncoding.WebName;
-      }
-    }
+      public override string WebName => this.defaultEncoding.WebName;
 
-    public override int WindowsCodePage
-    {
-      get
-      {
-        return this.defaultEncoding.WindowsCodePage;
-      }
-    }
+      public override int WindowsCodePage => this.defaultEncoding.WindowsCodePage;
 
-    public override bool IsBrowserDisplay
-    {
-      get
-      {
-        return this.defaultEncoding.IsBrowserDisplay;
-      }
-    }
+      public override bool IsBrowserDisplay => this.defaultEncoding.IsBrowserDisplay;
 
-    public override bool IsBrowserSave
-    {
-      get
-      {
-        return this.defaultEncoding.IsBrowserSave;
-      }
-    }
+      public override bool IsBrowserSave => this.defaultEncoding.IsBrowserSave;
 
-    public override bool IsMailNewsDisplay
-    {
-      get
-      {
-        return this.defaultEncoding.IsMailNewsDisplay;
-      }
-    }
+      public override bool IsMailNewsDisplay => this.defaultEncoding.IsMailNewsDisplay;
 
-    public override bool IsMailNewsSave
-    {
-      get
-      {
-        return this.defaultEncoding.IsMailNewsSave;
-      }
-    }
+      public override bool IsMailNewsSave => this.defaultEncoding.IsMailNewsSave;
 
-    public override bool IsSingleByte
-    {
-      get
-      {
-        return this.defaultEncoding.IsSingleByte;
-      }
-    }
+      public override bool IsSingleByte => this.defaultEncoding.IsSingleByte;
 
-    internal Encoding DefaultEncoding
-    {
-      get
-      {
-        return this.defaultEncoding;
-      }
-    }
+      internal Encoding DefaultEncoding => this.defaultEncoding;
 
-    public Iso2022JpEncoding(int codePage)
+      public Iso2022JpEncoding(int codePage)
       : base(codePage)
     {
       if (codePage == 50220)

@@ -46,23 +46,11 @@ namespace Butler.Schema.Data
       }
     }
 
-    public bool IsLocalFull
-    {
-      get
-      {
-        return this.isLocalFull;
-      }
-    }
+    public bool IsLocalFull => this.isLocalFull;
 
-    public bool IsUnc
-    {
-      get
-      {
-        return this.isUnc;
-      }
-    }
+      public bool IsUnc => this.isUnc;
 
-    public string DriveName
+      public string DriveName
     {
       get
       {

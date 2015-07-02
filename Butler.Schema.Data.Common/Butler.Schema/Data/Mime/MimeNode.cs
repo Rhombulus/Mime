@@ -12,11 +12,7 @@ namespace Butler.Schema.Data.Mime {
 
         internal MimeNode() {}
 
-        public bool HasChildren {
-            get {
-                return null != this.FirstChild;
-            }
-        }
+        public bool HasChildren => null != this.FirstChild;
 
         public MimeNode Parent { get; private set; }
 

@@ -50,15 +50,9 @@ namespace Butler.Schema.Data.Mime
     private string decodedValue;
     private bool allowAppend;
 
-    public string Name
-    {
-      get
-      {
-        return this.paramName;
-      }
-    }
+    public string Name => this.paramName;
 
-    public string Value
+      public string Value
     {
       get
       {
@@ -107,15 +101,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    internal int RawLength
-    {
-      get
-      {
-        return this.valueFragments.GetLength(4026531839U);
-      }
-    }
+    internal int RawLength => this.valueFragments.GetLength(4026531839U);
 
-    internal bool ValueEncoded
+      internal bool ValueEncoded
     {
       set
       {

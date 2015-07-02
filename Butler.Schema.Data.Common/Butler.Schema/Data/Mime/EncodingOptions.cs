@@ -26,31 +26,13 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public string CultureName
-    {
-      get
-      {
-        return this.cultureName;
-      }
-    }
+    public string CultureName => this.cultureName;
 
-    public EncodingFlags EncodingFlags
-    {
-      get
-      {
-        return this.encodingFlags;
-      }
-    }
+      public EncodingFlags EncodingFlags => this.encodingFlags;
 
-    public bool AllowUTF8
-    {
-      get
-      {
-        return (this.encodingFlags & EncodingFlags.AllowUTF8) == EncodingFlags.AllowUTF8;
-      }
-    }
+      public bool AllowUTF8 => (this.encodingFlags & EncodingFlags.AllowUTF8) == EncodingFlags.AllowUTF8;
 
-    public EncodingOptions(string charsetName, string cultureName, EncodingFlags encodingFlags)
+      public EncodingOptions(string charsetName, string cultureName, EncodingFlags encodingFlags)
     {
       this.cultureName = cultureName;
       this.encodingFlags = encodingFlags;

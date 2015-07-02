@@ -18,15 +18,9 @@ namespace Butler.Schema.Data.TextConverters
 
     public abstract bool CanAcceptMore { get; }
 
-    bool ITextSink.IsEnough
-    {
-      get
-      {
-        return false;
-      }
-    }
+    bool ITextSink.IsEnough => false;
 
-    internal IReportBytes ReportBytes
+      internal IReportBytes ReportBytes
     {
       get
       {

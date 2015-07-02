@@ -15,23 +15,11 @@ namespace Butler.Schema.Data.Internal
     private string name;
     private IList<CtsConfigurationArgument> arguments;
 
-    public string Name
-    {
-      get
-      {
-        return this.name;
-      }
-    }
+    public string Name => this.name;
 
-    public IList<CtsConfigurationArgument> Arguments
-    {
-      get
-      {
-        return this.arguments;
-      }
-    }
+      public IList<CtsConfigurationArgument> Arguments => this.arguments;
 
-    internal CtsConfigurationSetting(string name)
+      internal CtsConfigurationSetting(string name)
     {
       this.name = name;
       this.arguments = (IList<CtsConfigurationArgument>) new List<CtsConfigurationArgument>();

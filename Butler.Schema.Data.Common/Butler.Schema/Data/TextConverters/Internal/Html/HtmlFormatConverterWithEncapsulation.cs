@@ -122,15 +122,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       private HtmlFormatConverter builder;
       private char[] literalBuffer;
 
-      public bool IsEnough
-      {
-        get
-        {
-          return false;
-        }
-      }
+      public bool IsEnough => false;
 
-      public MarkupSink(HtmlFormatConverter builder)
+        public MarkupSink(HtmlFormatConverter builder)
       {
         this.builder = builder;
         this.literalBuffer = new char[2];

@@ -452,13 +452,8 @@ namespace Butler.Schema.Data.TextConverters.Internal.Text
             GC.SuppressFinalize(this);
         }
 
-        public TextToken Token
-        {
-            get
-            {
-                return this.token;
-            }
-        }
+        public TextToken Token => this.token;
+
     }
 }
 

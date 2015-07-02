@@ -16,15 +16,9 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp
     private byte leftoverByte;
     private bool runBeganWithEscape;
 
-    public override char Abbreviation
-    {
-      get
-      {
-        return 'e';
-      }
-    }
+    public override char Abbreviation => 'e';
 
-    public override bool IsEscapeSequenceHandled(Escape escape)
+      public override bool IsEscapeSequenceHandled(Escape escape)
     {
       if (escape.Sequence != EscapeSequence.JisX0208_1978 && escape.Sequence != EscapeSequence.JisX0208_1983)
         return escape.Sequence == EscapeSequence.JisX0208_1990;

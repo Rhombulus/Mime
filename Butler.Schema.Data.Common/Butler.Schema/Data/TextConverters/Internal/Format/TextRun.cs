@@ -18,31 +18,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private uint position;
     private bool isImmutable;
 
-    public uint Position
-    {
-      get
-      {
-        return this.position;
-      }
-    }
+    public uint Position => this.position;
 
-    public TextRunType Type
-    {
-      get
-      {
-        return FormatStore.TextStore.TypeFromRunHeader(this.text.Pick(this.position));
-      }
-    }
+      public TextRunType Type => FormatStore.TextStore.TypeFromRunHeader(this.text.Pick(this.position));
 
-    public int EffectiveLength
-    {
-      get
-      {
-        return FormatStore.TextStore.LengthFromRunHeader(this.text.Pick(this.position));
-      }
-    }
+      public int EffectiveLength => FormatStore.TextStore.LengthFromRunHeader(this.text.Pick(this.position));
 
-    public int Length
+      public int Length
     {
       get
       {
@@ -64,23 +46,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    private bool IsLong
-    {
-      get
-      {
-        return this.Type < TextRunType.FirstShort;
-      }
-    }
+    private bool IsLong => this.Type < TextRunType.FirstShort;
 
-    public char this[int index]
-    {
-      get
-      {
-        return this.text.Plane(this.position)[this.text.Index(this.position) + 1 + index];
-      }
-    }
+      public char this[int index] => this.text.Plane(this.position)[this.text.Index(this.position) + 1 + index];
 
-    internal TextRun(FormatStore.TextStore text, uint position)
+      internal TextRun(FormatStore.TextStore text, uint position)
     {
       this.isImmutable = false;
       this.text = text;

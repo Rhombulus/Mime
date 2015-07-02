@@ -39,95 +39,29 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     private bool stripZeroBytes;
     private Dictionary<int, Decoder> decoderCache;
 
-    public RtfTokenId Id
-    {
-      get
-      {
-        return this.id;
-      }
-    }
+    public RtfTokenId Id => this.id;
 
-    public byte[] Buffer
-    {
-      get
-      {
-        return this.dataBuffer;
-      }
-    }
+      public byte[] Buffer => this.dataBuffer;
 
-    public int Offset
-    {
-      get
-      {
-        return this.offset;
-      }
-    }
+      public int Offset => this.offset;
 
-    public int Length
-    {
-      get
-      {
-        return this.length;
-      }
-    }
+      public int Length => this.length;
 
-    public bool IsEmpty
-    {
-      get
-      {
-        return this.runQueueTail == 0;
-      }
-    }
+      public bool IsEmpty => this.runQueueTail == 0;
 
-    public RtfToken.RunEnumerator Runs
-    {
-      get
-      {
-        return new RtfToken.RunEnumerator(this);
-      }
-    }
+      public RtfToken.RunEnumerator Runs => new RtfToken.RunEnumerator(this);
 
-    public RtfToken.KeywordEnumerator Keywords
-    {
-      get
-      {
-        return new RtfToken.KeywordEnumerator(this);
-      }
-    }
+      public RtfToken.KeywordEnumerator Keywords => new RtfToken.KeywordEnumerator(this);
 
-    public TextMapping TextMapping
-    {
-      get
-      {
-        return this.textMapping;
-      }
-    }
+      public TextMapping TextMapping => this.textMapping;
 
-    public int TextCodePage
-    {
-      get
-      {
-        return this.textCodePage;
-      }
-    }
+      public int TextCodePage => this.textCodePage;
 
-    public RtfToken.TextReader Text
-    {
-      get
-      {
-        return new RtfToken.TextReader(this);
-      }
-    }
+      public RtfToken.TextReader Text => new RtfToken.TextReader(this);
 
-    public RtfToken.TextEnumerator TextElements
-    {
-      get
-      {
-        return new RtfToken.TextEnumerator(this);
-      }
-    }
+      public RtfToken.TextEnumerator TextElements => new RtfToken.TextEnumerator(this);
 
-    public bool StripZeroBytes
+      public bool StripZeroBytes
     {
       get
       {
@@ -139,39 +73,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       }
     }
 
-    internal RtfRunEntry[] RunQueue
-    {
-      get
-      {
-        return this.runQueue;
-      }
-    }
+    internal RtfRunEntry[] RunQueue => this.runQueue;
 
-    internal int CurrentRun
-    {
-      get
-      {
-        return this.currentRun;
-      }
-    }
+      internal int CurrentRun => this.currentRun;
 
-    internal int CurrentRunOffset
-    {
-      get
-      {
-        return this.currentRunOffset;
-      }
-    }
+      internal int CurrentRunOffset => this.currentRunOffset;
 
-    internal char[] CharBuffer
-    {
-      get
-      {
-        return this.charBuffer;
-      }
-    }
+      internal char[] CharBuffer => this.charBuffer;
 
-    internal bool IsTextEof
+      internal bool IsTextEof
     {
       get
       {
@@ -181,31 +91,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       }
     }
 
-    internal RunTextType ElementTextType
-    {
-      get
-      {
-        return this.elementTextType;
-      }
-    }
+    internal RunTextType ElementTextType => this.elementTextType;
 
-    internal int ElementOffset
-    {
-      get
-      {
-        return this.elementOffset;
-      }
-    }
+      internal int ElementOffset => this.elementOffset;
 
-    internal int ElementLength
-    {
-      get
-      {
-        return this.elementLength;
-      }
-    }
+      internal int ElementLength => this.elementLength;
 
-    public RtfToken(byte[] buffer, RtfRunEntry[] runQueue)
+      public RtfToken(byte[] buffer, RtfRunEntry[] runQueue)
     {
       this.dataBuffer = buffer;
       this.runQueue = runQueue;
@@ -653,23 +545,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     {
       private RtfToken token;
 
-      public int Count
-      {
-        get
-        {
-          return this.token.runQueueTail;
-        }
-      }
+      public int Count => this.token.runQueueTail;
 
-      public RtfRun Current
-      {
-        get
-        {
-          return new RtfRun(this.token);
-        }
-      }
+        public RtfRun Current => new RtfRun(this.token);
 
-      internal RunEnumerator(RtfToken token)
+        internal RunEnumerator(RtfToken token)
       {
         this.token = token;
       }
@@ -705,23 +585,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     {
       private RtfToken token;
 
-      public int Count
-      {
-        get
-        {
-          return this.token.runQueueTail;
-        }
-      }
+      public int Count => this.token.runQueueTail;
 
-      public RtfKeyword Current
-      {
-        get
-        {
-          return new RtfKeyword(this.token);
-        }
-      }
+        public RtfKeyword Current => new RtfKeyword(this.token);
 
-      internal KeywordEnumerator(RtfToken token)
+        internal KeywordEnumerator(RtfToken token)
       {
         this.token = token;
       }
@@ -806,15 +674,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     {
       private RtfToken token;
 
-      public RtfTextElement Current
-      {
-        get
-        {
-          return new RtfTextElement(this.token);
-        }
-      }
+      public RtfTextElement Current => new RtfTextElement(this.token);
 
-      internal TextEnumerator(RtfToken token)
+        internal TextEnumerator(RtfToken token)
       {
         this.token = token;
       }

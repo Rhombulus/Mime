@@ -41,23 +41,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private HtmlInjection injection;
     private HtmlNormalizingParser.DocumentState saveState;
 
-    public HtmlToken Token
-    {
-      get
-      {
-        return this.token;
-      }
-    }
+    public HtmlToken Token => this.token;
 
-    public int CurrentOffset
-    {
-      get
-      {
-        return this.parser.CurrentOffset;
-      }
-    }
+      public int CurrentOffset => this.parser.CurrentOffset;
 
-    public HtmlNormalizingParser(HtmlParser parser, HtmlInjection injection, bool ensureHead, int maxNesting, bool testBoundaryConditions, Stream traceStream, bool traceShowTokenNum, int traceStopOnTokenNum)
+      public HtmlNormalizingParser(HtmlParser parser, HtmlInjection injection, bool ensureHead, int maxNesting, bool testBoundaryConditions, Stream traceStream, bool traceShowTokenNum, int traceStopOnTokenNum)
     {
       this.parser = parser;
       this.parser.SetRestartConsumer((IRestartable) this);
@@ -1146,15 +1134,9 @@ label_8:
       private bool validRTC;
       private HtmlTagIndex tagIdRTC;
 
-      public int SavedStackTop
-      {
-        get
-        {
-          return this.elementStackTop;
-        }
-      }
+      public int SavedStackTop => this.elementStackTop;
 
-      public void Save(HtmlNormalizingParser document, int stackLevel)
+        public void Save(HtmlNormalizingParser document, int stackLevel)
       {
         if (stackLevel != document.elementStackTop)
         {

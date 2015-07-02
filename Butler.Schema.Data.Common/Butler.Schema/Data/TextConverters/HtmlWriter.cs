@@ -44,31 +44,13 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    bool ITextSink.IsEnough
-    {
-      get
-      {
-        return false;
-      }
-    }
+    bool ITextSink.IsEnough => false;
 
-    internal bool HasEncoding
-    {
-      get
-      {
-        return this.output is ConverterEncodingOutput;
-      }
-    }
+      internal bool HasEncoding => this.output is ConverterEncodingOutput;
 
-    internal bool CodePageSameAsInput
-    {
-      get
-      {
-        return (this.output as ConverterEncodingOutput).CodePageSameAsInput;
-      }
-    }
+      internal bool CodePageSameAsInput => (this.output as ConverterEncodingOutput).CodePageSameAsInput;
 
-    internal Encoding Encoding
+      internal Encoding Encoding
     {
       get
       {
@@ -80,47 +62,17 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    internal bool CanAcceptMore
-    {
-      get
-      {
-        return this.output.CanAcceptMore;
-      }
-    }
+    internal bool CanAcceptMore => this.output.CanAcceptMore;
 
-    internal bool IsTagOpen
-    {
-      get
-      {
-        return this.outputState != HtmlWriter.OutputState.OutsideTag;
-      }
-    }
+      internal bool IsTagOpen => this.outputState != HtmlWriter.OutputState.OutsideTag;
 
-    internal int LineLength
-    {
-      get
-      {
-        return this.lineLength;
-      }
-    }
+      internal int LineLength => this.lineLength;
 
-    internal int LiteralWhitespaceNesting
-    {
-      get
-      {
-        return this.literalWhitespaceNesting;
-      }
-    }
+      internal int LiteralWhitespaceNesting => this.literalWhitespaceNesting;
 
-    internal bool IsCopyPending
-    {
-      get
-      {
-        return this.copyPending;
-      }
-    }
+      internal bool IsCopyPending => this.copyPending;
 
-    public HtmlWriter(Stream output, Encoding outputEncoding)
+      public HtmlWriter(Stream output, Encoding outputEncoding)
     {
       if (output == null)
         throw new ArgumentNullException("output");

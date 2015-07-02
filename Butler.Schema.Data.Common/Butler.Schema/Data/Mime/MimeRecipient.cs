@@ -35,15 +35,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public override sealed bool RequiresSMTPUTF8
-    {
-      get
-      {
-        return !MimeString.IsPureASCII(this.emailAddressFragments);
-      }
-    }
+    public override sealed bool RequiresSMTPUTF8 => !MimeString.IsPureASCII(this.emailAddressFragments);
 
-    public MimeRecipient()
+      public MimeRecipient()
     {
     }
 

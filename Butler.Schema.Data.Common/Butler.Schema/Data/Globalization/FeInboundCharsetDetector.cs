@@ -26,95 +26,29 @@ namespace Butler.Schema.Data.Globalization
     private byte countSo;
     private byte count8bit;
 
-    public bool SJisPossible
-    {
-      get
-      {
-        return this.stateSJis != FEData.ST.ERR;
-      }
-    }
+    public bool SJisPossible => this.stateSJis != FEData.ST.ERR;
 
-    public bool EucJpPossible
-    {
-      get
-      {
-        return this.stateEucJp != FEData.ST.ERR;
-      }
-    }
+      public bool EucJpPossible => this.stateEucJp != FEData.ST.ERR;
 
-    public bool Iso2022JpPossible
-    {
-      get
-      {
-        return this.stateIso != FEData.ST.ERR;
-      }
-    }
+      public bool Iso2022JpPossible => this.stateIso != FEData.ST.ERR;
 
-    public bool Iso2022KrPossible
-    {
-      get
-      {
-        return this.stateIso != FEData.ST.ERR;
-      }
-    }
+      public bool Iso2022KrPossible => this.stateIso != FEData.ST.ERR;
 
-    public bool Utf8Possible
-    {
-      get
-      {
-        return this.stateUtf8 != FEData.ST.ERR;
-      }
-    }
+      public bool Utf8Possible => this.stateUtf8 != FEData.ST.ERR;
 
-    public bool GbkPossible
-    {
-      get
-      {
-        return this.stateGbkWan != FEData.ST.ERR;
-      }
-    }
+      public bool GbkPossible => this.stateGbkWan != FEData.ST.ERR;
 
-    public bool WansungPossible
-    {
-      get
-      {
-        return this.stateGbkWan != FEData.ST.ERR;
-      }
-    }
+      public bool WansungPossible => this.stateGbkWan != FEData.ST.ERR;
 
-    public bool EucKrPossible
-    {
-      get
-      {
-        return this.stateEucKrCn != FEData.ST.ERR;
-      }
-    }
+      public bool EucKrPossible => this.stateEucKrCn != FEData.ST.ERR;
 
-    public bool EucCnPossible
-    {
-      get
-      {
-        return this.stateEucKrCn != FEData.ST.ERR;
-      }
-    }
+      public bool EucCnPossible => this.stateEucKrCn != FEData.ST.ERR;
 
-    public bool Big5Possible
-    {
-      get
-      {
-        return this.stateBig5 != FEData.ST.ERR;
-      }
-    }
+      public bool Big5Possible => this.stateBig5 != FEData.ST.ERR;
 
-    public bool PureAscii
-    {
-      get
-      {
-        return (int) this.count8bit + (int) this.countKoreanDesignator + (int) this.countJapaneseEsc + (int) this.countSo == 0;
-      }
-    }
+      public bool PureAscii => (int) this.count8bit + (int) this.countKoreanDesignator + (int) this.countJapaneseEsc + (int) this.countSo == 0;
 
-    public bool Iso2022JpVeryLikely
+      public bool Iso2022JpVeryLikely
     {
       get
       {

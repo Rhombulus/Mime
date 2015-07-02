@@ -23,15 +23,9 @@ namespace Butler.Schema.Data.Common
     private static Dictionary<string, Dictionary<object, string>> locEnumStringTable;
     private LocalizedString description;
 
-    public LocalizedString LocalizedString
-    {
-      get
-      {
-        return this.description;
-      }
-    }
+    public LocalizedString LocalizedString => this.description;
 
-    public override sealed string Description
+      public override sealed string Description
     {
       [HostProtection(SecurityAction.LinkDemand, SharedState = true)] get
       {

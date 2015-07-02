@@ -162,15 +162,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public int Version
-    {
-      get
-      {
-        return this.version;
-      }
-    }
+    public int Version => this.version;
 
-    internal static bool FixMimeForTestUseOnly
+      internal static bool FixMimeForTestUseOnly
     {
       get
       {
@@ -182,23 +176,11 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    internal ObjectThreadAccessToken AccessToken
-    {
-      get
-      {
-        return (ObjectThreadAccessToken) this.accessToken;
-      }
-    }
+    internal ObjectThreadAccessToken AccessToken => (ObjectThreadAccessToken) this.accessToken;
 
-    internal bool IsReadOnly
-    {
-      get
-      {
-        return this.isReadOnly;
-      }
-    }
+      internal bool IsReadOnly => this.isReadOnly;
 
-    internal DecodingOptions EffectiveHeaderDecodingOptions
+      internal DecodingOptions EffectiveHeaderDecodingOptions
     {
       get
       {
@@ -1098,31 +1080,13 @@ label_13:
       private MimeDocument document;
       private bool badState;
 
-      public override bool CanRead
-      {
-        get
-        {
-          return false;
-        }
-      }
+      public override bool CanRead => false;
 
-      public override bool CanSeek
-      {
-        get
-        {
-          return false;
-        }
-      }
+        public override bool CanSeek => false;
 
-      public override bool CanWrite
-      {
-        get
-        {
-          return this.document != null;
-        }
-      }
+        public override bool CanWrite => this.document != null;
 
-      public override long Length
+        public override long Length
       {
         get
         {

@@ -17,407 +17,107 @@ namespace Butler.Schema.CtsResources
     private static Dictionary<uint, string> stringIDs = new Dictionary<uint, string>(50);
     private static ResourceManager ResourceManager = new ResourceManager("Microsoft.Exchange.CtsResources.TextConvertersStrings", ((Type) IntrospectionExtensions.GetTypeInfo(typeof (TextConvertersStrings))).Assembly);
 
-    public static string ConverterStreamInInconsistentStare
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("ConverterStreamInInconsistentStare");
-      }
-    }
+    public static string ConverterStreamInInconsistentStare => TextConvertersStrings.ResourceManager.GetString("ConverterStreamInInconsistentStare");
 
-    public static string ConverterReaderInInconsistentStare
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("ConverterReaderInInconsistentStare");
-      }
-    }
+      public static string ConverterReaderInInconsistentStare => TextConvertersStrings.ResourceManager.GetString("ConverterReaderInInconsistentStare");
 
-    public static string CannotUseConverterReader
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CannotUseConverterReader");
-      }
-    }
+      public static string CannotUseConverterReader => TextConvertersStrings.ResourceManager.GetString("CannotUseConverterReader");
 
-    public static string CannotReadFromSource
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CannotReadFromSource");
-      }
-    }
+      public static string CannotReadFromSource => TextConvertersStrings.ResourceManager.GetString("CannotReadFromSource");
 
-    public static string IndexOutOfRange
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("IndexOutOfRange");
-      }
-    }
+      public static string IndexOutOfRange => TextConvertersStrings.ResourceManager.GetString("IndexOutOfRange");
 
-    public static string CountTooLarge
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CountTooLarge");
-      }
-    }
+      public static string CountTooLarge => TextConvertersStrings.ResourceManager.GetString("CountTooLarge");
 
-    public static string CallbackTagAlreadyDeleted
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CallbackTagAlreadyDeleted");
-      }
-    }
+      public static string CallbackTagAlreadyDeleted => TextConvertersStrings.ResourceManager.GetString("CallbackTagAlreadyDeleted");
 
-    public static string InputDocumentTooComplex
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("InputDocumentTooComplex");
-      }
-    }
+      public static string InputDocumentTooComplex => TextConvertersStrings.ResourceManager.GetString("InputDocumentTooComplex");
 
-    public static string CannotWriteToDestination
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CannotWriteToDestination");
-      }
-    }
+      public static string CannotWriteToDestination => TextConvertersStrings.ResourceManager.GetString("CannotWriteToDestination");
 
-    public static string ConverterWriterInInconsistentStare
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("ConverterWriterInInconsistentStare");
-      }
-    }
+      public static string ConverterWriterInInconsistentStare => TextConvertersStrings.ResourceManager.GetString("ConverterWriterInInconsistentStare");
 
-    public static string TooManyIterationsToFlushConverter
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TooManyIterationsToFlushConverter");
-      }
-    }
+      public static string TooManyIterationsToFlushConverter => TextConvertersStrings.ResourceManager.GetString("TooManyIterationsToFlushConverter");
 
-    public static string HtmlNestingTooDeep
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("HtmlNestingTooDeep");
-      }
-    }
+      public static string HtmlNestingTooDeep => TextConvertersStrings.ResourceManager.GetString("HtmlNestingTooDeep");
 
-    public static string OffsetOutOfRange
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("OffsetOutOfRange");
-      }
-    }
+      public static string OffsetOutOfRange => TextConvertersStrings.ResourceManager.GetString("OffsetOutOfRange");
 
-    public static string TooManyIterationsToProduceOutput
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TooManyIterationsToProduceOutput");
-      }
-    }
+      public static string TooManyIterationsToProduceOutput => TextConvertersStrings.ResourceManager.GetString("TooManyIterationsToProduceOutput");
 
-    public static string AttributeIdIsUnknown
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("AttributeIdIsUnknown");
-      }
-    }
+      public static string AttributeIdIsUnknown => TextConvertersStrings.ResourceManager.GetString("AttributeIdIsUnknown");
 
-    public static string PropertyNotValidForCodepageConversionMode
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("PropertyNotValidForCodepageConversionMode");
-      }
-    }
+      public static string PropertyNotValidForCodepageConversionMode => TextConvertersStrings.ResourceManager.GetString("PropertyNotValidForCodepageConversionMode");
 
-    public static string CallbackTagAlreadyWritten
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CallbackTagAlreadyWritten");
-      }
-    }
+      public static string CallbackTagAlreadyWritten => TextConvertersStrings.ResourceManager.GetString("CallbackTagAlreadyWritten");
 
-    public static string PriorityListIncludesNonDetectableCodePage
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("PriorityListIncludesNonDetectableCodePage");
-      }
-    }
+      public static string PriorityListIncludesNonDetectableCodePage => TextConvertersStrings.ResourceManager.GetString("PriorityListIncludesNonDetectableCodePage");
 
-    public static string PropertyNotValidForTextExtractionMode
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("PropertyNotValidForTextExtractionMode");
-      }
-    }
+      public static string PropertyNotValidForTextExtractionMode => TextConvertersStrings.ResourceManager.GetString("PropertyNotValidForTextExtractionMode");
 
-    public static string CannotSetNegativelength
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CannotSetNegativelength");
-      }
-    }
+      public static string CannotSetNegativelength => TextConvertersStrings.ResourceManager.GetString("CannotSetNegativelength");
 
-    public static string AccessShouldBeReadOrWrite
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("AccessShouldBeReadOrWrite");
-      }
-    }
+      public static string AccessShouldBeReadOrWrite => TextConvertersStrings.ResourceManager.GetString("AccessShouldBeReadOrWrite");
 
-    public static string TagIdIsUnknown
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TagIdIsUnknown");
-      }
-    }
+      public static string TagIdIsUnknown => TextConvertersStrings.ResourceManager.GetString("TagIdIsUnknown");
 
-    public static string CannotSeekBeforeBeginning
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CannotSeekBeforeBeginning");
-      }
-    }
+      public static string CannotSeekBeforeBeginning => TextConvertersStrings.ResourceManager.GetString("CannotSeekBeforeBeginning");
 
-    public static string AttributeNameIsEmpty
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("AttributeNameIsEmpty");
-      }
-    }
+      public static string AttributeNameIsEmpty => TextConvertersStrings.ResourceManager.GetString("AttributeNameIsEmpty");
 
-    public static string TagNameIsEmpty
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TagNameIsEmpty");
-      }
-    }
+      public static string TagNameIsEmpty => TextConvertersStrings.ResourceManager.GetString("TagNameIsEmpty");
 
-    public static string AttributeNotStarted
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("AttributeNotStarted");
-      }
-    }
+      public static string AttributeNotStarted => TextConvertersStrings.ResourceManager.GetString("AttributeNotStarted");
 
-    public static string TextReaderUnsupported
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TextReaderUnsupported");
-      }
-    }
+      public static string TextReaderUnsupported => TextConvertersStrings.ResourceManager.GetString("TextReaderUnsupported");
 
-    public static string SeekUnsupported
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("SeekUnsupported");
-      }
-    }
+      public static string SeekUnsupported => TextConvertersStrings.ResourceManager.GetString("SeekUnsupported");
 
-    public static string AttributeNotInitialized
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("AttributeNotInitialized");
-      }
-    }
+      public static string AttributeNotInitialized => TextConvertersStrings.ResourceManager.GetString("AttributeNotInitialized");
 
-    public static string BufferSizeValueRange
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("BufferSizeValueRange");
-      }
-    }
+      public static string BufferSizeValueRange => TextConvertersStrings.ResourceManager.GetString("BufferSizeValueRange");
 
-    public static string CannotUseConverterWriter
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CannotUseConverterWriter");
-      }
-    }
+      public static string CannotUseConverterWriter => TextConvertersStrings.ResourceManager.GetString("CannotUseConverterWriter");
 
-    public static string AttributeNotValidForThisContext
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("AttributeNotValidForThisContext");
-      }
-    }
+      public static string AttributeNotValidForThisContext => TextConvertersStrings.ResourceManager.GetString("AttributeNotValidForThisContext");
 
-    public static string TagNotStarted
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TagNotStarted");
-      }
-    }
+      public static string TagNotStarted => TextConvertersStrings.ResourceManager.GetString("TagNotStarted");
 
-    public static string AttributeNotValidInThisState
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("AttributeNotValidInThisState");
-      }
-    }
+      public static string AttributeNotValidInThisState => TextConvertersStrings.ResourceManager.GetString("AttributeNotValidInThisState");
 
-    public static string EndTagCannotHaveAttributes
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("EndTagCannotHaveAttributes");
-      }
-    }
+      public static string EndTagCannotHaveAttributes => TextConvertersStrings.ResourceManager.GetString("EndTagCannotHaveAttributes");
 
-    public static string InputEncodingRequired
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("InputEncodingRequired");
-      }
-    }
+      public static string InputEncodingRequired => TextConvertersStrings.ResourceManager.GetString("InputEncodingRequired");
 
-    public static string TagTooLong
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TagTooLong");
-      }
-    }
+      public static string TagTooLong => TextConvertersStrings.ResourceManager.GetString("TagTooLong");
 
-    public static string AttributeCollectionNotInitialized
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("AttributeCollectionNotInitialized");
-      }
-    }
+      public static string AttributeCollectionNotInitialized => TextConvertersStrings.ResourceManager.GetString("AttributeCollectionNotInitialized");
 
-    public static string WriteAfterFlush
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("WriteAfterFlush");
-      }
-    }
+      public static string WriteAfterFlush => TextConvertersStrings.ResourceManager.GetString("WriteAfterFlush");
 
-    public static string TooManyIterationsToProcessInput
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TooManyIterationsToProcessInput");
-      }
-    }
+      public static string TooManyIterationsToProcessInput => TextConvertersStrings.ResourceManager.GetString("TooManyIterationsToProcessInput");
 
-    public static string MaxCharactersCannotBeNegative
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("MaxCharactersCannotBeNegative");
-      }
-    }
+      public static string MaxCharactersCannotBeNegative => TextConvertersStrings.ResourceManager.GetString("MaxCharactersCannotBeNegative");
 
-    public static string ReadUnsupported
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("ReadUnsupported");
-      }
-    }
+      public static string ReadUnsupported => TextConvertersStrings.ResourceManager.GetString("ReadUnsupported");
 
-    public static string ContextNotValidInThisState
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("ContextNotValidInThisState");
-      }
-    }
+      public static string ContextNotValidInThisState => TextConvertersStrings.ResourceManager.GetString("ContextNotValidInThisState");
 
-    public static string AttributeIdInvalid
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("AttributeIdInvalid");
-      }
-    }
+      public static string AttributeIdInvalid => TextConvertersStrings.ResourceManager.GetString("AttributeIdInvalid");
 
-    public static string TagIdInvalid
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TagIdInvalid");
-      }
-    }
+      public static string TagIdInvalid => TextConvertersStrings.ResourceManager.GetString("TagIdInvalid");
 
-    public static string CountOutOfRange
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CountOutOfRange");
-      }
-    }
+      public static string CountOutOfRange => TextConvertersStrings.ResourceManager.GetString("CountOutOfRange");
 
-    public static string WriteUnsupported
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("WriteUnsupported");
-      }
-    }
+      public static string WriteUnsupported => TextConvertersStrings.ResourceManager.GetString("WriteUnsupported");
 
-    public static string ParametersCannotBeChangedAfterConverterObjectIsUsed
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("ParametersCannotBeChangedAfterConverterObjectIsUsed");
-      }
-    }
+      public static string ParametersCannotBeChangedAfterConverterObjectIsUsed => TextConvertersStrings.ResourceManager.GetString("ParametersCannotBeChangedAfterConverterObjectIsUsed");
 
-    public static string CannotWriteWhileCopyPending
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("CannotWriteWhileCopyPending");
-      }
-    }
+      public static string CannotWriteWhileCopyPending => TextConvertersStrings.ResourceManager.GetString("CannotWriteWhileCopyPending");
 
-    public static string TextWriterUnsupported
-    {
-      get
-      {
-        return TextConvertersStrings.ResourceManager.GetString("TextWriterUnsupported");
-      }
-    }
+      public static string TextWriterUnsupported => TextConvertersStrings.ResourceManager.GetString("TextWriterUnsupported");
 
-    static TextConvertersStrings()
+      static TextConvertersStrings()
     {
       TextConvertersStrings.stringIDs.Add(1331686521U, "ConverterStreamInInconsistentStare");
       TextConvertersStrings.stringIDs.Add(62892580U, "ConverterReaderInInconsistentStare");

@@ -27,15 +27,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Css
     protected int maxProperties;
     protected int maxSelectors;
 
-    public CssToken Token
-    {
-      get
-      {
-        return this.cssToken;
-      }
-    }
+    public CssToken Token => this.cssToken;
 
-    public bool Incomplete
+      public bool Incomplete
     {
       get
       {

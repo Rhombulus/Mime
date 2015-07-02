@@ -17,743 +17,191 @@ namespace Butler.Schema.CtsResources
     private static Dictionary<uint, string> stringIDs = new Dictionary<uint, string>(92);
     private static ResourceManager ResourceManager = new ResourceManager("Microsoft.Exchange.CtsResources.TnefStrings", ((Type) IntrospectionExtensions.GetTypeInfo(typeof (TnefStrings))).Assembly);
 
-    public static string WriterPropertyNameEmptyOrTooLong
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterPropertyNameEmptyOrTooLong");
-      }
-    }
-
-    public static string ReaderComplianceInvalidMessageClassNotZeroTerminated
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidMessageClassNotZeroTerminated");
-      }
-    }
-
-    public static string ReaderInvalidOperationReadNextRowOnlyInRecipientTable
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationReadNextRowOnlyInRecipientTable");
-      }
-    }
-
-    public static string ReaderInvalidOperationCannotCloseParentWhileChildOpen
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationCannotCloseParentWhileChildOpen");
-      }
-    }
-
-    public static string ReaderComplianceInvalidAttributeChecksum
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidAttributeChecksum");
-      }
-    }
-
-    public static string WriterInvalidOperationTextAfterRawData
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationTextAfterRawData");
-      }
-    }
-
-    public static string WriterInvalidOperationStartRowNotInRecipientTable
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationStartRowNotInRecipientTable");
-      }
-    }
-
-    public static string CountTooLarge
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("CountTooLarge");
-      }
-    }
-
-    public static string WriterInvalidOperationInvalidPropertyType
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationInvalidPropertyType");
-      }
-    }
-
-    public static string ReaderInvalidOperationMustBeInARow
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeInARow");
-      }
-    }
-
-    public static string ReaderComplianceInvalidTnefVersion
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidTnefVersion");
-      }
-    }
-
-    public static string StreamDoesNotSupportSeek
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("StreamDoesNotSupportSeek");
-      }
-    }
-
-    public static string ReaderInvalidOperationMustBeAtTheBeginningOfProperty
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeAtTheBeginningOfProperty");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyTypeObjectInRecipientTable
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyTypeObjectInRecipientTable");
-      }
-    }
-
-    public static string WriterInvalidOperationUnicodeRawValueForLegacyAttribute
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationUnicodeRawValueForLegacyAttribute");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyValueDate
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyValueDate");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyValueCount
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyValueCount");
-      }
-    }
-
-    public static string ReaderInvalidOperationCannotConvertValue
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationCannotConvertValue");
-      }
-    }
-
-    public static string ReaderComplianceInvalidAttributeLength
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidAttributeLength");
-      }
-    }
-
-    public static string ReaderComplianceTooDeepEmbedding
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceTooDeepEmbedding");
-      }
-    }
-
-    public static string ReaderInvalidOperationTextPropertyTooLong
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationTextPropertyTooLong");
-      }
-    }
-
-    public static string WriterInvalidOperationNotObjectProperty
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationNotObjectProperty");
-      }
-    }
-
-    public static string ReaderComplianceInvalidFrom
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidFrom");
-      }
-    }
-
-    public static string WriterInvalidOperationInvalidValueType
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationInvalidValueType");
-      }
-    }
-
-    public static string ReaderComplianceInvalidNamedPropertyNameLength
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidNamedPropertyNameLength");
-      }
-    }
-
-    public static string WriterInvalidOperationObjectInRecipientTable
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationObjectInRecipientTable");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyTypeMvBoolean
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyTypeMvBoolean");
-      }
-    }
-
-    public static string WriterNotSupportedCannotAddThisPropertyToAttributeMoreThanOnce
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedCannotAddThisPropertyToAttributeMoreThanOnce");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyCount
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyCount");
-      }
-    }
-
-    public static string WriterNotSupportedNotOneOffEntryId
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedNotOneOffEntryId");
-      }
-    }
-
-    public static string ReaderInvalidOperationRawAfterProp
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationRawAfterProp");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyLengthObject
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyLengthObject");
-      }
-    }
-
-    public static string WriterInvalidMessageCodepage
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidMessageCodepage");
-      }
-    }
-
-    public static string ReaderComplianceInvalidTnefSignature
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidTnefSignature");
-      }
-    }
-
-    public static string StreamDoesNotSupportRead
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("StreamDoesNotSupportRead");
-      }
-    }
-
-    public static string ReaderInvalidOperationNotObjectProperty
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationNotObjectProperty");
-      }
-    }
-
-    public static string StreamDoesNotSupportWrite
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("StreamDoesNotSupportWrite");
-      }
-    }
-
-    public static string WriterNotSupportedInvalidRecipientInformation
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedInvalidRecipientInformation");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyType
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyType");
-      }
-    }
-
-    public static string CountOutOfRange
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("CountOutOfRange");
-      }
-    }
-
-    public static string WriterInvalidOperationMoreThanOneValueForSingleValuedProperty
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationMoreThanOneValueForSingleValuedProperty");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyTypeError
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyTypeError");
-      }
-    }
-
-    public static string ReaderComplianceInvalidSchedulePlus
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidSchedulePlus");
-      }
-    }
-
-    public static string WriterInvalidOperationMvObject
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationMvObject");
-      }
-    }
-
-    public static string ReaderComplianceInvalidMessageCodepage
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidMessageCodepage");
-      }
-    }
-
-    public static string ReaderComplianceInvalidOemCodepageAttributeLength
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidOemCodepageAttributeLength");
-      }
-    }
-
-    public static string ReaderComplianceInvalidConversationId
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidConversationId");
-      }
-    }
-
-    public static string ReaderComplianceInvalidRowCount
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidRowCount");
-      }
-    }
-
-    public static string WriterInvalidOperationNotStringProperty
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationNotStringProperty");
-      }
-    }
-
-    public static string ReaderInvalidOperationMustBeAtTheBeginningOfAttribute
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeAtTheBeginningOfAttribute");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyLength
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyLength");
-      }
-    }
-
-    public static string ReaderComplianceInvalidDateOrTimeValue
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidDateOrTimeValue");
-      }
-    }
-
-    public static string ReaderComplianceInvalidComputedPropertyLength
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidComputedPropertyLength");
-      }
-    }
-
-    public static string WriterInvalidOperationStartNormalPropertyWithName
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationStartNormalPropertyWithName");
-      }
-    }
-
-    public static string ReaderInvalidOperationMustBeInAttribute
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeInAttribute");
-      }
-    }
-
-    public static string ReaderComplianceInvalidNamedPropertyNameNotZeroTerminated
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidNamedPropertyNameNotZeroTerminated");
-      }
-    }
-
-    public static string WriterInvalidOperationValueSizeInvalidForType
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationValueSizeInvalidForType");
-      }
-    }
-
-    public static string WriterInvalidOperation
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperation");
-      }
-    }
-
-    public static string WriterNotSupportedCannotAddAnyPropertyToAttribute
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedCannotAddAnyPropertyToAttribute");
-      }
-    }
-
-    public static string IndexOutOfRange
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("IndexOutOfRange");
-      }
-    }
-
-    public static string ReaderInvalidOperationNotNamedProperty
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationNotNamedProperty");
-      }
-    }
-
-    public static string ReaderComplianceAttributeValueOverflow
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceAttributeValueOverflow");
-      }
-    }
-
-    public static string ReaderInvalidOperationPropAfterRaw
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationPropAfterRaw");
-      }
-    }
-
-    public static string WriterNotSupportedCannotAddThisPropertyToAttribute
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedCannotAddThisPropertyToAttribute");
-      }
-    }
-
-    public static string WriterNotSupportedInvalidPropertyType
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedInvalidPropertyType");
-      }
-    }
-
-    public static string ReaderInvalidOperationPropRawAfterText
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationPropRawAfterText");
-      }
-    }
-
-    public static string ReaderInvalidOperationNotSeekableCannotUseRewind
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationNotSeekableCannotUseRewind");
-      }
-    }
-
-    public static string ReaderComplianceInvalidPropertyTypeMvObject
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyTypeMvObject");
-      }
-    }
-
-    public static string ReaderComplianceInvalidAttributeLevel
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidAttributeLevel");
-      }
-    }
-
-    public static string WriterNotSupportedUnicodeOneOffEntryId
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedUnicodeOneOffEntryId");
-      }
-    }
-
-    public static string ReaderInvalidOperationStreamOffsetForAComputedValue
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationStreamOffsetForAComputedValue");
-      }
-    }
-
-    public static string ReaderInvalidOperationRowsOnlyInRecipientTable
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationRowsOnlyInRecipientTable");
-      }
-    }
-
-    public static string ReaderInvalidOperationPropTextAfterRaw
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationPropTextAfterRaw");
-      }
-    }
-
-    public static string WriterNotSupportedLegacyAttributeTooLong
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedLegacyAttributeTooLong");
-      }
-    }
-
-    public static string ReaderInvalidOperationPropertyRawValueTooLong
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationPropertyRawValueTooLong");
-      }
-    }
-
-    public static string WriterNotSupportedMallformedEntryId
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedMallformedEntryId");
-      }
-    }
-
-    public static string WriterInvalidOperationRawDataAfterText
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationRawDataAfterText");
-      }
-    }
-
-    public static string ReaderInvalidOperationMustBeInPropertyValue
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeInPropertyValue");
-      }
-    }
-
-    public static string ReaderInvalidOperationChildActive
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationChildActive");
-      }
-    }
-
-    public static string ReaderComplianceInvalidTnefVersionAttributeLength
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidTnefVersionAttributeLength");
-      }
-    }
-
-    public static string ReaderInvalidOperationNotEmbeddedMessage
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationNotEmbeddedMessage");
-      }
-    }
-
-    public static string WriterInvalidOperationStartNamedPropertyNoName
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationStartNamedPropertyNoName");
-      }
-    }
-
-    public static string WriterInvalidOperationChildActive
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationChildActive");
-      }
-    }
-
-    public static string InvalidMessageCodePage
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("InvalidMessageCodePage");
-      }
-    }
-
-    public static string WriterInvalidOperationNamedPropertyInLegacyAttribute
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationNamedPropertyInLegacyAttribute");
-      }
-    }
-
-    public static string ReaderInvalidOperationMustBeInProperty
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeInProperty");
-      }
-    }
-
-    public static string OffsetOutOfRange
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("OffsetOutOfRange");
-      }
-    }
-
-    public static string ReaderComplianceInvalidMessageClassLength
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidMessageClassLength");
-      }
-    }
-
-    public static string WriterInvalidOperationValueTooLongForType
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterInvalidOperationValueTooLongForType");
-      }
-    }
-
-    public static string WriterNotSupportedInvalidMessageClass
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedInvalidMessageClass");
-      }
-    }
-
-    public static string WriterNotSupportedNotEnoughInformationForAttribute
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("WriterNotSupportedNotEnoughInformationForAttribute");
-      }
-    }
-
-    public static string ReaderComplianceTnefTruncated
-    {
-      get
-      {
-        return TnefStrings.ResourceManager.GetString("ReaderComplianceTnefTruncated");
-      }
-    }
-
-    static TnefStrings()
+    public static string WriterPropertyNameEmptyOrTooLong => TnefStrings.ResourceManager.GetString("WriterPropertyNameEmptyOrTooLong");
+
+      public static string ReaderComplianceInvalidMessageClassNotZeroTerminated => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidMessageClassNotZeroTerminated");
+
+      public static string ReaderInvalidOperationReadNextRowOnlyInRecipientTable => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationReadNextRowOnlyInRecipientTable");
+
+      public static string ReaderInvalidOperationCannotCloseParentWhileChildOpen => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationCannotCloseParentWhileChildOpen");
+
+      public static string ReaderComplianceInvalidAttributeChecksum => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidAttributeChecksum");
+
+      public static string WriterInvalidOperationTextAfterRawData => TnefStrings.ResourceManager.GetString("WriterInvalidOperationTextAfterRawData");
+
+      public static string WriterInvalidOperationStartRowNotInRecipientTable => TnefStrings.ResourceManager.GetString("WriterInvalidOperationStartRowNotInRecipientTable");
+
+      public static string CountTooLarge => TnefStrings.ResourceManager.GetString("CountTooLarge");
+
+      public static string WriterInvalidOperationInvalidPropertyType => TnefStrings.ResourceManager.GetString("WriterInvalidOperationInvalidPropertyType");
+
+      public static string ReaderInvalidOperationMustBeInARow => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeInARow");
+
+      public static string ReaderComplianceInvalidTnefVersion => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidTnefVersion");
+
+      public static string StreamDoesNotSupportSeek => TnefStrings.ResourceManager.GetString("StreamDoesNotSupportSeek");
+
+      public static string ReaderInvalidOperationMustBeAtTheBeginningOfProperty => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeAtTheBeginningOfProperty");
+
+      public static string ReaderComplianceInvalidPropertyTypeObjectInRecipientTable => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyTypeObjectInRecipientTable");
+
+      public static string WriterInvalidOperationUnicodeRawValueForLegacyAttribute => TnefStrings.ResourceManager.GetString("WriterInvalidOperationUnicodeRawValueForLegacyAttribute");
+
+      public static string ReaderComplianceInvalidPropertyValueDate => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyValueDate");
+
+      public static string ReaderComplianceInvalidPropertyValueCount => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyValueCount");
+
+      public static string ReaderInvalidOperationCannotConvertValue => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationCannotConvertValue");
+
+      public static string ReaderComplianceInvalidAttributeLength => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidAttributeLength");
+
+      public static string ReaderComplianceTooDeepEmbedding => TnefStrings.ResourceManager.GetString("ReaderComplianceTooDeepEmbedding");
+
+      public static string ReaderInvalidOperationTextPropertyTooLong => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationTextPropertyTooLong");
+
+      public static string WriterInvalidOperationNotObjectProperty => TnefStrings.ResourceManager.GetString("WriterInvalidOperationNotObjectProperty");
+
+      public static string ReaderComplianceInvalidFrom => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidFrom");
+
+      public static string WriterInvalidOperationInvalidValueType => TnefStrings.ResourceManager.GetString("WriterInvalidOperationInvalidValueType");
+
+      public static string ReaderComplianceInvalidNamedPropertyNameLength => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidNamedPropertyNameLength");
+
+      public static string WriterInvalidOperationObjectInRecipientTable => TnefStrings.ResourceManager.GetString("WriterInvalidOperationObjectInRecipientTable");
+
+      public static string ReaderComplianceInvalidPropertyTypeMvBoolean => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyTypeMvBoolean");
+
+      public static string WriterNotSupportedCannotAddThisPropertyToAttributeMoreThanOnce => TnefStrings.ResourceManager.GetString("WriterNotSupportedCannotAddThisPropertyToAttributeMoreThanOnce");
+
+      public static string ReaderComplianceInvalidPropertyCount => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyCount");
+
+      public static string WriterNotSupportedNotOneOffEntryId => TnefStrings.ResourceManager.GetString("WriterNotSupportedNotOneOffEntryId");
+
+      public static string ReaderInvalidOperationRawAfterProp => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationRawAfterProp");
+
+      public static string ReaderComplianceInvalidPropertyLengthObject => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyLengthObject");
+
+      public static string WriterInvalidMessageCodepage => TnefStrings.ResourceManager.GetString("WriterInvalidMessageCodepage");
+
+      public static string ReaderComplianceInvalidTnefSignature => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidTnefSignature");
+
+      public static string StreamDoesNotSupportRead => TnefStrings.ResourceManager.GetString("StreamDoesNotSupportRead");
+
+      public static string ReaderInvalidOperationNotObjectProperty => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationNotObjectProperty");
+
+      public static string StreamDoesNotSupportWrite => TnefStrings.ResourceManager.GetString("StreamDoesNotSupportWrite");
+
+      public static string WriterNotSupportedInvalidRecipientInformation => TnefStrings.ResourceManager.GetString("WriterNotSupportedInvalidRecipientInformation");
+
+      public static string ReaderComplianceInvalidPropertyType => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyType");
+
+      public static string CountOutOfRange => TnefStrings.ResourceManager.GetString("CountOutOfRange");
+
+      public static string WriterInvalidOperationMoreThanOneValueForSingleValuedProperty => TnefStrings.ResourceManager.GetString("WriterInvalidOperationMoreThanOneValueForSingleValuedProperty");
+
+      public static string ReaderComplianceInvalidPropertyTypeError => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyTypeError");
+
+      public static string ReaderComplianceInvalidSchedulePlus => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidSchedulePlus");
+
+      public static string WriterInvalidOperationMvObject => TnefStrings.ResourceManager.GetString("WriterInvalidOperationMvObject");
+
+      public static string ReaderComplianceInvalidMessageCodepage => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidMessageCodepage");
+
+      public static string ReaderComplianceInvalidOemCodepageAttributeLength => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidOemCodepageAttributeLength");
+
+      public static string ReaderComplianceInvalidConversationId => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidConversationId");
+
+      public static string ReaderComplianceInvalidRowCount => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidRowCount");
+
+      public static string WriterInvalidOperationNotStringProperty => TnefStrings.ResourceManager.GetString("WriterInvalidOperationNotStringProperty");
+
+      public static string ReaderInvalidOperationMustBeAtTheBeginningOfAttribute => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeAtTheBeginningOfAttribute");
+
+      public static string ReaderComplianceInvalidPropertyLength => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyLength");
+
+      public static string ReaderComplianceInvalidDateOrTimeValue => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidDateOrTimeValue");
+
+      public static string ReaderComplianceInvalidComputedPropertyLength => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidComputedPropertyLength");
+
+      public static string WriterInvalidOperationStartNormalPropertyWithName => TnefStrings.ResourceManager.GetString("WriterInvalidOperationStartNormalPropertyWithName");
+
+      public static string ReaderInvalidOperationMustBeInAttribute => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeInAttribute");
+
+      public static string ReaderComplianceInvalidNamedPropertyNameNotZeroTerminated => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidNamedPropertyNameNotZeroTerminated");
+
+      public static string WriterInvalidOperationValueSizeInvalidForType => TnefStrings.ResourceManager.GetString("WriterInvalidOperationValueSizeInvalidForType");
+
+      public static string WriterInvalidOperation => TnefStrings.ResourceManager.GetString("WriterInvalidOperation");
+
+      public static string WriterNotSupportedCannotAddAnyPropertyToAttribute => TnefStrings.ResourceManager.GetString("WriterNotSupportedCannotAddAnyPropertyToAttribute");
+
+      public static string IndexOutOfRange => TnefStrings.ResourceManager.GetString("IndexOutOfRange");
+
+      public static string ReaderInvalidOperationNotNamedProperty => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationNotNamedProperty");
+
+      public static string ReaderComplianceAttributeValueOverflow => TnefStrings.ResourceManager.GetString("ReaderComplianceAttributeValueOverflow");
+
+      public static string ReaderInvalidOperationPropAfterRaw => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationPropAfterRaw");
+
+      public static string WriterNotSupportedCannotAddThisPropertyToAttribute => TnefStrings.ResourceManager.GetString("WriterNotSupportedCannotAddThisPropertyToAttribute");
+
+      public static string WriterNotSupportedInvalidPropertyType => TnefStrings.ResourceManager.GetString("WriterNotSupportedInvalidPropertyType");
+
+      public static string ReaderInvalidOperationPropRawAfterText => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationPropRawAfterText");
+
+      public static string ReaderInvalidOperationNotSeekableCannotUseRewind => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationNotSeekableCannotUseRewind");
+
+      public static string ReaderComplianceInvalidPropertyTypeMvObject => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidPropertyTypeMvObject");
+
+      public static string ReaderComplianceInvalidAttributeLevel => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidAttributeLevel");
+
+      public static string WriterNotSupportedUnicodeOneOffEntryId => TnefStrings.ResourceManager.GetString("WriterNotSupportedUnicodeOneOffEntryId");
+
+      public static string ReaderInvalidOperationStreamOffsetForAComputedValue => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationStreamOffsetForAComputedValue");
+
+      public static string ReaderInvalidOperationRowsOnlyInRecipientTable => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationRowsOnlyInRecipientTable");
+
+      public static string ReaderInvalidOperationPropTextAfterRaw => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationPropTextAfterRaw");
+
+      public static string WriterNotSupportedLegacyAttributeTooLong => TnefStrings.ResourceManager.GetString("WriterNotSupportedLegacyAttributeTooLong");
+
+      public static string ReaderInvalidOperationPropertyRawValueTooLong => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationPropertyRawValueTooLong");
+
+      public static string WriterNotSupportedMallformedEntryId => TnefStrings.ResourceManager.GetString("WriterNotSupportedMallformedEntryId");
+
+      public static string WriterInvalidOperationRawDataAfterText => TnefStrings.ResourceManager.GetString("WriterInvalidOperationRawDataAfterText");
+
+      public static string ReaderInvalidOperationMustBeInPropertyValue => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeInPropertyValue");
+
+      public static string ReaderInvalidOperationChildActive => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationChildActive");
+
+      public static string ReaderComplianceInvalidTnefVersionAttributeLength => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidTnefVersionAttributeLength");
+
+      public static string ReaderInvalidOperationNotEmbeddedMessage => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationNotEmbeddedMessage");
+
+      public static string WriterInvalidOperationStartNamedPropertyNoName => TnefStrings.ResourceManager.GetString("WriterInvalidOperationStartNamedPropertyNoName");
+
+      public static string WriterInvalidOperationChildActive => TnefStrings.ResourceManager.GetString("WriterInvalidOperationChildActive");
+
+      public static string InvalidMessageCodePage => TnefStrings.ResourceManager.GetString("InvalidMessageCodePage");
+
+      public static string WriterInvalidOperationNamedPropertyInLegacyAttribute => TnefStrings.ResourceManager.GetString("WriterInvalidOperationNamedPropertyInLegacyAttribute");
+
+      public static string ReaderInvalidOperationMustBeInProperty => TnefStrings.ResourceManager.GetString("ReaderInvalidOperationMustBeInProperty");
+
+      public static string OffsetOutOfRange => TnefStrings.ResourceManager.GetString("OffsetOutOfRange");
+
+      public static string ReaderComplianceInvalidMessageClassLength => TnefStrings.ResourceManager.GetString("ReaderComplianceInvalidMessageClassLength");
+
+      public static string WriterInvalidOperationValueTooLongForType => TnefStrings.ResourceManager.GetString("WriterInvalidOperationValueTooLongForType");
+
+      public static string WriterNotSupportedInvalidMessageClass => TnefStrings.ResourceManager.GetString("WriterNotSupportedInvalidMessageClass");
+
+      public static string WriterNotSupportedNotEnoughInformationForAttribute => TnefStrings.ResourceManager.GetString("WriterNotSupportedNotEnoughInformationForAttribute");
+
+      public static string ReaderComplianceTnefTruncated => TnefStrings.ResourceManager.GetString("ReaderComplianceTnefTruncated");
+
+      static TnefStrings()
     {
       TnefStrings.stringIDs.Add(149645149U, "WriterPropertyNameEmptyOrTooLong");
       TnefStrings.stringIDs.Add(2720608910U, "ReaderComplianceInvalidMessageClassNotZeroTerminated");

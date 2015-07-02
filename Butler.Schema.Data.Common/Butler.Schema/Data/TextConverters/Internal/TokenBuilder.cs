@@ -23,39 +23,15 @@ namespace Butler.Schema.Data.TextConverters.Internal
     protected int tailOffset;
     protected bool tokenValid;
 
-    public Token Token
-    {
-      get
-      {
-        return this.token;
-      }
-    }
+    public Token Token => this.token;
 
-    public bool IsStarted
-    {
-      get
-      {
-        return (int) this.state != 0;
-      }
-    }
+      public bool IsStarted => (int) this.state != 0;
 
-    public bool Valid
-    {
-      get
-      {
-        return this.tokenValid;
-      }
-    }
+      public bool Valid => this.tokenValid;
 
-    public int TotalLength
-    {
-      get
-      {
-        return this.tailOffset - this.token.Whole.HeadOffset;
-      }
-    }
+      public int TotalLength => this.tailOffset - this.token.Whole.HeadOffset;
 
-    public TokenBuilder(Token token, char[] buffer, int maxRuns, bool testBoundaryConditions)
+      public TokenBuilder(Token token, char[] buffer, int maxRuns, bool testBoundaryConditions)
     {
       int length = 64;
       if (!testBoundaryConditions)

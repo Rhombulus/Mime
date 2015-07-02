@@ -53,143 +53,41 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       }
     }
 
-    public bool IsEndTag
-    {
-      get
-      {
-        return HtmlToken.TagFlags.None != (this.flags & HtmlToken.TagFlags.EndTag);
-      }
-    }
+    public bool IsEndTag => HtmlToken.TagFlags.None != (this.flags & HtmlToken.TagFlags.EndTag);
 
-    public bool IsEmptyScope
-    {
-      get
-      {
-        return HtmlToken.TagFlags.None != (this.flags & HtmlToken.TagFlags.EmptyScope);
-      }
-    }
+      public bool IsEmptyScope => HtmlToken.TagFlags.None != (this.flags & HtmlToken.TagFlags.EmptyScope);
 
-    public HtmlToken.TagPartMajor MajorPart
-    {
-      get
-      {
-        return this.PartMajor;
-      }
-    }
+      public HtmlToken.TagPartMajor MajorPart => this.PartMajor;
 
-    public HtmlToken.TagPartMinor MinorPart
-    {
-      get
-      {
-        return this.PartMinor;
-      }
-    }
+      public HtmlToken.TagPartMinor MinorPart => this.PartMinor;
 
-    public bool IsTagComplete
-    {
-      get
-      {
-        return this.PartMajor == HtmlToken.TagPartMajor.Complete;
-      }
-    }
+      public bool IsTagComplete => this.PartMajor == HtmlToken.TagPartMajor.Complete;
 
-    public bool IsTagBegin
-    {
-      get
-      {
-        return (this.PartMajor & HtmlToken.TagPartMajor.Begin) == HtmlToken.TagPartMajor.Begin;
-      }
-    }
+      public bool IsTagBegin => (this.PartMajor & HtmlToken.TagPartMajor.Begin) == HtmlToken.TagPartMajor.Begin;
 
-    public bool IsTagEnd
-    {
-      get
-      {
-        return (this.PartMajor & HtmlToken.TagPartMajor.End) == HtmlToken.TagPartMajor.End;
-      }
-    }
+      public bool IsTagEnd => (this.PartMajor & HtmlToken.TagPartMajor.End) == HtmlToken.TagPartMajor.End;
 
-    public bool IsTagNameEmpty
-    {
-      get
-      {
-        return HtmlToken.TagFlags.None != (this.flags & HtmlToken.TagFlags.EmptyTagName);
-      }
-    }
+      public bool IsTagNameEmpty => HtmlToken.TagFlags.None != (this.flags & HtmlToken.TagFlags.EmptyTagName);
 
-    public bool IsTagNameBegin
-    {
-      get
-      {
-        return (this.PartMinor & HtmlToken.TagPartMinor.BeginName) == HtmlToken.TagPartMinor.BeginName;
-      }
-    }
+      public bool IsTagNameBegin => (this.PartMinor & HtmlToken.TagPartMinor.BeginName) == HtmlToken.TagPartMinor.BeginName;
 
-    public bool IsTagNameEnd
-    {
-      get
-      {
-        return (this.PartMinor & HtmlToken.TagPartMinor.EndName) == HtmlToken.TagPartMinor.EndName;
-      }
-    }
+      public bool IsTagNameEnd => (this.PartMinor & HtmlToken.TagPartMinor.EndName) == HtmlToken.TagPartMinor.EndName;
 
-    public bool HasNameFragment
-    {
-      get
-      {
-        return !this.IsFragmentEmpty(this.NameInternal);
-      }
-    }
+      public bool HasNameFragment => !this.IsFragmentEmpty(this.NameInternal);
 
-    public HtmlToken.TagNameTextReader Name
-    {
-      get
-      {
-        return new HtmlToken.TagNameTextReader(this);
-      }
-    }
+      public HtmlToken.TagNameTextReader Name => new HtmlToken.TagNameTextReader(this);
 
-    public HtmlToken.TagUnstructuredContentTextReader UnstructuredContent
-    {
-      get
-      {
-        return new HtmlToken.TagUnstructuredContentTextReader(this);
-      }
-    }
+      public HtmlToken.TagUnstructuredContentTextReader UnstructuredContent => new HtmlToken.TagUnstructuredContentTextReader(this);
 
-    public HtmlTagIndex OriginalTagId
-    {
-      get
-      {
-        return this.OriginalTagIndex;
-      }
-    }
+      public HtmlTagIndex OriginalTagId => this.OriginalTagIndex;
 
-    public bool IsAllowWspLeft
-    {
-      get
-      {
-        return (this.flags & HtmlToken.TagFlags.AllowWspLeft) == HtmlToken.TagFlags.AllowWspLeft;
-      }
-    }
+      public bool IsAllowWspLeft => (this.flags & HtmlToken.TagFlags.AllowWspLeft) == HtmlToken.TagFlags.AllowWspLeft;
 
-    public bool IsAllowWspRight
-    {
-      get
-      {
-        return (this.flags & HtmlToken.TagFlags.AllowWspRight) == HtmlToken.TagFlags.AllowWspRight;
-      }
-    }
+      public bool IsAllowWspRight => (this.flags & HtmlToken.TagFlags.AllowWspRight) == HtmlToken.TagFlags.AllowWspRight;
 
-    public HtmlToken.AttributeEnumerator Attributes
-    {
-      get
-      {
-        return new HtmlToken.AttributeEnumerator(this);
-      }
-    }
+      public HtmlToken.AttributeEnumerator Attributes => new HtmlToken.AttributeEnumerator(this);
 
-    public HtmlToken()
+      public HtmlToken()
     {
       this.Reset();
     }
@@ -282,31 +180,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     {
       private HtmlToken token;
 
-      public int Count
-      {
-        get
-        {
-          return this.token.AttributeTail;
-        }
-      }
+      public int Count => this.token.AttributeTail;
 
-      public HtmlAttribute Current
-      {
-        get
-        {
-          return new HtmlAttribute(this.token);
-        }
-      }
+        public HtmlAttribute Current => new HtmlAttribute(this.token);
 
-      public int CurrentIndex
-      {
-        get
-        {
-          return this.token.CurrentAttribute;
-        }
-      }
+        public int CurrentIndex => this.token.CurrentAttribute;
 
-      public HtmlAttribute this[int i]
+        public HtmlAttribute this[int i]
       {
         get
         {
@@ -399,15 +279,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     {
       private HtmlToken token;
 
-      public int Length
-      {
-        get
-        {
-          return this.token.GetLength(this.token.NameInternal);
-        }
-      }
+      public int Length => this.token.GetLength(this.token.NameInternal);
 
-      internal TagNameTextReader(HtmlToken token)
+        internal TagNameTextReader(HtmlToken token)
       {
         this.token = token;
       }
@@ -448,15 +322,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     {
       private HtmlToken token;
 
-      public int Length
-      {
-        get
-        {
-          return this.token.GetLength(this.token.AttributeList[this.token.CurrentAttribute].Name);
-        }
-      }
+      public int Length => this.token.GetLength(this.token.AttributeList[this.token.CurrentAttribute].Name);
 
-      internal AttributeNameTextReader(HtmlToken token)
+        internal AttributeNameTextReader(HtmlToken token)
       {
         this.token = token;
       }
@@ -497,39 +365,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     {
       private HtmlToken token;
 
-      public int Length
-      {
-        get
-        {
-          return this.token.GetLength(this.token.AttributeList[this.token.CurrentAttribute].Value);
-        }
-      }
+      public int Length => this.token.GetLength(this.token.AttributeList[this.token.CurrentAttribute].Value);
 
-      public bool IsEmpty
-      {
-        get
-        {
-          return this.token.IsFragmentEmpty(this.token.AttributeList[this.token.CurrentAttribute].Value);
-        }
-      }
+        public bool IsEmpty => this.token.IsFragmentEmpty(this.token.AttributeList[this.token.CurrentAttribute].Value);
 
-      public bool IsContiguous
-      {
-        get
-        {
-          return this.token.IsContiguous(this.token.AttributeList[this.token.CurrentAttribute].Value);
-        }
-      }
+        public bool IsContiguous => this.token.IsContiguous(this.token.AttributeList[this.token.CurrentAttribute].Value);
 
-      public BufferString ContiguousBufferString
-      {
-        get
-        {
-          return new BufferString(this.token.Buffer, this.token.AttributeList[this.token.CurrentAttribute].Value.HeadOffset, this.token.RunList[this.token.AttributeList[this.token.CurrentAttribute].Value.Head].Length);
-        }
-      }
+        public BufferString ContiguousBufferString => new BufferString(this.token.Buffer, this.token.AttributeList[this.token.CurrentAttribute].Value.HeadOffset, this.token.RunList[this.token.AttributeList[this.token.CurrentAttribute].Value.Head].Length);
 
-      internal AttributeValueTextReader(HtmlToken token)
+        internal AttributeValueTextReader(HtmlToken token)
       {
         this.token = token;
       }
@@ -592,63 +436,21 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       public Token.LexicalUnit LocalName;
       public Token.LexicalUnit Value;
 
-      public bool IsCompleteAttr
-      {
-        get
-        {
-          return this.MajorPart == HtmlToken.AttrPartMajor.Complete;
-        }
-      }
+      public bool IsCompleteAttr => this.MajorPart == HtmlToken.AttrPartMajor.Complete;
 
-      public bool IsAttrBegin
-      {
-        get
-        {
-          return (this.PartMajor & HtmlToken.AttrPartMajor.Begin) == HtmlToken.AttrPartMajor.Begin;
-        }
-      }
+        public bool IsAttrBegin => (this.PartMajor & HtmlToken.AttrPartMajor.Begin) == HtmlToken.AttrPartMajor.Begin;
 
-      public bool IsAttrEnd
-      {
-        get
-        {
-          return (this.PartMajor & HtmlToken.AttrPartMajor.End) == HtmlToken.AttrPartMajor.End;
-        }
-      }
+        public bool IsAttrEnd => (this.PartMajor & HtmlToken.AttrPartMajor.End) == HtmlToken.AttrPartMajor.End;
 
-      public bool IsAttrEmptyName
-      {
-        get
-        {
-          return (this.PartMajor & HtmlToken.AttrPartMajor.EmptyName) == HtmlToken.AttrPartMajor.EmptyName;
-        }
-      }
+        public bool IsAttrEmptyName => (this.PartMajor & HtmlToken.AttrPartMajor.EmptyName) == HtmlToken.AttrPartMajor.EmptyName;
 
-      public bool IsAttrNameEnd
-      {
-        get
-        {
-          return (this.PartMinor & HtmlToken.AttrPartMinor.EndName) == HtmlToken.AttrPartMinor.EndName;
-        }
-      }
+        public bool IsAttrNameEnd => (this.PartMinor & HtmlToken.AttrPartMinor.EndName) == HtmlToken.AttrPartMinor.EndName;
 
-      public bool IsAttrValueBegin
-      {
-        get
-        {
-          return (this.PartMinor & HtmlToken.AttrPartMinor.BeginValue) == HtmlToken.AttrPartMinor.BeginValue;
-        }
-      }
+        public bool IsAttrValueBegin => (this.PartMinor & HtmlToken.AttrPartMinor.BeginValue) == HtmlToken.AttrPartMinor.BeginValue;
 
-      public HtmlToken.AttrPartMajor MajorPart
-      {
-        get
-        {
-          return this.PartMajor & HtmlToken.AttrPartMajor.Complete;
-        }
-      }
+        public HtmlToken.AttrPartMajor MajorPart => this.PartMajor & HtmlToken.AttrPartMajor.Complete;
 
-      public HtmlToken.AttrPartMinor MinorPart
+        public HtmlToken.AttrPartMinor MinorPart
       {
         get
         {

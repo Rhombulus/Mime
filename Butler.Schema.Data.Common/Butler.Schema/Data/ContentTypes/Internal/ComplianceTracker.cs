@@ -15,31 +15,13 @@ namespace Butler.Schema.Data.ContentTypes.Internal
     private ComplianceMode complianceMode;
     private ComplianceStatus complianceStatus;
 
-    public ComplianceStatus Status
-    {
-      get
-      {
-        return this.complianceStatus;
-      }
-    }
+    public ComplianceStatus Status => this.complianceStatus;
 
-    public ComplianceMode Mode
-    {
-      get
-      {
-        return this.complianceMode;
-      }
-    }
+      public ComplianceMode Mode => this.complianceMode;
 
-    public FormatType Format
-    {
-      get
-      {
-        return this.format;
-      }
-    }
+      public FormatType Format => this.format;
 
-    public ComplianceTracker(FormatType format, ComplianceMode complianceMode)
+      public ComplianceTracker(FormatType format, ComplianceMode complianceMode)
     {
       this.format = format;
       this.complianceMode = complianceMode;

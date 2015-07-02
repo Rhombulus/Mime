@@ -72,15 +72,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public DecodingOptions HeaderDecodingOptions
-    {
-      get
-      {
-        return this.decodingOptions;
-      }
-    }
+    public DecodingOptions HeaderDecodingOptions => this.decodingOptions;
 
-    public MimeComplianceStatus ComplianceStatus
+      public MimeComplianceStatus ComplianceStatus
     {
       get
       {
@@ -127,31 +121,13 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    internal MimeReaderState ReaderState
-    {
-      get
-      {
-        return this.state;
-      }
-    }
+    internal MimeReaderState ReaderState => this.state;
 
-    internal bool DataExhausted
-    {
-      get
-      {
-        return this.dataExhausted;
-      }
-    }
+      internal bool DataExhausted => this.dataExhausted;
 
-    internal bool EndOfFile
-    {
-      get
-      {
-        return this.state == MimeReaderState.End;
-      }
-    }
+      internal bool EndOfFile => this.state == MimeReaderState.End;
 
-    public MimeHeaderReader HeaderReader
+      public MimeHeaderReader HeaderReader
     {
       get
       {
@@ -260,23 +236,11 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    internal LineTerminationState LineTerminationState
-    {
-      get
-      {
-        return this.currentLineTerminationState;
-      }
-    }
+    internal LineTerminationState LineTerminationState => this.currentLineTerminationState;
 
-    internal Header CurrentHeaderObject
-    {
-      get
-      {
-        return this.currentHeader;
-      }
-    }
+      internal Header CurrentHeaderObject => this.currentHeader;
 
-    internal bool GroupInProgress
+      internal bool GroupInProgress
     {
       get
       {
@@ -1711,31 +1675,13 @@ label_13:
     {
       private MimeReader reader;
 
-      public override bool CanRead
-      {
-        get
-        {
-          return this.reader != null;
-        }
-      }
+      public override bool CanRead => this.reader != null;
 
-      public override bool CanWrite
-      {
-        get
-        {
-          return false;
-        }
-      }
+        public override bool CanWrite => false;
 
-      public override bool CanSeek
-      {
-        get
-        {
-          return false;
-        }
-      }
+        public override bool CanSeek => false;
 
-      public override long Length
+        public override long Length
       {
         get
         {

@@ -15,15 +15,9 @@ namespace Butler.Schema.Data.TextConverters
     private HtmlTagContext tagContext;
     private int attributeIndexAndCookie;
 
-    public bool IsNull
-    {
-      get
-      {
-        return this.tagContext == null;
-      }
-    }
+    public bool IsNull => this.tagContext == null;
 
-    public HtmlAttributeId Id
+      public HtmlAttributeId Id
     {
       get
       {

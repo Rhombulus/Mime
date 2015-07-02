@@ -17,23 +17,11 @@ namespace Butler.Schema.CtsResources
     private static Dictionary<uint, string> stringIDs = new Dictionary<uint, string>(2);
     private static ResourceManager ResourceManager = new ResourceManager("Microsoft.Exchange.CtsResources.DataStrings", ((Type) IntrospectionExtensions.GetTypeInfo(typeof (DataStrings))).Assembly);
 
-    public static string ErrorPathCanNotBeRoot
-    {
-      get
-      {
-        return DataStrings.ResourceManager.GetString("ErrorPathCanNotBeRoot");
-      }
-    }
+    public static string ErrorPathCanNotBeRoot => DataStrings.ResourceManager.GetString("ErrorPathCanNotBeRoot");
 
-    public static string ConstraintViolationNoLeadingOrTrailingWhitespace
-    {
-      get
-      {
-        return DataStrings.ResourceManager.GetString("ConstraintViolationNoLeadingOrTrailingWhitespace");
-      }
-    }
+      public static string ConstraintViolationNoLeadingOrTrailingWhitespace => DataStrings.ResourceManager.GetString("ConstraintViolationNoLeadingOrTrailingWhitespace");
 
-    static DataStrings()
+      static DataStrings()
     {
       DataStrings.stringIDs.Add(1256740561U, "ErrorPathCanNotBeRoot");
       DataStrings.stringIDs.Add(2058499689U, "ConstraintViolationNoLeadingOrTrailingWhitespace");

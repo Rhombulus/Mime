@@ -27,31 +27,13 @@ namespace Butler.Schema.Data.TextConverters
     private bool endOfFile;
     private bool inconsistentState;
 
-    public override bool CanRead
-    {
-      get
-      {
-        return this.producer != null;
-      }
-    }
+    public override bool CanRead => this.producer != null;
 
-    public override bool CanWrite
-    {
-      get
-      {
-        return this.consumer != null;
-      }
-    }
+      public override bool CanWrite => this.consumer != null;
 
-    public override bool CanSeek
-    {
-      get
-      {
-        return false;
-      }
-    }
+      public override bool CanSeek => false;
 
-    public override long Length
+      public override long Length
     {
       get
       {

@@ -11,15 +11,9 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp
 {
   internal class DecodeLastChanceToCp932 : DecodeToCp932
   {
-    public override char Abbreviation
-    {
-      get
-      {
-        return 'L';
-      }
-    }
+    public override char Abbreviation => 'L';
 
-    public override bool IsEscapeSequenceHandled(Escape escape)
+      public override bool IsEscapeSequenceHandled(Escape escape)
     {
       return true;
     }

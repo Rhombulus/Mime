@@ -25,15 +25,9 @@ namespace Butler.Schema.Data.TextConverters
     private bool inconsistentState;
     private bool boundaryTesting;
 
-    public override Encoding Encoding
-    {
-      get
-      {
-        return (Encoding) null;
-      }
-    }
+    public override Encoding Encoding => (Encoding) null;
 
-    public ConverterWriter(Stream destinationStream, TextConverter converter)
+      public ConverterWriter(Stream destinationStream, TextConverter converter)
     {
       if (destinationStream == null)
         throw new ArgumentNullException("destinationStream");

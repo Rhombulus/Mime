@@ -12,15 +12,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Text
 {
   internal class TextTokenBuilder : TokenBuilder
   {
-    public TextToken Token
-    {
-      get
-      {
-        return (TextToken) base.Token;
-      }
-    }
+    public TextToken Token => (TextToken) base.Token;
 
-    public TextTokenBuilder(char[] buffer, int maxRuns, bool testBoundaryConditions)
+      public TextTokenBuilder(char[] buffer, int maxRuns, bool testBoundaryConditions)
       : this(new TextToken(), buffer, maxRuns, testBoundaryConditions)
     {
     }

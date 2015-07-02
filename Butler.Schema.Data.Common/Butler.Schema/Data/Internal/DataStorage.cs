@@ -16,15 +16,9 @@ namespace Butler.Schema.Data.Internal
     protected bool isReadOnly;
     protected SemaphoreSlim readOnlySemaphore;
 
-    internal bool IsReadOnly
-    {
-      get
-      {
-        return this.isReadOnly;
-      }
-    }
+    internal bool IsReadOnly => this.isReadOnly;
 
-    public static long CopyStreamToStream(Stream srcStream, Stream destStream, long lengthToCopy, ref byte[] scratchBuffer)
+      public static long CopyStreamToStream(Stream srcStream, Stream destStream, long lengthToCopy, ref byte[] scratchBuffer)
     {
       if (scratchBuffer == null || scratchBuffer.Length < 16384)
         scratchBuffer = new byte[16384];

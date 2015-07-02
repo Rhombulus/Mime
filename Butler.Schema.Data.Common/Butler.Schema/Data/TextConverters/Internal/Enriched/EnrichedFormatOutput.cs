@@ -24,15 +24,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
     private int listIndex;
     private int spaceBefore;
 
-    public override bool OutputCodePageSameAsInput
-    {
-      get
-      {
-        return false;
-      }
-    }
+    public override bool OutputCodePageSameAsInput => false;
 
-    public override Encoding OutputEncoding
+      public override Encoding OutputEncoding
     {
       set
       {
@@ -40,15 +34,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Enriched
       }
     }
 
-    public override bool CanAcceptMoreOutput
-    {
-      get
-      {
-        return this.output.CanAcceptMore;
-      }
-    }
+    public override bool CanAcceptMoreOutput => this.output.CanAcceptMore;
 
-    public EnrichedFormatOutput(ConverterOutput output, Injection injection, bool fallbacks, Stream formatTraceStream, Stream formatOutputTraceStream)
+      public EnrichedFormatOutput(ConverterOutput output, Injection injection, bool fallbacks, Stream formatTraceStream, Stream formatOutputTraceStream)
       : base(formatOutputTraceStream)
     {
       this.output = output;

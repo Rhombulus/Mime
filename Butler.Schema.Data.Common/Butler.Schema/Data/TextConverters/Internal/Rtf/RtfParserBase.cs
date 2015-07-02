@@ -31,47 +31,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     private DbcsLeadBits leadMask;
     private IReportBytes reportBytes;
 
-    public byte[] ParseBuffer
-    {
-      get
-      {
-        return this.parseBuffer;
-      }
-    }
+    public byte[] ParseBuffer => this.parseBuffer;
 
-    public int ParseStart
-    {
-      get
-      {
-        return this.parseStart;
-      }
-    }
+      public int ParseStart => this.parseStart;
 
-    public int ParseOffset
-    {
-      get
-      {
-        return this.parseOffset;
-      }
-    }
+      public int ParseOffset => this.parseOffset;
 
-    public int ParseEnd
-    {
-      get
-      {
-        return this.parseEnd;
-      }
-    }
+      public int ParseEnd => this.parseEnd;
 
-    public bool ParseBufferFull
-    {
-      get
-      {
-        return this.parseEnd + 128 >= this.parseBuffer.Length;
-      }
-    }
+      public bool ParseBufferFull => this.parseEnd + 128 >= this.parseBuffer.Length;
 
-    public bool EndOfFile
+      public bool EndOfFile
     {
       get
       {
@@ -81,47 +51,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       }
     }
 
-    public bool EndOfFileVisible
-    {
-      get
-      {
-        return this.endOfFileVisible;
-      }
-    }
+    public bool EndOfFileVisible => this.endOfFileVisible;
 
-    public bool ParseBufferNeedsRefill
-    {
-      get
-      {
-        return this.parseEnd - this.parseOffset < 128;
-      }
-    }
+      public bool ParseBufferNeedsRefill => this.parseEnd - this.parseOffset < 128;
 
-    public RtfRunKind RunKind
-    {
-      get
-      {
-        return this.run.Kind;
-      }
-    }
+      public RtfRunKind RunKind => this.run.Kind;
 
-    public short KeywordId
-    {
-      get
-      {
-        return this.run.KeywordId;
-      }
-    }
+      public short KeywordId => this.run.KeywordId;
 
-    public int KeywordValue
-    {
-      get
-      {
-        return this.run.Value;
-      }
-    }
+      public int KeywordValue => this.run.Value;
 
-    public RtfParserBase(int inputBufferSize, bool testBoundaryConditions, IReportBytes reportBytes)
+      public RtfParserBase(int inputBufferSize, bool testBoundaryConditions, IReportBytes reportBytes)
     {
       this.parseBuffer = new byte[1 + (testBoundaryConditions ? 133 : Math.Min((int) short.MaxValue, inputBufferSize))];
       this.reportBytes = reportBytes;

@@ -55,15 +55,9 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
       }
     }
 
-    public bool IsExplicit
-    {
-      get
-      {
-        return this.isExplicitPeriod;
-      }
-    }
+    public bool IsExplicit => this.isExplicitPeriod;
 
-    public CalendarPeriod(DateTime start, DateTime end)
+      public CalendarPeriod(DateTime start, DateTime end)
     {
       this.start = start;
       this.end = end;

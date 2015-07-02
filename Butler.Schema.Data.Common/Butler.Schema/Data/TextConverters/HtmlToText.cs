@@ -45,15 +45,9 @@ namespace Butler.Schema.Data.TextConverters
     private int testNormalizerTraceStopOnTokenNum;
     private Stream testFormatTraceStream;
 
-    public TextExtractionMode TextExtractionMode
-    {
-      get
-      {
-        return this.mode;
-      }
-    }
+    public TextExtractionMode TextExtractionMode => this.mode;
 
-    public Encoding InputEncoding
+      public Encoding InputEncoding
     {
       get
       {

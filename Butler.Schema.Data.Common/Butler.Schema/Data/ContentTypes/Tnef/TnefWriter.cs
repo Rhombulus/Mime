@@ -81,11 +81,7 @@ namespace Butler.Schema.Data.ContentTypes.Tnef {
 
         public int MessageCodePage { get; private set; }
 
-        private int StreamOffset {
-            get {
-                return (streamOffset + writeOffset);
-            }
-        }
+        private int StreamOffset => (streamOffset + writeOffset);
 
         public void Dispose() {
             this.Dispose(true);

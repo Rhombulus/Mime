@@ -16,15 +16,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private FormatConverter converter;
     private int level;
 
-    public bool IsNull
-    {
-      get
-      {
-        return this.converter == null;
-      }
-    }
+    public bool IsNull => this.converter == null;
 
-    public FormatContainerType Type
+      public FormatContainerType Type
     {
       get
       {
@@ -88,23 +82,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public Property[] Properties
-    {
-      get
-      {
-        return this.converter.BuildStack[this.level].Properties;
-      }
-    }
+    public Property[] Properties => this.converter.BuildStack[this.level].Properties;
 
-    public FormatNode Node
-    {
-      get
-      {
-        return new FormatNode(this.converter.Store, this.converter.BuildStack[this.level].Node);
-      }
-    }
+      public FormatNode Node => new FormatNode(this.converter.Store, this.converter.BuildStack[this.level].Node);
 
-    internal FormatConverterContainer(FormatConverter converter, int level)
+      internal FormatConverterContainer(FormatConverter converter, int level)
     {
       this.converter = converter;
       this.level = level;

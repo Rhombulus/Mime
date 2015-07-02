@@ -21,15 +21,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private PropertyBitMask distinctPropertyMask;
     private int propertyUndoStackTop;
 
-    public int UndoStackTop
-    {
-      get
-      {
-        return this.propertyUndoStackTop;
-      }
-    }
+    public int UndoStackTop => this.propertyUndoStackTop;
 
-    public FlagProperties GetEffectiveFlags()
+      public FlagProperties GetEffectiveFlags()
     {
       return this.flagProperties;
     }
@@ -240,39 +234,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       [FieldOffset(0)]
       public PropertyState.BitsUndo Bits;
 
-      public bool IsFlags
-      {
-        get
-        {
-          return this.Property.Id == PropertyId.MaxValue;
-        }
-      }
+      public bool IsFlags => this.Property.Id == PropertyId.MaxValue;
 
-      public bool IsDistinctFlags
-      {
-        get
-        {
-          return this.Property.Id == (PropertyId) 72;
-        }
-      }
+        public bool IsDistinctFlags => this.Property.Id == (PropertyId) 72;
 
-      public bool IsDistinctMask1
-      {
-        get
-        {
-          return this.Property.Id == (PropertyId) 73;
-        }
-      }
+        public bool IsDistinctMask1 => this.Property.Id == (PropertyId) 73;
 
-      public bool IsDistinctMask2
-      {
-        get
-        {
-          return this.Property.Id == (PropertyId) 74;
-        }
-      }
+        public bool IsDistinctMask2 => this.Property.Id == (PropertyId) 74;
 
-      public void Set(PropertyId id, PropertyValue value)
+        public void Set(PropertyId id, PropertyValue value)
       {
         this.Property.Set(id, value);
       }

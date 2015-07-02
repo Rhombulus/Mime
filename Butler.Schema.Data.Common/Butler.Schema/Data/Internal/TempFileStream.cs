@@ -22,23 +22,11 @@ namespace Butler.Schema.Data.Internal
     private static string tempPath;
     private string filePath;
 
-    internal static string Path
-    {
-      get
-      {
-        return TempFileStream.GetTempPath();
-      }
-    }
+    internal static string Path => TempFileStream.GetTempPath();
 
-    public string FilePath
-    {
-      get
-      {
-        return this.filePath;
-      }
-    }
+      public string FilePath => this.filePath;
 
-    private TempFileStream(SafeFileHandle handle)
+      private TempFileStream(SafeFileHandle handle)
       : base(handle, FileAccess.ReadWrite)
     {
     }

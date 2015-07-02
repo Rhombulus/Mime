@@ -14,31 +14,13 @@ namespace Butler.Schema.Data.TextConverters
     private string url;
     private int urlPosition;
 
-    public bool IsActive
-    {
-      get
-      {
-        return this.urlPosition >= 0;
-      }
-    }
+    public bool IsActive => this.urlPosition >= 0;
 
-    public bool IsMatch
-    {
-      get
-      {
-        return this.urlPosition == this.url.Length;
-      }
-    }
+      public bool IsMatch => this.urlPosition == this.url.Length;
 
-    public bool IsEnough
-    {
-      get
-      {
-        return this.urlPosition < 0;
-      }
-    }
+      public bool IsEnough => this.urlPosition < 0;
 
-    public void Initialize(string url)
+      public void Initialize(string url)
     {
       this.url = url;
       this.urlPosition = 0;

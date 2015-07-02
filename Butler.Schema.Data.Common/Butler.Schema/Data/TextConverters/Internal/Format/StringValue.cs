@@ -14,39 +14,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     internal FormatStore.StringValueStore Strings;
     internal int StringHandle;
 
-    public PropertyValue PropertyValue
-    {
-      get
-      {
-        return new PropertyValue(PropertyType.String, this.StringHandle);
-      }
-    }
+    public PropertyValue PropertyValue => new PropertyValue(PropertyType.String, this.StringHandle);
 
-    public int Length
-    {
-      get
-      {
-        return this.Strings.Plane(this.StringHandle)[this.Strings.Index(this.StringHandle)].Str.Length;
-      }
-    }
+      public int Length => this.Strings.Plane(this.StringHandle)[this.Strings.Index(this.StringHandle)].Str.Length;
 
-    public int RefCount
-    {
-      get
-      {
-        return this.Strings.Plane(this.StringHandle)[this.Strings.Index(this.StringHandle)].RefCount;
-      }
-    }
+      public int RefCount => this.Strings.Plane(this.StringHandle)[this.Strings.Index(this.StringHandle)].RefCount;
 
-    internal int Handle
-    {
-      get
-      {
-        return this.StringHandle;
-      }
-    }
+      internal int Handle => this.StringHandle;
 
-    internal StringValue(FormatStore store, int stringHandle)
+      internal StringValue(FormatStore store, int stringHandle)
     {
       this.Strings = store.Strings;
       this.StringHandle = stringHandle;

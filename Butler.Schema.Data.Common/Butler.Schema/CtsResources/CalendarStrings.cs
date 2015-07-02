@@ -17,719 +17,185 @@ namespace Butler.Schema.CtsResources
     private static Dictionary<uint, string> stringIDs = new Dictionary<uint, string>(89);
     private static ResourceManager ResourceManager = new ResourceManager("Microsoft.Exchange.CtsResources.CalendarStrings", ((Type)IntrospectionExtensions.GetTypeInfo(typeof (CalendarStrings))).Assembly);
 
-    public static string PropertyOutsideOfComponent
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("PropertyOutsideOfComponent");
-      }
-    }
-
-    public static string EmptyParameterName
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("EmptyParameterName");
-      }
-    }
-
-    public static string ByMonthDayOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByMonthDayOnlyPermittedOnce");
-      }
-    }
-
-    public static string ByMonthDayOutOfRange
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByMonthDayOutOfRange");
-      }
-    }
-
-    public static string ByYearDayOutOfRange
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByYearDayOutOfRange");
-      }
-    }
-
-    public static string InvalidReaderState
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidReaderState");
-      }
-    }
-
-    public static string ByMinuteOutOfRange
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByMinuteOutOfRange");
-      }
-    }
-
-    public static string NotAllComponentsClosed
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("NotAllComponentsClosed");
-      }
-    }
-
-    public static string MultivalueNotPermittedOnWkSt
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnWkSt");
-      }
-    }
-
-    public static string BySecondOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("BySecondOnlyPermittedOnce");
-      }
-    }
-
-    public static string ExpectedS
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ExpectedS");
-      }
-    }
-
-    public static string StreamHasAlreadyBeenClosed
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("StreamHasAlreadyBeenClosed");
-      }
-    }
-
-    public static string UnknownRecurrenceProperty
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("UnknownRecurrenceProperty");
-      }
-    }
-
-    public static string ByYearDayOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByYearDayOnlyPermittedOnce");
-      }
-    }
-
-    public static string ByMonthOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByMonthOnlyPermittedOnce");
-      }
-    }
-
-    public static string ParameterNameMissing
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ParameterNameMissing");
-      }
-    }
-
-    public static string InvalidValueTypeForProperty
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidValueTypeForProperty");
-      }
-    }
-
-    public static string InvalidDateTimeLength
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidDateTimeLength");
-      }
-    }
-
-    public static string UnknownDayOfWeek
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("UnknownDayOfWeek");
-      }
-    }
-
-    public static string CountLessThanZero
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("CountLessThanZero");
-      }
-    }
-
-    public static string ExpectedZ
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ExpectedZ");
-      }
-    }
-
-    public static string ExpectedWOrD
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ExpectedWOrD");
-      }
-    }
-
-    public static string ParametersNotPermittedOnComponentTag
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ParametersNotPermittedOnComponentTag");
-      }
-    }
-
-    public static string DurationDataNotEndedProperly
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("DurationDataNotEndedProperly");
-      }
-    }
-
-    public static string ByDayOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByDayOnlyPermittedOnce");
-      }
-    }
-
-    public static string PropertyTruncated
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("PropertyTruncated");
-      }
-    }
-
-    public static string IntervalMustBePositive
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("IntervalMustBePositive");
-      }
-    }
-
-    public static string MultivalueNotPermittedOnCount
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnCount");
-      }
-    }
-
-    public static string ExpectedPlusMinus
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ExpectedPlusMinus");
-      }
-    }
-
-    public static string InvalidParameterValue
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidParameterValue");
-      }
-    }
-
-    public static string EmptyPropertyName
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("EmptyPropertyName");
-      }
-    }
-
-    public static string InvalidParameterId
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidParameterId");
-      }
-    }
-
-    public static string ExpectedT
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ExpectedT");
-      }
-    }
-
-    public static string ByWeekNoOutOfRange
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByWeekNoOutOfRange");
-      }
-    }
-
-    public static string BySecondOutOfRange
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("BySecondOutOfRange");
-      }
-    }
-
-    public static string ExpectedM
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ExpectedM");
-      }
-    }
-
-    public static string UnknownFrequencyValue
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("UnknownFrequencyValue");
-      }
-    }
-
-    public static string InvalidTimeFormat
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidTimeFormat");
-      }
-    }
-
-    public static string InvalidCharacterInQuotedString
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidCharacterInQuotedString");
-      }
-    }
-
-    public static string CountNotPermittedWithUntil
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("CountNotPermittedWithUntil");
-      }
-    }
-
-    public static string InvalidState
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidState");
-      }
-    }
-
-    public static string StreamMustAllowRead
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("StreamMustAllowRead");
-      }
-    }
-
-    public static string StreamIsReadOnly
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("StreamIsReadOnly");
-      }
-    }
-
-    public static string InvalidToken
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidToken");
-      }
-    }
-
-    public static string InvalidDateFormat
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidDateFormat");
-      }
-    }
-
-    public static string InvalidStateForOperation
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidStateForOperation");
-      }
-    }
-
-    public static string InvalidCharacterInRecurrence
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidCharacterInRecurrence");
-      }
-    }
-
-    public static string InvalidCharacterInPropertyName
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidCharacterInPropertyName");
-      }
-    }
-
-    public static string ParameterValuesCannotContainDoubleQuote
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ParameterValuesCannotContainDoubleQuote");
-      }
-    }
-
-    public static string ByMinuteOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByMinuteOnlyPermittedOnce");
-      }
-    }
-
-    public static string InvalidCharacterInParameterText
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidCharacterInParameterText");
-      }
-    }
-
-    public static string ExpectedP
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ExpectedP");
-      }
-    }
-
-    public static string CannotStartOnProperty
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("CannotStartOnProperty");
-      }
-    }
-
-    public static string StreamMustAllowWrite
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("StreamMustAllowWrite");
-      }
-    }
-
-    public static string UnexpectedEndOfStream
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("UnexpectedEndOfStream");
-      }
-    }
-
-    public static string WkStOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("WkStOnlyPermittedOnce");
-      }
-    }
-
-    public static string InvalidValueFormat
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidValueFormat");
-      }
-    }
-
-    public static string InvalidCharacter
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidCharacter");
-      }
-    }
-
-    public static string CannotStartPropertyInParameter
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("CannotStartPropertyInParameter");
-      }
-    }
-
-    public static string InvalidCharacterInParameterName
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidCharacterInParameterName");
-      }
-    }
-
-    public static string EndTagWithoutBegin
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("EndTagWithoutBegin");
-      }
-    }
-
-    public static string InvalidStateToWriteValue
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidStateToWriteValue");
-      }
-    }
-
-    public static string InvalidTimeStringLength
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidTimeStringLength");
-      }
-    }
-
-    public static string InvalidComponentId
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidComponentId");
-      }
-    }
-
-    public static string ByHourOutOfRange
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByHourOutOfRange");
-      }
-    }
-
-    public static string ByMonthOutOfRange
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByMonthOutOfRange");
-      }
-    }
-
-    public static string ExpectedTAfterDate
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ExpectedTAfterDate");
-      }
-    }
-
-    public static string UntilNotPermittedWithCount
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("UntilNotPermittedWithCount");
-      }
-    }
-
-    public static string UtcOffsetTimespanCannotContainDays
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("UtcOffsetTimespanCannotContainDays");
-      }
-    }
-
-    public static string MultivalueNotPermittedOnFreq
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnFreq");
-      }
-    }
-
-    public static string ExpectedHMS
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ExpectedHMS");
-      }
-    }
-
-    public static string InvalidPropertyId
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidPropertyId");
-      }
-    }
-
-    public static string CountOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("CountOnlyPermittedOnce");
-      }
-    }
-
-    public static string MultivalueNotPermittedOnUntil
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnUntil");
-      }
-    }
-
-    public static string ValueAlreadyRead
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ValueAlreadyRead");
-      }
-    }
-
-    public static string MultivalueNotPermittedOnInterval
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnInterval");
-      }
-    }
-
-    public static string BySetPosOutOfRange
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("BySetPosOutOfRange");
-      }
-    }
-
-    public static string InvalidUtcOffsetLength
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidUtcOffsetLength");
-      }
-    }
-
-    public static string ComponentNameMismatch
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ComponentNameMismatch");
-      }
-    }
-
-    public static string NonwritableStream
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("NonwritableStream");
-      }
-    }
-
-    public static string IntervalOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("IntervalOnlyPermittedOnce");
-      }
-    }
-
-    public static string InvalidCharacterInPropertyValue
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("InvalidCharacterInPropertyValue");
-      }
-    }
-
-    public static string ByHourOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByHourOnlyPermittedOnce");
-      }
-    }
-
-    public static string UntilOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("UntilOnlyPermittedOnce");
-      }
-    }
-
-    public static string OffsetOutOfRange
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("OffsetOutOfRange");
-      }
-    }
-
-    public static string EmptyComponentName
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("EmptyComponentName");
-      }
-    }
-
-    public static string BySetPosOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("BySetPosOnlyPermittedOnce");
-      }
-    }
-
-    public static string StateMustBeComponent
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("StateMustBeComponent");
-      }
-    }
-
-    public static string ByWeekNoOnlyPermittedOnce
-    {
-      get
-      {
-        return CalendarStrings.ResourceManager.GetString("ByWeekNoOnlyPermittedOnce");
-      }
-    }
-
-    static CalendarStrings()
+    public static string PropertyOutsideOfComponent => CalendarStrings.ResourceManager.GetString("PropertyOutsideOfComponent");
+
+      public static string EmptyParameterName => CalendarStrings.ResourceManager.GetString("EmptyParameterName");
+
+      public static string ByMonthDayOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("ByMonthDayOnlyPermittedOnce");
+
+      public static string ByMonthDayOutOfRange => CalendarStrings.ResourceManager.GetString("ByMonthDayOutOfRange");
+
+      public static string ByYearDayOutOfRange => CalendarStrings.ResourceManager.GetString("ByYearDayOutOfRange");
+
+      public static string InvalidReaderState => CalendarStrings.ResourceManager.GetString("InvalidReaderState");
+
+      public static string ByMinuteOutOfRange => CalendarStrings.ResourceManager.GetString("ByMinuteOutOfRange");
+
+      public static string NotAllComponentsClosed => CalendarStrings.ResourceManager.GetString("NotAllComponentsClosed");
+
+      public static string MultivalueNotPermittedOnWkSt => CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnWkSt");
+
+      public static string BySecondOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("BySecondOnlyPermittedOnce");
+
+      public static string ExpectedS => CalendarStrings.ResourceManager.GetString("ExpectedS");
+
+      public static string StreamHasAlreadyBeenClosed => CalendarStrings.ResourceManager.GetString("StreamHasAlreadyBeenClosed");
+
+      public static string UnknownRecurrenceProperty => CalendarStrings.ResourceManager.GetString("UnknownRecurrenceProperty");
+
+      public static string ByYearDayOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("ByYearDayOnlyPermittedOnce");
+
+      public static string ByMonthOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("ByMonthOnlyPermittedOnce");
+
+      public static string ParameterNameMissing => CalendarStrings.ResourceManager.GetString("ParameterNameMissing");
+
+      public static string InvalidValueTypeForProperty => CalendarStrings.ResourceManager.GetString("InvalidValueTypeForProperty");
+
+      public static string InvalidDateTimeLength => CalendarStrings.ResourceManager.GetString("InvalidDateTimeLength");
+
+      public static string UnknownDayOfWeek => CalendarStrings.ResourceManager.GetString("UnknownDayOfWeek");
+
+      public static string CountLessThanZero => CalendarStrings.ResourceManager.GetString("CountLessThanZero");
+
+      public static string ExpectedZ => CalendarStrings.ResourceManager.GetString("ExpectedZ");
+
+      public static string ExpectedWOrD => CalendarStrings.ResourceManager.GetString("ExpectedWOrD");
+
+      public static string ParametersNotPermittedOnComponentTag => CalendarStrings.ResourceManager.GetString("ParametersNotPermittedOnComponentTag");
+
+      public static string DurationDataNotEndedProperly => CalendarStrings.ResourceManager.GetString("DurationDataNotEndedProperly");
+
+      public static string ByDayOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("ByDayOnlyPermittedOnce");
+
+      public static string PropertyTruncated => CalendarStrings.ResourceManager.GetString("PropertyTruncated");
+
+      public static string IntervalMustBePositive => CalendarStrings.ResourceManager.GetString("IntervalMustBePositive");
+
+      public static string MultivalueNotPermittedOnCount => CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnCount");
+
+      public static string ExpectedPlusMinus => CalendarStrings.ResourceManager.GetString("ExpectedPlusMinus");
+
+      public static string InvalidParameterValue => CalendarStrings.ResourceManager.GetString("InvalidParameterValue");
+
+      public static string EmptyPropertyName => CalendarStrings.ResourceManager.GetString("EmptyPropertyName");
+
+      public static string InvalidParameterId => CalendarStrings.ResourceManager.GetString("InvalidParameterId");
+
+      public static string ExpectedT => CalendarStrings.ResourceManager.GetString("ExpectedT");
+
+      public static string ByWeekNoOutOfRange => CalendarStrings.ResourceManager.GetString("ByWeekNoOutOfRange");
+
+      public static string BySecondOutOfRange => CalendarStrings.ResourceManager.GetString("BySecondOutOfRange");
+
+      public static string ExpectedM => CalendarStrings.ResourceManager.GetString("ExpectedM");
+
+      public static string UnknownFrequencyValue => CalendarStrings.ResourceManager.GetString("UnknownFrequencyValue");
+
+      public static string InvalidTimeFormat => CalendarStrings.ResourceManager.GetString("InvalidTimeFormat");
+
+      public static string InvalidCharacterInQuotedString => CalendarStrings.ResourceManager.GetString("InvalidCharacterInQuotedString");
+
+      public static string CountNotPermittedWithUntil => CalendarStrings.ResourceManager.GetString("CountNotPermittedWithUntil");
+
+      public static string InvalidState => CalendarStrings.ResourceManager.GetString("InvalidState");
+
+      public static string StreamMustAllowRead => CalendarStrings.ResourceManager.GetString("StreamMustAllowRead");
+
+      public static string StreamIsReadOnly => CalendarStrings.ResourceManager.GetString("StreamIsReadOnly");
+
+      public static string InvalidToken => CalendarStrings.ResourceManager.GetString("InvalidToken");
+
+      public static string InvalidDateFormat => CalendarStrings.ResourceManager.GetString("InvalidDateFormat");
+
+      public static string InvalidStateForOperation => CalendarStrings.ResourceManager.GetString("InvalidStateForOperation");
+
+      public static string InvalidCharacterInRecurrence => CalendarStrings.ResourceManager.GetString("InvalidCharacterInRecurrence");
+
+      public static string InvalidCharacterInPropertyName => CalendarStrings.ResourceManager.GetString("InvalidCharacterInPropertyName");
+
+      public static string ParameterValuesCannotContainDoubleQuote => CalendarStrings.ResourceManager.GetString("ParameterValuesCannotContainDoubleQuote");
+
+      public static string ByMinuteOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("ByMinuteOnlyPermittedOnce");
+
+      public static string InvalidCharacterInParameterText => CalendarStrings.ResourceManager.GetString("InvalidCharacterInParameterText");
+
+      public static string ExpectedP => CalendarStrings.ResourceManager.GetString("ExpectedP");
+
+      public static string CannotStartOnProperty => CalendarStrings.ResourceManager.GetString("CannotStartOnProperty");
+
+      public static string StreamMustAllowWrite => CalendarStrings.ResourceManager.GetString("StreamMustAllowWrite");
+
+      public static string UnexpectedEndOfStream => CalendarStrings.ResourceManager.GetString("UnexpectedEndOfStream");
+
+      public static string WkStOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("WkStOnlyPermittedOnce");
+
+      public static string InvalidValueFormat => CalendarStrings.ResourceManager.GetString("InvalidValueFormat");
+
+      public static string InvalidCharacter => CalendarStrings.ResourceManager.GetString("InvalidCharacter");
+
+      public static string CannotStartPropertyInParameter => CalendarStrings.ResourceManager.GetString("CannotStartPropertyInParameter");
+
+      public static string InvalidCharacterInParameterName => CalendarStrings.ResourceManager.GetString("InvalidCharacterInParameterName");
+
+      public static string EndTagWithoutBegin => CalendarStrings.ResourceManager.GetString("EndTagWithoutBegin");
+
+      public static string InvalidStateToWriteValue => CalendarStrings.ResourceManager.GetString("InvalidStateToWriteValue");
+
+      public static string InvalidTimeStringLength => CalendarStrings.ResourceManager.GetString("InvalidTimeStringLength");
+
+      public static string InvalidComponentId => CalendarStrings.ResourceManager.GetString("InvalidComponentId");
+
+      public static string ByHourOutOfRange => CalendarStrings.ResourceManager.GetString("ByHourOutOfRange");
+
+      public static string ByMonthOutOfRange => CalendarStrings.ResourceManager.GetString("ByMonthOutOfRange");
+
+      public static string ExpectedTAfterDate => CalendarStrings.ResourceManager.GetString("ExpectedTAfterDate");
+
+      public static string UntilNotPermittedWithCount => CalendarStrings.ResourceManager.GetString("UntilNotPermittedWithCount");
+
+      public static string UtcOffsetTimespanCannotContainDays => CalendarStrings.ResourceManager.GetString("UtcOffsetTimespanCannotContainDays");
+
+      public static string MultivalueNotPermittedOnFreq => CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnFreq");
+
+      public static string ExpectedHMS => CalendarStrings.ResourceManager.GetString("ExpectedHMS");
+
+      public static string InvalidPropertyId => CalendarStrings.ResourceManager.GetString("InvalidPropertyId");
+
+      public static string CountOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("CountOnlyPermittedOnce");
+
+      public static string MultivalueNotPermittedOnUntil => CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnUntil");
+
+      public static string ValueAlreadyRead => CalendarStrings.ResourceManager.GetString("ValueAlreadyRead");
+
+      public static string MultivalueNotPermittedOnInterval => CalendarStrings.ResourceManager.GetString("MultivalueNotPermittedOnInterval");
+
+      public static string BySetPosOutOfRange => CalendarStrings.ResourceManager.GetString("BySetPosOutOfRange");
+
+      public static string InvalidUtcOffsetLength => CalendarStrings.ResourceManager.GetString("InvalidUtcOffsetLength");
+
+      public static string ComponentNameMismatch => CalendarStrings.ResourceManager.GetString("ComponentNameMismatch");
+
+      public static string NonwritableStream => CalendarStrings.ResourceManager.GetString("NonwritableStream");
+
+      public static string IntervalOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("IntervalOnlyPermittedOnce");
+
+      public static string InvalidCharacterInPropertyValue => CalendarStrings.ResourceManager.GetString("InvalidCharacterInPropertyValue");
+
+      public static string ByHourOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("ByHourOnlyPermittedOnce");
+
+      public static string UntilOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("UntilOnlyPermittedOnce");
+
+      public static string OffsetOutOfRange => CalendarStrings.ResourceManager.GetString("OffsetOutOfRange");
+
+      public static string EmptyComponentName => CalendarStrings.ResourceManager.GetString("EmptyComponentName");
+
+      public static string BySetPosOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("BySetPosOnlyPermittedOnce");
+
+      public static string StateMustBeComponent => CalendarStrings.ResourceManager.GetString("StateMustBeComponent");
+
+      public static string ByWeekNoOnlyPermittedOnce => CalendarStrings.ResourceManager.GetString("ByWeekNoOnlyPermittedOnce");
+
+      static CalendarStrings()
     {
       CalendarStrings.stringIDs.Add(1651570042U, "PropertyOutsideOfComponent");
       CalendarStrings.stringIDs.Add(2204331647U, "EmptyParameterName");

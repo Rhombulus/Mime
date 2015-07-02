@@ -14,95 +14,29 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
   {
     private RtfToken token;
 
-    public RunTextType TextType
-    {
-      get
-      {
-        return this.token.ElementTextType;
-      }
-    }
+    public RunTextType TextType => this.token.ElementTextType;
 
-    public TextMapping TextMapping
-    {
-      get
-      {
-        return this.token.TextMapping;
-      }
-    }
+      public TextMapping TextMapping => this.token.TextMapping;
 
-    public int Length
-    {
-      get
-      {
-        return this.RawLength;
-      }
-    }
+      public int Length => this.RawLength;
 
-    public bool IsAnyWhitespace
-    {
-      get
-      {
-        return this.TextType <= RunTextType.UnusualWhitespace;
-      }
-    }
+      public bool IsAnyWhitespace => this.TextType <= RunTextType.UnusualWhitespace;
 
-    public bool IsLiteral
-    {
-      get
-      {
-        return false;
-      }
-    }
+      public bool IsLiteral => false;
 
-    public char[] RawBuffer
-    {
-      get
-      {
-        return this.token.CharBuffer;
-      }
-    }
+      public char[] RawBuffer => this.token.CharBuffer;
 
-    public int RawOffset
-    {
-      get
-      {
-        return this.token.ElementOffset;
-      }
-    }
+      public int RawOffset => this.token.ElementOffset;
 
-    public int RawLength
-    {
-      get
-      {
-        return this.token.ElementLength;
-      }
-    }
+      public int RawLength => this.token.ElementLength;
 
-    public int Literal
-    {
-      get
-      {
-        return 0;
-      }
-    }
+      public int Literal => 0;
 
-    public int Value
-    {
-      get
-      {
-        return 0;
-      }
-    }
+      public int Value => 0;
 
-    public bool Eof
-    {
-      get
-      {
-        return true;
-      }
-    }
+      public bool Eof => true;
 
-    internal RtfTextElement(RtfToken token)
+      internal RtfTextElement(RtfToken token)
     {
       this.token = token;
     }

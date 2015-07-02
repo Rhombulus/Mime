@@ -915,39 +915,15 @@ namespace Butler.Schema.Data.Mime
       private int offset;
       private int count;
 
-      public int Length
-      {
-        get
-        {
-          return this.data.Length;
-        }
-      }
+      public int Length => this.data.Length;
 
-      public byte[] Data
-      {
-        get
-        {
-          return this.data;
-        }
-      }
+        public byte[] Data => this.data;
 
-      public int Offset
-      {
-        get
-        {
-          return this.offset;
-        }
-      }
+        public int Offset => this.offset;
 
-      public int Count
-      {
-        get
-        {
-          return this.count;
-        }
-      }
+        public int Count => this.count;
 
-      public bool Full
+        public bool Full
       {
         get
         {
@@ -980,31 +956,13 @@ namespace Butler.Schema.Data.Mime
     {
       private MimeWriter writer;
 
-      public override bool CanRead
-      {
-        get
-        {
-          return false;
-        }
-      }
+      public override bool CanRead => false;
 
-      public override bool CanWrite
-      {
-        get
-        {
-          return true;
-        }
-      }
+        public override bool CanWrite => true;
 
-      public override bool CanSeek
-      {
-        get
-        {
-          return false;
-        }
-      }
+        public override bool CanSeek => false;
 
-      public override long Length
+        public override long Length
       {
         get
         {
@@ -1066,31 +1024,13 @@ namespace Butler.Schema.Data.Mime
     {
       private MimeWriter writer;
 
-      public override bool CanRead
-      {
-        get
-        {
-          return false;
-        }
-      }
+      public override bool CanRead => false;
 
-      public override bool CanWrite
-      {
-        get
-        {
-          return true;
-        }
-      }
+        public override bool CanWrite => true;
 
-      public override bool CanSeek
-      {
-        get
-        {
-          return false;
-        }
-      }
+        public override bool CanSeek => false;
 
-      public override long Length
+        public override long Length
       {
         get
         {

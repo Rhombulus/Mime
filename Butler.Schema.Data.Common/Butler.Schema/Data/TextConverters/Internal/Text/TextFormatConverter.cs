@@ -21,15 +21,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Text
     protected bool paragraphStarted;
     protected Injection injection;
 
-    private bool CanFlush
-    {
-      get
-      {
-        return this.output.CanAcceptMoreOutput;
-      }
-    }
+    private bool CanFlush => this.output.CanAcceptMoreOutput;
 
-    public TextFormatConverter(TextParser parser, Format.FormatOutput output, Injection injection, Stream traceStream, bool traceShowTokenNum, int traceStopOnTokenNum, Stream formatConverterTraceStream)
+      public TextFormatConverter(TextParser parser, Format.FormatOutput output, Injection injection, Stream traceStream, bool traceShowTokenNum, int traceStopOnTokenNum, Stream formatConverterTraceStream)
       : base(formatConverterTraceStream)
     {
       this.parser = parser;

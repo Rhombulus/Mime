@@ -33,15 +33,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public virtual bool RequiresSMTPUTF8
-    {
-      get
-      {
-        return false;
-      }
-    }
+    public virtual bool RequiresSMTPUTF8 => false;
 
-    internal string DecodedDisplayName
+      internal string DecodedDisplayName
     {
       set
       {

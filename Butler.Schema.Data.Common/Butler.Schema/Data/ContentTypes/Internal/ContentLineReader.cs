@@ -580,31 +580,13 @@ namespace Butler.Schema.Data.ContentTypes.Internal
       private int bufferSize;
       private Encoder encoder;
 
-      public override bool CanRead
-      {
-        get
-        {
-          return true;
-        }
-      }
+      public override bool CanRead => true;
 
-      public override bool CanWrite
-      {
-        get
-        {
-          return false;
-        }
-      }
+        public override bool CanWrite => false;
 
-      public override bool CanSeek
-      {
-        get
-        {
-          return false;
-        }
-      }
+        public override bool CanSeek => false;
 
-      public override long Length
+        public override long Length
       {
         get
         {

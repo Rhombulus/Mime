@@ -15,23 +15,11 @@ namespace Butler.Schema.Data.Internal
     private int refCount;
     private bool isDisposed;
 
-    protected bool IsDisposed
-    {
-      get
-      {
-        return this.isDisposed;
-      }
-    }
+    protected bool IsDisposed => this.isDisposed;
 
-    public int RefCount
-    {
-      get
-      {
-        return this.refCount;
-      }
-    }
+      public int RefCount => this.refCount;
 
-    protected RefCountable()
+      protected RefCountable()
     {
       this.refCount = 1;
     }

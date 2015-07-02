@@ -20,15 +20,9 @@ namespace Butler.Schema.Data.Mime
     private int position;
     private readonly bool allowUTF8;
 
-    private bool Eof
-    {
-      get
-      {
-        return this.nextLine >= this.lines.Count;
-      }
-    }
+    private bool Eof => this.nextLine >= this.lines.Count;
 
-    public ValueParser(MimeStringList lines, bool allowUTF8)
+      public ValueParser(MimeStringList lines, bool allowUTF8)
     {
       this.lines = lines;
       this.allowUTF8 = allowUTF8;

@@ -14,23 +14,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private FormatConverter converter;
     private int handle;
 
-    public int Count
-    {
-      get
-      {
-        return this.converter.MultiValueBuildHelper.Count;
-      }
-    }
+    public int Count => this.converter.MultiValueBuildHelper.Count;
 
-    public PropertyValue this[int i]
-    {
-      get
-      {
-        return this.converter.MultiValueBuildHelper[i];
-      }
-    }
+      public PropertyValue this[int i] => this.converter.MultiValueBuildHelper[i];
 
-    internal MultiValueBuilder(FormatConverter converter, int handle)
+      internal MultiValueBuilder(FormatConverter converter, int handle)
     {
       this.converter = converter;
       this.handle = handle;

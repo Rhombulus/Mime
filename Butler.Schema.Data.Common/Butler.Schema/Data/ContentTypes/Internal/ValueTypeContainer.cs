@@ -21,15 +21,9 @@ namespace Butler.Schema.Data.ContentTypes.Internal
 
     public abstract bool CanBeCompound { get; }
 
-    public bool IsInitialized
-    {
-      get
-      {
-        return this.propertyName != null;
-      }
-    }
+    public bool IsInitialized => this.propertyName != null;
 
-    protected ValueTypeContainer()
+      protected ValueTypeContainer()
     {
       this.Reset();
     }

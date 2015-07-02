@@ -419,15 +419,9 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    public bool IsRejected
-    {
-      get
-      {
-        return (int) this.state < 0;
-      }
-    }
+    public bool IsRejected => (int) this.state < 0;
 
-    public void AddCharacter(byte ch)
+      public void AddCharacter(byte ch)
     {
       if ((int) this.state < 0)
         return;

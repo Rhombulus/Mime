@@ -19,55 +19,19 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     private ushort length;
     private int value;
 
-    public RtfRunKind Kind
-    {
-      get
-      {
-        return (RtfRunKind) ((uint) this.bitFields & 61440U);
-      }
-    }
+    public RtfRunKind Kind => (RtfRunKind) ((uint) this.bitFields & 61440U);
 
-    public short KeywordId
-    {
-      get
-      {
-        return (short) ((int) this.bitFields & 511);
-      }
-    }
+      public short KeywordId => (short) ((int) this.bitFields & 511);
 
-    public bool Skip
-    {
-      get
-      {
-        return 0 != ((int) this.bitFields & 1024);
-      }
-    }
+      public bool Skip => 0 != ((int) this.bitFields & 1024);
 
-    public bool Lead
-    {
-      get
-      {
-        return 0 != ((int) this.bitFields & 512);
-      }
-    }
+      public bool Lead => 0 != ((int) this.bitFields & 512);
 
-    public ushort Length
-    {
-      get
-      {
-        return this.length;
-      }
-    }
+      public ushort Length => this.length;
 
-    public int Value
-    {
-      get
-      {
-        return this.value;
-      }
-    }
+      public int Value => this.value;
 
-    public bool IsSkiped
+      public bool IsSkiped
     {
       get
       {
@@ -94,15 +58,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
       }
     }
 
-    public bool IsUnicode
-    {
-      get
-      {
-        return this.Kind == RtfRunKind.Unicode;
-      }
-    }
+    public bool IsUnicode => this.Kind == RtfRunKind.Unicode;
 
-    internal void Reset()
+      internal void Reset()
     {
       this.bitFields = (ushort) 0;
       this.length = (ushort) 0;

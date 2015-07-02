@@ -66,39 +66,15 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    public bool IsEmpty
-    {
-      get
-      {
-        return this.Whole.Tail == this.Whole.Head;
-      }
-    }
+    public bool IsEmpty => this.Whole.Tail == this.Whole.Head;
 
-    public Token.RunEnumerator Runs
-    {
-      get
-      {
-        return new Token.RunEnumerator(this);
-      }
-    }
+      public Token.RunEnumerator Runs => new Token.RunEnumerator(this);
 
-    public Token.TextReader Text
-    {
-      get
-      {
-        return new Token.TextReader(this);
-      }
-    }
+      public Token.TextReader Text => new Token.TextReader(this);
 
-    public bool IsWhitespaceOnly
-    {
-      get
-      {
-        return this.IsWhitespaceOnlyImp(ref this.Whole);
-      }
-    }
+      public bool IsWhitespaceOnly => this.IsWhitespaceOnlyImp(ref this.Whole);
 
-    public Token()
+      public Token()
     {
       this.Reset();
     }
@@ -846,15 +822,9 @@ label_5:
     {
       private Token token;
 
-      public TokenRun Current
-      {
-        get
-        {
-          return new TokenRun(this.token);
-        }
-      }
+      public TokenRun Current => new TokenRun(this.token);
 
-      public bool IsValidPosition
+        public bool IsValidPosition
       {
         get
         {
@@ -864,23 +834,11 @@ label_5:
         }
       }
 
-      public int CurrentIndex
-      {
-        get
-        {
-          return this.token.WholePosition.Run;
-        }
-      }
+      public int CurrentIndex => this.token.WholePosition.Run;
 
-      public int CurrentOffset
-      {
-        get
-        {
-          return this.token.WholePosition.RunOffset;
-        }
-      }
+        public int CurrentOffset => this.token.WholePosition.RunOffset;
 
-      internal RunEnumerator(Token token)
+        internal RunEnumerator(Token token)
       {
         this.token = token;
       }
@@ -915,23 +873,11 @@ label_5:
     {
       private Token token;
 
-      public int Length
-      {
-        get
-        {
-          return this.token.GetLength(ref this.token.Whole);
-        }
-      }
+      public int Length => this.token.GetLength(ref this.token.Whole);
 
-      public int OriginalLength
-      {
-        get
-        {
-          return this.token.GetOriginalLength(ref this.token.Whole);
-        }
-      }
+        public int OriginalLength => this.token.GetOriginalLength(ref this.token.Whole);
 
-      internal TextReader(Token token)
+        internal TextReader(Token token)
       {
         this.token = token;
       }
@@ -985,23 +931,11 @@ label_5:
       private uint lengthAndType;
       private uint valueAndKind;
 
-      public RunType Type
-      {
-        get
-        {
-          return (RunType) ((int) this.lengthAndType & -1073741824);
-        }
-      }
+      public RunType Type => (RunType) ((int) this.lengthAndType & -1073741824);
 
-      public RunTextType TextType
-      {
-        get
-        {
-          return (RunTextType) ((int) this.lengthAndType & 939524096);
-        }
-      }
+        public RunTextType TextType => (RunTextType) ((int) this.lengthAndType & 939524096);
 
-      public int Length
+        public int Length
       {
         get
         {
@@ -1013,39 +947,15 @@ label_5:
         }
       }
 
-      public uint Kind
-      {
-        get
-        {
-          return this.valueAndKind & 4278190080U;
-        }
-      }
+      public uint Kind => this.valueAndKind & 4278190080U;
 
-      public uint MajorKindPlusStartFlag
-      {
-        get
-        {
-          return this.valueAndKind & 4227858432U;
-        }
-      }
+        public uint MajorKindPlusStartFlag => this.valueAndKind & 4227858432U;
 
-      public uint MajorKind
-      {
-        get
-        {
-          return this.valueAndKind & 2080374784U;
-        }
-      }
+        public uint MajorKind => this.valueAndKind & 2080374784U;
 
-      public int Value
-      {
-        get
-        {
-          return (int) this.valueAndKind & 16777215;
-        }
-      }
+        public int Value => (int) this.valueAndKind & 16777215;
 
-      public void Initialize(RunType type, RunTextType textType, uint kind, int length, int value)
+        public void Initialize(RunType type, RunTextType textType, uint kind, int length, int value)
       {
         this.lengthAndType = (uint) ((RunType) length | type | (RunType) textType);
         this.valueAndKind = (uint) value | kind;
@@ -1091,15 +1001,9 @@ label_5:
       public int Tail;
       public int HeadOffset;
 
-      public bool IsEmpty
-      {
-        get
-        {
-          return this.Head == this.Tail;
-        }
-      }
+      public bool IsEmpty => this.Head == this.Tail;
 
-      public void Reset()
+        public void Reset()
       {
         this.Head = this.Tail = this.HeadOffset = 0;
       }
@@ -1172,15 +1076,9 @@ label_5:
         }
       }
 
-      public bool IsEnough
-      {
-        get
-        {
-          return this.definitelyNotEqual;
-        }
-      }
+      public bool IsEnough => this.definitelyNotEqual;
 
-      public void Reset(string str)
+        public void Reset(string str)
       {
         this.str = str;
         this.strIndex = 0;
@@ -1254,23 +1152,11 @@ label_5:
       private int strIndex;
       private string str;
 
-      public bool IsFound
-      {
-        get
-        {
-          return this.found;
-        }
-      }
+      public bool IsFound => this.found;
 
-      public bool IsEnough
-      {
-        get
-        {
-          return this.found;
-        }
-      }
+        public bool IsEnough => this.found;
 
-      public void Reset(string str)
+        public void Reset(string str)
       {
         this.str = str;
         this.strIndex = 0;

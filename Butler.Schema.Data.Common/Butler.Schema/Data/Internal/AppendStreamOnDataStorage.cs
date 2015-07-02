@@ -15,63 +15,21 @@ namespace Butler.Schema.Data.Internal
     private ReadableWritableDataStorage storage;
     private long position;
 
-    public override DataStorage Storage
-    {
-      get
-      {
-        return (DataStorage) this.storage;
-      }
-    }
+    public override DataStorage Storage => (DataStorage) this.storage;
 
-    public override long Start
-    {
-      get
-      {
-        return 0L;
-      }
-    }
+      public override long Start => 0L;
 
-    public override long End
-    {
-      get
-      {
-        return this.position;
-      }
-    }
+      public override long End => this.position;
 
-    public ReadableWritableDataStorage ReadableWritableStorage
-    {
-      get
-      {
-        return this.storage;
-      }
-    }
+      public ReadableWritableDataStorage ReadableWritableStorage => this.storage;
 
-    public override bool CanRead
-    {
-      get
-      {
-        return false;
-      }
-    }
+      public override bool CanRead => false;
 
-    public override bool CanWrite
-    {
-      get
-      {
-        return this.storage != null;
-      }
-    }
+      public override bool CanWrite => this.storage != null;
 
-    public override bool CanSeek
-    {
-      get
-      {
-        return false;
-      }
-    }
+      public override bool CanSeek => false;
 
-    public override long Length
+      public override long Length
     {
       get
       {

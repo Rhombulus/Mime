@@ -16,23 +16,11 @@ namespace Butler.Schema.Data.Globalization
     private int localeId;
     private string cultureName;
 
-    public int LocaleId
-    {
-      get
-      {
-        return this.localeId;
-      }
-    }
+    public int LocaleId => this.localeId;
 
-    public string CultureName
-    {
-      get
-      {
-        return this.cultureName;
-      }
-    }
+      public string CultureName => this.cultureName;
 
-    public UnknownCultureException(int localeId)
+      public UnknownCultureException(int localeId)
       : base(CtsResources.GlobalizationStrings.InvalidLocaleId(localeId))
     {
       this.localeId = localeId;

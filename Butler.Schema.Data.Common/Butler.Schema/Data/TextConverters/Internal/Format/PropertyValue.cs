@@ -53,87 +53,27 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public uint RawType
-    {
-      get
-      {
-        return this.rawValue & 4160749568U;
-      }
-    }
+    public uint RawType => this.rawValue & 4160749568U;
 
-    public PropertyType Type
-    {
-      get
-      {
-        return (PropertyType) ((this.rawValue & 4160749568U) >> 27);
-      }
-    }
+      public PropertyType Type => (PropertyType) ((this.rawValue & 4160749568U) >> 27);
 
-    public int Value
-    {
-      get
-      {
-        return ((int) this.rawValue & 134217727) << 5 >> 5;
-      }
-    }
+      public int Value => ((int) this.rawValue & 134217727) << 5 >> 5;
 
-    public uint UnsignedValue
-    {
-      get
-      {
-        return this.rawValue & 134217727U;
-      }
-    }
+      public uint UnsignedValue => this.rawValue & 134217727U;
 
-    public bool IsNull
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Null);
-      }
-    }
+      public bool IsNull => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Null);
 
-    public bool IsCalculated
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Calculated);
-      }
-    }
+      public bool IsCalculated => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Calculated);
 
-    public bool IsBool
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Bool);
-      }
-    }
+      public bool IsBool => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Bool);
 
-    public bool IsEnum
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Enum);
-      }
-    }
+      public bool IsEnum => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Enum);
 
-    public bool IsString
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.String);
-      }
-    }
+      public bool IsString => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.String);
 
-    public bool IsMultiValue
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.MultiValue);
-      }
-    }
+      public bool IsMultiValue => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.MultiValue);
 
-    public bool IsRefCountedHandle
+      public bool IsRefCountedHandle
     {
       get
       {
@@ -143,111 +83,33 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public bool IsColor
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Color);
-      }
-    }
+    public bool IsColor => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Color);
 
-    public bool IsInteger
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Integer);
-      }
-    }
+      public bool IsInteger => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Integer);
 
-    public bool IsFractional
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Fractional);
-      }
-    }
+      public bool IsFractional => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Fractional);
 
-    public bool IsPercentage
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Percentage);
-      }
-    }
+      public bool IsPercentage => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Percentage);
 
-    public bool IsAbsLength
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.AbsLength);
-      }
-    }
+      public bool IsAbsLength => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.AbsLength);
 
-    public bool IsPixels
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Pixels);
-      }
-    }
+      public bool IsPixels => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Pixels);
 
-    public bool IsEms
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Ems);
-      }
-    }
+      public bool IsEms => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Ems);
 
-    public bool IsExs
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Exs);
-      }
-    }
+      public bool IsExs => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Exs);
 
-    public bool IsMilliseconds
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Milliseconds);
-      }
-    }
+      public bool IsMilliseconds => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Milliseconds);
 
-    public bool IsKHz
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.kHz);
-      }
-    }
+      public bool IsKHz => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.kHz);
 
-    public bool IsDegrees
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Degrees);
-      }
-    }
+      public bool IsDegrees => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.Degrees);
 
-    public bool IsHtmlFontUnits
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.HtmlFontUnits);
-      }
-    }
+      public bool IsHtmlFontUnits => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.HtmlFontUnits);
 
-    public bool IsRelativeHtmlFontUnits
-    {
-      get
-      {
-        return (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.RelHtmlFontUnits);
-      }
-    }
+      public bool IsRelativeHtmlFontUnits => (int) this.RawType == (int) PropertyValue.GetRawType(PropertyType.RelHtmlFontUnits);
 
-    public bool IsAbsRelLength
+      public bool IsAbsRelLength
     {
       get
       {
@@ -257,279 +119,75 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public int StringHandle
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+    public int StringHandle => this.Value;
 
-    public int MultiValueHandle
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int MultiValueHandle => this.Value;
 
-    public bool Bool
-    {
-      get
-      {
-        return (int) this.UnsignedValue != 0;
-      }
-    }
+      public bool Bool => (int) this.UnsignedValue != 0;
 
-    public int Enum
-    {
-      get
-      {
-        return (int) this.UnsignedValue;
-      }
-    }
+      public int Enum => (int) this.UnsignedValue;
 
-    public RGBT Color
-    {
-      get
-      {
-        return new RGBT(this.UnsignedValue);
-      }
-    }
+      public RGBT Color => new RGBT(this.UnsignedValue);
 
-    public float Percentage
-    {
-      get
-      {
-        return (float) this.Value / 10000f;
-      }
-    }
+      public float Percentage => (float) this.Value / 10000f;
 
-    public int Percentage10K
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int Percentage10K => this.Value;
 
-    public float Fractional
-    {
-      get
-      {
-        return (float) this.Value / 10000f;
-      }
-    }
+      public float Fractional => (float) this.Value / 10000f;
 
-    public int Integer
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int Integer => this.Value;
 
-    public int Milliseconds
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int Milliseconds => this.Value;
 
-    public int KHz
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int KHz => this.Value;
 
-    public int Degrees
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int Degrees => this.Value;
 
-    public int BaseUnits
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int BaseUnits => this.Value;
 
-    public float Twips
-    {
-      get
-      {
-        return (float) this.Value / 8f;
-      }
-    }
+      public float Twips => (float) this.Value / 8f;
 
-    public int TwipsInteger
-    {
-      get
-      {
-        return this.Value / 8;
-      }
-    }
+      public int TwipsInteger => this.Value / 8;
 
-    public float Points
-    {
-      get
-      {
-        return (float) this.Value / 160f;
-      }
-    }
+      public float Points => (float) this.Value / 160f;
 
-    public int PointsInteger
-    {
-      get
-      {
-        return this.Value / 160;
-      }
-    }
+      public int PointsInteger => this.Value / 160;
 
-    public int PointsInteger160
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int PointsInteger160 => this.Value;
 
-    public float Picas
-    {
-      get
-      {
-        return (float) this.Value / 1920f;
-      }
-    }
+      public float Picas => (float) this.Value / 1920f;
 
-    public float Inches
-    {
-      get
-      {
-        return (float) this.Value / 11520f;
-      }
-    }
+      public float Inches => (float) this.Value / 11520f;
 
-    public float Centimeters
-    {
-      get
-      {
-        return (float) this.Value / 4535.433f;
-      }
-    }
+      public float Centimeters => (float) this.Value / 4535.433f;
 
-    public int MillimetersInteger
-    {
-      get
-      {
-        return this.Value / 454;
-      }
-    }
+      public int MillimetersInteger => this.Value / 454;
 
-    public float Millimeters
-    {
-      get
-      {
-        return (float) this.Value / 453.5433f;
-      }
-    }
+      public float Millimeters => (float) this.Value / 453.5433f;
 
-    public int HtmlFontUnits
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int HtmlFontUnits => this.Value;
 
-    public float Pixels
-    {
-      get
-      {
-        return (float) this.Value / 96f;
-      }
-    }
+      public float Pixels => (float) this.Value / 96f;
 
-    public int PixelsInteger
-    {
-      get
-      {
-        return this.Value / 96;
-      }
-    }
+      public int PixelsInteger => this.Value / 96;
 
-    public int PixelsInteger96
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int PixelsInteger96 => this.Value;
 
-    public float Ems
-    {
-      get
-      {
-        return (float) this.Value / 160f;
-      }
-    }
+      public float Ems => (float) this.Value / 160f;
 
-    public int EmsInteger
-    {
-      get
-      {
-        return this.Value / 160;
-      }
-    }
+      public int EmsInteger => this.Value / 160;
 
-    public int EmsInteger160
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int EmsInteger160 => this.Value;
 
-    public float Exs
-    {
-      get
-      {
-        return (float) this.Value / 160f;
-      }
-    }
+      public float Exs => (float) this.Value / 160f;
 
-    public int ExsInteger
-    {
-      get
-      {
-        return this.Value / 160;
-      }
-    }
+      public int ExsInteger => this.Value / 160;
 
-    public int ExsInteger160
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int ExsInteger160 => this.Value;
 
-    public int RelativeHtmlFontUnits
-    {
-      get
-      {
-        return this.Value;
-      }
-    }
+      public int RelativeHtmlFontUnits => this.Value;
 
-    public PropertyValue(uint rawValue)
+      public PropertyValue(uint rawValue)
     {
       this.rawValue = rawValue;
     }

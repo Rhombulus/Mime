@@ -22,23 +22,11 @@ namespace Butler.Schema.Data.TextConverters
     protected Internal.Html.HtmlToTextConverter fragmentToTextConverter;
     private HtmlFragmentToRtfConverter fragmentToRtfConverter;
 
-    public bool Active
-    {
-      get
-      {
-        return this.documentParser != null;
-      }
-    }
+    public bool Active => this.documentParser != null;
 
-    public bool InjectingHead
-    {
-      get
-      {
-        return this.injectingHead;
-      }
-    }
+      public bool InjectingHead => this.injectingHead;
 
-    public HtmlInjection(string injectHead, string injectTail, HeaderFooterFormat injectionFormat, bool filterHtml, HtmlTagCallback callback, bool testBoundaryConditions, Stream traceStream, IProgressMonitor progressMonitor)
+      public HtmlInjection(string injectHead, string injectTail, HeaderFooterFormat injectionFormat, bool filterHtml, HtmlTagCallback callback, bool testBoundaryConditions, Stream traceStream, IProgressMonitor progressMonitor)
     {
       this.injectHead = injectHead;
       this.injectTail = injectTail;

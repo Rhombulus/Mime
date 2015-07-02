@@ -31,47 +31,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private bool newLine;
     private bool textQuotingExpected;
 
-    public FormatConverterContainer Root
-    {
-      get
-      {
-        return new FormatConverterContainer(this, 0);
-      }
-    }
+    public FormatConverterContainer Root => new FormatConverterContainer(this, 0);
 
-    public FormatConverterContainer Last
-    {
-      get
-      {
-        return new FormatConverterContainer(this, this.EmptyContainer ? this.BuildStackTop : this.BuildStackTop - 1);
-      }
-    }
+      public FormatConverterContainer Last => new FormatConverterContainer(this, this.EmptyContainer ? this.BuildStackTop : this.BuildStackTop - 1);
 
-    public FormatNode LastNode
-    {
-      get
-      {
-        return new FormatNode(this.Store, this.LastNodeInternal);
-      }
-    }
+      public FormatNode LastNode => new FormatNode(this.Store, this.LastNodeInternal);
 
-    public FormatConverterContainer LastNonEmpty
-    {
-      get
-      {
-        return new FormatConverterContainer(this, this.BuildStackTop - 1);
-      }
-    }
+      public FormatConverterContainer LastNonEmpty => new FormatConverterContainer(this, this.BuildStackTop - 1);
 
-    public bool EndOfFile
-    {
-      get
-      {
-        return this.endOfFile;
-      }
-    }
+      public bool EndOfFile => this.endOfFile;
 
-    protected bool MustFlush
+      protected bool MustFlush
     {
       get
       {
@@ -627,23 +597,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       internal FlagProperties FlagProperties;
       internal PropertyBitMask PropertyMask;
 
-      public bool IsText
-      {
-        get
-        {
-          return this.Type == FormatContainerType.Text;
-        }
-      }
+      public bool IsText => this.Type == FormatContainerType.Text;
 
-      public bool IsPropertyContainer
-      {
-        get
-        {
-          return this.Type == FormatContainerType.PropertyContainer;
-        }
-      }
+        public bool IsPropertyContainer => this.Type == FormatContainerType.PropertyContainer;
 
-      public bool IsPropertyContainerOrNull
+        public bool IsPropertyContainerOrNull
       {
         get
         {

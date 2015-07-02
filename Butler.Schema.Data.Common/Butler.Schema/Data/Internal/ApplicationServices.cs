@@ -14,15 +14,9 @@ namespace Butler.Schema.Data.Internal
   {
     private static IApplicationServices provider = ApplicationServices.LoadServices();
 
-    public static IApplicationServices Provider
-    {
-      get
-      {
-        return ApplicationServices.provider;
-      }
-    }
+    public static IApplicationServices Provider => ApplicationServices.provider;
 
-    public static CtsConfigurationSetting GetSimpleConfigurationSetting(string subSectionName, string settingName)
+      public static CtsConfigurationSetting GetSimpleConfigurationSetting(string subSectionName, string settingName)
     {
       CtsConfigurationSetting configurationSetting1 = (CtsConfigurationSetting) null;
       foreach (CtsConfigurationSetting configurationSetting2 in (IEnumerable<CtsConfigurationSetting>) ApplicationServices.Provider.GetConfiguration(subSectionName))

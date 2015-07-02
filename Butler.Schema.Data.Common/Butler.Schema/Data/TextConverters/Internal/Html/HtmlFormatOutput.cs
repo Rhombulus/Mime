@@ -51,15 +51,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       }
     }
 
-    public override bool OutputCodePageSameAsInput
-    {
-      get
-      {
-        return false;
-      }
-    }
+    public override bool OutputCodePageSameAsInput => false;
 
-    public override Encoding OutputEncoding
+      public override Encoding OutputEncoding
     {
       set
       {
@@ -67,15 +61,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       }
     }
 
-    public override bool CanAcceptMoreOutput
-    {
-      get
-      {
-        return this.writer.CanAcceptMore;
-      }
-    }
+    public override bool CanAcceptMoreOutput => this.writer.CanAcceptMore;
 
-    public HtmlFormatOutput(HtmlWriter writer, HtmlInjection injection, bool outputFragment, Stream formatTraceStream, Stream formatOutputTraceStream, bool filterHtml, HtmlTagCallback callback, bool recognizeHyperlinks)
+      public HtmlFormatOutput(HtmlWriter writer, HtmlInjection injection, bool outputFragment, Stream formatTraceStream, Stream formatOutputTraceStream, bool filterHtml, HtmlTagCallback callback, bool recognizeHyperlinks)
       : base(formatOutputTraceStream)
     {
       this.writer = writer;

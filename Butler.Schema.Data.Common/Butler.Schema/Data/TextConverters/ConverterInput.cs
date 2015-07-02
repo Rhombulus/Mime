@@ -15,23 +15,11 @@ namespace Butler.Schema.Data.TextConverters
     protected int maxTokenSize;
     protected IProgressMonitor progressMonitor;
 
-    public bool EndOfFile
-    {
-      get
-      {
-        return this.endOfFile;
-      }
-    }
+    public bool EndOfFile => this.endOfFile;
 
-    public int MaxTokenSize
-    {
-      get
-      {
-        return this.maxTokenSize;
-      }
-    }
+      public int MaxTokenSize => this.maxTokenSize;
 
-    protected ConverterInput(IProgressMonitor progressMonitor)
+      protected ConverterInput(IProgressMonitor progressMonitor)
     {
       this.progressMonitor = progressMonitor;
     }

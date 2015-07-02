@@ -17,239 +17,65 @@ namespace Butler.Schema.CtsResources
     private static Dictionary<uint, string> stringIDs = new Dictionary<uint, string>(29);
     private static ResourceManager ResourceManager = new ResourceManager("Microsoft.Exchange.CtsResources.EncodersStrings", ((Type) IntrospectionExtensions.GetTypeInfo(typeof (EncodersStrings))).Assembly);
 
-    public static string MacBinFileNameTooLong
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("MacBinFileNameTooLong");
-      }
-    }
+    public static string MacBinFileNameTooLong => EncodersStrings.ResourceManager.GetString("MacBinFileNameTooLong");
 
-    public static string BinHexEncoderInternalError
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexEncoderInternalError");
-      }
-    }
+      public static string BinHexEncoderInternalError => EncodersStrings.ResourceManager.GetString("BinHexEncoderInternalError");
 
-    public static string BinHexHeaderBadFileNameLength
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexHeaderBadFileNameLength");
-      }
-    }
+      public static string BinHexHeaderBadFileNameLength => EncodersStrings.ResourceManager.GetString("BinHexHeaderBadFileNameLength");
 
-    public static string EncStrCannotCloneWriteableStream
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("EncStrCannotCloneWriteableStream");
-      }
-    }
+      public static string EncStrCannotCloneWriteableStream => EncodersStrings.ResourceManager.GetString("EncStrCannotCloneWriteableStream");
 
-    public static string BinHexDecoderLineTooLong
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexDecoderLineTooLong");
-      }
-    }
+      public static string BinHexDecoderLineTooLong => EncodersStrings.ResourceManager.GetString("BinHexDecoderLineTooLong");
 
-    public static string BinHexDecoderInternalError
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexDecoderInternalError");
-      }
-    }
+      public static string BinHexDecoderInternalError => EncodersStrings.ResourceManager.GetString("BinHexDecoderInternalError");
 
-    public static string BinHexDecoderDataCorrupt
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexDecoderDataCorrupt");
-      }
-    }
+      public static string BinHexDecoderDataCorrupt => EncodersStrings.ResourceManager.GetString("BinHexDecoderDataCorrupt");
 
-    public static string BinHexDecoderFoundInvalidCharacter
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexDecoderFoundInvalidCharacter");
-      }
-    }
+      public static string BinHexDecoderFoundInvalidCharacter => EncodersStrings.ResourceManager.GetString("BinHexDecoderFoundInvalidCharacter");
 
-    public static string BinHexHeaderInvalidNameLength
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexHeaderInvalidNameLength");
-      }
-    }
+      public static string BinHexHeaderInvalidNameLength => EncodersStrings.ResourceManager.GetString("BinHexHeaderInvalidNameLength");
 
-    public static string MacBinBadVersion
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("MacBinBadVersion");
-      }
-    }
+      public static string MacBinBadVersion => EncodersStrings.ResourceManager.GetString("MacBinBadVersion");
 
-    public static string BinHexHeaderIncomplete
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexHeaderIncomplete");
-      }
-    }
+      public static string BinHexHeaderIncomplete => EncodersStrings.ResourceManager.GetString("BinHexHeaderIncomplete");
 
-    public static string BinHexDecoderFileNameTooLong
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexDecoderFileNameTooLong");
-      }
-    }
+      public static string BinHexDecoderFileNameTooLong => EncodersStrings.ResourceManager.GetString("BinHexDecoderFileNameTooLong");
 
-    public static string UUDecoderInvalidData
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("UUDecoderInvalidData");
-      }
-    }
+      public static string UUDecoderInvalidData => EncodersStrings.ResourceManager.GetString("UUDecoderInvalidData");
 
-    public static string EncStrCannotRead
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("EncStrCannotRead");
-      }
-    }
+      public static string EncStrCannotRead => EncodersStrings.ResourceManager.GetString("EncStrCannotRead");
 
-    public static string BinHexHeaderUnsupportedVersion
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexHeaderUnsupportedVersion");
-      }
-    }
+      public static string BinHexHeaderUnsupportedVersion => EncodersStrings.ResourceManager.GetString("BinHexHeaderUnsupportedVersion");
 
-    public static string UUDecoderInvalidDataBadLine
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("UUDecoderInvalidDataBadLine");
-      }
-    }
+      public static string UUDecoderInvalidDataBadLine => EncodersStrings.ResourceManager.GetString("UUDecoderInvalidDataBadLine");
 
-    public static string BinHexHeaderInvalidCrc
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexHeaderInvalidCrc");
-      }
-    }
+      public static string BinHexHeaderInvalidCrc => EncodersStrings.ResourceManager.GetString("BinHexHeaderInvalidCrc");
 
-    public static string BinHexDecoderFirstNonWhitespaceMustBeColon
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexDecoderFirstNonWhitespaceMustBeColon");
-      }
-    }
+      public static string BinHexDecoderFirstNonWhitespaceMustBeColon => EncodersStrings.ResourceManager.GetString("BinHexDecoderFirstNonWhitespaceMustBeColon");
 
-    public static string MacBinHeaderMustBe128Long
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("MacBinHeaderMustBe128Long");
-      }
-    }
+      public static string MacBinHeaderMustBe128Long => EncodersStrings.ResourceManager.GetString("MacBinHeaderMustBe128Long");
 
-    public static string EncStrCannotSeek
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("EncStrCannotSeek");
-      }
-    }
+      public static string EncStrCannotSeek => EncodersStrings.ResourceManager.GetString("EncStrCannotSeek");
 
-    public static string BinHexEncoderDoesNotSupportResourceFork
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexEncoderDoesNotSupportResourceFork");
-      }
-    }
+      public static string BinHexEncoderDoesNotSupportResourceFork => EncodersStrings.ResourceManager.GetString("BinHexEncoderDoesNotSupportResourceFork");
 
-    public static string BinHexEncoderDataCorruptCannotFinishEncoding
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexEncoderDataCorruptCannotFinishEncoding");
-      }
-    }
+      public static string BinHexEncoderDataCorruptCannotFinishEncoding => EncodersStrings.ResourceManager.GetString("BinHexEncoderDataCorruptCannotFinishEncoding");
 
-    public static string MacBinInvalidData
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("MacBinInvalidData");
-      }
-    }
+      public static string MacBinInvalidData => EncodersStrings.ResourceManager.GetString("MacBinInvalidData");
 
-    public static string BinHexHeaderTooSmall
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexHeaderTooSmall");
-      }
-    }
+      public static string BinHexHeaderTooSmall => EncodersStrings.ResourceManager.GetString("BinHexHeaderTooSmall");
 
-    public static string QPEncoderNoSpaceForLineBreak
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("QPEncoderNoSpaceForLineBreak");
-      }
-    }
+      public static string QPEncoderNoSpaceForLineBreak => EncodersStrings.ResourceManager.GetString("QPEncoderNoSpaceForLineBreak");
 
-    public static string BinHexDecoderBadResourceForkCrc
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexDecoderBadResourceForkCrc");
-      }
-    }
+      public static string BinHexDecoderBadResourceForkCrc => EncodersStrings.ResourceManager.GetString("BinHexDecoderBadResourceForkCrc");
 
-    public static string BinHexDecoderLineCorrupt
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexDecoderLineCorrupt");
-      }
-    }
+      public static string BinHexDecoderLineCorrupt => EncodersStrings.ResourceManager.GetString("BinHexDecoderLineCorrupt");
 
-    public static string BinHexDecoderBadCrc
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("BinHexDecoderBadCrc");
-      }
-    }
+      public static string BinHexDecoderBadCrc => EncodersStrings.ResourceManager.GetString("BinHexDecoderBadCrc");
 
-    public static string EncStrCannotWrite
-    {
-      get
-      {
-        return EncodersStrings.ResourceManager.GetString("EncStrCannotWrite");
-      }
-    }
+      public static string EncStrCannotWrite => EncodersStrings.ResourceManager.GetString("EncStrCannotWrite");
 
-    static EncodersStrings()
+      static EncodersStrings()
     {
       EncodersStrings.stringIDs.Add(3966390553U, "MacBinFileNameTooLong");
       EncodersStrings.stringIDs.Add(25286151U, "BinHexEncoderInternalError");

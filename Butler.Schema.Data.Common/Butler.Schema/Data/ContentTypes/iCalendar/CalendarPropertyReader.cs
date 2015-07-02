@@ -16,15 +16,9 @@ namespace Butler.Schema.Data.ContentTypes.iCalendar
     private Internal.ContentLineReader reader;
     private CalendarValueSeparators lastSeparator;
 
-    internal CalendarValueSeparators LastValueSeparator
-    {
-      get
-      {
-        return this.lastSeparator;
-      }
-    }
+    internal CalendarValueSeparators LastValueSeparator => this.lastSeparator;
 
-    public PropertyId PropertyId
+      public PropertyId PropertyId
     {
       get
       {

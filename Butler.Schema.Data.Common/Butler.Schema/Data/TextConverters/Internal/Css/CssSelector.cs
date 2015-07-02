@@ -14,71 +14,23 @@ namespace Butler.Schema.Data.TextConverters.Internal.Css
   {
     private CssToken token;
 
-    public int Index
-    {
-      get
-      {
-        return this.token.CurrentSelector;
-      }
-    }
+    public int Index => this.token.CurrentSelector;
 
-    public bool IsDeleted
-    {
-      get
-      {
-        return this.token.SelectorList[this.token.CurrentSelector].IsSelectorDeleted;
-      }
-    }
+      public bool IsDeleted => this.token.SelectorList[this.token.CurrentSelector].IsSelectorDeleted;
 
-    public Html.HtmlNameIndex NameId
-    {
-      get
-      {
-        return this.token.SelectorList[this.token.CurrentSelector].NameId;
-      }
-    }
+      public Html.HtmlNameIndex NameId => this.token.SelectorList[this.token.CurrentSelector].NameId;
 
-    public bool HasNameFragment
-    {
-      get
-      {
-        return !this.token.SelectorList[this.token.CurrentSelector].Name.IsEmpty;
-      }
-    }
+      public bool HasNameFragment => !this.token.SelectorList[this.token.CurrentSelector].Name.IsEmpty;
 
-    public CssToken.SelectorNameTextReader Name
-    {
-      get
-      {
-        return new CssToken.SelectorNameTextReader(this.token);
-      }
-    }
+      public CssToken.SelectorNameTextReader Name => new CssToken.SelectorNameTextReader(this.token);
 
-    public bool HasClassFragment
-    {
-      get
-      {
-        return !this.token.SelectorList[this.token.CurrentSelector].ClassName.IsEmpty;
-      }
-    }
+      public bool HasClassFragment => !this.token.SelectorList[this.token.CurrentSelector].ClassName.IsEmpty;
 
-    public CssToken.SelectorClassTextReader ClassName
-    {
-      get
-      {
-        return new CssToken.SelectorClassTextReader(this.token);
-      }
-    }
+      public CssToken.SelectorClassTextReader ClassName => new CssToken.SelectorClassTextReader(this.token);
 
-    public CssSelectorClassType ClassType
-    {
-      get
-      {
-        return this.token.SelectorList[this.token.CurrentSelector].ClassType;
-      }
-    }
+      public CssSelectorClassType ClassType => this.token.SelectorList[this.token.CurrentSelector].ClassType;
 
-    public bool IsSimple
+      public bool IsSimple
     {
       get
       {
@@ -90,15 +42,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Css
       }
     }
 
-    public CssSelectorCombinator Combinator
-    {
-      get
-      {
-        return this.token.SelectorList[this.token.CurrentSelector].Combinator;
-      }
-    }
+    public CssSelectorCombinator Combinator => this.token.SelectorList[this.token.CurrentSelector].Combinator;
 
-    internal CssSelector(CssToken token)
+      internal CssSelector(CssToken token)
     {
       this.token = token;
     }

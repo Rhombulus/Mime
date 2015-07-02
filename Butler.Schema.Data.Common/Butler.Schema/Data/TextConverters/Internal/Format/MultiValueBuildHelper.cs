@@ -15,23 +15,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     internal PropertyValue[] Values;
     internal int ValuesCount;
 
-    public int Count
-    {
-      get
-      {
-        return this.ValuesCount;
-      }
-    }
+    public int Count => this.ValuesCount;
 
-    public PropertyValue this[int i]
-    {
-      get
-      {
-        return this.Values[i];
-      }
-    }
+      public PropertyValue this[int i] => this.Values[i];
 
-    internal MultiValueBuildHelper(FormatStore store)
+      internal MultiValueBuildHelper(FormatStore store)
     {
       this.Store = store;
       this.Values = (PropertyValue[]) null;

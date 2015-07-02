@@ -88,15 +88,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     private int outOfOrderNesting;
     private uint runningPosition;
 
-    public override bool CanAcceptMoreOutput
-    {
-      get
-      {
-        return this.output.CanAcceptMoreOutput;
-      }
-    }
+    public override bool CanAcceptMoreOutput => this.output.CanAcceptMoreOutput;
 
-    public RtfFormatOutput(Stream destination, bool push, bool restartable, bool testBoundaryConditions, IResultsFeedback resultFeedback, ImageRenderingCallbackInternal imageRenderingCallback, Stream formatTraceStream, Stream formatOutputTraceStream, Encoding preferredEncoding)
+      public RtfFormatOutput(Stream destination, bool push, bool restartable, bool testBoundaryConditions, IResultsFeedback resultFeedback, ImageRenderingCallbackInternal imageRenderingCallback, Stream formatTraceStream, Stream formatOutputTraceStream, Encoding preferredEncoding)
       : base(formatOutputTraceStream)
     {
       this.output = new RtfOutput(destination, push, restartable);

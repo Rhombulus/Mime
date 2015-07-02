@@ -15,31 +15,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private PropertyValueParsingMethod parsingMethod;
     private MultiPropertyParsingMethod multiPropertyParsingMethod;
 
-    public Format.PropertyId PropertyId
-    {
-      get
-      {
-        return this.propertyId;
-      }
-    }
+    public Format.PropertyId PropertyId => this.propertyId;
 
-    public PropertyValueParsingMethod ParsingMethod
-    {
-      get
-      {
-        return this.parsingMethod;
-      }
-    }
+      public PropertyValueParsingMethod ParsingMethod => this.parsingMethod;
 
-    public MultiPropertyParsingMethod MultiPropertyParsingMethod
-    {
-      get
-      {
-        return this.multiPropertyParsingMethod;
-      }
-    }
+      public MultiPropertyParsingMethod MultiPropertyParsingMethod => this.multiPropertyParsingMethod;
 
-    public CssPropertyInstruction(Format.PropertyId propertyId, PropertyValueParsingMethod parsingMethod, MultiPropertyParsingMethod multiPropertyParsingMethod)
+      public CssPropertyInstruction(Format.PropertyId propertyId, PropertyValueParsingMethod parsingMethod, MultiPropertyParsingMethod multiPropertyParsingMethod)
     {
       this.propertyId = propertyId;
       this.parsingMethod = parsingMethod;

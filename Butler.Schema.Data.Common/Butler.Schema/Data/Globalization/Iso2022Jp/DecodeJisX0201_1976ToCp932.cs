@@ -15,15 +15,9 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp
     private bool isEscapeKana;
     private bool runBeganWithEscape;
 
-    public override char Abbreviation
-    {
-      get
-      {
-        return 'k';
-      }
-    }
+    public override char Abbreviation => 'k';
 
-    public override bool IsEscapeSequenceHandled(Escape escape)
+      public override bool IsEscapeSequenceHandled(Escape escape)
     {
       if (escape.Sequence != EscapeSequence.JisX0201_1976 && escape.Sequence != EscapeSequence.JisX0201K_1976 && escape.Sequence != EscapeSequence.ShiftIn)
         return escape.Sequence == EscapeSequence.ShiftOut;

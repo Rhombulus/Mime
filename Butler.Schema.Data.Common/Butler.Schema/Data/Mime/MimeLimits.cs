@@ -26,103 +26,31 @@ namespace Butler.Schema.Data.Mime
     private static volatile MimeLimits defaultLimits;
     private int encodedWordLength;
 
-    public static MimeLimits Default
-    {
-      get
-      {
-        return MimeLimits.GetDefaultMimeDocumentLimits();
-      }
-    }
+    public static MimeLimits Default => MimeLimits.GetDefaultMimeDocumentLimits();
 
-    public static MimeLimits Unlimited
-    {
-      get
-      {
-        return MimeLimits.unlimitedLimits;
-      }
-    }
+      public static MimeLimits Unlimited => MimeLimits.unlimitedLimits;
 
-    public int MaxPartDepth
-    {
-      get
-      {
-        return this.partDepth;
-      }
-    }
+      public int MaxPartDepth => this.partDepth;
 
-    public int MaxEmbeddedDepth
-    {
-      get
-      {
-        return this.embeddedDepth;
-      }
-    }
+      public int MaxEmbeddedDepth => this.embeddedDepth;
 
-    public int MaxSize
-    {
-      get
-      {
-        return this.size;
-      }
-    }
+      public int MaxSize => this.size;
 
-    public int MaxHeaderBytes
-    {
-      get
-      {
-        return this.headerBytes;
-      }
-    }
+      public int MaxHeaderBytes => this.headerBytes;
 
-    public int MaxParts
-    {
-      get
-      {
-        return this.parts;
-      }
-    }
+      public int MaxParts => this.parts;
 
-    public int MaxHeaders
-    {
-      get
-      {
-        return this.headers;
-      }
-    }
+      public int MaxHeaders => this.headers;
 
-    public int MaxAddressItemsPerHeader
-    {
-      get
-      {
-        return this.addressItemsPerHeader;
-      }
-    }
+      public int MaxAddressItemsPerHeader => this.addressItemsPerHeader;
 
-    public int MaxTextValueBytesPerValue
-    {
-      get
-      {
-        return this.textValueBytesPerValue;
-      }
-    }
+      public int MaxTextValueBytesPerValue => this.textValueBytesPerValue;
 
-    public int MaxParametersPerHeader
-    {
-      get
-      {
-        return this.parametersPerHeader;
-      }
-    }
+      public int MaxParametersPerHeader => this.parametersPerHeader;
 
-    internal int MaxEncodedWordLength
-    {
-      get
-      {
-        return this.encodedWordLength;
-      }
-    }
+      internal int MaxEncodedWordLength => this.encodedWordLength;
 
-    internal MimeLimits(int partDepth, int embeddedDepth, int size, int headerBytes, int parts, int headers, int addressItemsPerHeader, int textValueBytesPerValue, int parametersPerHeader, int encodedWordLength)
+      internal MimeLimits(int partDepth, int embeddedDepth, int size, int headerBytes, int parts, int headers, int addressItemsPerHeader, int textValueBytesPerValue, int parametersPerHeader, int encodedWordLength)
     {
       this.partDepth = partDepth;
       this.embeddedDepth = embeddedDepth;

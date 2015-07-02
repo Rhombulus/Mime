@@ -14,23 +14,11 @@ namespace Butler.Schema.Data.Mime
     private int inChars;
     private int inBytes;
 
-    public int InChars
-    {
-      get
-      {
-        return this.inChars;
-      }
-    }
+    public int InChars => this.inChars;
 
-    public int InBytes
-    {
-      get
-      {
-        return this.inBytes;
-      }
-    }
+      public int InBytes => this.inBytes;
 
-    public MimeStringLength(int value)
+      public MimeStringLength(int value)
     {
       this.inChars = value;
       this.inBytes = value;

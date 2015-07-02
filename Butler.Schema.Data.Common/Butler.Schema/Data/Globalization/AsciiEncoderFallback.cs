@@ -12,15 +12,9 @@ namespace Butler.Schema.Data.Globalization
 {
   internal class AsciiEncoderFallback : EncoderFallback
   {
-    public override int MaxCharCount
-    {
-      get
-      {
-        return AsciiEncoderFallback.AsciiFallbackBuffer.MaxCharCount;
-      }
-    }
+    public override int MaxCharCount => AsciiEncoderFallback.AsciiFallbackBuffer.MaxCharCount;
 
-    public static string GetCharacterFallback(char charUnknown)
+      public static string GetCharacterFallback(char charUnknown)
     {
       if ((int) charUnknown <= 339 && (int) charUnknown >= 130)
       {
@@ -163,15 +157,9 @@ namespace Butler.Schema.Data.Globalization
       private int fallbackIndex;
       private string fallbackString;
 
-      public static int MaxCharCount
-      {
-        get
-        {
-          return 5;
-        }
-      }
+      public static int MaxCharCount => 5;
 
-      public override int Remaining
+        public override int Remaining
       {
         get
         {

@@ -22,87 +22,27 @@ namespace Butler.Schema.Data.Globalization
     private Encoding encoding;
     private string description;
 
-    public static Charset DefaultMimeCharset
-    {
-      get
-      {
-        return Culture.Default.MimeCharset;
-      }
-    }
+    public static Charset DefaultMimeCharset => Culture.Default.MimeCharset;
 
-    public static bool FallbackToDefaultCharset
-    {
-      get
-      {
-        return Culture.FallbackToDefaultCharset;
-      }
-    }
+      public static bool FallbackToDefaultCharset => Culture.FallbackToDefaultCharset;
 
-    public static Charset DefaultWebCharset
-    {
-      get
-      {
-        return Culture.Default.WebCharset;
-      }
-    }
+      public static Charset DefaultWebCharset => Culture.Default.WebCharset;
 
-    public static Charset DefaultWindowsCharset
-    {
-      get
-      {
-        return Culture.Default.WindowsCharset;
-      }
-    }
+      public static Charset DefaultWindowsCharset => Culture.Default.WindowsCharset;
 
-    public static Charset ASCII
-    {
-      get
-      {
-        return CultureCharsetDatabase.Data.AsciiCharset;
-      }
-    }
+      public static Charset ASCII => CultureCharsetDatabase.Data.AsciiCharset;
 
-    public static Charset UTF8
-    {
-      get
-      {
-        return CultureCharsetDatabase.Data.Utf8Charset;
-      }
-    }
+      public static Charset UTF8 => CultureCharsetDatabase.Data.Utf8Charset;
 
-    public static Charset Unicode
-    {
-      get
-      {
-        return CultureCharsetDatabase.Data.UnicodeCharset;
-      }
-    }
+      public static Charset Unicode => CultureCharsetDatabase.Data.UnicodeCharset;
 
-    public int CodePage
-    {
-      get
-      {
-        return this.codePage;
-      }
-    }
+      public int CodePage => this.codePage;
 
-    public string Name
-    {
-      get
-      {
-        return this.name;
-      }
-    }
+      public string Name => this.name;
 
-    public Culture Culture
-    {
-      get
-      {
-        return this.culture;
-      }
-    }
+      public Culture Culture => this.culture;
 
-    public bool IsDetectable
+      public bool IsDetectable
     {
       get
       {
@@ -124,39 +64,15 @@ namespace Butler.Schema.Data.Globalization
       }
     }
 
-    public bool IsWindowsCharset
-    {
-      get
-      {
-        return this.windows;
-      }
-    }
+    public bool IsWindowsCharset => this.windows;
 
-    public string Description
-    {
-      get
-      {
-        return this.description;
-      }
-    }
+      public string Description => this.description;
 
-    internal static int MaxCharsetNameLength
-    {
-      get
-      {
-        return CultureCharsetDatabase.Data.MaxCharsetNameLength;
-      }
-    }
+      internal static int MaxCharsetNameLength => CultureCharsetDatabase.Data.MaxCharsetNameLength;
 
-    internal int MapIndex
-    {
-      get
-      {
-        return (int) this.mapIndex;
-      }
-    }
+      internal int MapIndex => (int) this.mapIndex;
 
-    internal CodePageKind Kind
+      internal CodePageKind Kind
     {
       get
       {

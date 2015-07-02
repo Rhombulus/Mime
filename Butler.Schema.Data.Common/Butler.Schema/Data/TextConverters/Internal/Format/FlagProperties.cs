@@ -22,31 +22,13 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private const uint ValueAndDefinedBits = 3U;
     private uint bits;
 
-    public bool IsClear
-    {
-      get
-      {
-        return 0 == (int) this.bits;
-      }
-    }
+    public bool IsClear => 0 == (int) this.bits;
 
-    public uint Mask
-    {
-      get
-      {
-        return this.bits & 2863311530U | (this.bits & 2863311530U) >> 1;
-      }
-    }
+      public uint Mask => this.bits & 2863311530U | (this.bits & 2863311530U) >> 1;
 
-    public uint Bits
-    {
-      get
-      {
-        return this.bits;
-      }
-    }
+      public uint Bits => this.bits;
 
-    internal int IntegerBag
+      internal int IntegerBag
     {
       get
       {

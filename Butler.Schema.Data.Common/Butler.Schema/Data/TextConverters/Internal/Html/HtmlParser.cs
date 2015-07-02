@@ -40,23 +40,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private Encoding newEncoding;
     private HtmlParser.SavedParserState savedState;
 
-    public HtmlToken Token
-    {
-      get
-      {
-        return this.token;
-      }
-    }
+    public HtmlToken Token => this.token;
 
-    public int CurrentOffset
-    {
-      get
-      {
-        return this.parseDocumentOffset;
-      }
-    }
+      public int CurrentOffset => this.parseDocumentOffset;
 
-    public bool ParsingFragment
+      public bool ParsingFragment
     {
       get
       {
@@ -2786,15 +2774,9 @@ label_31:
       private int parseThreshold;
       private int parseDocumentOffset;
 
-      public bool StateSaved
-      {
-        get
-        {
-          return this.input != null;
-        }
-      }
+      public bool StateSaved => this.input != null;
 
-      public void PushState(HtmlParser parser, ConverterInput newInput, bool literalTextInput)
+        public void PushState(HtmlParser parser, ConverterInput newInput, bool literalTextInput)
       {
         this.input = parser.input;
         this.endOfFile = parser.endOfFile;

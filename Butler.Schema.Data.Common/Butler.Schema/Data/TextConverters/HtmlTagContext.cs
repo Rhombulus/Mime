@@ -88,31 +88,13 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    internal bool IsInvokeCallbackForEndTag
-    {
-      get
-      {
-        return this.invokeCallbackForEndTag;
-      }
-    }
+    internal bool IsInvokeCallbackForEndTag => this.invokeCallbackForEndTag;
 
-    internal bool IsDeleteInnerContent
-    {
-      get
-      {
-        return this.deleteInnerContent;
-      }
-    }
+      internal bool IsDeleteInnerContent => this.deleteInnerContent;
 
-    internal bool IsDeleteEndTag
-    {
-      get
-      {
-        return this.deleteEndTag;
-      }
-    }
+      internal bool IsDeleteEndTag => this.deleteEndTag;
 
-    internal bool CopyPending
+      internal bool CopyPending
     {
       get
       {
@@ -321,23 +303,11 @@ namespace Butler.Schema.Data.TextConverters
         private HtmlTagContext tagContext;
         private int attributeIndexAndCookie;
 
-        public HtmlTagContextAttribute Current
-        {
-          get
-          {
-            return new HtmlTagContextAttribute(this.tagContext, this.attributeIndexAndCookie);
-          }
-        }
+        public HtmlTagContextAttribute Current => new HtmlTagContextAttribute(this.tagContext, this.attributeIndexAndCookie);
 
-        object IEnumerator.Current
-        {
-          get
-          {
-            return (object) new HtmlTagContextAttribute(this.tagContext, this.attributeIndexAndCookie);
-          }
-        }
+          object IEnumerator.Current => (object) new HtmlTagContextAttribute(this.tagContext, this.attributeIndexAndCookie);
 
-        internal Enumerator(HtmlTagContext tagContext)
+          internal Enumerator(HtmlTagContext tagContext)
         {
           this.tagContext = tagContext;
           this.attributeIndexAndCookie = HtmlTagContext.ComposeIndexAndCookie(this.tagContext.cookie, -1);

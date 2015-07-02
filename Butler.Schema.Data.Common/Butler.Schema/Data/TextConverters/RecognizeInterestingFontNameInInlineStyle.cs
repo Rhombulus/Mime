@@ -774,15 +774,9 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    public bool IsFinished
-    {
-      get
-      {
-        return (int) this.state < 0;
-      }
-    }
+    public bool IsFinished => (int) this.state < 0;
 
-    public void AddCharacter(char ch)
+      public void AddCharacter(char ch)
     {
       if ((int) this.state < 0)
         return;

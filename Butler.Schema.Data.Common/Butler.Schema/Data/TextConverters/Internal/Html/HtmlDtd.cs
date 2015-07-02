@@ -1072,39 +1072,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       public static readonly HtmlDtd.TagFill PUT_EAT_EAT_PUT = new HtmlDtd.TagFill(HtmlDtd.FillCode.PUT, HtmlDtd.FillCode.EAT, HtmlDtd.FillCode.EAT, HtmlDtd.FillCode.PUT);
       internal readonly byte value;
 
-      public HtmlDtd.FillCode LB
-      {
-        get
-        {
-          return (HtmlDtd.FillCode) ((uint) this.value >> 6);
-        }
-      }
+      public HtmlDtd.FillCode LB => (HtmlDtd.FillCode) ((uint) this.value >> 6);
 
-      public HtmlDtd.FillCode RB
-      {
-        get
-        {
-          return (HtmlDtd.FillCode) ((int) this.value >> 4 & 3);
-        }
-      }
+        public HtmlDtd.FillCode RB => (HtmlDtd.FillCode) ((int) this.value >> 4 & 3);
 
-      public HtmlDtd.FillCode LE
-      {
-        get
-        {
-          return (HtmlDtd.FillCode) ((int) this.value >> 2 & 3);
-        }
-      }
+        public HtmlDtd.FillCode LE => (HtmlDtd.FillCode) ((int) this.value >> 2 & 3);
 
-      public HtmlDtd.FillCode RE
-      {
-        get
-        {
-          return (HtmlDtd.FillCode) ((uint) this.value & 3U);
-        }
-      }
+        public HtmlDtd.FillCode RE => (HtmlDtd.FillCode) ((uint) this.value & 3U);
 
-      private TagFill(HtmlDtd.FillCode lB, HtmlDtd.FillCode rB, HtmlDtd.FillCode lE, HtmlDtd.FillCode rE)
+        private TagFill(HtmlDtd.FillCode lB, HtmlDtd.FillCode rB, HtmlDtd.FillCode lE, HtmlDtd.FillCode rE)
       {
         this.value = (byte) ((HtmlDtd.FillCode) ((int) lB << 6 | (int) rB << 4 | (int) lE << 2) | rE);
       }
@@ -1127,39 +1103,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       public static readonly HtmlDtd.TagFmt BRK_NBR_NBR_NBR = new HtmlDtd.TagFmt(HtmlDtd.FmtCode.BRK, HtmlDtd.FmtCode.NBR, HtmlDtd.FmtCode.NBR, HtmlDtd.FmtCode.NBR);
       internal readonly byte value;
 
-      public HtmlDtd.FmtCode LB
-      {
-        get
-        {
-          return (HtmlDtd.FmtCode) ((uint) this.value >> 6);
-        }
-      }
+      public HtmlDtd.FmtCode LB => (HtmlDtd.FmtCode) ((uint) this.value >> 6);
 
-      public HtmlDtd.FmtCode RB
-      {
-        get
-        {
-          return (HtmlDtd.FmtCode) ((int) this.value >> 4 & 3);
-        }
-      }
+        public HtmlDtd.FmtCode RB => (HtmlDtd.FmtCode) ((int) this.value >> 4 & 3);
 
-      public HtmlDtd.FmtCode LE
-      {
-        get
-        {
-          return (HtmlDtd.FmtCode) ((int) this.value >> 2 & 3);
-        }
-      }
+        public HtmlDtd.FmtCode LE => (HtmlDtd.FmtCode) ((int) this.value >> 2 & 3);
 
-      public HtmlDtd.FmtCode RE
-      {
-        get
-        {
-          return (HtmlDtd.FmtCode) ((uint) this.value & 3U);
-        }
-      }
+        public HtmlDtd.FmtCode RE => (HtmlDtd.FmtCode) ((uint) this.value & 3U);
 
-      private TagFmt(HtmlDtd.FmtCode lB, HtmlDtd.FmtCode rB, HtmlDtd.FmtCode lE, HtmlDtd.FmtCode rE)
+        private TagFmt(HtmlDtd.FmtCode lB, HtmlDtd.FmtCode rB, HtmlDtd.FmtCode lE, HtmlDtd.FmtCode rE)
       {
         this.value = (byte) ((HtmlDtd.FmtCode) ((int) lB << 6 | (int) rB << 4 | (int) lE << 2) | rE);
       }

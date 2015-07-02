@@ -129,11 +129,7 @@ namespace Butler.Schema.Data.Mime {
 
         public int Version { get; private set; }
 
-        internal ObjectThreadAccessToken AccessToken {
-            get {
-                return accessToken;
-            }
-        }
+        internal ObjectThreadAccessToken AccessToken => accessToken;
 
         internal ObjectThreadAccessToken ParentAccessToken {
             get {

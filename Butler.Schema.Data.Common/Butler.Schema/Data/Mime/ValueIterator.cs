@@ -21,63 +21,21 @@ namespace Butler.Schema.Data.Mime
     private int endLine;
     private int endOffset;
 
-    public ValuePosition CurrentPosition
-    {
-      get
-      {
-        return new ValuePosition(this.currentLine, this.currentOffset);
-      }
-    }
+    public ValuePosition CurrentPosition => new ValuePosition(this.currentLine, this.currentOffset);
 
-    public byte[] Bytes
-    {
-      get
-      {
-        return this.lineBytes;
-      }
-    }
+      public byte[] Bytes => this.lineBytes;
 
-    public int Offset
-    {
-      get
-      {
-        return this.currentOffset;
-      }
-    }
+      public int Offset => this.currentOffset;
 
-    public int Length
-    {
-      get
-      {
-        return this.lineEnd - this.currentOffset;
-      }
-    }
+      public int Length => this.lineEnd - this.currentOffset;
 
-    public int TotalLength
-    {
-      get
-      {
-        return this.lines.Length;
-      }
-    }
+      public int TotalLength => this.lines.Length;
 
-    public MimeStringList Lines
-    {
-      get
-      {
-        return this.lines;
-      }
-    }
+      public MimeStringList Lines => this.lines;
 
-    public uint LinesMask
-    {
-      get
-      {
-        return this.linesMask;
-      }
-    }
+      public uint LinesMask => this.linesMask;
 
-    public bool Eof
+      public bool Eof
     {
       get
       {

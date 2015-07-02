@@ -20,15 +20,9 @@ namespace Butler.Schema.Data.Common
     private IFormatProvider formatProvider;
     private LocalizedString localizedString;
 
-    public override string Message
-    {
-      get
-      {
-        return this.LocalizedString.ToString(this.FormatProvider);
-      }
-    }
+    public override string Message => this.LocalizedString.ToString(this.FormatProvider);
 
-    public IFormatProvider FormatProvider
+      public IFormatProvider FormatProvider
     {
       get
       {
@@ -40,15 +34,9 @@ namespace Butler.Schema.Data.Common
       }
     }
 
-    public LocalizedString LocalizedString
-    {
-      get
-      {
-        return this.localizedString;
-      }
-    }
+    public LocalizedString LocalizedString => this.localizedString;
 
-    public int ErrorCode
+      public int ErrorCode
     {
       get
       {
@@ -60,23 +48,11 @@ namespace Butler.Schema.Data.Common
       }
     }
 
-    public string StringId
-    {
-      get
-      {
-        return this.localizedString.StringId;
-      }
-    }
+    public string StringId => this.localizedString.StringId;
 
-    public ReadOnlyCollection<object> StringFormatParameters
-    {
-      get
-      {
-        return this.localizedString.FormatParameters;
-      }
-    }
+      public ReadOnlyCollection<object> StringFormatParameters => this.localizedString.FormatParameters;
 
-    public LocalizedException(LocalizedString localizedString)
+      public LocalizedException(LocalizedString localizedString)
       : this(localizedString, (Exception) null)
     {
       LocalizedException.TraceException("Created LocalizedException({0})", (object) localizedString);

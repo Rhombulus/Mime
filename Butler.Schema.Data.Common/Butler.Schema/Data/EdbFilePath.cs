@@ -20,15 +20,9 @@ namespace Butler.Schema.Data
     public const string MaximumRetrySuffix = "0000";
     private bool? isPathInRootDirectory;
 
-    private bool IsTemporaryEdbFile
-    {
-      get
-      {
-        return 0 == string.Compare(Path.GetFileName(this.PathName), "tmp.edb", StringComparison.OrdinalIgnoreCase);
-      }
-    }
+    private bool IsTemporaryEdbFile => 0 == string.Compare(Path.GetFileName(this.PathName), "tmp.edb", StringComparison.OrdinalIgnoreCase);
 
-    public bool IsPathInRootDirectory
+      public bool IsPathInRootDirectory
     {
       get
       {

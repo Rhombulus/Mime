@@ -14,95 +14,29 @@ namespace Butler.Schema.Data.TextConverters
   {
     private Token token;
 
-    public RunType Type
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].Type;
-      }
-    }
+    public RunType Type => this.token.RunList[this.token.WholePosition.Run].Type;
 
-    public bool IsTextRun
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].Type >= RunType.Normal;
-      }
-    }
+      public bool IsTextRun => this.token.RunList[this.token.WholePosition.Run].Type >= RunType.Normal;
 
-    public bool IsSpecial
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].Type == RunType.Special;
-      }
-    }
+      public bool IsSpecial => this.token.RunList[this.token.WholePosition.Run].Type == RunType.Special;
 
-    public bool IsNormal
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].Type == RunType.Normal;
-      }
-    }
+      public bool IsNormal => this.token.RunList[this.token.WholePosition.Run].Type == RunType.Normal;
 
-    public bool IsLiteral
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].Type == RunType.Literal;
-      }
-    }
+      public bool IsLiteral => this.token.RunList[this.token.WholePosition.Run].Type == RunType.Literal;
 
-    public RunTextType TextType
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].TextType;
-      }
-    }
+      public RunTextType TextType => this.token.RunList[this.token.WholePosition.Run].TextType;
 
-    public char[] RawBuffer
-    {
-      get
-      {
-        return this.token.Buffer;
-      }
-    }
+      public char[] RawBuffer => this.token.Buffer;
 
-    public int RawOffset
-    {
-      get
-      {
-        return this.token.WholePosition.RunOffset;
-      }
-    }
+      public int RawOffset => this.token.WholePosition.RunOffset;
 
-    public int RawLength
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].Length;
-      }
-    }
+      public int RawLength => this.token.RunList[this.token.WholePosition.Run].Length;
 
-    public uint Kind
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].Kind;
-      }
-    }
+      public uint Kind => this.token.RunList[this.token.WholePosition.Run].Kind;
 
-    public int Literal
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].Value;
-      }
-    }
+      public int Literal => this.token.RunList[this.token.WholePosition.Run].Value;
 
-    public int Length
+      public int Length
     {
       get
       {
@@ -114,15 +48,9 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    public int Value
-    {
-      get
-      {
-        return this.token.RunList[this.token.WholePosition.Run].Value;
-      }
-    }
+    public int Value => this.token.RunList[this.token.WholePosition.Run].Value;
 
-    public char FirstChar
+      public char FirstChar
     {
       get
       {
@@ -142,15 +70,9 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    public bool IsAnyWhitespace
-    {
-      get
-      {
-        return this.TextType <= RunTextType.UnusualWhitespace;
-      }
-    }
+    public bool IsAnyWhitespace => this.TextType <= RunTextType.UnusualWhitespace;
 
-    internal TokenRun(Token token)
+      internal TokenRun(Token token)
     {
       this.token = token;
     }

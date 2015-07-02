@@ -17,695 +17,179 @@ namespace Butler.Schema.CtsResources
     private static Dictionary<uint, string> stringIDs = new Dictionary<uint, string>(86);
     private static ResourceManager ResourceManager = new ResourceManager("Microsoft.Exchange.CtsResources.Strings", ((Type) IntrospectionExtensions.GetTypeInfo(typeof (Strings))).Assembly);
 
-    public static string HeaderReaderCannotBeUsedInThisState
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("HeaderReaderCannotBeUsedInThisState");
-      }
-    }
-
-    public static string CannotLoadIntoNonEmptyDocument
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotLoadIntoNonEmptyDocument");
-      }
-    }
-
-    public static string NewChildNotMimeParameter
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("NewChildNotMimeParameter");
-      }
-    }
-
-    public static string RefChildIsNotMyChild
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("RefChildIsNotMyChild");
-      }
-    }
-
-    public static string CantSetValueOfRfc2231ContinuationSegment
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CantSetValueOfRfc2231ContinuationSegment");
-      }
-    }
-
-    public static string ChildrenCannotBeAddedToReceivedHeader
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ChildrenCannotBeAddedToReceivedHeader");
-      }
-    }
-
-    public static string ParameterReaderNotInitialized
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ParameterReaderNotInitialized");
-      }
-    }
-
-    public static string CannotWriteHeaderValueMoreThanOnce
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteHeaderValueMoreThanOnce");
-      }
-    }
-
-    public static string OldChildIsNotMyChild
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("OldChildIsNotMyChild");
-      }
-    }
-
-    public static string CannotWriteEmptyOrNullBoundary
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteEmptyOrNullBoundary");
-      }
-    }
-
-    public static string CannotReadContentWhileStreamIsActive
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotReadContentWhileStreamIsActive");
-      }
-    }
-
-    public static string BinHexNotSupportedForThisMethod
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("BinHexNotSupportedForThisMethod");
-      }
-    }
-
-    public static string RefHeaderIsNotMyChild
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("RefHeaderIsNotMyChild");
-      }
-    }
-
-    public static string UnicodeMimeHeaderReceivedNotSupported
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("UnicodeMimeHeaderReceivedNotSupported");
-      }
-    }
-
-    public static string CachingModeSourceButStreamCannotSeek
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CachingModeSourceButStreamCannotSeek");
-      }
-    }
-
-    public static string LoadingStopped
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("LoadingStopped");
-      }
-    }
-
-    public static string CantGetValueOfRfc2231ContinuationSegment
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CantGetValueOfRfc2231ContinuationSegment");
-      }
-    }
-
-    public static string HeaderReaderNotInitialized
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("HeaderReaderNotInitialized");
-      }
-    }
-
-    public static string MimeHandlerErrorNotEmbeddedMessage
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("MimeHandlerErrorNotEmbeddedMessage");
-      }
-    }
-
-    public static string CannotWriteRecipientsHere
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteRecipientsHere");
-      }
-    }
-
-    public static string ChildrenCannotBeAddedToTextHeader
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ChildrenCannotBeAddedToTextHeader");
-      }
-    }
-
-    public static string ModifyingRawContentOfMultipartNotSupported
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ModifyingRawContentOfMultipartNotSupported");
-      }
-    }
-
-    public static string NewChildIsNotARecipient
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("NewChildIsNotARecipient");
-      }
-    }
-
-    public static string CantCopyToDifferentObjectType
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CantCopyToDifferentObjectType");
-      }
-    }
-
-    public static string NonMultiPartPartsCannotHaveChildren
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("NonMultiPartPartsCannotHaveChildren");
-      }
-    }
-
-    public static string CannotMixReadRawContentAndReadContent
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotMixReadRawContentAndReadContent");
-      }
-    }
-
-    public static string AddingChildrenToAsciiTextHeader
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("AddingChildrenToAsciiTextHeader");
-      }
-    }
-
-    public static string NewChildNotRecipientOrGroup
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("NewChildNotRecipientOrGroup");
-      }
-    }
-
-    public static string StrictComplianceViolation
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("StrictComplianceViolation");
-      }
-    }
-
-    public static string RootPartCantHaveAParent
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("RootPartCantHaveAParent");
-      }
-    }
-
-    public static string InternalMimeError
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("InternalMimeError");
-      }
-    }
-
-    public static string UnrecognizedTransferEncodingUsed
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("UnrecognizedTransferEncodingUsed");
-      }
-    }
-
-    public static string OperationNotValidInThisReaderState
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("OperationNotValidInThisReaderState");
-      }
-    }
-
-    public static string NewChildNotMimeHeader
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("NewChildNotMimeHeader");
-      }
-    }
-
-    public static string CannotWriteUnicodeHeaderValue
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteUnicodeHeaderValue");
-      }
-    }
-
-    public static string MimeHandlerErrorMoreThanOneOuterContentPushStream
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("MimeHandlerErrorMoreThanOneOuterContentPushStream");
-      }
-    }
-
-    public static string CannotDecodeContentStream
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotDecodeContentStream");
-      }
-    }
-
-    public static string InvalidBoundary
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("InvalidBoundary");
-      }
-    }
-
-    public static string StreamMustSupportRead
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("StreamMustSupportRead");
-      }
-    }
-
-    public static string CurrentPartIsNotEmbeddedMessage
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CurrentPartIsNotEmbeddedMessage");
-      }
-    }
-
-    public static string CannotWriteGroupEndHere
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteGroupEndHere");
-      }
-    }
-
-    public static string MimeVersionRequiredForMultipart
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("MimeVersionRequiredForMultipart");
-      }
-    }
-
-    public static string ErrorBeforeFirst
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ErrorBeforeFirst");
-      }
-    }
-
-    public static string CantSetRawValueOfRfc2231ContinuationSegment
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CantSetRawValueOfRfc2231ContinuationSegment");
-      }
-    }
-
-    public static string StreamMustAllowRead
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("StreamMustAllowRead");
-      }
-    }
-
-    public static string ReaderIsNotPositionedOnHeaderWithParameters
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ReaderIsNotPositionedOnHeaderWithParameters");
-      }
-    }
-
-    public static string NewChildCannotHaveDifferentParent
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("NewChildCannotHaveDifferentParent");
-      }
-    }
-
-    public static string CannotWriteGroupStartHere
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteGroupStartHere");
-      }
-    }
-
-    public static string CannotWriteHeadersHere
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteHeadersHere");
-      }
-    }
-
-    public static string HeaderCannotHaveParameters
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("HeaderCannotHaveParameters");
-      }
-    }
-
-    public static string ParametersCannotHaveChildNodes
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ParametersCannotHaveChildNodes");
-      }
-    }
-
-    public static string HeaderReaderIsNotPositionedOnAHeader
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("HeaderReaderIsNotPositionedOnAHeader");
-      }
-    }
-
-    public static string CurrentAddressIsGroupAndCannotHaveEmail
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CurrentAddressIsGroupAndCannotHaveEmail");
-      }
-    }
-
-    public static string AddressParserNotInitialized
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("AddressParserNotInitialized");
-      }
-    }
-
-    public static string PartContentIsBeingWritten
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("PartContentIsBeingWritten");
-      }
-    }
-
-    public static string MultipartCannotContainContent
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("MultipartCannotContainContent");
-      }
-    }
-
-    public static string NewChildIsNotAPart
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("NewChildIsNotAPart");
-      }
-    }
-
-    public static string RecipientsCannotHaveChildNodes
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("RecipientsCannotHaveChildNodes");
-      }
-    }
-
-    public static string ContentAlreadyWritten
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ContentAlreadyWritten");
-      }
-    }
-
-    public static string CannotAddChildrenToMimeHeaderDate
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotAddChildrenToMimeHeaderDate");
-      }
-    }
-
-    public static string CannotGetLoadStreamMoreThanOnce
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotGetLoadStreamMoreThanOnce");
-      }
-    }
-
-    public static string ValueTooLong
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ValueTooLong");
-      }
-    }
-
-    public static string CannotDetermineHeaderNameFromId
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotDetermineHeaderNameFromId");
-      }
-    }
-
-    public static string DocumentCloneNotSupportedInThisState
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("DocumentCloneNotSupportedInThisState");
-      }
-    }
-
-    public static string InvalidHeaderId
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("InvalidHeaderId");
-      }
-    }
-
-    public static string AddressReaderIsNotPositionedOnAddress
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("AddressReaderIsNotPositionedOnAddress");
-      }
-    }
-
-    public static string ParameterReaderIsNotPositionedOnParameter
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ParameterReaderIsNotPositionedOnParameter");
-      }
-    }
-
-    public static string ErrorAfterLast
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ErrorAfterLast");
-      }
-    }
-
-    public static string CannotWriteParametersHere
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteParametersHere");
-      }
-    }
-
-    public static string CannotWriteAfterFlush
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteAfterFlush");
-      }
-    }
-
-    public static string UnicodeMimeHeaderAddressNotSupported
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("UnicodeMimeHeaderAddressNotSupported");
-      }
-    }
-
-    public static string CannotWriteParametersOnThisHeader
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteParametersOnThisHeader");
-      }
-    }
-
-    public static string CannotStartPartHere
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotStartPartHere");
-      }
-    }
-
-    public static string CannotEndPartHere
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotEndPartHere");
-      }
-    }
-
-    public static string ThisPartBelongsToSubtreeOfNewChild
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ThisPartBelongsToSubtreeOfNewChild");
-      }
-    }
-
-    public static string StreamMustSupportWriting
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("StreamMustSupportWriting");
-      }
-    }
-
-    public static string HeaderCannotHaveAddresses
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("HeaderCannotHaveAddresses");
-      }
-    }
-
-    public static string OnlyOneOuterContentPushStreamAllowed
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("OnlyOneOuterContentPushStreamAllowed");
-      }
-    }
-
-    public static string AddressReaderNotInitialized
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("AddressReaderNotInitialized");
-      }
-    }
-
-    public static string ReaderIsNotPositionedOnAddressHeader
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("ReaderIsNotPositionedOnAddressHeader");
-      }
-    }
-
-    public static string EmbeddedMessageReaderNeedsToBeClosedFirst
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("EmbeddedMessageReaderNeedsToBeClosedFirst");
-      }
-    }
-
-    public static string CannotWritePartContentNow
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWritePartContentNow");
-      }
-    }
-
-    public static string StreamNoLongerValid
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("StreamNoLongerValid");
-      }
-    }
-
-    public static string BareLinefeedRejected
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("BareLinefeedRejected");
-      }
-    }
-
-    public static string AddressReaderIsNotPositionedOnAGroup
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("AddressReaderIsNotPositionedOnAGroup");
-      }
-    }
-
-    public static string CannotWriteHeaderValueHere
-    {
-      get
-      {
-        return Strings.ResourceManager.GetString("CannotWriteHeaderValueHere");
-      }
-    }
-
-    static Strings()
+    public static string HeaderReaderCannotBeUsedInThisState => Strings.ResourceManager.GetString("HeaderReaderCannotBeUsedInThisState");
+
+      public static string CannotLoadIntoNonEmptyDocument => Strings.ResourceManager.GetString("CannotLoadIntoNonEmptyDocument");
+
+      public static string NewChildNotMimeParameter => Strings.ResourceManager.GetString("NewChildNotMimeParameter");
+
+      public static string RefChildIsNotMyChild => Strings.ResourceManager.GetString("RefChildIsNotMyChild");
+
+      public static string CantSetValueOfRfc2231ContinuationSegment => Strings.ResourceManager.GetString("CantSetValueOfRfc2231ContinuationSegment");
+
+      public static string ChildrenCannotBeAddedToReceivedHeader => Strings.ResourceManager.GetString("ChildrenCannotBeAddedToReceivedHeader");
+
+      public static string ParameterReaderNotInitialized => Strings.ResourceManager.GetString("ParameterReaderNotInitialized");
+
+      public static string CannotWriteHeaderValueMoreThanOnce => Strings.ResourceManager.GetString("CannotWriteHeaderValueMoreThanOnce");
+
+      public static string OldChildIsNotMyChild => Strings.ResourceManager.GetString("OldChildIsNotMyChild");
+
+      public static string CannotWriteEmptyOrNullBoundary => Strings.ResourceManager.GetString("CannotWriteEmptyOrNullBoundary");
+
+      public static string CannotReadContentWhileStreamIsActive => Strings.ResourceManager.GetString("CannotReadContentWhileStreamIsActive");
+
+      public static string BinHexNotSupportedForThisMethod => Strings.ResourceManager.GetString("BinHexNotSupportedForThisMethod");
+
+      public static string RefHeaderIsNotMyChild => Strings.ResourceManager.GetString("RefHeaderIsNotMyChild");
+
+      public static string UnicodeMimeHeaderReceivedNotSupported => Strings.ResourceManager.GetString("UnicodeMimeHeaderReceivedNotSupported");
+
+      public static string CachingModeSourceButStreamCannotSeek => Strings.ResourceManager.GetString("CachingModeSourceButStreamCannotSeek");
+
+      public static string LoadingStopped => Strings.ResourceManager.GetString("LoadingStopped");
+
+      public static string CantGetValueOfRfc2231ContinuationSegment => Strings.ResourceManager.GetString("CantGetValueOfRfc2231ContinuationSegment");
+
+      public static string HeaderReaderNotInitialized => Strings.ResourceManager.GetString("HeaderReaderNotInitialized");
+
+      public static string MimeHandlerErrorNotEmbeddedMessage => Strings.ResourceManager.GetString("MimeHandlerErrorNotEmbeddedMessage");
+
+      public static string CannotWriteRecipientsHere => Strings.ResourceManager.GetString("CannotWriteRecipientsHere");
+
+      public static string ChildrenCannotBeAddedToTextHeader => Strings.ResourceManager.GetString("ChildrenCannotBeAddedToTextHeader");
+
+      public static string ModifyingRawContentOfMultipartNotSupported => Strings.ResourceManager.GetString("ModifyingRawContentOfMultipartNotSupported");
+
+      public static string NewChildIsNotARecipient => Strings.ResourceManager.GetString("NewChildIsNotARecipient");
+
+      public static string CantCopyToDifferentObjectType => Strings.ResourceManager.GetString("CantCopyToDifferentObjectType");
+
+      public static string NonMultiPartPartsCannotHaveChildren => Strings.ResourceManager.GetString("NonMultiPartPartsCannotHaveChildren");
+
+      public static string CannotMixReadRawContentAndReadContent => Strings.ResourceManager.GetString("CannotMixReadRawContentAndReadContent");
+
+      public static string AddingChildrenToAsciiTextHeader => Strings.ResourceManager.GetString("AddingChildrenToAsciiTextHeader");
+
+      public static string NewChildNotRecipientOrGroup => Strings.ResourceManager.GetString("NewChildNotRecipientOrGroup");
+
+      public static string StrictComplianceViolation => Strings.ResourceManager.GetString("StrictComplianceViolation");
+
+      public static string RootPartCantHaveAParent => Strings.ResourceManager.GetString("RootPartCantHaveAParent");
+
+      public static string InternalMimeError => Strings.ResourceManager.GetString("InternalMimeError");
+
+      public static string UnrecognizedTransferEncodingUsed => Strings.ResourceManager.GetString("UnrecognizedTransferEncodingUsed");
+
+      public static string OperationNotValidInThisReaderState => Strings.ResourceManager.GetString("OperationNotValidInThisReaderState");
+
+      public static string NewChildNotMimeHeader => Strings.ResourceManager.GetString("NewChildNotMimeHeader");
+
+      public static string CannotWriteUnicodeHeaderValue => Strings.ResourceManager.GetString("CannotWriteUnicodeHeaderValue");
+
+      public static string MimeHandlerErrorMoreThanOneOuterContentPushStream => Strings.ResourceManager.GetString("MimeHandlerErrorMoreThanOneOuterContentPushStream");
+
+      public static string CannotDecodeContentStream => Strings.ResourceManager.GetString("CannotDecodeContentStream");
+
+      public static string InvalidBoundary => Strings.ResourceManager.GetString("InvalidBoundary");
+
+      public static string StreamMustSupportRead => Strings.ResourceManager.GetString("StreamMustSupportRead");
+
+      public static string CurrentPartIsNotEmbeddedMessage => Strings.ResourceManager.GetString("CurrentPartIsNotEmbeddedMessage");
+
+      public static string CannotWriteGroupEndHere => Strings.ResourceManager.GetString("CannotWriteGroupEndHere");
+
+      public static string MimeVersionRequiredForMultipart => Strings.ResourceManager.GetString("MimeVersionRequiredForMultipart");
+
+      public static string ErrorBeforeFirst => Strings.ResourceManager.GetString("ErrorBeforeFirst");
+
+      public static string CantSetRawValueOfRfc2231ContinuationSegment => Strings.ResourceManager.GetString("CantSetRawValueOfRfc2231ContinuationSegment");
+
+      public static string StreamMustAllowRead => Strings.ResourceManager.GetString("StreamMustAllowRead");
+
+      public static string ReaderIsNotPositionedOnHeaderWithParameters => Strings.ResourceManager.GetString("ReaderIsNotPositionedOnHeaderWithParameters");
+
+      public static string NewChildCannotHaveDifferentParent => Strings.ResourceManager.GetString("NewChildCannotHaveDifferentParent");
+
+      public static string CannotWriteGroupStartHere => Strings.ResourceManager.GetString("CannotWriteGroupStartHere");
+
+      public static string CannotWriteHeadersHere => Strings.ResourceManager.GetString("CannotWriteHeadersHere");
+
+      public static string HeaderCannotHaveParameters => Strings.ResourceManager.GetString("HeaderCannotHaveParameters");
+
+      public static string ParametersCannotHaveChildNodes => Strings.ResourceManager.GetString("ParametersCannotHaveChildNodes");
+
+      public static string HeaderReaderIsNotPositionedOnAHeader => Strings.ResourceManager.GetString("HeaderReaderIsNotPositionedOnAHeader");
+
+      public static string CurrentAddressIsGroupAndCannotHaveEmail => Strings.ResourceManager.GetString("CurrentAddressIsGroupAndCannotHaveEmail");
+
+      public static string AddressParserNotInitialized => Strings.ResourceManager.GetString("AddressParserNotInitialized");
+
+      public static string PartContentIsBeingWritten => Strings.ResourceManager.GetString("PartContentIsBeingWritten");
+
+      public static string MultipartCannotContainContent => Strings.ResourceManager.GetString("MultipartCannotContainContent");
+
+      public static string NewChildIsNotAPart => Strings.ResourceManager.GetString("NewChildIsNotAPart");
+
+      public static string RecipientsCannotHaveChildNodes => Strings.ResourceManager.GetString("RecipientsCannotHaveChildNodes");
+
+      public static string ContentAlreadyWritten => Strings.ResourceManager.GetString("ContentAlreadyWritten");
+
+      public static string CannotAddChildrenToMimeHeaderDate => Strings.ResourceManager.GetString("CannotAddChildrenToMimeHeaderDate");
+
+      public static string CannotGetLoadStreamMoreThanOnce => Strings.ResourceManager.GetString("CannotGetLoadStreamMoreThanOnce");
+
+      public static string ValueTooLong => Strings.ResourceManager.GetString("ValueTooLong");
+
+      public static string CannotDetermineHeaderNameFromId => Strings.ResourceManager.GetString("CannotDetermineHeaderNameFromId");
+
+      public static string DocumentCloneNotSupportedInThisState => Strings.ResourceManager.GetString("DocumentCloneNotSupportedInThisState");
+
+      public static string InvalidHeaderId => Strings.ResourceManager.GetString("InvalidHeaderId");
+
+      public static string AddressReaderIsNotPositionedOnAddress => Strings.ResourceManager.GetString("AddressReaderIsNotPositionedOnAddress");
+
+      public static string ParameterReaderIsNotPositionedOnParameter => Strings.ResourceManager.GetString("ParameterReaderIsNotPositionedOnParameter");
+
+      public static string ErrorAfterLast => Strings.ResourceManager.GetString("ErrorAfterLast");
+
+      public static string CannotWriteParametersHere => Strings.ResourceManager.GetString("CannotWriteParametersHere");
+
+      public static string CannotWriteAfterFlush => Strings.ResourceManager.GetString("CannotWriteAfterFlush");
+
+      public static string UnicodeMimeHeaderAddressNotSupported => Strings.ResourceManager.GetString("UnicodeMimeHeaderAddressNotSupported");
+
+      public static string CannotWriteParametersOnThisHeader => Strings.ResourceManager.GetString("CannotWriteParametersOnThisHeader");
+
+      public static string CannotStartPartHere => Strings.ResourceManager.GetString("CannotStartPartHere");
+
+      public static string CannotEndPartHere => Strings.ResourceManager.GetString("CannotEndPartHere");
+
+      public static string ThisPartBelongsToSubtreeOfNewChild => Strings.ResourceManager.GetString("ThisPartBelongsToSubtreeOfNewChild");
+
+      public static string StreamMustSupportWriting => Strings.ResourceManager.GetString("StreamMustSupportWriting");
+
+      public static string HeaderCannotHaveAddresses => Strings.ResourceManager.GetString("HeaderCannotHaveAddresses");
+
+      public static string OnlyOneOuterContentPushStreamAllowed => Strings.ResourceManager.GetString("OnlyOneOuterContentPushStreamAllowed");
+
+      public static string AddressReaderNotInitialized => Strings.ResourceManager.GetString("AddressReaderNotInitialized");
+
+      public static string ReaderIsNotPositionedOnAddressHeader => Strings.ResourceManager.GetString("ReaderIsNotPositionedOnAddressHeader");
+
+      public static string EmbeddedMessageReaderNeedsToBeClosedFirst => Strings.ResourceManager.GetString("EmbeddedMessageReaderNeedsToBeClosedFirst");
+
+      public static string CannotWritePartContentNow => Strings.ResourceManager.GetString("CannotWritePartContentNow");
+
+      public static string StreamNoLongerValid => Strings.ResourceManager.GetString("StreamNoLongerValid");
+
+      public static string BareLinefeedRejected => Strings.ResourceManager.GetString("BareLinefeedRejected");
+
+      public static string AddressReaderIsNotPositionedOnAGroup => Strings.ResourceManager.GetString("AddressReaderIsNotPositionedOnAGroup");
+
+      public static string CannotWriteHeaderValueHere => Strings.ResourceManager.GetString("CannotWriteHeaderValueHere");
+
+      static Strings()
     {
       Strings.stringIDs.Add(3398506793U, "HeaderReaderCannotBeUsedInThisState");
       Strings.stringIDs.Add(3277623286U, "CannotLoadIntoNonEmptyDocument");

@@ -140,15 +140,9 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public override sealed bool RequiresSMTPUTF8
-    {
-      get
-      {
-        return !MimeString.IsPureASCII(this.Lines);
-      }
-    }
+    public override sealed bool RequiresSMTPUTF8 => !MimeString.IsPureASCII(this.Lines);
 
-    internal ReceivedHeader()
+      internal ReceivedHeader()
       : base("Received", HeaderId.Received)
     {
     }

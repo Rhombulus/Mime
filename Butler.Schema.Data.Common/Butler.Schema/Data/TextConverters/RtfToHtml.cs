@@ -48,23 +48,11 @@ namespace Butler.Schema.Data.TextConverters
     private int expansionSizeLimit;
     private int expansionSizeMultiple;
 
-    public bool EncapsulatedHtml
-    {
-      get
-      {
-        return this.rtfEncapsulation == RtfEncapsulation.Html;
-      }
-    }
+    public bool EncapsulatedHtml => this.rtfEncapsulation == RtfEncapsulation.Html;
 
-    public bool ConvertedFromText
-    {
-      get
-      {
-        return this.rtfEncapsulation == RtfEncapsulation.Text;
-      }
-    }
+      public bool ConvertedFromText => this.rtfEncapsulation == RtfEncapsulation.Text;
 
-    public Encoding OutputEncoding
+      public Encoding OutputEncoding
     {
       get
       {

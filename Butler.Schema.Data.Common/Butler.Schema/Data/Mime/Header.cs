@@ -28,33 +28,15 @@ namespace Butler.Schema.Data.Mime
     private HeaderId headerId;
     private bool dirty;
 
-    public string Name
-    {
-      get
-      {
-        return this.name;
-      }
-    }
+    public string Name => this.name;
 
-    public HeaderId HeaderId
-    {
-      get
-      {
-        return this.headerId;
-      }
-    }
+      public HeaderId HeaderId => this.headerId;
 
-    public abstract string Value { get; set; }
+      public abstract string Value { get; set; }
 
-    public virtual bool RequiresSMTPUTF8
-    {
-      get
-      {
-        return false;
-      }
-    }
+    public virtual bool RequiresSMTPUTF8 => false;
 
-    internal virtual byte[] RawValue
+      internal virtual byte[] RawValue
     {
       get
       {
@@ -91,23 +73,11 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    internal int RawLength
-    {
-      get
-      {
-        return this.lines.Length;
-      }
-    }
+    internal int RawLength => this.lines.Length;
 
-    internal bool IsDirty
-    {
-      get
-      {
-        return this.dirty;
-      }
-    }
+      internal bool IsDirty => this.dirty;
 
-    internal bool IsProtected
+      internal bool IsProtected
     {
       get
       {

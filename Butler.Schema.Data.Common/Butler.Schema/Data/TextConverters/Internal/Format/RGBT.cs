@@ -13,103 +13,31 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
   {
     private uint rawValue;
 
-    public uint RawValue
-    {
-      get
-      {
-        return this.rawValue;
-      }
-    }
+    public uint RawValue => this.rawValue;
 
-    public uint RGB
-    {
-      get
-      {
-        return this.rawValue & 16777215U;
-      }
-    }
+      public uint RGB => this.rawValue & 16777215U;
 
-    public bool IsTransparent
-    {
-      get
-      {
-        return (int) this.Transparency == 7;
-      }
-    }
+      public bool IsTransparent => (int) this.Transparency == 7;
 
-    public bool IsOpaque
-    {
-      get
-      {
-        return (int) this.Transparency == 0;
-      }
-    }
+      public bool IsOpaque => (int) this.Transparency == 0;
 
-    public uint Transparency
-    {
-      get
-      {
-        return this.rawValue >> 24 & 7U;
-      }
-    }
+      public uint Transparency => this.rawValue >> 24 & 7U;
 
-    public uint Red
-    {
-      get
-      {
-        return this.rawValue >> 16 & (uint) byte.MaxValue;
-      }
-    }
+      public uint Red => this.rawValue >> 16 & (uint) byte.MaxValue;
 
-    public uint Green
-    {
-      get
-      {
-        return this.rawValue >> 8 & (uint) byte.MaxValue;
-      }
-    }
+      public uint Green => this.rawValue >> 8 & (uint) byte.MaxValue;
 
-    public uint Blue
-    {
-      get
-      {
-        return this.rawValue & (uint) byte.MaxValue;
-      }
-    }
+      public uint Blue => this.rawValue & (uint) byte.MaxValue;
 
-    public float RedPercentage
-    {
-      get
-      {
-        return (float) (this.rawValue >> 16 & (uint) byte.MaxValue) * 0.3921569f;
-      }
-    }
+      public float RedPercentage => (float) (this.rawValue >> 16 & (uint) byte.MaxValue) * 0.3921569f;
 
-    public float GreenPercentage
-    {
-      get
-      {
-        return (float) (this.rawValue >> 8 & (uint) byte.MaxValue) * 0.3921569f;
-      }
-    }
+      public float GreenPercentage => (float) (this.rawValue >> 8 & (uint) byte.MaxValue) * 0.3921569f;
 
-    public float BluePercentage
-    {
-      get
-      {
-        return (float) (this.rawValue & (uint) byte.MaxValue) * 0.3921569f;
-      }
-    }
+      public float BluePercentage => (float) (this.rawValue & (uint) byte.MaxValue) * 0.3921569f;
 
-    public float TransparencyPercentage
-    {
-      get
-      {
-        return (float) (this.rawValue >> 24 & 7U) * 14.28571f;
-      }
-    }
+      public float TransparencyPercentage => (float) (this.rawValue >> 24 & 7U) * 14.28571f;
 
-    public RGBT(uint rawValue)
+      public RGBT(uint rawValue)
     {
       this.rawValue = rawValue;
     }

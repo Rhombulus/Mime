@@ -14,31 +14,13 @@ namespace Butler.Schema.Data.ContentTypes.Tnef
   {
     internal TnefWriter Writer;
 
-    public override bool CanRead
-    {
-      get
-      {
-        return false;
-      }
-    }
+    public override bool CanRead => false;
 
-    public override bool CanWrite
-    {
-      get
-      {
-        return this.Writer != null;
-      }
-    }
+      public override bool CanWrite => this.Writer != null;
 
-    public override bool CanSeek
-    {
-      get
-      {
-        return false;
-      }
-    }
+      public override bool CanSeek => false;
 
-    public override long Length
+      public override long Length
     {
       get
       {

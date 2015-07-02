@@ -25,15 +25,9 @@ namespace Butler.Schema.Data.Common
       }
     }
 
-    public LocalizedString LocalizedString
-    {
-      get
-      {
-        return this.displayname;
-      }
-    }
+    public LocalizedString LocalizedString => this.displayname;
 
-    public LocalizedDisplayNameAttribute()
+      public LocalizedDisplayNameAttribute()
     {
     }
 

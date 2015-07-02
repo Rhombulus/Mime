@@ -53,15 +53,9 @@ namespace Butler.Schema.Data.TextConverters
       }
     }
 
-    public bool CodePageSameAsInput
-    {
-      get
-      {
-        return this.encodingSameAsInput;
-      }
-    }
+    public bool CodePageSameAsInput => this.encodingSameAsInput;
 
-    public override bool CanAcceptMore
+      public override bool CanAcceptMore
     {
       get
       {

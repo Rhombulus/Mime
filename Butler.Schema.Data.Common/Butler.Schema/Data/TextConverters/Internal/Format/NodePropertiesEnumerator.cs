@@ -18,23 +18,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     internal int CurrentPropertyIndex;
     internal Property CurrentProperty;
 
-    public Property Current
-    {
-      get
-      {
-        return this.CurrentProperty;
-      }
-    }
+    public Property Current => this.CurrentProperty;
 
-    object IEnumerator.Current
-    {
-      get
-      {
-        return (object) this.CurrentProperty;
-      }
-    }
+      object IEnumerator.Current => (object) this.CurrentProperty;
 
-    public NodePropertiesEnumerator(FormatNode node)
+      public NodePropertiesEnumerator(FormatNode node)
     {
       this.FlagProperties = node.FlagProperties;
       this.Properties = node.Properties;

@@ -15,15 +15,9 @@ namespace Butler.Schema.Data.Internal
     private Stream stream;
     private bool ownsStream;
 
-    public override long Length
-    {
-      get
-      {
-        return this.stream.Length;
-      }
-    }
+    public override long Length => this.stream.Length;
 
-    public ReadableDataStorageOnStream(Stream stream, bool ownsStream)
+      public ReadableDataStorageOnStream(Stream stream, bool ownsStream)
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));

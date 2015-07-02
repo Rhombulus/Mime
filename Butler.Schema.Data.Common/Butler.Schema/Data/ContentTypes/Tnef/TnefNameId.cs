@@ -16,39 +16,15 @@ namespace Butler.Schema.Data.ContentTypes.Tnef
     private string name;
     private TnefNameIdKind kind;
 
-    public Guid PropertySetGuid
-    {
-      get
-      {
-        return this.propertySetGuid;
-      }
-    }
+    public Guid PropertySetGuid => this.propertySetGuid;
 
-    public TnefNameIdKind Kind
-    {
-      get
-      {
-        return this.kind;
-      }
-    }
+      public TnefNameIdKind Kind => this.kind;
 
-    public string Name
-    {
-      get
-      {
-        return this.name;
-      }
-    }
+      public string Name => this.name;
 
-    public int Id
-    {
-      get
-      {
-        return this.id;
-      }
-    }
+      public int Id => this.id;
 
-    public TnefNameId(Guid propertySetGuid, int id)
+      public TnefNameId(Guid propertySetGuid, int id)
     {
       this.propertySetGuid = propertySetGuid;
       this.id = id;

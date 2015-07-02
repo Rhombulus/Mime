@@ -34,31 +34,13 @@ namespace Butler.Schema.Data.Mime
     private bool headerComplete;
     private ContentTransferEncoding inlineFormat;
 
-    public bool IsEndOfFile
-    {
-      get
-      {
-        return this.state == MimeParser.ParseState.EndOfFile;
-      }
-    }
+    public bool IsEndOfFile => this.state == MimeParser.ParseState.EndOfFile;
 
-    public int Position
-    {
-      get
-      {
-        return this.position;
-      }
-    }
+      public int Position => this.position;
 
-    public int Depth
-    {
-      get
-      {
-        return this.parseStackTop;
-      }
-    }
+      public int Depth => this.parseStackTop;
 
-    public int PartDepth
+      public int PartDepth
     {
       get
       {
@@ -68,31 +50,13 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public int HeaderNameLength
-    {
-      get
-      {
-        return this.headerNameLength;
-      }
-    }
+    public int HeaderNameLength => this.headerNameLength;
 
-    public int HeaderDataOffset
-    {
-      get
-      {
-        return this.headerDataOffset;
-      }
-    }
+      public int HeaderDataOffset => this.headerDataOffset;
 
-    public bool IsHeaderComplete
-    {
-      get
-      {
-        return this.headerComplete;
-      }
-    }
+      public bool IsHeaderComplete => this.headerComplete;
 
-    public MimeComplianceStatus ComplianceStatus
+      public MimeComplianceStatus ComplianceStatus
     {
       get
       {
@@ -104,39 +68,15 @@ namespace Butler.Schema.Data.Mime
       }
     }
 
-    public bool IsMime
-    {
-      get
-      {
-        return this.mime;
-      }
-    }
+    public bool IsMime => this.mime;
 
-    public MajorContentType ContentType
-    {
-      get
-      {
-        return this.currentLevel.ContentType;
-      }
-    }
+      public MajorContentType ContentType => this.currentLevel.ContentType;
 
-    public ContentTransferEncoding TransferEncoding
-    {
-      get
-      {
-        return this.currentLevel.TransferEncoding;
-      }
-    }
+      public ContentTransferEncoding TransferEncoding => this.currentLevel.TransferEncoding;
 
-    public ContentTransferEncoding InlineFormat
-    {
-      get
-      {
-        return this.inlineFormat;
-      }
-    }
+      public ContentTransferEncoding InlineFormat => this.inlineFormat;
 
-    public MimeParser(bool expectBinaryContent)
+      public MimeParser(bool expectBinaryContent)
     {
       this.parseInlineAttachments = true;
       this.expectBinaryContent = expectBinaryContent;
@@ -660,11 +600,7 @@ label_40:
           private uint boundaryCrc;
           private uint endBoundaryCrc;
 
-          public MajorContentType ContentType {
-              get {
-                  return this.contentType;
-              }
-          }
+          public MajorContentType ContentType => this.contentType;
 
           public ContentTransferEncoding TransferEncoding {
               get {

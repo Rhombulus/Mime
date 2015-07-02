@@ -17,55 +17,19 @@ namespace Butler.Schema.CtsResources
     private static Dictionary<uint, string> stringIDs = new Dictionary<uint, string>(6);
     private static ResourceManager ResourceManager = new ResourceManager("Microsoft.Exchange.CtsResources.GlobalizationStrings", ((Type) IntrospectionExtensions.GetTypeInfo(typeof (GlobalizationStrings))).Assembly);
 
-    public static string MaxCharactersCannotBeNegative
-    {
-      get
-      {
-        return GlobalizationStrings.ResourceManager.GetString("MaxCharactersCannotBeNegative");
-      }
-    }
+    public static string MaxCharactersCannotBeNegative => GlobalizationStrings.ResourceManager.GetString("MaxCharactersCannotBeNegative");
 
-    public static string CountOutOfRange
-    {
-      get
-      {
-        return GlobalizationStrings.ResourceManager.GetString("CountOutOfRange");
-      }
-    }
+      public static string CountOutOfRange => GlobalizationStrings.ResourceManager.GetString("CountOutOfRange");
 
-    public static string PriorityListIncludesNonDetectableCodePage
-    {
-      get
-      {
-        return GlobalizationStrings.ResourceManager.GetString("PriorityListIncludesNonDetectableCodePage");
-      }
-    }
+      public static string PriorityListIncludesNonDetectableCodePage => GlobalizationStrings.ResourceManager.GetString("PriorityListIncludesNonDetectableCodePage");
 
-    public static string OffsetOutOfRange
-    {
-      get
-      {
-        return GlobalizationStrings.ResourceManager.GetString("OffsetOutOfRange");
-      }
-    }
+      public static string OffsetOutOfRange => GlobalizationStrings.ResourceManager.GetString("OffsetOutOfRange");
 
-    public static string IndexOutOfRange
-    {
-      get
-      {
-        return GlobalizationStrings.ResourceManager.GetString("IndexOutOfRange");
-      }
-    }
+      public static string IndexOutOfRange => GlobalizationStrings.ResourceManager.GetString("IndexOutOfRange");
 
-    public static string CountTooLarge
-    {
-      get
-      {
-        return GlobalizationStrings.ResourceManager.GetString("CountTooLarge");
-      }
-    }
+      public static string CountTooLarge => GlobalizationStrings.ResourceManager.GetString("CountTooLarge");
 
-    static GlobalizationStrings()
+      static GlobalizationStrings()
     {
       GlobalizationStrings.stringIDs.Add(1308081499U, "MaxCharactersCannotBeNegative");
       GlobalizationStrings.stringIDs.Add(1590522975U, "CountOutOfRange");

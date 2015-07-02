@@ -45,31 +45,13 @@ namespace Butler.Schema.Data.Internal
       }
     }
 
-    public override bool CanRead
-    {
-      get
-      {
-        return !this.disposed;
-      }
-    }
+    public override bool CanRead => !this.disposed;
 
-    public override bool CanWrite
-    {
-      get
-      {
-        return false;
-      }
-    }
+      public override bool CanWrite => false;
 
-    public override bool CanSeek
-    {
-      get
-      {
-        return !this.disposed;
-      }
-    }
+      public override bool CanSeek => !this.disposed;
 
-    public override long Length
+      public override long Length
     {
       get
       {

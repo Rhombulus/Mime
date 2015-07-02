@@ -15,15 +15,9 @@ namespace Butler.Schema.Data.Common
   {
     private LocalizedString localizedString;
 
-    public new LocalizedString LocalizedString
-    {
-      get
-      {
-        return this.localizedString;
-      }
-    }
+    public new LocalizedString LocalizedString => this.localizedString;
 
-    public TransientException(LocalizedString localizedString)
+      public TransientException(LocalizedString localizedString)
       : this(localizedString, (Exception) null)
     {
     }

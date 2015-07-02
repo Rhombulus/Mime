@@ -14,175 +14,49 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
   {
     private HtmlToken token;
 
-    public bool IsNull
-    {
-      get
-      {
-        return this.token == null;
-      }
-    }
+    public bool IsNull => this.token == null;
 
-    public int Index
-    {
-      get
-      {
-        return this.token.CurrentAttribute;
-      }
-    }
+      public int Index => this.token.CurrentAttribute;
 
-    public HtmlToken.AttrPartMajor MajorPart
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].MajorPart;
-      }
-    }
+      public HtmlToken.AttrPartMajor MajorPart => this.token.AttributeList[this.token.CurrentAttribute].MajorPart;
 
-    public HtmlToken.AttrPartMinor MinorPart
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].MinorPart;
-      }
-    }
+      public HtmlToken.AttrPartMinor MinorPart => this.token.AttributeList[this.token.CurrentAttribute].MinorPart;
 
-    public bool IsCompleteAttr
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].IsCompleteAttr;
-      }
-    }
+      public bool IsCompleteAttr => this.token.AttributeList[this.token.CurrentAttribute].IsCompleteAttr;
 
-    public bool IsAttrBegin
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].IsAttrBegin;
-      }
-    }
+      public bool IsAttrBegin => this.token.AttributeList[this.token.CurrentAttribute].IsAttrBegin;
 
-    public bool IsAttrEmptyName
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].IsAttrEmptyName;
-      }
-    }
+      public bool IsAttrEmptyName => this.token.AttributeList[this.token.CurrentAttribute].IsAttrEmptyName;
 
-    public bool IsAttrEnd
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].IsAttrEnd;
-      }
-    }
+      public bool IsAttrEnd => this.token.AttributeList[this.token.CurrentAttribute].IsAttrEnd;
 
-    public bool IsAttrNameEnd
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].IsAttrNameEnd;
-      }
-    }
+      public bool IsAttrNameEnd => this.token.AttributeList[this.token.CurrentAttribute].IsAttrNameEnd;
 
-    public bool IsDeleted
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].IsAttrDeleted;
-      }
-    }
+      public bool IsDeleted => this.token.AttributeList[this.token.CurrentAttribute].IsAttrDeleted;
 
-    public bool IsAttrValueBegin
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].IsAttrValueBegin;
-      }
-    }
+      public bool IsAttrValueBegin => this.token.AttributeList[this.token.CurrentAttribute].IsAttrValueBegin;
 
-    public bool IsAttrValueQuoted
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].IsAttrValueQuoted;
-      }
-    }
+      public bool IsAttrValueQuoted => this.token.AttributeList[this.token.CurrentAttribute].IsAttrValueQuoted;
 
-    public HtmlNameIndex NameIndex
-    {
-      get
-      {
-        return this.token.AttributeList[this.token.CurrentAttribute].NameIndex;
-      }
-    }
+      public HtmlNameIndex NameIndex => this.token.AttributeList[this.token.CurrentAttribute].NameIndex;
 
-    public char QuoteChar
-    {
-      get
-      {
-        return (char) this.token.AttributeList[this.token.CurrentAttribute].QuoteChar;
-      }
-    }
+      public char QuoteChar => (char) this.token.AttributeList[this.token.CurrentAttribute].QuoteChar;
 
-    public bool AttributeValueContainsDangerousCharacter
-    {
-      get
-      {
-        return (int) this.token.AttributeList[this.token.CurrentAttribute].DangerousCharacters != 0;
-      }
-    }
+      public bool AttributeValueContainsDangerousCharacter => (int) this.token.AttributeList[this.token.CurrentAttribute].DangerousCharacters != 0;
 
-    public bool AttributeValueContainsBackquote
-    {
-      get
-      {
-        return ((int) this.token.AttributeList[this.token.CurrentAttribute].DangerousCharacters & 1) != 0;
-      }
-    }
+      public bool AttributeValueContainsBackquote => ((int) this.token.AttributeList[this.token.CurrentAttribute].DangerousCharacters & 1) != 0;
 
-    public bool AttributeValueContainsBackslash
-    {
-      get
-      {
-        return ((int) this.token.AttributeList[this.token.CurrentAttribute].DangerousCharacters & 2) != 0;
-      }
-    }
+      public bool AttributeValueContainsBackslash => ((int) this.token.AttributeList[this.token.CurrentAttribute].DangerousCharacters & 2) != 0;
 
-    public bool HasNameFragment
-    {
-      get
-      {
-        return !this.token.IsFragmentEmpty(this.token.AttributeList[this.token.CurrentAttribute].Name);
-      }
-    }
+      public bool HasNameFragment => !this.token.IsFragmentEmpty(this.token.AttributeList[this.token.CurrentAttribute].Name);
 
-    public HtmlToken.AttributeNameTextReader Name
-    {
-      get
-      {
-        return new HtmlToken.AttributeNameTextReader(this.token);
-      }
-    }
+      public HtmlToken.AttributeNameTextReader Name => new HtmlToken.AttributeNameTextReader(this.token);
 
-    public bool HasValueFragment
-    {
-      get
-      {
-        return !this.token.IsFragmentEmpty(this.token.AttributeList[this.token.CurrentAttribute].Value);
-      }
-    }
+      public bool HasValueFragment => !this.token.IsFragmentEmpty(this.token.AttributeList[this.token.CurrentAttribute].Value);
 
-    public HtmlToken.AttributeValueTextReader Value
-    {
-      get
-      {
-        return new HtmlToken.AttributeValueTextReader(this.token);
-      }
-    }
+      public HtmlToken.AttributeValueTextReader Value => new HtmlToken.AttributeValueTextReader(this.token);
 
-    internal HtmlAttribute(HtmlToken token)
+      internal HtmlAttribute(HtmlToken token)
     {
       this.token = token;
     }

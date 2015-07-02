@@ -1474,63 +1474,21 @@ namespace Butler.Schema.Data.Globalization
       private int webCodePage;
       private string genericCultureDescription;
 
-      public int CodePage
-      {
-        get
-        {
-          return this.codePage;
-        }
-      }
+      public int CodePage => this.codePage;
 
-      public string Name
-      {
-        get
-        {
-          return this.name;
-        }
-      }
+        public string Name => this.name;
 
-      public int LCID
-      {
-        get
-        {
-          return this.lcid;
-        }
-      }
+        public int LCID => this.lcid;
 
-      public string CultureName
-      {
-        get
-        {
-          return this.cultureName;
-        }
-      }
+        public string CultureName => this.cultureName;
 
-      public int MimeCodePage
-      {
-        get
-        {
-          return this.mimeCodePage;
-        }
-      }
+        public int MimeCodePage => this.mimeCodePage;
 
-      public int WebCodePage
-      {
-        get
-        {
-          return this.webCodePage;
-        }
-      }
+        public int WebCodePage => this.webCodePage;
 
-      public string GenericCultureDescription
-      {
-        get
-        {
-          return this.genericCultureDescription;
-        }
-      }
+        public string GenericCultureDescription => this.genericCultureDescription;
 
-      public WindowsCodePage(int codePage, string name, int lcid, string cultureName, int mimeCodePage, int webCodePage, string genericCultureDescription)
+        public WindowsCodePage(int codePage, string name, int lcid, string cultureName, int mimeCodePage, int webCodePage, string genericCultureDescription)
       {
         this.codePage = codePage;
         this.name = name;
@@ -1547,23 +1505,11 @@ namespace Butler.Schema.Data.Globalization
       private int codePage;
       private string cultureName;
 
-      public int CodePage
-      {
-        get
-        {
-          return this.codePage;
-        }
-      }
+      public int CodePage => this.codePage;
 
-      public string CultureName
-      {
-        get
-        {
-          return this.cultureName;
-        }
-      }
+        public string CultureName => this.cultureName;
 
-      public CodePageCultureOverride(int codePage, string cultureName)
+        public CodePageCultureOverride(int codePage, string cultureName)
       {
         this.codePage = codePage;
         this.cultureName = cultureName;
@@ -1576,31 +1522,13 @@ namespace Butler.Schema.Data.Globalization
       private int mimeCodePage;
       private int webCodePage;
 
-      public string CultureName
-      {
-        get
-        {
-          return this.cultureName;
-        }
-      }
+      public string CultureName => this.cultureName;
 
-      public int MimeCodePage
-      {
-        get
-        {
-          return this.mimeCodePage;
-        }
-      }
+        public int MimeCodePage => this.mimeCodePage;
 
-      public int WebCodePage
-      {
-        get
-        {
-          return this.webCodePage;
-        }
-      }
+        public int WebCodePage => this.webCodePage;
 
-      public CultureCodePageOverride(string cultureName, int mimeCodePage, int webCodePage)
+        public CultureCodePageOverride(string cultureName, int mimeCodePage, int webCodePage)
       {
         this.cultureName = cultureName;
         this.mimeCodePage = mimeCodePage;
@@ -1613,23 +1541,11 @@ namespace Butler.Schema.Data.Globalization
       private string name;
       private int codePage;
 
-      public string Name
-      {
-        get
-        {
-          return this.name;
-        }
-      }
+      public string Name => this.name;
 
-      public int CodePage
-      {
-        get
-        {
-          return this.codePage;
-        }
-      }
+        public int CodePage => this.codePage;
 
-      public CharsetName(string name, int codePage)
+        public CharsetName(string name, int codePage)
       {
         this.name = name;
         this.codePage = codePage;
@@ -1646,63 +1562,21 @@ namespace Butler.Schema.Data.Globalization
       private string parentCultureName;
       private string description;
 
-      public int LCID
-      {
-        get
-        {
-          return this.lcid;
-        }
-      }
+      public int LCID => this.lcid;
 
-      public string Name
-      {
-        get
-        {
-          return this.name;
-        }
-      }
+        public string Name => this.name;
 
-      public int WindowsCodePage
-      {
-        get
-        {
-          return this.windowsCodePage;
-        }
-      }
+        public int WindowsCodePage => this.windowsCodePage;
 
-      public int MimeCodePage
-      {
-        get
-        {
-          return this.mimeCodePage;
-        }
-      }
+        public int MimeCodePage => this.mimeCodePage;
 
-      public int WebCodePage
-      {
-        get
-        {
-          return this.webCodePage;
-        }
-      }
+        public int WebCodePage => this.webCodePage;
 
-      public string ParentCultureName
-      {
-        get
-        {
-          return this.parentCultureName;
-        }
-      }
+        public string ParentCultureName => this.parentCultureName;
 
-      public string Description
-      {
-        get
-        {
-          return this.description;
-        }
-      }
+        public string Description => this.description;
 
-      public CultureData(int lcid, string name, int windowsCodePage, int mimeCodePage, int webCodePage, string parentCultureName, string description)
+        public CultureData(int lcid, string name, int windowsCodePage, int mimeCodePage, int webCodePage, string parentCultureName, string description)
       {
         this.lcid = lcid;
         this.name = name;

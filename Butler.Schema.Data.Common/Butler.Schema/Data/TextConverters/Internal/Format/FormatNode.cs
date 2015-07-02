@@ -17,55 +17,19 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private FormatStore.NodeStore nodes;
     private int nodeHandle;
 
-    public int Handle
-    {
-      get
-      {
-        return this.nodeHandle;
-      }
-    }
+    public int Handle => this.nodeHandle;
 
-    public bool IsNull
-    {
-      get
-      {
-        return this.nodeHandle == 0;
-      }
-    }
+      public bool IsNull => this.nodeHandle == 0;
 
-    public bool IsInOrder
-    {
-      get
-      {
-        return (FormatStore.NodeFlags) 0 == (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.OutOfOrder);
-      }
-    }
+      public bool IsInOrder => (FormatStore.NodeFlags) 0 == (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.OutOfOrder);
 
-    public bool OnRightEdge
-    {
-      get
-      {
-        return (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.OnRightEdge);
-      }
-    }
+      public bool OnRightEdge => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.OnRightEdge);
 
-    public bool OnLeftEdge
-    {
-      get
-      {
-        return (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.OnLeftEdge);
-      }
-    }
+      public bool OnLeftEdge => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.OnLeftEdge);
 
-    public bool IsVisited
-    {
-      get
-      {
-        return (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.Visited);
-      }
-    }
+      public bool IsVisited => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.Visited);
 
-    public bool IsEmptyBlockNode
+      public bool IsEmptyBlockNode
     {
       get
       {
@@ -75,15 +39,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public bool CanFlush
-    {
-      get
-      {
-        return (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.CanFlush);
-      }
-    }
+    public bool CanFlush => (FormatStore.NodeFlags) 0 != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NodeFlags & FormatStore.NodeFlags.CanFlush);
 
-    public FormatContainerType NodeType
+      public FormatContainerType NodeType
     {
       get
       {
@@ -95,15 +53,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public bool IsText
-    {
-      get
-      {
-        return this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Type == FormatContainerType.Text;
-      }
-    }
+    public bool IsText => this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Type == FormatContainerType.Text;
 
-    public FormatNode Parent
+      public FormatNode Parent
     {
       get
       {
@@ -114,15 +66,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public bool IsOnlySibling
-    {
-      get
-      {
-        return this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NextSibling == this.nodeHandle;
-      }
-    }
+    public bool IsOnlySibling => this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].NextSibling == this.nodeHandle;
 
-    public FormatNode FirstChild
+      public FormatNode FirstChild
     {
       get
       {
@@ -240,39 +186,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public NodePropertiesEnumerator PropertiesEnumerator
-    {
-      get
-      {
-        return new NodePropertiesEnumerator(this);
-      }
-    }
+    public NodePropertiesEnumerator PropertiesEnumerator => new NodePropertiesEnumerator(this);
 
-    public bool IsBlockNode
-    {
-      get
-      {
-        return FormatContainerType.Null != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Type & FormatContainerType.BlockFlag);
-      }
-    }
+      public bool IsBlockNode => FormatContainerType.Null != (this.nodes.Plane(this.nodeHandle)[this.nodes.Index(this.nodeHandle)].Type & FormatContainerType.BlockFlag);
 
-    public FormatNode.NodeSubtree Subtree
-    {
-      get
-      {
-        return new FormatNode.NodeSubtree(this);
-      }
-    }
+      public FormatNode.NodeSubtree Subtree => new FormatNode.NodeSubtree(this);
 
-    public FormatNode.NodeChildren Children
-    {
-      get
-      {
-        return new FormatNode.NodeChildren(this);
-      }
-    }
+      public FormatNode.NodeChildren Children => new FormatNode.NodeChildren(this);
 
-    internal FormatNode(FormatStore.NodeStore nodes, int nodeHandle)
+      internal FormatNode(FormatStore.NodeStore nodes, int nodeHandle)
     {
       this.nodes = nodes;
       this.nodeHandle = nodeHandle;
@@ -726,47 +648,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       private FormatNode nextChild;
       private int depth;
 
-      public FormatNode Current
-      {
-        get
-        {
-          return this.current;
-        }
-      }
+      public FormatNode Current => this.current;
 
-      public bool FirstVisit
-      {
-        get
-        {
-          return (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0 != (this.currentDisposition & FormatNode.SubtreeEnumerator.EnumeratorDisposition.Begin);
-        }
-      }
+        public bool FirstVisit => (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0 != (this.currentDisposition & FormatNode.SubtreeEnumerator.EnumeratorDisposition.Begin);
 
-      public bool LastVisit
-      {
-        get
-        {
-          return (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0 != (this.currentDisposition & FormatNode.SubtreeEnumerator.EnumeratorDisposition.End);
-        }
-      }
+        public bool LastVisit => (FormatNode.SubtreeEnumerator.EnumeratorDisposition) 0 != (this.currentDisposition & FormatNode.SubtreeEnumerator.EnumeratorDisposition.End);
 
-      public int Depth
-      {
-        get
-        {
-          return this.depth;
-        }
-      }
+        public int Depth => this.depth;
 
-      object IEnumerator.Current
-      {
-        get
-        {
-          return (object) this.current;
-        }
-      }
+        object IEnumerator.Current => (object) this.current;
 
-      internal SubtreeEnumerator(FormatNode node, bool revisitParent)
+        internal SubtreeEnumerator(FormatNode node, bool revisitParent)
       {
         this.revisitParent = revisitParent;
         this.root = node;

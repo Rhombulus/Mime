@@ -25,47 +25,17 @@ namespace Butler.Schema.Data.Internal
       }
     }
 
-    public override long Start
-    {
-      get
-      {
-        return 0L;
-      }
-    }
+    public override long Start => 0L;
 
-    public override long End
-    {
-      get
-      {
-        return long.MaxValue;
-      }
-    }
+      public override long End => long.MaxValue;
 
-    public override bool CanRead
-    {
-      get
-      {
-        return this.storage != null;
-      }
-    }
+      public override bool CanRead => this.storage != null;
 
-    public override bool CanWrite
-    {
-      get
-      {
-        return this.storage != null;
-      }
-    }
+      public override bool CanWrite => this.storage != null;
 
-    public override bool CanSeek
-    {
-      get
-      {
-        return this.storage != null;
-      }
-    }
+      public override bool CanSeek => this.storage != null;
 
-    public override long Length
+      public override long Length
     {
       get
       {

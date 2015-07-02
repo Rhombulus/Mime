@@ -66,15 +66,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     private RtfFormatConverter.RtfRow firstFreeRow;
     private RtfFormatConverter.ListState currentListState;
 
-    private bool CanFlush
-    {
-      get
-      {
-        return this.output.CanAcceptMoreOutput;
-      }
-    }
+    private bool CanFlush => this.output.CanAcceptMoreOutput;
 
-    public RtfFormatConverter(RtfParser parser, Format.FormatOutput output, Injection injection, bool treatNbspAsBreakable, Stream traceStream, bool traceShowTokenNum, int traceStopOnTokenNum, Stream formatConverterTraceStream)
+      public RtfFormatConverter(RtfParser parser, Format.FormatOutput output, Injection injection, bool treatNbspAsBreakable, Stream traceStream, bool traceShowTokenNum, int traceStopOnTokenNum, Stream formatConverterTraceStream)
       : base(formatConverterTraceStream)
     {
       this.treatNbspAsBreakable = treatNbspAsBreakable;

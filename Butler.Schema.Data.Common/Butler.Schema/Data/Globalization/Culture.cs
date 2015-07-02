@@ -24,103 +24,31 @@ namespace Butler.Schema.Data.Globalization
     private int[] codepageDetectionPriorityOrder;
     private CultureInfo cultureInfo;
 
-    public static Culture Default
-    {
-      get
-      {
-        return CultureCharsetDatabase.Data.DefaultCulture;
-      }
-    }
+    public static Culture Default => CultureCharsetDatabase.Data.DefaultCulture;
 
-    public static bool FallbackToDefaultCharset
-    {
-      get
-      {
-        return CultureCharsetDatabase.Data.FallbackToDefaultCharset;
-      }
-    }
+      public static bool FallbackToDefaultCharset => CultureCharsetDatabase.Data.FallbackToDefaultCharset;
 
-    public static Culture Invariant
-    {
-      get
-      {
-        return CultureCharsetDatabase.Data.InvariantCulture;
-      }
-    }
+      public static Culture Invariant => CultureCharsetDatabase.Data.InvariantCulture;
 
-    public int LCID
-    {
-      get
-      {
-        return this.lcid;
-      }
-    }
+      public int LCID => this.lcid;
 
-    public string Name
-    {
-      get
-      {
-        return this.name;
-      }
-    }
+      public string Name => this.name;
 
-    public Charset WindowsCharset
-    {
-      get
-      {
-        return this.windowsCharset;
-      }
-    }
+      public Charset WindowsCharset => this.windowsCharset;
 
-    public Charset MimeCharset
-    {
-      get
-      {
-        return this.mimeCharset;
-      }
-    }
+      public Charset MimeCharset => this.mimeCharset;
 
-    public Charset WebCharset
-    {
-      get
-      {
-        return this.webCharset;
-      }
-    }
+      public Charset WebCharset => this.webCharset;
 
-    public string Description
-    {
-      get
-      {
-        return this.description;
-      }
-    }
+      public string Description => this.description;
 
-    public string NativeDescription
-    {
-      get
-      {
-        return this.nativeDescription;
-      }
-    }
+      public string NativeDescription => this.nativeDescription;
 
-    public Culture ParentCulture
-    {
-      get
-      {
-        return this.parentCulture;
-      }
-    }
+      public Culture ParentCulture => this.parentCulture;
 
-    internal int[] CodepageDetectionPriorityOrder
-    {
-      get
-      {
-        return this.GetCodepageDetectionPriorityOrder(CultureCharsetDatabase.Data);
-      }
-    }
+      internal int[] CodepageDetectionPriorityOrder => this.GetCodepageDetectionPriorityOrder(CultureCharsetDatabase.Data);
 
-    internal Culture(int lcid, string name)
+      internal Culture(int lcid, string name)
     {
       this.lcid = lcid;
       this.name = name;

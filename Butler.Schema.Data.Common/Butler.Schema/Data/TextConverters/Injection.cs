@@ -20,47 +20,17 @@ namespace Butler.Schema.Data.TextConverters
     protected bool testBoundaryConditions;
     protected Stream traceStream;
 
-    public HeaderFooterFormat HeaderFooterFormat
-    {
-      get
-      {
-        return this.injectionFormat;
-      }
-    }
+    public HeaderFooterFormat HeaderFooterFormat => this.injectionFormat;
 
-    public bool HaveHead
-    {
-      get
-      {
-        return this.injectHead != null;
-      }
-    }
+      public bool HaveHead => this.injectHead != null;
 
-    public bool HaveTail
-    {
-      get
-      {
-        return this.injectTail != null;
-      }
-    }
+      public bool HaveTail => this.injectTail != null;
 
-    public bool HeadDone
-    {
-      get
-      {
-        return this.headInjected;
-      }
-    }
+      public bool HeadDone => this.headInjected;
 
-    public bool TailDone
-    {
-      get
-      {
-        return this.tailInjected;
-      }
-    }
+      public bool TailDone => this.tailInjected;
 
-    public abstract void Inject(bool head, Internal.Text.TextOutput output);
+      public abstract void Inject(bool head, Internal.Text.TextOutput output);
 
     void IDisposable.Dispose()
     {

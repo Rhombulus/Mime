@@ -13,23 +13,11 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp
   {
     private static int LastChanceIndex;
 
-    public static int LastChanceDecoderIndex
-    {
-      get
-      {
-        return DecodeToCp932.LastChanceIndex;
-      }
-    }
+    public static int LastChanceDecoderIndex => DecodeToCp932.LastChanceIndex;
 
-    public virtual char Abbreviation
-    {
-      get
-      {
-        return 'X';
-      }
-    }
+      public virtual char Abbreviation => 'X';
 
-    public abstract bool IsEscapeSequenceHandled(Escape escape);
+      public abstract bool IsEscapeSequenceHandled(Escape escape);
 
     public abstract ValidationResult GetRunLength(byte[] dataIn, int offsetIn, int lengthIn, Escape escape, out int bytesConsumed, out int bytesProduced);
 

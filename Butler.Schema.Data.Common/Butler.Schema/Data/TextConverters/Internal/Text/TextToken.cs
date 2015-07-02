@@ -11,12 +11,7 @@ namespace Butler.Schema.Data.TextConverters.Internal.Text
 {
   internal class TextToken : Token
   {
-    public TextTokenId TextTokenId
-    {
-      get
-      {
-        return (TextTokenId) this.TokenId;
-      }
-    }
+    public TextTokenId TextTokenId => (TextTokenId) this.TokenId;
+
   }
 }

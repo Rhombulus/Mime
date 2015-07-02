@@ -17,15 +17,9 @@ namespace Butler.Schema.Data.Internal
     private Dictionary<string, IList<CtsConfigurationSetting>> subSections = new Dictionary<string, IList<CtsConfigurationSetting>>();
     private static ConfigurationPropertyCollection properties;
 
-    public Dictionary<string, IList<CtsConfigurationSetting>> SubSectionsDictionary
-    {
-      get
-      {
-        return this.subSections;
-      }
-    }
+    public Dictionary<string, IList<CtsConfigurationSetting>> SubSectionsDictionary => this.subSections;
 
-    protected override ConfigurationPropertyCollection Properties
+      protected override ConfigurationPropertyCollection Properties
     {
       get
       {

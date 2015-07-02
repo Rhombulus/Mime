@@ -16,23 +16,11 @@ namespace Butler.Schema.Data.Globalization
     private int codePage;
     private string charsetName;
 
-    public int CodePage
-    {
-      get
-      {
-        return this.codePage;
-      }
-    }
+    public int CodePage => this.codePage;
 
-    public string CharsetName
-    {
-      get
-      {
-        return this.charsetName;
-      }
-    }
+      public string CharsetName => this.charsetName;
 
-    public InvalidCharsetException(int codePage)
+      public InvalidCharsetException(int codePage)
       : base(CtsResources.GlobalizationStrings.InvalidCodePage(codePage))
     {
       this.codePage = codePage;

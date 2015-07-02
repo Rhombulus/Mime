@@ -13,15 +13,9 @@ namespace Butler.Schema.Data.Mime
   {
     private MimeReader reader;
 
-    internal MimeReader MimeReader
-    {
-      get
-      {
-        return this.reader;
-      }
-    }
+    internal MimeReader MimeReader => this.reader;
 
-    public HeaderId HeaderId
+      public HeaderId HeaderId
     {
       get
       {

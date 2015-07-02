@@ -33,15 +33,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Css
     private int ruleDepth;
     private CssToken token;
 
-    public CssToken Token
-    {
-      get
-      {
-        return this.token;
-      }
-    }
+    public CssToken Token => this.token;
 
-    public CssParser(ConverterInput input, int maxRuns, bool testBoundaryConditions)
+      public CssParser(ConverterInput input, int maxRuns, bool testBoundaryConditions)
     {
       this.input = input;
       this.tokenBuilder = new CssTokenBuilder((char[]) null, 256, 256, maxRuns, testBoundaryConditions);

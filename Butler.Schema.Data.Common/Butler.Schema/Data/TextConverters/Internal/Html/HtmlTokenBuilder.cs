@@ -27,15 +27,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     protected int carryOverRunsHeadOffset;
     protected int carryOverRunsLength;
 
-    public HtmlToken Token
-    {
-      get
-      {
-        return this.htmlToken;
-      }
-    }
+    public HtmlToken Token => this.htmlToken;
 
-    public bool IncompleteTag
+      public bool IncompleteTag
     {
       get
       {

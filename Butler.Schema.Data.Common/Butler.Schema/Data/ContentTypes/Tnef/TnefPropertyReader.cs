@@ -14,127 +14,37 @@ namespace Butler.Schema.Data.ContentTypes.Tnef
   {
     internal TnefReader Reader;
 
-    public int RowCount
-    {
-      get
-      {
-        return this.Reader.RowCount;
-      }
-    }
+    public int RowCount => this.Reader.RowCount;
 
-    public int PropertyCount
-    {
-      get
-      {
-        return this.Reader.PropertyCount;
-      }
-    }
+      public int PropertyCount => this.Reader.PropertyCount;
 
-    public TnefPropertyTag PropertyTag
-    {
-      get
-      {
-        return this.Reader.PropertyTag;
-      }
-    }
+      public TnefPropertyTag PropertyTag => this.Reader.PropertyTag;
 
-    public bool IsMultiValuedProperty
-    {
-      get
-      {
-        return this.Reader.PropertyTag.IsMultiValued;
-      }
-    }
+      public bool IsMultiValuedProperty => this.Reader.PropertyTag.IsMultiValued;
 
-    public int ValueCount
-    {
-      get
-      {
-        return this.Reader.PropertyValueCount;
-      }
-    }
+      public int ValueCount => this.Reader.PropertyValueCount;
 
-    public bool IsNamedProperty
-    {
-      get
-      {
-        return this.Reader.PropertyTag.IsNamed;
-      }
-    }
+      public bool IsNamedProperty => this.Reader.PropertyTag.IsNamed;
 
-    public TnefNameId PropertyNameId
-    {
-      get
-      {
-        return this.Reader.PropertyNameId;
-      }
-    }
+      public TnefNameId PropertyNameId => this.Reader.PropertyNameId;
 
-    public Type ValueType
-    {
-      get
-      {
-        return this.Reader.PropertyValueClrType;
-      }
-    }
+      public Type ValueType => this.Reader.PropertyValueClrType;
 
-    public bool IsObjectProperty
-    {
-      get
-      {
-        return this.Reader.PropertyTag.ValueTnefType == TnefPropertyType.Object;
-      }
-    }
+      public bool IsObjectProperty => this.Reader.PropertyTag.ValueTnefType == TnefPropertyType.Object;
 
-    public Guid ObjectIid
-    {
-      get
-      {
-        return this.Reader.PropertyValueOleIID;
-      }
-    }
+      public Guid ObjectIid => this.Reader.PropertyValueOleIID;
 
-    public bool IsEmbeddedMessage
-    {
-      get
-      {
-        return this.Reader.IsPropertyEmbeddedMessage;
-      }
-    }
+      public bool IsEmbeddedMessage => this.Reader.IsPropertyEmbeddedMessage;
 
-    public bool IsLargeValue
-    {
-      get
-      {
-        return this.Reader.IsLargePropertyValue;
-      }
-    }
+      public bool IsLargeValue => this.Reader.IsLargePropertyValue;
 
-    public bool IsComputedProperty
-    {
-      get
-      {
-        return this.Reader.IsComputedProperty;
-      }
-    }
+      public bool IsComputedProperty => this.Reader.IsComputedProperty;
 
-    public int RawValueStreamOffset
-    {
-      get
-      {
-        return this.Reader.PropertyRawValueStreamOffset;
-      }
-    }
+      public int RawValueStreamOffset => this.Reader.PropertyRawValueStreamOffset;
 
-    public int RawValueLength
-    {
-      get
-      {
-        return this.Reader.PropertyRawValueLength;
-      }
-    }
+      public int RawValueLength => this.Reader.PropertyRawValueLength;
 
-    internal TnefPropertyReader(TnefReader reader)
+      internal TnefPropertyReader(TnefReader reader)
     {
       this.Reader = reader;
     }

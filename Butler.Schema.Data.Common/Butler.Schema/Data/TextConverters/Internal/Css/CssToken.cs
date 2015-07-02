@@ -27,63 +27,21 @@ namespace Butler.Schema.Data.TextConverters.Internal.Css
     protected internal Token.FragmentPosition SelectorNamePosition;
     protected internal Token.FragmentPosition SelectorClassPosition;
 
-    public CssTokenId CssTokenId
-    {
-      get
-      {
-        return (CssTokenId) this.TokenId;
-      }
-    }
+    public CssTokenId CssTokenId => (CssTokenId) this.TokenId;
 
-    public CssToken.PropertyListPartMajor MajorPart
-    {
-      get
-      {
-        return this.PartMajor;
-      }
-    }
+      public CssToken.PropertyListPartMajor MajorPart => this.PartMajor;
 
-    public CssToken.PropertyListPartMinor MinorPart
-    {
-      get
-      {
-        return this.PartMinor;
-      }
-    }
+      public CssToken.PropertyListPartMinor MinorPart => this.PartMinor;
 
-    public bool IsPropertyListBegin
-    {
-      get
-      {
-        return (this.PartMajor & CssToken.PropertyListPartMajor.Begin) == CssToken.PropertyListPartMajor.Begin;
-      }
-    }
+      public bool IsPropertyListBegin => (this.PartMajor & CssToken.PropertyListPartMajor.Begin) == CssToken.PropertyListPartMajor.Begin;
 
-    public bool IsPropertyListEnd
-    {
-      get
-      {
-        return (this.PartMajor & CssToken.PropertyListPartMajor.End) == CssToken.PropertyListPartMajor.End;
-      }
-    }
+      public bool IsPropertyListEnd => (this.PartMajor & CssToken.PropertyListPartMajor.End) == CssToken.PropertyListPartMajor.End;
 
-    public CssToken.PropertyEnumerator Properties
-    {
-      get
-      {
-        return new CssToken.PropertyEnumerator(this);
-      }
-    }
+      public CssToken.PropertyEnumerator Properties => new CssToken.PropertyEnumerator(this);
 
-    public CssToken.SelectorEnumerator Selectors
-    {
-      get
-      {
-        return new CssToken.SelectorEnumerator(this);
-      }
-    }
+      public CssToken.SelectorEnumerator Selectors => new CssToken.SelectorEnumerator(this);
 
-    public CssToken()
+      public CssToken()
     {
       this.Reset();
     }
@@ -255,15 +213,9 @@ label_12:
     {
       private CssToken token;
 
-      public int Count
-      {
-        get
-        {
-          return this.token.PropertyTail - this.token.PropertyHead;
-        }
-      }
+      public int Count => this.token.PropertyTail - this.token.PropertyHead;
 
-      public int ValidCount
+        public int ValidCount
       {
         get
         {
@@ -277,23 +229,11 @@ label_12:
         }
       }
 
-      public CssProperty Current
-      {
-        get
-        {
-          return new CssProperty(this.token);
-        }
-      }
+      public CssProperty Current => new CssProperty(this.token);
 
-      public int CurrentIndex
-      {
-        get
-        {
-          return this.token.CurrentProperty;
-        }
-      }
+        public int CurrentIndex => this.token.CurrentProperty;
 
-      public CssProperty this[int i]
+        public CssProperty this[int i]
       {
         get
         {
@@ -358,15 +298,9 @@ label_12:
     {
       private CssToken token;
 
-      public int Length
-      {
-        get
-        {
-          return this.token.GetLength(ref this.token.PropertyList[this.token.CurrentProperty].Name);
-        }
-      }
+      public int Length => this.token.GetLength(ref this.token.PropertyList[this.token.CurrentProperty].Name);
 
-      internal PropertyNameTextReader(CssToken token)
+        internal PropertyNameTextReader(CssToken token)
       {
         this.token = token;
       }
@@ -412,39 +346,15 @@ label_12:
     {
       private CssToken token;
 
-      public int Length
-      {
-        get
-        {
-          return this.token.GetLength(ref this.token.PropertyList[this.token.CurrentProperty].Value);
-        }
-      }
+      public int Length => this.token.GetLength(ref this.token.PropertyList[this.token.CurrentProperty].Value);
 
-      public bool IsEmpty
-      {
-        get
-        {
-          return this.token.IsFragmentEmpty(ref this.token.PropertyList[this.token.CurrentProperty].Value);
-        }
-      }
+        public bool IsEmpty => this.token.IsFragmentEmpty(ref this.token.PropertyList[this.token.CurrentProperty].Value);
 
-      public bool IsContiguous
-      {
-        get
-        {
-          return this.token.IsContiguous(ref this.token.PropertyList[this.token.CurrentProperty].Value);
-        }
-      }
+        public bool IsContiguous => this.token.IsContiguous(ref this.token.PropertyList[this.token.CurrentProperty].Value);
 
-      public BufferString ContiguousBufferString
-      {
-        get
-        {
-          return new BufferString(this.token.Buffer, this.token.PropertyList[this.token.CurrentProperty].Value.HeadOffset, this.token.RunList[this.token.PropertyList[this.token.CurrentProperty].Value.Head].Length);
-        }
-      }
+        public BufferString ContiguousBufferString => new BufferString(this.token.Buffer, this.token.PropertyList[this.token.CurrentProperty].Value.HeadOffset, this.token.RunList[this.token.PropertyList[this.token.CurrentProperty].Value.Head].Length);
 
-      internal PropertyValueTextReader(CssToken token)
+        internal PropertyValueTextReader(CssToken token)
       {
         this.token = token;
       }
@@ -505,15 +415,9 @@ label_12:
     {
       private CssToken token;
 
-      public int Count
-      {
-        get
-        {
-          return this.token.SelectorTail - this.token.SelectorHead;
-        }
-      }
+      public int Count => this.token.SelectorTail - this.token.SelectorHead;
 
-      public int ValidCount
+        public int ValidCount
       {
         get
         {
@@ -527,23 +431,11 @@ label_12:
         }
       }
 
-      public CssSelector Current
-      {
-        get
-        {
-          return new CssSelector(this.token);
-        }
-      }
+      public CssSelector Current => new CssSelector(this.token);
 
-      public int CurrentIndex
-      {
-        get
-        {
-          return this.token.CurrentSelector;
-        }
-      }
+        public int CurrentIndex => this.token.CurrentSelector;
 
-      public CssSelector this[int i]
+        public CssSelector this[int i]
       {
         get
         {
@@ -608,15 +500,9 @@ label_12:
     {
       private CssToken token;
 
-      public int Length
-      {
-        get
-        {
-          return this.token.GetLength(ref this.token.SelectorList[this.token.CurrentSelector].Name);
-        }
-      }
+      public int Length => this.token.GetLength(ref this.token.SelectorList[this.token.CurrentSelector].Name);
 
-      internal SelectorNameTextReader(CssToken token)
+        internal SelectorNameTextReader(CssToken token)
       {
         this.token = token;
       }
@@ -662,15 +548,9 @@ label_12:
     {
       private CssToken token;
 
-      public int Length
-      {
-        get
-        {
-          return this.token.GetLength(ref this.token.SelectorList[this.token.CurrentSelector].ClassName);
-        }
-      }
+      public int Length => this.token.GetLength(ref this.token.SelectorList[this.token.CurrentSelector].ClassName);
 
-      internal SelectorClassTextReader(CssToken token)
+        internal SelectorClassTextReader(CssToken token)
       {
         this.token = token;
       }
@@ -731,55 +611,19 @@ label_12:
       public Token.Fragment Name;
       public Token.Fragment Value;
 
-      public bool IsCompleteProperty
-      {
-        get
-        {
-          return this.MajorPart == CssToken.PropertyPartMajor.Complete;
-        }
-      }
+      public bool IsCompleteProperty => this.MajorPart == CssToken.PropertyPartMajor.Complete;
 
-      public bool IsPropertyBegin
-      {
-        get
-        {
-          return (this.PartMajor & CssToken.PropertyPartMajor.Begin) == CssToken.PropertyPartMajor.Begin;
-        }
-      }
+        public bool IsPropertyBegin => (this.PartMajor & CssToken.PropertyPartMajor.Begin) == CssToken.PropertyPartMajor.Begin;
 
-      public bool IsPropertyEnd
-      {
-        get
-        {
-          return (this.PartMajor & CssToken.PropertyPartMajor.End) == CssToken.PropertyPartMajor.End;
-        }
-      }
+        public bool IsPropertyEnd => (this.PartMajor & CssToken.PropertyPartMajor.End) == CssToken.PropertyPartMajor.End;
 
-      public bool IsPropertyNameEnd
-      {
-        get
-        {
-          return (this.PartMinor & CssToken.PropertyPartMinor.EndName) == CssToken.PropertyPartMinor.EndName;
-        }
-      }
+        public bool IsPropertyNameEnd => (this.PartMinor & CssToken.PropertyPartMinor.EndName) == CssToken.PropertyPartMinor.EndName;
 
-      public bool IsPropertyValueBegin
-      {
-        get
-        {
-          return (this.PartMinor & CssToken.PropertyPartMinor.BeginValue) == CssToken.PropertyPartMinor.BeginValue;
-        }
-      }
+        public bool IsPropertyValueBegin => (this.PartMinor & CssToken.PropertyPartMinor.BeginValue) == CssToken.PropertyPartMinor.BeginValue;
 
-      public CssToken.PropertyPartMajor MajorPart
-      {
-        get
-        {
-          return this.PartMajor & CssToken.PropertyPartMajor.Complete;
-        }
-      }
+        public CssToken.PropertyPartMajor MajorPart => this.PartMajor & CssToken.PropertyPartMajor.Complete;
 
-      public CssToken.PropertyPartMinor MinorPart
+        public CssToken.PropertyPartMinor MinorPart
       {
         get
         {

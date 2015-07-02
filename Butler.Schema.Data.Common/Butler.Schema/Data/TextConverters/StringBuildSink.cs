@@ -15,15 +15,9 @@ namespace Butler.Schema.Data.TextConverters
     private StringBuilder sb;
     private int maxLength;
 
-    public bool IsEnough
-    {
-      get
-      {
-        return this.sb.Length >= this.maxLength;
-      }
-    }
+    public bool IsEnough => this.sb.Length >= this.maxLength;
 
-    public StringBuildSink()
+      public StringBuildSink()
     {
       this.sb = new StringBuilder();
     }

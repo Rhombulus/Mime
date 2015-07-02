@@ -78,15 +78,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Text
       }
     }
 
-    public bool ImageRenderingCallbackDefined
-    {
-      get
-      {
-        return this.imageRenderingCallback != null;
-      }
-    }
+    public bool ImageRenderingCallbackDefined => this.imageRenderingCallback != null;
 
-    public TextOutput(ConverterOutput output, bool lineWrapping, bool flowed, int wrapBeforePosition, int longestNonWrappedParagraph, ImageRenderingCallbackInternal imageRenderingCallback, bool fallbacks, bool htmlEscape, bool preserveSpace, Stream testTraceStream)
+      public TextOutput(ConverterOutput output, bool lineWrapping, bool flowed, int wrapBeforePosition, int longestNonWrappedParagraph, ImageRenderingCallbackInternal imageRenderingCallback, bool fallbacks, bool htmlEscape, bool preserveSpace, Stream testTraceStream)
     {
       this.rfc2646 = flowed;
       this.lineWrapping = lineWrapping;

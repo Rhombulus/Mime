@@ -17,71 +17,23 @@ namespace Butler.Schema.CtsResources
     private static Dictionary<uint, string> stringIDs = new Dictionary<uint, string>(8);
     private static ResourceManager ResourceManager = new ResourceManager("Microsoft.Exchange.CtsResources.SharedStrings", ((Type) IntrospectionExtensions.GetTypeInfo(typeof (SharedStrings))).Assembly);
 
-    public static string InvalidFactory
-    {
-      get
-      {
-        return SharedStrings.ResourceManager.GetString("InvalidFactory");
-      }
-    }
+    public static string InvalidFactory => SharedStrings.ResourceManager.GetString("InvalidFactory");
 
-    public static string CannotSetNegativelength
-    {
-      get
-      {
-        return SharedStrings.ResourceManager.GetString("CannotSetNegativelength");
-      }
-    }
+      public static string CannotSetNegativelength => SharedStrings.ResourceManager.GetString("CannotSetNegativelength");
 
-    public static string CountOutOfRange
-    {
-      get
-      {
-        return SharedStrings.ResourceManager.GetString("CountOutOfRange");
-      }
-    }
+      public static string CountOutOfRange => SharedStrings.ResourceManager.GetString("CountOutOfRange");
 
-    public static string CannotSeekBeforeBeginning
-    {
-      get
-      {
-        return SharedStrings.ResourceManager.GetString("CannotSeekBeforeBeginning");
-      }
-    }
+      public static string CannotSeekBeforeBeginning => SharedStrings.ResourceManager.GetString("CannotSeekBeforeBeginning");
 
-    public static string StringArgumentMustBeUTF8
-    {
-      get
-      {
-        return SharedStrings.ResourceManager.GetString("StringArgumentMustBeUTF8");
-      }
-    }
+      public static string StringArgumentMustBeUTF8 => SharedStrings.ResourceManager.GetString("StringArgumentMustBeUTF8");
 
-    public static string OffsetOutOfRange
-    {
-      get
-      {
-        return SharedStrings.ResourceManager.GetString("OffsetOutOfRange");
-      }
-    }
+      public static string OffsetOutOfRange => SharedStrings.ResourceManager.GetString("OffsetOutOfRange");
 
-    public static string CountTooLarge
-    {
-      get
-      {
-        return SharedStrings.ResourceManager.GetString("CountTooLarge");
-      }
-    }
+      public static string CountTooLarge => SharedStrings.ResourceManager.GetString("CountTooLarge");
 
-    public static string StringArgumentMustBeAscii
-    {
-      get
-      {
-        return SharedStrings.ResourceManager.GetString("StringArgumentMustBeAscii");
-      }
-    }
+      public static string StringArgumentMustBeAscii => SharedStrings.ResourceManager.GetString("StringArgumentMustBeAscii");
 
-    static SharedStrings()
+      static SharedStrings()
     {
       SharedStrings.stringIDs.Add(3996289637U, "InvalidFactory");
       SharedStrings.stringIDs.Add(1551326176U, "CannotSetNegativelength");

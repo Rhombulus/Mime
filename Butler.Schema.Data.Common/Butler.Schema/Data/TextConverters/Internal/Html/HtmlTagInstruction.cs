@@ -16,39 +16,15 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private int inheritanceMaskIndex;
     private HtmlAttributeInstruction[] attributeInstructions;
 
-    public Format.FormatContainerType ContainerType
-    {
-      get
-      {
-        return this.containerType;
-      }
-    }
+    public Format.FormatContainerType ContainerType => this.containerType;
 
-    public int DefaultStyle
-    {
-      get
-      {
-        return this.defaultStyle;
-      }
-    }
+      public int DefaultStyle => this.defaultStyle;
 
-    public int InheritanceMaskIndex
-    {
-      get
-      {
-        return this.inheritanceMaskIndex;
-      }
-    }
+      public int InheritanceMaskIndex => this.inheritanceMaskIndex;
 
-    public HtmlAttributeInstruction[] AttributeInstructions
-    {
-      get
-      {
-        return this.attributeInstructions;
-      }
-    }
+      public HtmlAttributeInstruction[] AttributeInstructions => this.attributeInstructions;
 
-    public HtmlTagInstruction(Format.FormatContainerType containerType, int defaultStyle, int inheritanceMaskIndex, HtmlAttributeInstruction[] attributeInstructions)
+      public HtmlTagInstruction(Format.FormatContainerType containerType, int defaultStyle, int inheritanceMaskIndex, HtmlAttributeInstruction[] attributeInstructions)
     {
       this.containerType = containerType;
       this.defaultStyle = defaultStyle;

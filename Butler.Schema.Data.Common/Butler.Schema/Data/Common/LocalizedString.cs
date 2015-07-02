@@ -31,31 +31,13 @@ namespace Butler.Schema.Data.Common
     private readonly string DeserializedFallback;
     private ReadOnlyCollection<object> formatParameters;
 
-    public bool IsEmpty
-    {
-      get
-      {
-        return null == this.Id;
-      }
-    }
+    public bool IsEmpty => null == this.Id;
 
-    public string FullId
-    {
-      get
-      {
-        return (this.ResourceManager != null ? this.ResourceManager.BaseName : string.Empty) + this.Id;
-      }
-    }
+      public string FullId => (this.ResourceManager != null ? this.ResourceManager.BaseName : string.Empty) + this.Id;
 
-    public int BaseId
-    {
-      get
-      {
-        return this.FullId.GetHashCode();
-      }
-    }
+      public int BaseId => this.FullId.GetHashCode();
 
-    public string StringId
+      public string StringId
     {
       get
       {
@@ -65,39 +47,15 @@ namespace Butler.Schema.Data.Common
       }
     }
 
-    public bool ShowStringIdInUIIfError
-    {
-      get
-      {
-        return this.showStringIdInUIIfError;
-      }
-    }
+    public bool ShowStringIdInUIIfError => this.showStringIdInUIIfError;
 
-    public bool ShowAssistanceInfoInUIIfError
-    {
-      get
-      {
-        return this.showAssistanceInfoInUIIfError;
-      }
-    }
+      public bool ShowAssistanceInfoInUIIfError => this.showAssistanceInfoInUIIfError;
 
-    LocalizedString ILocalizedString.LocalizedString
-    {
-      get
-      {
-        return this;
-      }
-    }
+      LocalizedString ILocalizedString.LocalizedString => this;
 
-    public ReadOnlyCollection<object> FormatParameters
-    {
-      get
-      {
-        return this.formatParameters;
-      }
-    }
+      public ReadOnlyCollection<object> FormatParameters => this.formatParameters;
 
-    public LocalizedString(string id, ExchangeResourceManager resourceManager, params object[] inserts)
+      public LocalizedString(string id, ExchangeResourceManager resourceManager, params object[] inserts)
     {
       this = new LocalizedString(id, (string) null, false, false, resourceManager, inserts);
     }

@@ -14,63 +14,21 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
   {
     private RtfToken token;
 
-    public byte[] Buffer
-    {
-      get
-      {
-        return this.token.Buffer;
-      }
-    }
+    public byte[] Buffer => this.token.Buffer;
 
-    public int Offset
-    {
-      get
-      {
-        return this.token.CurrentRunOffset;
-      }
-    }
+      public int Offset => this.token.CurrentRunOffset;
 
-    public int Length
-    {
-      get
-      {
-        return (int) this.token.RunQueue[this.token.CurrentRun].Length;
-      }
-    }
+      public int Length => (int) this.token.RunQueue[this.token.CurrentRun].Length;
 
-    public short Id
-    {
-      get
-      {
-        return this.token.RunQueue[this.token.CurrentRun].KeywordId;
-      }
-    }
+      public short Id => this.token.RunQueue[this.token.CurrentRun].KeywordId;
 
-    public int Value
-    {
-      get
-      {
-        return this.token.RunQueue[this.token.CurrentRun].Value;
-      }
-    }
+      public int Value => this.token.RunQueue[this.token.CurrentRun].Value;
 
-    public bool Skip
-    {
-      get
-      {
-        return this.token.RunQueue[this.token.CurrentRun].Skip;
-      }
-    }
+      public bool Skip => this.token.RunQueue[this.token.CurrentRun].Skip;
 
-    public bool First
-    {
-      get
-      {
-        return this.token.RunQueue[this.token.CurrentRun].Lead;
-      }
-    }
+      public bool First => this.token.RunQueue[this.token.CurrentRun].Lead;
 
-    internal RtfKeyword(RtfToken token)
+      internal RtfKeyword(RtfToken token)
     {
       this.token = token;
     }

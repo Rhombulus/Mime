@@ -23,15 +23,9 @@ namespace Butler.Schema.Data.Mime
     private ValueParser valueParser;
     private bool groupInProgress;
 
-    public bool Initialized
-    {
-      get
-      {
-        return this.parserInit;
-      }
-    }
+    public bool Initialized => this.parserInit;
 
-    public MimeAddressParser()
+      public MimeAddressParser()
     {
     }
 

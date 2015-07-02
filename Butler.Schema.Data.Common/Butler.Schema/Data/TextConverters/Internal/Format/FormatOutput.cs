@@ -24,15 +24,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     protected ScratchBuffer scratchBuffer;
     protected ScratchBuffer scratchValueBuffer;
 
-    public virtual bool OutputCodePageSameAsInput
-    {
-      get
-      {
-        return false;
-      }
-    }
+    public virtual bool OutputCodePageSameAsInput => false;
 
-    public virtual Encoding OutputEncoding
+      public virtual Encoding OutputEncoding
     {
       set
       {
@@ -40,55 +34,19 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       }
     }
 
-    public virtual bool CanAcceptMoreOutput
-    {
-      get
-      {
-        return true;
-      }
-    }
+    public virtual bool CanAcceptMoreOutput => true;
 
-    protected FormatStore FormatStore
-    {
-      get
-      {
-        return this.formatStore;
-      }
-    }
+      protected FormatStore FormatStore => this.formatStore;
 
-    protected SourceFormat SourceFormat
-    {
-      get
-      {
-        return this.sourceFormat;
-      }
-    }
+      protected SourceFormat SourceFormat => this.sourceFormat;
 
-    protected string Comment
-    {
-      get
-      {
-        return this.comment;
-      }
-    }
+      protected string Comment => this.comment;
 
-    protected FormatNode CurrentNode
-    {
-      get
-      {
-        return this.currentOutputLevel.Node;
-      }
-    }
+      protected FormatNode CurrentNode => this.currentOutputLevel.Node;
 
-    protected int CurrentNodeIndex
-    {
-      get
-      {
-        return this.currentOutputLevel.Index;
-      }
-    }
+      protected int CurrentNodeIndex => this.currentOutputLevel.Index;
 
-    protected FormatOutput(Stream formatOutputTraceStream)
+      protected FormatOutput(Stream formatOutputTraceStream)
     {
     }
 

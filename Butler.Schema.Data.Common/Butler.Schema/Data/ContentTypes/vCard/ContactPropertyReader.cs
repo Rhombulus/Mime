@@ -17,15 +17,9 @@ namespace Butler.Schema.Data.ContentTypes.vCard
     private Internal.ContentLineReader reader;
     private ContactValueSeparators lastSeparator;
 
-    public ContactValueSeparators LastValueSeparator
-    {
-      get
-      {
-        return this.lastSeparator;
-      }
-    }
+    public ContactValueSeparators LastValueSeparator => this.lastSeparator;
 
-    public PropertyId PropertyId
+      public PropertyId PropertyId
     {
       get
       {

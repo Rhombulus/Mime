@@ -14,95 +14,29 @@ namespace Butler.Schema.Data.TextConverters
     private Internal.Html.HtmlToken.AttrPartMajor major;
     private Internal.Html.HtmlToken.AttrPartMinor minor;
 
-    public bool Begin
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMajor.Begin == (this.major & Internal.Html.HtmlToken.AttrPartMajor.Begin);
-      }
-    }
+    public bool Begin => Internal.Html.HtmlToken.AttrPartMajor.Begin == (this.major & Internal.Html.HtmlToken.AttrPartMajor.Begin);
 
-    public bool End
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMajor.End == (this.major & Internal.Html.HtmlToken.AttrPartMajor.End);
-      }
-    }
+      public bool End => Internal.Html.HtmlToken.AttrPartMajor.End == (this.major & Internal.Html.HtmlToken.AttrPartMajor.End);
 
-    public bool Complete
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMajor.Complete == this.major;
-      }
-    }
+      public bool Complete => Internal.Html.HtmlToken.AttrPartMajor.Complete == this.major;
 
-    public bool NameBegin
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMinor.BeginName == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.BeginName);
-      }
-    }
+      public bool NameBegin => Internal.Html.HtmlToken.AttrPartMinor.BeginName == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.BeginName);
 
-    public bool Name
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMinor.ContinueName == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.ContinueName);
-      }
-    }
+      public bool Name => Internal.Html.HtmlToken.AttrPartMinor.ContinueName == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.ContinueName);
 
-    public bool NameEnd
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMinor.EndName == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.EndName);
-      }
-    }
+      public bool NameEnd => Internal.Html.HtmlToken.AttrPartMinor.EndName == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.EndName);
 
-    public bool NameComplete
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMinor.CompleteName == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.CompleteName);
-      }
-    }
+      public bool NameComplete => Internal.Html.HtmlToken.AttrPartMinor.CompleteName == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.CompleteName);
 
-    public bool ValueBegin
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMinor.BeginValue == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.BeginValue);
-      }
-    }
+      public bool ValueBegin => Internal.Html.HtmlToken.AttrPartMinor.BeginValue == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.BeginValue);
 
-    public bool Value
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMinor.ContinueValue == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.ContinueValue);
-      }
-    }
+      public bool Value => Internal.Html.HtmlToken.AttrPartMinor.ContinueValue == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.ContinueValue);
 
-    public bool ValueEnd
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMinor.EndValue == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.EndValue);
-      }
-    }
+      public bool ValueEnd => Internal.Html.HtmlToken.AttrPartMinor.EndValue == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.EndValue);
 
-    public bool ValueComplete
-    {
-      get
-      {
-        return Internal.Html.HtmlToken.AttrPartMinor.CompleteValue == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.CompleteValue);
-      }
-    }
+      public bool ValueComplete => Internal.Html.HtmlToken.AttrPartMinor.CompleteValue == (this.minor & Internal.Html.HtmlToken.AttrPartMinor.CompleteValue);
 
-    internal HtmlAttributeParts(Internal.Html.HtmlToken.AttrPartMajor major, Internal.Html.HtmlToken.AttrPartMinor minor)
+      internal HtmlAttributeParts(Internal.Html.HtmlToken.AttrPartMajor major, Internal.Html.HtmlToken.AttrPartMinor minor)
     {
       this.minor = minor;
       this.major = major;

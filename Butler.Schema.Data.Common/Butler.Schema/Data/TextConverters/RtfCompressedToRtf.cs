@@ -15,15 +15,9 @@ namespace Butler.Schema.Data.TextConverters
     private RtfCompressionMode compressionMode = RtfCompressionMode.Uncompressed;
     private bool testDisableFastLoop;
 
-    public RtfCompressionMode CompressionMode
-    {
-      get
-      {
-        return this.compressionMode;
-      }
-    }
+    public RtfCompressionMode CompressionMode => this.compressionMode;
 
-    internal RtfCompressedToRtf SetInputStreamBufferSize(int value)
+      internal RtfCompressedToRtf SetInputStreamBufferSize(int value)
     {
       this.InputStreamBufferSize = value;
       return this;

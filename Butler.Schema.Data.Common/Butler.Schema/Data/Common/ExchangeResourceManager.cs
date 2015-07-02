@@ -22,23 +22,11 @@ namespace Butler.Schema.Data.Common
     private Stopwatch resourceReleaseStopwatch = new Stopwatch();
     private ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim();
 
-    public override string BaseName
-    {
-      get
-      {
-        return base.BaseName;
-      }
-    }
+    public override string BaseName => base.BaseName;
 
-    public string AssemblyName
-    {
-      get
-      {
-        return this.MainAssembly.GetName().FullName;
-      }
-    }
+      public string AssemblyName => this.MainAssembly.GetName().FullName;
 
-    private ExchangeResourceManager(string baseName, Assembly assembly)
+      private ExchangeResourceManager(string baseName, Assembly assembly)
       : base(baseName, assembly)
     {
       this.resourceReleaseStopwatch.Start();

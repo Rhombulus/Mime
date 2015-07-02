@@ -29,111 +29,33 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
     private short defaultFontHandle;
     private RecognizeInterestingFontName fontNameRecognizer;
 
-    public RtfToken Token
-    {
-      get
-      {
-        return this.token;
-      }
-    }
+    public RtfToken Token => this.token;
 
-    public short CurrentFontIndex
-    {
-      get
-      {
-        return this.state.FontIndex;
-      }
-    }
+      public short CurrentFontIndex => this.state.FontIndex;
 
-    public short CurrentFontSize
-    {
-      get
-      {
-        return this.state.FontSize;
-      }
-    }
+      public short CurrentFontSize => this.state.FontSize;
 
-    public bool CurrentFontBold
-    {
-      get
-      {
-        return this.state.Bold;
-      }
-    }
+      public bool CurrentFontBold => this.state.Bold;
 
-    public bool CurrentFontItalic
-    {
-      get
-      {
-        return this.state.Italic;
-      }
-    }
+      public bool CurrentFontItalic => this.state.Italic;
 
-    public bool CurrentRunBiDi
-    {
-      get
-      {
-        return this.state.BiDi;
-      }
-    }
+      public bool CurrentRunBiDi => this.state.BiDi;
 
-    public bool CurrentRunComplexScript
-    {
-      get
-      {
-        return this.state.ComplexScript;
-      }
-    }
+      public bool CurrentRunComplexScript => this.state.ComplexScript;
 
-    public ushort CurrentCodePage
-    {
-      get
-      {
-        return this.currentCodePage;
-      }
-    }
+      public ushort CurrentCodePage => this.currentCodePage;
 
-    public TextMapping CurrentTextMapping
-    {
-      get
-      {
-        return this.currentTextMapping;
-      }
-    }
+      public TextMapping CurrentTextMapping => this.currentTextMapping;
 
-    public RtfSupport.CharRep CurrentCharRep
-    {
-      get
-      {
-        return this.currentCharRep;
-      }
-    }
+      public RtfSupport.CharRep CurrentCharRep => this.currentCharRep;
 
-    public short CurrentLanguage
-    {
-      get
-      {
-        return this.state.Language;
-      }
-    }
+      public short CurrentLanguage => this.state.Language;
 
-    public short DefaultLanguage
-    {
-      get
-      {
-        return this.state.DefaultLanguage;
-      }
-    }
+      public short DefaultLanguage => this.state.DefaultLanguage;
 
-    public short DefaultLanguageFE
-    {
-      get
-      {
-        return this.state.DefaultLanguageFE;
-      }
-    }
+      public short DefaultLanguageFE => this.state.DefaultLanguageFE;
 
-    public RtfParser(Stream input, bool push, int inputBufferSize, bool testBoundaryConditions, IProgressMonitor progressMonitor, IReportBytes reportBytes)
+      public RtfParser(Stream input, bool push, int inputBufferSize, bool testBoundaryConditions, IProgressMonitor progressMonitor, IReportBytes reportBytes)
       : base(inputBufferSize, testBoundaryConditions, reportBytes)
     {
       this.progressMonitor = progressMonitor;

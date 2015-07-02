@@ -17,15 +17,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     private PropertyId id;
     private PropertyValue value;
 
-    public bool IsNull
-    {
-      get
-      {
-        return this.id == PropertyId.Null;
-      }
-    }
+    public bool IsNull => this.id == PropertyId.Null;
 
-    public PropertyId Id
+      public PropertyId Id
     {
       get
       {

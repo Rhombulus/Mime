@@ -14,47 +14,17 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
     internal FormatStore.MultiValueStore MultiValues;
     internal int MultiValueHandle;
 
-    public PropertyValue PropertyValue
-    {
-      get
-      {
-        return new PropertyValue(PropertyType.MultiValue, this.MultiValueHandle);
-      }
-    }
+    public PropertyValue PropertyValue => new PropertyValue(PropertyType.MultiValue, this.MultiValueHandle);
 
-    public int Length
-    {
-      get
-      {
-        return this.MultiValues.Plane(this.MultiValueHandle)[this.MultiValues.Index(this.MultiValueHandle)].Values.Length;
-      }
-    }
+      public int Length => this.MultiValues.Plane(this.MultiValueHandle)[this.MultiValues.Index(this.MultiValueHandle)].Values.Length;
 
-    internal int Handle
-    {
-      get
-      {
-        return this.MultiValueHandle;
-      }
-    }
+      internal int Handle => this.MultiValueHandle;
 
-    internal int RefCount
-    {
-      get
-      {
-        return this.MultiValues.Plane(this.MultiValueHandle)[this.MultiValues.Index(this.MultiValueHandle)].RefCount;
-      }
-    }
+      internal int RefCount => this.MultiValues.Plane(this.MultiValueHandle)[this.MultiValues.Index(this.MultiValueHandle)].RefCount;
 
-    public PropertyValue this[int index]
-    {
-      get
-      {
-        return this.MultiValues.Plane(this.MultiValueHandle)[this.MultiValues.Index(this.MultiValueHandle)].Values[index];
-      }
-    }
+      public PropertyValue this[int index] => this.MultiValues.Plane(this.MultiValueHandle)[this.MultiValues.Index(this.MultiValueHandle)].Values[index];
 
-    internal MultiValue(FormatStore store, int multiValueHandle)
+      internal MultiValue(FormatStore store, int multiValueHandle)
     {
       this.MultiValues = store.MultiValues;
       this.MultiValueHandle = multiValueHandle;

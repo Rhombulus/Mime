@@ -16,23 +16,11 @@ namespace Butler.Schema.Data.TextConverters
     private string originalFragment;
     private char[] parseBuffer;
 
-    public bool IsEnough
-    {
-      get
-      {
-        return this.maxTokenSize >= this.maxLength;
-      }
-    }
+    public bool IsEnough => this.maxTokenSize >= this.maxLength;
 
-    public bool IsEmpty
-    {
-      get
-      {
-        return this.maxTokenSize == 0;
-      }
-    }
+      public bool IsEmpty => this.maxTokenSize == 0;
 
-    public ConverterBufferInput(IProgressMonitor progressMonitor)
+      public ConverterBufferInput(IProgressMonitor progressMonitor)
       : this(32768, progressMonitor)
     {
     }

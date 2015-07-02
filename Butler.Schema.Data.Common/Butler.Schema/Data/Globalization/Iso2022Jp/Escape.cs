@@ -21,15 +21,9 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp
 
     public string ErrorMessage { get; set; }
 
-    public bool IsValidEscapeSequence
-    {
-      get
-      {
-        return this.Sequence > EscapeSequence.Incomplete;
-      }
-    }
+    public bool IsValidEscapeSequence => this.Sequence > EscapeSequence.Incomplete;
 
-    public char Abbreviation
+      public char Abbreviation
     {
       get
       {

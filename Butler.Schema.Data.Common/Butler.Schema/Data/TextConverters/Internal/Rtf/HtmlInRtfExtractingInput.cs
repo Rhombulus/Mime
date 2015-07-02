@@ -328,23 +328,11 @@ namespace Butler.Schema.Data.TextConverters.Internal.Rtf
         }
       }
 
-      public bool Skip
-      {
-        get
-        {
-          return this.skipLevel != 0;
-        }
-      }
+      public bool Skip => this.skipLevel != 0;
 
-      public bool CanPop
-      {
-        get
-        {
-          return this.level > 1;
-        }
-      }
+        public bool CanPop => this.level > 1;
 
-      public RtfState(int initialStackSize)
+        public RtfState(int initialStackSize)
       {
         this.level = 0;
         this.skipLevel = 0;

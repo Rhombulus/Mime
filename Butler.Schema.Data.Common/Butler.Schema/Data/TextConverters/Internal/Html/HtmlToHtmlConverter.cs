@@ -70,15 +70,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
     private HtmlToHtmlConverter.VirtualScratchSink virtualScratchSink;
     private IProgressMonitor progressMonitor;
 
-    internal HtmlToken InternalToken
-    {
-      get
-      {
-        return this.token;
-      }
-    }
+    internal HtmlToken InternalToken => this.token;
 
-    private HtmlToHtmlConverter.CopyPendingState CopyPendingStateFlag
+      private HtmlToHtmlConverter.CopyPendingState CopyPendingStateFlag
     {
       get
       {
@@ -1858,15 +1852,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Html
       private HtmlToHtmlConverter converter;
       private int maxLength;
 
-      public bool IsEnough
-      {
-        get
-        {
-          return this.converter.attributeVirtualScratch.Length >= this.maxLength;
-        }
-      }
+      public bool IsEnough => this.converter.attributeVirtualScratch.Length >= this.maxLength;
 
-      public VirtualScratchSink(HtmlToHtmlConverter converter, int maxLength)
+        public VirtualScratchSink(HtmlToHtmlConverter converter, int maxLength)
       {
         this.converter = converter;
         this.maxLength = maxLength;

@@ -161,15 +161,9 @@ namespace Butler.Schema.Data.TextConverters.Internal.Format
       internal ulong CurrentBit;
       internal PropertyId CurrentId;
 
-      public PropertyId Current
-      {
-        get
-        {
-          return this.CurrentId;
-        }
-      }
+      public PropertyId Current => this.CurrentId;
 
-      internal DefinedPropertyIdEnumerator(PropertyBitMask mask)
+        internal DefinedPropertyIdEnumerator(PropertyBitMask mask)
       {
         this.Bits = (ulong) mask.Bits2 << 32 | (ulong) mask.Bits1;
         this.CurrentBit = 1UL;
