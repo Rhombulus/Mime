@@ -1,6 +1,6 @@
 ﻿namespace Butler.Schema.Globalization {
 
-    internal class CodePageMap : Data.Globalization.CodePageMapData {
+    internal class CodePageMap : CodePageMapData {
 
         public bool ChoseCodePage(int codePage) {
             if (codePage == this.codePage)

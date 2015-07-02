@@ -25,7 +25,7 @@
         public bool IsDetectable {
             get {
                 if (mapIndex >= 0)
-                    return Schema.Globalization.CodePageFlags.None != (Data.Globalization.CodePageMapData.codePages[mapIndex].flags & Schema.Globalization.CodePageFlags.Detectable);
+                    return Schema.Globalization.CodePageFlags.None != (CodePageMapData.codePages[mapIndex].flags & Schema.Globalization.CodePageFlags.Detectable);
                 return false;
             }
         }
@@ -48,7 +48,7 @@
         internal Schema.Globalization.CodePageKind Kind {
             get {
                 if (mapIndex >= 0)
-                    return Data.Globalization.CodePageMapData.codePages[mapIndex].kind;
+                    return CodePageMapData.codePages[mapIndex].kind;
                 return Schema.Globalization.CodePageKind.Unknown;
             }
         }
@@ -56,7 +56,7 @@
         internal Schema.Globalization.CodePageAsciiSupport AsciiSupport {
             get {
                 if (mapIndex >= 0)
-                    return Data.Globalization.CodePageMapData.codePages[mapIndex].asciiSupport;
+                    return CodePageMapData.codePages[mapIndex].asciiSupport;
                 return Schema.Globalization.CodePageAsciiSupport.Unknown;
             }
         }
@@ -64,7 +64,7 @@
         internal Schema.Globalization.CodePageUnicodeCoverage UnicodeCoverage {
             get {
                 if (mapIndex >= 0)
-                    return Data.Globalization.CodePageMapData.codePages[mapIndex].unicodeCoverage;
+                    return CodePageMapData.codePages[mapIndex].unicodeCoverage;
                 return Schema.Globalization.CodePageUnicodeCoverage.Unknown;
             }
         }
@@ -72,7 +72,7 @@
         internal bool IsSevenBit {
             get {
                 if (mapIndex >= 0)
-                    return Schema.Globalization.CodePageFlags.None != (Data.Globalization.CodePageMapData.codePages[mapIndex].flags & Schema.Globalization.CodePageFlags.SevenBit);
+                    return Schema.Globalization.CodePageFlags.None != (CodePageMapData.codePages[mapIndex].flags & Schema.Globalization.CodePageFlags.SevenBit);
                 return false;
             }
         }
@@ -81,8 +81,8 @@
             get {
                 if (mapIndex < 0)
                     return 0;
-                if ((Data.Globalization.CodePageMapData.codePages[mapIndex].flags & Schema.Globalization.CodePageFlags.Detectable) == Schema.Globalization.CodePageFlags.None)
-                    return Data.Globalization.CodePageMapData.codePages[mapIndex].detectCpid;
+                if ((CodePageMapData.codePages[mapIndex].flags & Schema.Globalization.CodePageFlags.Detectable) == Schema.Globalization.CodePageFlags.None)
+                    return CodePageMapData.codePages[mapIndex].detectCpid;
                 return this.CodePage;
             }
         }

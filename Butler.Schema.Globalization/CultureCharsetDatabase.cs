@@ -988,13 +988,13 @@ namespace Butler.Schema.Globalization
         else if (charset1.CodePage != charsetName.CodePage && data.CodePageToCharset.TryGetValue(charsetName.CodePage, out charset1))
           data.NameToCharset[charsetName.Name] = charset1;
       }
-      for (int index = 0; index < Schema.Data.Globalization.CodePageMapData.codePages.Length; ++index)
+      for (int index = 0; index < CodePageMapData.codePages.Length; ++index)
       {
-        if (data.CodePageToCharset.TryGetValue((int) Schema.Data.Globalization.CodePageMapData.codePages[index].cpid, out charset1))
+        if (data.CodePageToCharset.TryGetValue((int) CodePageMapData.codePages[index].cpid, out charset1))
           charset1.SetMapIndex(index);
         if (charset1.Culture == null)
         {
-          Schema.Globalization.Charset charset2 = data.CodePageToCharset[(int) Schema.Data.Globalization.CodePageMapData.codePages[index].windowsCpid];
+          Schema.Globalization.Charset charset2 = data.CodePageToCharset[(int) CodePageMapData.codePages[index].windowsCpid];
           charset1.SetCulture(charset2.Culture);
         }
       }
