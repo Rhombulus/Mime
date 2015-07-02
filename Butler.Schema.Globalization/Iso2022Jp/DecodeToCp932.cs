@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Butler.Schema.Data.Globalization.Iso2022Jp {
+﻿namespace Butler.Schema.Data.Globalization.Iso2022Jp {
 
     internal abstract class DecodeToCp932 {
 
@@ -200,11 +197,11 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
                             goto label_83;
                         }
                         if (num3 != 15)
-                            throw new InvalidOperationException(string.Format("MapEscape: at Esc_SISO_Reset with {0}", (int) num3));
+                            throw new System.InvalidOperationException(string.Format("MapEscape: at Esc_SISO_Reset with {0}", (int) num3));
                         escapeSequence = EscapeSequence.ShiftIn;
                         goto label_83;
                     default:
-                        throw new InvalidOperationException("MapEscape: unrecognized state!");
+                        throw new System.InvalidOperationException("MapEscape: unrecognized state!");
                 }
                 --lengthIn;
                 ++offsetIn;
@@ -256,7 +253,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
 
         public virtual int CalculateLoopCountLimit(int length) {
             if (length < 0)
-                throw new ArgumentOutOfRangeException();
+                throw new System.ArgumentOutOfRangeException();
             return length*6 + 1000;
         }
 

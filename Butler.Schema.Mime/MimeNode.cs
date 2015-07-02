@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    public abstract class MimeNode : IEnumerable<MimeNode> {
+    public abstract class MimeNode : System.Collections.Generic.IEnumerable<MimeNode> {
 
         internal MimeNode(MimeNode parent) {
             this.Parent = parent;
@@ -74,7 +72,7 @@ namespace Butler.Schema.Data.Mime {
             }
         }
 
-        IEnumerator<MimeNode> IEnumerable<MimeNode>.GetEnumerator() {
+        System.Collections.Generic.IEnumerator<MimeNode> System.Collections.Generic.IEnumerable<MimeNode>.GetEnumerator() {
             return new Enumerator<MimeNode>(this);
         }
 
@@ -91,7 +89,7 @@ namespace Butler.Schema.Data.Mime {
             else {
                 refChild = refChild.PreviousSibling;
                 if (refChild == null)
-                    throw new ArgumentException(Resources.Strings.RefChildIsNotMyChild, nameof(refChild));
+                    throw new System.ArgumentException(Resources.Strings.RefChildIsNotMyChild, nameof(refChild));
             }
             return this.InsertAfter(newChild, refChild);
         }
@@ -123,9 +121,9 @@ namespace Butler.Schema.Data.Mime {
         public MimeNode ReplaceChild(MimeNode newChild, MimeNode oldChild) {
             this.ThrowIfReadOnly("MimeNode.ReplaceChild");
             if (oldChild == null)
-                throw new ArgumentNullException(nameof(oldChild));
+                throw new System.ArgumentNullException(nameof(oldChild));
             if (this != oldChild.Parent)
-                throw new ArgumentException(Resources.Strings.OldChildIsNotMyChild, nameof(oldChild));
+                throw new System.ArgumentException(Resources.Strings.OldChildIsNotMyChild, nameof(oldChild));
             if (newChild == oldChild)
                 return oldChild;
             var mimeNode = this.InsertAfter(newChild, oldChild);
@@ -155,7 +153,7 @@ namespace Butler.Schema.Data.Mime {
 
         public long WriteTo(System.IO.Stream stream, EncodingOptions encodingOptions) {
             if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
+                throw new System.ArgumentNullException(nameof(stream));
             if (encodingOptions == null)
                 encodingOptions = this.GetDocumentEncodingOptions();
             byte[] scratchBuffer = null;
@@ -165,7 +163,7 @@ namespace Butler.Schema.Data.Mime {
 
         public void WriteTo(MimeWriter writer) {
             if (writer == null)
-                throw new ArgumentNullException(nameof(writer));
+                throw new System.ArgumentNullException(nameof(writer));
             writer.WriteMimeNode(this);
         }
 
@@ -174,7 +172,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         public virtual MimeNode Clone() {
-            throw new NotSupportedException(
+            throw new System.NotSupportedException(
                 Resources.Strings.ThisNodeDoesNotSupportCloning(
                     this.GetType()
                         .ToString()));
@@ -182,10 +180,10 @@ namespace Butler.Schema.Data.Mime {
 
         public virtual void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             var mimeNode1 = destination as MimeNode;
             if (mimeNode1 == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             mimeNode1.RemoveAll();
             if (this.InternalLastChild != null) {
                 for (var mimeNode2 = this.InternalLastChild.nextSibling; mimeNode2 != null; mimeNode2 = mimeNode2.InternalNextSibling) {
@@ -198,15 +196,15 @@ namespace Butler.Schema.Data.Mime {
         internal MimeNode InternalInsertAfter(MimeNode newChild, MimeNode refChild) {
             this.ThrowIfReadOnly("MimeNode.InternalInsertAfter");
             if (newChild == null)
-                throw new ArgumentNullException(nameof(newChild));
+                throw new System.ArgumentNullException(nameof(newChild));
             if (refChild != null) {
                 if (refChild == newChild)
                     return refChild;
                 if (this != refChild.Parent)
-                    throw new ArgumentException(Resources.Strings.RefChildIsNotMyChild, nameof(refChild));
+                    throw new System.ArgumentException(Resources.Strings.RefChildIsNotMyChild, nameof(refChild));
             }
             if (newChild.Parent != null)
-                throw new ArgumentException(Resources.Strings.NewChildCannotHaveDifferentParent);
+                throw new System.ArgumentException(Resources.Strings.NewChildCannotHaveDifferentParent);
             refChild = this.ValidateNewChild(newChild, refChild);
             newChild.Parent = this;
             if (refChild == null) {
@@ -234,9 +232,9 @@ namespace Butler.Schema.Data.Mime {
         internal MimeNode InternalRemoveChild(MimeNode oldChild) {
             this.ThrowIfReadOnly("MimeNode.InternalRemoveChild");
             if (oldChild == null)
-                throw new ArgumentNullException(nameof(oldChild));
+                throw new System.ArgumentNullException(nameof(oldChild));
             if (this != oldChild.Parent)
-                throw new ArgumentException(Resources.Strings.OldChildIsNotMyChild, nameof(oldChild));
+                throw new System.ArgumentException(Resources.Strings.OldChildIsNotMyChild, nameof(oldChild));
             if (oldChild == this.InternalLastChild.nextSibling) {
                 if (oldChild == this.InternalLastChild)
                     this.InternalLastChild = null;
@@ -370,7 +368,7 @@ namespace Butler.Schema.Data.Mime {
                 loopLimitInitialized = true;
             }
             if (count > loopLimit)
-                throw new InvalidOperationException(string.Format("Loop detected in sibling collection. Loop count: {0}", loopLimit));
+                throw new System.InvalidOperationException(string.Format("Loop detected in sibling collection. Loop count: {0}", loopLimit));
         }
 
         private const string LoopLimitMessage = "Loop detected in sibling collection. Loop count: {0}";
@@ -379,7 +377,7 @@ namespace Butler.Schema.Data.Mime {
         private MimeNode nextSibling;
 
 
-        public struct Enumerator<T> : IEnumerator<T>, IDisposable, System.Collections.IEnumerator where T : MimeNode {
+        public struct Enumerator<T> : System.Collections.Generic.IEnumerator<T>, System.IDisposable, System.Collections.IEnumerator where T : MimeNode {
 
             internal Enumerator(MimeNode node) {
                 this.node = node;
@@ -390,7 +388,7 @@ namespace Butler.Schema.Data.Mime {
             object System.Collections.IEnumerator.Current {
                 get {
                     if (current == null)
-                        throw new InvalidOperationException((object) next == null ? Resources.Strings.ErrorAfterLast : Resources.Strings.ErrorBeforeFirst);
+                        throw new System.InvalidOperationException((object) next == null ? Resources.Strings.ErrorAfterLast : Resources.Strings.ErrorBeforeFirst);
                     return current;
                 }
             }
@@ -398,7 +396,7 @@ namespace Butler.Schema.Data.Mime {
             public T Current {
                 get {
                     if (current == null)
-                        throw new InvalidOperationException((object) next == null ? Resources.Strings.ErrorAfterLast : Resources.Strings.ErrorBeforeFirst);
+                        throw new System.InvalidOperationException((object) next == null ? Resources.Strings.ErrorAfterLast : Resources.Strings.ErrorBeforeFirst);
                     return current;
                 }
             }

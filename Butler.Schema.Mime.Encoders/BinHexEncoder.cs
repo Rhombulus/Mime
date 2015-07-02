@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime.Encoders {
 
@@ -22,7 +21,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             set {
                 if (value != null) {
                     if (0L != value.ResourceForkLength)
-                        throw new ArgumentException(Resources.EncodersStrings.BinHexEncoderDoesNotSupportResourceFork);
+                        throw new System.ArgumentException(Resources.EncodersStrings.BinHexEncoderDoesNotSupportResourceFork);
                     header = new BinHexHeader(value);
                 }
                 this.Reset();
@@ -32,24 +31,24 @@ namespace Butler.Schema.Data.Mime.Encoders {
         public override sealed void Convert(byte[] input, int inputIndex, int inputSize, byte[] output, int outputIndex, int outputSize, bool flush, out int inputUsed, out int outputUsed, out bool completed) {
             if (inputSize != 0) {
                 if (input == null)
-                    throw new ArgumentNullException(nameof(input));
+                    throw new System.ArgumentNullException(nameof(input));
                 if (inputIndex < 0 || inputIndex >= input.Length)
-                    throw new ArgumentOutOfRangeException(nameof(inputIndex));
+                    throw new System.ArgumentOutOfRangeException(nameof(inputIndex));
                 if (inputSize < 0 || inputSize > input.Length - inputIndex)
-                    throw new ArgumentOutOfRangeException(nameof(inputSize));
+                    throw new System.ArgumentOutOfRangeException(nameof(inputSize));
             }
             if (output == null)
-                throw new ArgumentNullException(nameof(output));
+                throw new System.ArgumentNullException(nameof(output));
             if (outputIndex < 0 || outputIndex >= output.Length)
-                throw new ArgumentOutOfRangeException(nameof(outputIndex));
+                throw new System.ArgumentOutOfRangeException(nameof(outputIndex));
             if (outputSize < 1 || outputSize > output.Length - outputIndex)
-                throw new ArgumentOutOfRangeException(nameof(outputSize));
+                throw new System.ArgumentOutOfRangeException(nameof(outputSize));
             inputUsed = inputIndex;
             outputUsed = outputIndex;
             var inputTotal = 0;
             if (encodedSize != 0) {
-                var count = Math.Min(encodedSize, outputSize);
-                Buffer.BlockCopy(encoded, encodedIndex, output, outputIndex, count);
+                var count = System.Math.Min(encodedSize, outputSize);
+                System.Buffer.BlockCopy(encoded, encodedIndex, output, outputIndex, count);
                 outputSize -= count;
                 outputIndex += count;
                 encodedSize -= count;
@@ -67,14 +66,14 @@ namespace Butler.Schema.Data.Mime.Encoders {
                 flag = false;
                 switch (state) {
                     case BinHexUtils.State.Starting:
-                        Buffer.BlockCopy(BinHexPrefix, 0, decoded, 0, BinHexPrefix.Length);
+                        System.Buffer.BlockCopy(BinHexPrefix, 0, decoded, 0, BinHexPrefix.Length);
                         decodedIndex = 0;
                         decodedSize = BinHexPrefix.Length;
                         state = BinHexUtils.State.Prefix;
                         goto case 2;
                     case BinHexUtils.State.Prefix:
-                        var count1 = Math.Min(decodedSize, outputSize);
-                        Buffer.BlockCopy(decoded, decodedIndex, output, outputIndex, count1);
+                        var count1 = System.Math.Min(decodedSize, outputSize);
+                        System.Buffer.BlockCopy(decoded, decodedIndex, output, outputIndex, count1);
                         outputSize -= count1;
                         outputIndex += count1;
                         decodedSize -= count1;
@@ -91,7 +90,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                         checksum = 0;
                         if (this.header != null) {
                             var bytes = header.GetBytes();
-                            Buffer.BlockCopy(bytes, 0, decoded, 0, bytes.Length);
+                            System.Buffer.BlockCopy(bytes, 0, decoded, 0, bytes.Length);
                             decodedSize = bytes.Length;
                             decodedIndex = 0;
                             macbinHeaderSize = 0;
@@ -104,8 +103,8 @@ namespace Butler.Schema.Data.Mime.Encoders {
                         goto case 4;
                     case BinHexUtils.State.Header:
                         if (macbinHeaderSize != 0) {
-                            var count2 = Math.Min(macbinHeaderSize, inputSize);
-                            Buffer.BlockCopy(input, inputIndex, macbinHeader, macbinHeaderOffset, count2);
+                            var count2 = System.Math.Min(macbinHeaderSize, inputSize);
+                            System.Buffer.BlockCopy(input, inputIndex, macbinHeader, macbinHeaderOffset, count2);
                             macbinHeaderOffset += count2;
                             macbinHeaderSize -= count2;
                             inputIndex += count2;
@@ -115,7 +114,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                                 macbinHeader = null;
                                 this.header = new BinHexHeader(header);
                                 var bytes = this.header.GetBytes();
-                                Buffer.BlockCopy(bytes, 0, decoded, 0, bytes.Length);
+                                System.Buffer.BlockCopy(bytes, 0, decoded, 0, bytes.Length);
                                 decodedSize = bytes.Length;
                                 decodedIndex = 0;
                             } else
@@ -128,7 +127,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                         }
                         break;
                     case BinHexUtils.State.Data:
-                        var inputMax2 = Math.Min(decodedSize, inputSize);
+                        var inputMax2 = System.Math.Min(decodedSize, inputSize);
                         if (inputMax2 != 0) {
                             flag = true;
                             this.CompressAndEncode(input, ref inputIndex, ref inputSize, ref decodedSize, ref inputMax2, true, output, ref outputIndex, ref outputSize);
@@ -147,7 +146,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                         }
                         break;
                     case BinHexUtils.State.Resource:
-                        var inputMax4 = Math.Min(decodedSize, inputSize);
+                        var inputMax4 = System.Math.Min(decodedSize, inputSize);
                         if (inputMax4 != 0) {
                             flag = true;
                             this.CompressAndEncode(input, ref inputIndex, ref inputSize, ref decodedSize, ref inputMax4, true, output, ref outputIndex, ref outputSize);
@@ -166,8 +165,8 @@ namespace Butler.Schema.Data.Mime.Encoders {
                         }
                         break;
                     case BinHexUtils.State.Ending:
-                        var count3 = Math.Min(decodedSize, outputSize);
-                        Buffer.BlockCopy(decoded, decodedIndex, output, outputIndex, count3);
+                        var count3 = System.Math.Min(decodedSize, outputSize);
+                        System.Buffer.BlockCopy(decoded, decodedIndex, output, outputIndex, count3);
                         outputSize -= count3;
                         outputIndex += count3;
                         decodedSize -= count3;
@@ -216,7 +215,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
         }
 
         private static void IgnoreChunkFromInput(ref int ignoreTotal, ref int index, ref int size) {
-            var num = Math.Min(ignoreTotal, size);
+            var num = System.Math.Min(ignoreTotal, size);
             ignoreTotal -= num;
             size -= num;
             index += num;
@@ -316,9 +315,9 @@ namespace Butler.Schema.Data.Mime.Encoders {
                     --num3;
                     ++index4;
                 }
-                var count = Math.Min(encodedSize, outputSize);
+                var count = System.Math.Min(encodedSize, outputSize);
                 if (output != null) {
-                    Buffer.BlockCopy(encoded, encodedIndex, output, outputOffset, count);
+                    System.Buffer.BlockCopy(encoded, encodedIndex, output, outputOffset, count);
                     outputSize -= count;
                 }
                 outputOffset += count;
@@ -387,13 +386,13 @@ namespace Butler.Schema.Data.Mime.Encoders {
                 case BinHexUtils.State.ResourceCRC:
                     if (decodedSize != 0)
                         break;
-                    Buffer.BlockCopy(BinHexSuffix, 0, decoded, 0, BinHexSuffix.Length);
+                    System.Buffer.BlockCopy(BinHexSuffix, 0, decoded, 0, BinHexSuffix.Length);
                     decodedIndex = 0;
                     decodedSize = BinHexSuffix.Length;
                     state = BinHexUtils.State.Ending;
                     break;
                 default:
-                    throw new Exception(Resources.EncodersStrings.BinHexEncoderInternalError);
+                    throw new System.Exception(Resources.EncodersStrings.BinHexEncoderInternalError);
             }
         }
 

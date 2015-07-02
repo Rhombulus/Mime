@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -32,7 +31,7 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             if (!(destination is AsciiTextHeader))
@@ -46,7 +45,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
-            throw new NotSupportedException(Resources.Strings.AddingChildrenToAsciiTextHeader);
+            throw new System.NotSupportedException(Resources.Strings.AddingChildrenToAsciiTextHeader);
         }
 
         internal const bool AllowUTF8Value = true;

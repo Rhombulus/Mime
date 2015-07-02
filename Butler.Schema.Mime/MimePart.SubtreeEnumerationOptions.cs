@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
     public partial class MimePart {
 
-        [Flags]
+        [System.Flags]
         public enum SubtreeEnumerationOptions : byte {
 
             None = 0,

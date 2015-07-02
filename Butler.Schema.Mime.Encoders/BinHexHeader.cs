@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime.Encoders {
 
@@ -9,7 +8,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
 
         public BinHexHeader(byte[] header) {
             if (header.Length < 23)
-                throw new ArgumentException(Resources.EncodersStrings.BinHexHeaderTooSmall, nameof(header));
+                throw new System.ArgumentException(Resources.EncodersStrings.BinHexHeaderTooSmall, nameof(header));
             int length = header[0];
             if (header.Length - 22 < length)
                 throw new ByteEncoderException(Resources.EncodersStrings.BinHexHeaderIncomplete);
@@ -24,7 +23,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                 throw new ByteEncoderException(Resources.EncodersStrings.BinHexHeaderUnsupportedVersion);
             this.FileNameLength = length;
             fileName = new byte[length];
-            Buffer.BlockCopy(header, 1, fileName, 0, this.FileNameLength);
+            System.Buffer.BlockCopy(header, 1, fileName, 0, this.FileNameLength);
             version = header[this.FileNameLength + 1];
             fileType = BinHexUtils.UnmarshalInt32(header, index);
             fileCreator = BinHexUtils.UnmarshalInt32(header, index + 4);
@@ -85,7 +84,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             var dstOffset = index1 + num2;
             int num3 = (byte) this.FileNameLength;
             numArray2[index1] = (byte) num3;
-            Buffer.BlockCopy(fileName, 0, numArray1, dstOffset, this.FileNameLength);
+            System.Buffer.BlockCopy(fileName, 0, numArray1, dstOffset, this.FileNameLength);
             var num4 = dstOffset + this.FileNameLength;
             var numArray3 = numArray1;
             var index2 = num4;

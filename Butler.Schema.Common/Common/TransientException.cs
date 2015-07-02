@@ -1,15 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿namespace Butler.Schema.Data.Common {
 
-namespace Butler.Schema.Data.Common {
-
-    [Serializable]
+    [System.Serializable]
     public class TransientException : LocalizedException {
 
         public TransientException(LocalizedString localizedString)
             : this(localizedString, null) {}
 
-        public TransientException(LocalizedString localizedString, Exception innerException)
+        public TransientException(LocalizedString localizedString, System.Exception innerException)
             : base(localizedString, innerException) {
             this.LocalizedString = localizedString;
         }

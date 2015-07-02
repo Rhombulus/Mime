@@ -1,42 +1,43 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime.Encoders {
 
-    public abstract class ByteEncoder : IDisposable {
+    public abstract class ByteEncoder : System.IDisposable {
 
         public void Dispose() {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
+            System.GC.SuppressFinalize(this);
         }
 
         public static ByteEncoder GetEncoder(string name) {
-            if (string.Equals(Base64, name, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(Base64, name, System.StringComparison.OrdinalIgnoreCase))
                 return new Base64Encoder();
-            if (string.Equals(QuotedPrintable, name, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(QuotedPrintable, name, System.StringComparison.OrdinalIgnoreCase))
                 return new QPEncoder();
-            if (string.Equals(UUEncode, name, StringComparison.OrdinalIgnoreCase) || string.Equals(UUEncodeAlt1, name, StringComparison.OrdinalIgnoreCase) || string.Equals(UUEncodeAlt2, name, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(UUEncode, name, System.StringComparison.OrdinalIgnoreCase) || string.Equals(UUEncodeAlt1, name, System.StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(UUEncodeAlt2, name, System.StringComparison.OrdinalIgnoreCase))
                 return new UUEncoder();
-            if (string.Equals(BinHex, name, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(BinHex, name, System.StringComparison.OrdinalIgnoreCase))
                 return new BinHexEncoder();
-            throw new NotSupportedException(name);
+            throw new System.NotSupportedException(name);
         }
 
         public static ByteEncoder GetDecoder(string name) {
-            if (string.Equals(Base64, name, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(Base64, name, System.StringComparison.OrdinalIgnoreCase))
                 return new Base64Decoder();
-            if (string.Equals(QuotedPrintable, name, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(QuotedPrintable, name, System.StringComparison.OrdinalIgnoreCase))
                 return new QPDecoder();
-            if (string.Equals(UUEncode, name, StringComparison.OrdinalIgnoreCase) || string.Equals(UUEncodeAlt1, name, StringComparison.OrdinalIgnoreCase) || string.Equals(UUEncodeAlt2, name, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(UUEncode, name, System.StringComparison.OrdinalIgnoreCase) || string.Equals(UUEncodeAlt1, name, System.StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(UUEncodeAlt2, name, System.StringComparison.OrdinalIgnoreCase))
                 return new UUDecoder();
-            if (string.Equals(BinHex, name, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(BinHex, name, System.StringComparison.OrdinalIgnoreCase))
                 return new BinHexDecoder();
-            throw new NotSupportedException(name);
+            throw new System.NotSupportedException(name);
         }
 
         public void Convert(System.IO.Stream sourceStream, System.IO.Stream destinationStream) {
             if (sourceStream == null)
-                throw new ArgumentNullException(nameof(sourceStream));
+                throw new System.ArgumentNullException(nameof(sourceStream));
             System.IO.Stream stream = new EncoderStream(destinationStream, this, EncoderStreamAccess.Write);
             var buffer = new byte[4096];
             while (true) {
@@ -53,7 +54,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
         public abstract int GetMaxByteCount(int dataCount);
 
         public virtual ByteEncoder Clone() {
-            throw new NotSupportedException(
+            throw new System.NotSupportedException(
                 Resources.EncodersStrings.ThisEncoderDoesNotSupportCloning(
                     this.GetType()
                         .ToString()));
@@ -634,7 +635,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             };
 
 
-            [Flags]
+            [System.Flags]
             internal enum CharClasses : byte {
 
                 WSp = (byte) 1,

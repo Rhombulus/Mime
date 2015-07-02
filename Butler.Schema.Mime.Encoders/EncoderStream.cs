@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime.Encoders {
 
@@ -7,14 +6,14 @@ namespace Butler.Schema.Data.Mime.Encoders {
 
         public EncoderStream(System.IO.Stream stream, ByteEncoder encoder, EncoderStreamAccess access) {
             if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
+                throw new System.ArgumentNullException(nameof(stream));
             if (encoder == null)
-                throw new ArgumentNullException(nameof(encoder));
+                throw new System.ArgumentNullException(nameof(encoder));
             if (access == EncoderStreamAccess.Read) {
                 if (!stream.CanRead)
-                    throw new NotSupportedException(Resources.EncodersStrings.EncStrCannotRead);
+                    throw new System.NotSupportedException(Resources.EncodersStrings.EncStrCannotRead);
             } else if (!stream.CanWrite)
-                throw new NotSupportedException(Resources.EncodersStrings.EncStrCannotWrite);
+                throw new System.NotSupportedException(Resources.EncodersStrings.EncStrCannotWrite);
             this.stream = stream;
             this.encoder = encoder;
             this.access = access;
@@ -25,14 +24,14 @@ namespace Butler.Schema.Data.Mime.Encoders {
 
         internal EncoderStream(System.IO.Stream stream, ByteEncoder encoder, EncoderStreamAccess access, bool ownsStream) {
             if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
+                throw new System.ArgumentNullException(nameof(stream));
             if (encoder == null)
-                throw new ArgumentNullException(nameof(encoder));
+                throw new System.ArgumentNullException(nameof(encoder));
             if (access == EncoderStreamAccess.Read) {
                 if (!stream.CanRead)
-                    throw new NotSupportedException(Resources.EncodersStrings.EncStrCannotRead);
+                    throw new System.NotSupportedException(Resources.EncodersStrings.EncStrCannotRead);
             } else if (!stream.CanWrite)
-                throw new NotSupportedException(Resources.EncodersStrings.EncStrCannotWrite);
+                throw new System.NotSupportedException(Resources.EncodersStrings.EncStrCannotWrite);
             this.stream = stream;
             this.encoder = encoder;
             this.access = access;
@@ -115,7 +114,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
         public System.IO.Stream Clone() {
             this.AssertOpen();
             if (EncoderStreamAccess.Write == access)
-                throw new NotSupportedException(Resources.EncodersStrings.EncStrCannotCloneWriteableStream);
+                throw new System.NotSupportedException(Resources.EncodersStrings.EncStrCannotCloneWriteableStream);
             var cloneableStream = stream as Internal.ICloneableStream;
             if (cloneableStream == null && stream.CanSeek) {
                 stream = new Internal.AutoPositionReadOnlyStream(stream, ownsStream);
@@ -123,7 +122,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                 cloneableStream = stream as Internal.ICloneableStream;
             }
             if (cloneableStream == null) {
-                throw new NotSupportedException(
+                throw new System.NotSupportedException(
                     Resources.EncodersStrings.EncStrCannotCloneChildStream(
                         stream.GetType()
                               .ToString()));
@@ -138,13 +137,13 @@ namespace Butler.Schema.Data.Mime.Encoders {
         public override sealed int Read(byte[] array, int offset, int count) {
             this.AssertOpen();
             if (!this.CanRead)
-                throw new NotSupportedException(Resources.EncodersStrings.EncStrCannotRead);
+                throw new System.NotSupportedException(Resources.EncodersStrings.EncStrCannotRead);
             if (array == null)
-                throw new ArgumentNullException(nameof(array));
+                throw new System.ArgumentNullException(nameof(array));
             if (offset + count > array.Length)
-                throw new ArgumentOutOfRangeException("offset, count", Resources.EncodersStrings.EncStrLengthExceeded(offset + count, array.Length));
+                throw new System.ArgumentOutOfRangeException("offset, count", Resources.EncodersStrings.EncStrLengthExceeded(offset + count, array.Length));
             if (0 > offset || 0 > count)
-                throw new ArgumentOutOfRangeException(offset < 0 ? "offset" : "count");
+                throw new System.ArgumentOutOfRangeException(offset < 0 ? "offset" : "count");
             var num = 0;
             while (!endOfFile && count != 0) {
                 if (bufferCount == 0) {
@@ -170,13 +169,13 @@ namespace Butler.Schema.Data.Mime.Encoders {
         public override sealed void Write(byte[] array, int offset, int count) {
             this.AssertOpen();
             if (!this.CanWrite)
-                throw new NotSupportedException(Resources.EncodersStrings.EncStrCannotWrite);
+                throw new System.NotSupportedException(Resources.EncodersStrings.EncStrCannotWrite);
             if (array == null)
-                throw new ArgumentNullException(nameof(array));
+                throw new System.ArgumentNullException(nameof(array));
             if (count + offset > array.Length)
-                throw new ArgumentException(Resources.EncodersStrings.EncStrLengthExceeded(offset + count, array.Length), nameof(array));
+                throw new System.ArgumentException(Resources.EncodersStrings.EncStrLengthExceeded(offset + count, array.Length), nameof(array));
             if (0 > offset || 0 > count)
-                throw new ArgumentOutOfRangeException(offset < 0 ? "offset" : "count");
+                throw new System.ArgumentOutOfRangeException(offset < 0 ? "offset" : "count");
             while (count != 0) {
                 int inputUsed;
                 int outputUsed;
@@ -192,7 +191,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
         public override sealed long Seek(long offset, System.IO.SeekOrigin origin) {
             this.AssertOpen();
             if (!this.CanSeek)
-                throw new NotSupportedException(Resources.EncodersStrings.EncStrCannotSeek);
+                throw new System.NotSupportedException(Resources.EncodersStrings.EncStrCannotSeek);
             if (origin == System.IO.SeekOrigin.Current)
                 offset += position;
             else if (origin == System.IO.SeekOrigin.End) {
@@ -202,7 +201,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                     offset += this.Length;
             }
             if (offset < 0L)
-                throw new ArgumentOutOfRangeException(nameof(offset));
+                throw new System.ArgumentOutOfRangeException(nameof(offset));
             if (offset < position) {
                 bufferPos = 0;
                 bufferCount = 0;
@@ -215,7 +214,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                 var val1 = offset - position;
                 var buffer = new byte[4096];
                 while (val1 > 0L) {
-                    var count = (int) Math.Min(val1, 4096L);
+                    var count = (int) System.Math.Min(val1, 4096L);
                     var num = this.Read(buffer, 0, count);
                     if (num == 0) {
                         if (length == long.MaxValue)
@@ -231,13 +230,13 @@ namespace Butler.Schema.Data.Mime.Encoders {
 
         public override sealed void SetLength(long value) {
             this.AssertOpen();
-            throw new NotSupportedException();
+            throw new System.NotSupportedException();
         }
 
         public override sealed void Flush() {
             this.AssertOpen();
             if (!this.CanWrite)
-                throw new NotSupportedException(Resources.EncodersStrings.EncStrCannotWrite);
+                throw new System.NotSupportedException(Resources.EncodersStrings.EncStrCannotWrite);
             this.FlushEncoder(false);
             stream.Flush();
         }
@@ -254,7 +253,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
 
         private void AssertOpen() {
             if (!this.IsOpen)
-                throw new ObjectDisposedException("EncoderStream");
+                throw new System.ObjectDisposedException("EncoderStream");
         }
 
         protected override void Dispose(bool disposing) {

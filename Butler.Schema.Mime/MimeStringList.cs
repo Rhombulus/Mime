@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -76,7 +75,7 @@ namespace Butler.Schema.Data.Mime {
                     if (length >= 4096)
                         length = 4128;
                     var listEntryArray = new ListEntry[length];
-                    Array.Copy(overflow, 0, listEntryArray, 0, overflow.Length);
+                    System.Array.Copy(overflow, 0, listEntryArray, 0, overflow.Length);
                     overflow = listEntryArray;
                 }
                 overflow[count].Str = value;
@@ -224,15 +223,15 @@ namespace Butler.Schema.Data.Mime {
             mimeStringList.first = first;
             if (overflow != null && overflow[0].HeaderCount > 1) {
                 mimeStringList.overflow = new ListEntry[overflow.Length];
-                var length1 = Math.Min(this.Count, 4096);
-                Array.Copy(overflow, 0, mimeStringList.overflow, 0, length1);
+                var length1 = System.Math.Min(this.Count, 4096);
+                System.Array.Copy(overflow, 0, mimeStringList.overflow, 0, length1);
                 if (this.Count > 4096) {
                     var index = 4096;
                     var num = 4096;
                     while (num < this.Count) {
                         mimeStringList.overflow[index].Secondary = new MimeString[4096];
-                        var length2 = Math.Min(this.Count - num, 4096);
-                        Array.Copy(overflow[index].Secondary, 0, mimeStringList.overflow[index].Secondary, 0, length2);
+                        var length2 = System.Math.Min(this.Count - num, 4096);
+                        System.Array.Copy(overflow[index].Secondary, 0, mimeStringList.overflow[index].Secondary, 0, length2);
                         num += 4096;
                         ++index;
                     }

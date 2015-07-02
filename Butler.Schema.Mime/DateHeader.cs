@@ -1,28 +1,27 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
     public class DateHeader : Header {
 
-        public DateHeader(string name, DateTime dateTime)
+        public DateHeader(string name, System.DateTime dateTime)
             : base(name, Header.GetHeaderId(name, true)) {
             var type = Header.TypeFromHeaderId(this.HeaderId);
             if (this.HeaderId != HeaderId.Unknown && type != typeof (DateHeader))
-                throw new ArgumentException(Resources.Strings.NameNotValidForThisHeaderType(name, "DateHeader", type.Name));
+                throw new System.ArgumentException(Resources.Strings.NameNotValidForThisHeaderType(name, "DateHeader", type.Name));
             this.SetRawValue(null, true);
             parsed = true;
             utcDateTime = dateTime.ToUniversalTime();
-            if (dateTime.Kind == DateTimeKind.Utc)
+            if (dateTime.Kind == System.DateTimeKind.Utc)
                 return;
-            timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(dateTime);
+            timeZoneOffset = System.TimeZoneInfo.Local.GetUtcOffset(dateTime);
         }
 
-        public DateHeader(string name, DateTime dateTime, TimeSpan timeZoneOffset)
+        public DateHeader(string name, System.DateTime dateTime, System.TimeSpan timeZoneOffset)
             : base(name, Header.GetHeaderId(name, true)) {
             var type = Header.TypeFromHeaderId(this.HeaderId);
             if (this.HeaderId != HeaderId.Unknown && type != typeof (DateHeader))
-                throw new ArgumentException(Resources.Strings.NameNotValidForThisHeaderType(name, "DateHeader", type.Name));
+                throw new System.ArgumentException(Resources.Strings.NameNotValidForThisHeaderType(name, "DateHeader", type.Name));
             this.SetRawValue(null, true);
             parsed = true;
             utcDateTime = dateTime.ToUniversalTime();
@@ -41,7 +40,7 @@ namespace Butler.Schema.Data.Mime {
             }
         }
 
-        public DateTime DateTime {
+        public System.DateTime DateTime {
             get {
                 if (!parsed)
                     this.Parse();
@@ -53,14 +52,14 @@ namespace Butler.Schema.Data.Mime {
                 this.SetRawValue(null, true);
                 parsed = true;
                 utcDateTime = value.ToUniversalTime();
-                if (value.Kind != DateTimeKind.Utc)
-                    timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(value);
+                if (value.Kind != System.DateTimeKind.Utc)
+                    timeZoneOffset = System.TimeZoneInfo.Local.GetUtcOffset(value);
                 else
-                    timeZoneOffset = TimeSpan.Zero;
+                    timeZoneOffset = System.TimeSpan.Zero;
             }
         }
 
-        public DateTime UtcDateTime {
+        public System.DateTime UtcDateTime {
             get {
                 if (!parsed)
                     this.Parse();
@@ -68,7 +67,7 @@ namespace Butler.Schema.Data.Mime {
             }
         }
 
-        public TimeSpan TimeZoneOffset {
+        public System.TimeSpan TimeZoneOffset {
             get {
                 if (!parsed)
                     this.Parse();
@@ -96,12 +95,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var dateHeader = destination as DateHeader;
             if (dateHeader == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             base.CopyTo(destination);
             dateHeader.parsed = parsed;
             dateHeader.utcDateTime = utcDateTime;
@@ -112,7 +111,7 @@ namespace Butler.Schema.Data.Mime {
             return Internal.ByteString.IsStringArgumentValid(value, false);
         }
 
-        internal static long WriteDateHeaderValue(System.IO.Stream stream, DateTime utcDateTime, TimeSpan timeZoneOffset, ref MimeStringLength currentLineLength) {
+        internal static long WriteDateHeaderValue(System.IO.Stream stream, System.DateTime utcDateTime, System.TimeSpan timeZoneOffset, ref MimeStringLength currentLineLength) {
             var num1 = 0L;
             var characterCount = 0;
             var buffer = DateHeader.FormatValue(utcDateTime, timeZoneOffset, out characterCount);
@@ -132,15 +131,15 @@ namespace Butler.Schema.Data.Mime {
             return num3 + Header.WriteLineEnd(stream, ref currentLineLength);
         }
 
-        internal static DateTime ParseDateHeaderValue(string value) {
+        internal static System.DateTime ParseDateHeaderValue(string value) {
             var data = value == null ? MimeString.EmptyByteArray : Internal.ByteString.StringToBytes(value, false);
-            DateTime utcDateTime;
-            TimeSpan timeZoneOffset;
+            System.DateTime utcDateTime;
+            System.TimeSpan timeZoneOffset;
             DateHeader.ParseValue(new MimeStringList(data, 0, data.Length), out utcDateTime, out timeZoneOffset);
             return utcDateTime;
         }
 
-        internal void SetValue(DateTime value, TimeSpan timeZoneOffset) {
+        internal void SetValue(System.DateTime value, System.TimeSpan timeZoneOffset) {
             this.SetRawValue(null, true);
             parsed = true;
             utcDateTime = value.ToUniversalTime();
@@ -168,7 +167,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
-            throw new NotSupportedException(Resources.Strings.CannotAddChildrenToMimeHeaderDate);
+            throw new System.NotSupportedException(Resources.Strings.CannotAddChildrenToMimeHeaderDate);
         }
 
         internal override void ForceParse() {
@@ -234,7 +233,7 @@ namespace Butler.Schema.Data.Mime {
             return 1;
         }
 
-        private static void ParseValue(MimeStringList list, out DateTime utcDateTime, out TimeSpan timeZoneOffset) {
+        private static void ParseValue(MimeStringList list, out System.DateTime utcDateTime, out System.TimeSpan timeZoneOffset) {
             var phrase = new MimeStringList();
             var valueParser = new ValueParser(list, false);
             var parseStage = ParseStage.DayOfWeek;
@@ -306,12 +305,12 @@ namespace Butler.Schema.Data.Mime {
                 var second = numArray[6];
                 if (hour == 23 && minute == 59 && second == 60)
                     second = 59;
-                if (year >= 1900 && year <= 9999 && (month >= 1 && month <= 12) && (day >= 1 && day <= DateTime.DaysInMonth(year, month) && (hour >= 0 && hour < 24)) && (minute >= 0 && minute < 60 && second >= 0)) {
+                if (year >= 1900 && year <= 9999 && (month >= 1 && month <= 12) && (day >= 1 && day <= System.DateTime.DaysInMonth(year, month) && (hour >= 0 && hour < 24)) && (minute >= 0 && minute < 60 && second >= 0)) {
                     if (second < 60) {
                         try {
-                            utcDateTime = new DateTime(year, month, day, hour, minute, second, 0, DateTimeKind.Utc);
+                            utcDateTime = new System.DateTime(year, month, day, hour, minute, second, 0, System.DateTimeKind.Utc);
                             goto label_46;
-                        } catch (ArgumentException ex) {
+                        } catch (System.ArgumentException ex) {
                             utcDateTime = minDateTime;
                             goto label_46;
                         }
@@ -330,18 +329,18 @@ namespace Butler.Schema.Data.Mime {
                 }
                 if (minutes > 59 || minutes < -59)
                     minutes = 0;
-                timeZoneOffset = new TimeSpan(hours, minutes, 0);
-                if (utcDateTime.Ticks >= timeZoneOffset.Ticks && DateTime.MaxValue.Ticks >= utcDateTime.Ticks - timeZoneOffset.Ticks)
+                timeZoneOffset = new System.TimeSpan(hours, minutes, 0);
+                if (utcDateTime.Ticks >= timeZoneOffset.Ticks && System.DateTime.MaxValue.Ticks >= utcDateTime.Ticks - timeZoneOffset.Ticks)
                     utcDateTime -= timeZoneOffset;
                 else {
                     utcDateTime = minDateTime;
-                    timeZoneOffset = TimeSpan.Zero;
+                    timeZoneOffset = System.TimeSpan.Zero;
                 }
             } else
-                timeZoneOffset = TimeSpan.Zero;
+                timeZoneOffset = System.TimeSpan.Zero;
         }
 
-        private static byte[] FormatValue(DateTime utcDateTime, TimeSpan timeZoneOffset, out int characterCount) {
+        private static byte[] FormatValue(System.DateTime utcDateTime, System.TimeSpan timeZoneOffset, out int characterCount) {
             if (minDateTime == utcDateTime) {
                 characterCount = 0;
                 return null;
@@ -360,7 +359,7 @@ namespace Butler.Schema.Data.Mime {
         private void Reset() {
             parsed = false;
             utcDateTime = minDateTime;
-            timeZoneOffset = TimeSpan.Zero;
+            timeZoneOffset = System.TimeSpan.Zero;
         }
 
         private void Parse() {
@@ -370,10 +369,10 @@ namespace Butler.Schema.Data.Mime {
 
         internal const bool AllowUTF8Value = false;
         private const int Y2KThreshold = 30;
-        private static readonly DateTime minDateTime = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
+        private static readonly System.DateTime minDateTime = System.DateTime.SpecifyKind(System.DateTime.MinValue, System.DateTimeKind.Utc);
         private bool parsed;
-        private TimeSpan timeZoneOffset = TimeSpan.Zero;
-        private DateTime utcDateTime = minDateTime;
+        private System.TimeSpan timeZoneOffset = System.TimeSpan.Zero;
+        private System.DateTime utcDateTime = minDateTime;
 
 
         private enum TimeZoneToken {

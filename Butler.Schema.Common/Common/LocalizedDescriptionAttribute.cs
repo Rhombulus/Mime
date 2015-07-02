@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using IntrospectionExtensions = System.Reflection.IntrospectionExtensions;
+﻿namespace Butler.Schema.Data.Common {
 
-namespace Butler.Schema.Data.Common {
-
-    [AttributeUsage(AttributeTargets.All)]
-    [Serializable]
+    [System.AttributeUsage(System.AttributeTargets.All)]
+    [System.Serializable]
     public class LocalizedDescriptionAttribute : System.ComponentModel.DescriptionAttribute, ILocalizedString {
 
         public LocalizedDescriptionAttribute() {}
@@ -24,30 +19,30 @@ namespace Butler.Schema.Data.Common {
 
         public LocalizedString LocalizedString { get; }
 
-        public static string FromEnum(Type enumType, object value) {
+        public static string FromEnum(System.Type enumType, object value) {
             return LocalizedDescriptionAttribute.FromEnum(enumType, value, null);
         }
 
-        public static string FromEnum(Type enumType, object value, System.Globalization.CultureInfo culture) {
+        public static string FromEnum(System.Type enumType, object value, System.Globalization.CultureInfo culture) {
             if (enumType == null)
-                throw new ArgumentNullException("enumType");
-            if (!IntrospectionExtensions.GetTypeInfo(enumType)
-                                        .IsEnum)
-                throw new ArgumentException("enumType must be an enum.", "enumType");
+                throw new System.ArgumentNullException("enumType");
+            if (!System.Reflection.IntrospectionExtensions.GetTypeInfo(enumType)
+                       .IsEnum)
+                throw new System.ArgumentException("enumType must be an enum.", "enumType");
             if (value == null)
-                throw new ArgumentNullException("value");
-            var key = Enum.ToObject(enumType, value);
+                throw new System.ArgumentNullException("value");
+            var key = System.Enum.ToObject(enumType, value);
             if (locEnumStringTable == null) {
-                var dictionary = new Dictionary<string, Dictionary<object, string>>();
+                var dictionary = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<object, string>>();
                 System.Threading.Interlocked.CompareExchange(ref locEnumStringTable, dictionary, null);
             }
             string str;
             lock (locEnumStringTable) {
                 if (culture == null)
                     culture = System.Globalization.CultureInfo.CurrentCulture;
-                Dictionary<object, string> local_3;
+                System.Collections.Generic.Dictionary<object, string> local_3;
                 if (!locEnumStringTable.TryGetValue(culture.Name, out local_3)) {
-                    local_3 = new Dictionary<object, string>();
+                    local_3 = new System.Collections.Generic.Dictionary<object, string>();
                     locEnumStringTable.Add(culture.Name, local_3);
                 }
                 if (local_3.TryGetValue(key, out str))
@@ -58,10 +53,11 @@ namespace Butler.Schema.Data.Common {
                 for (var local_6 = 0; local_6 < local_4.Length; ++local_6) {
                     var fieldName = local_4[local_6].Trim();
                     var local_7 = fieldName;
-                    foreach (System.Reflection.MemberInfo item_0 in IntrospectionExtensions.GetTypeInfo(enumType)
-                                                                                           .DeclaredFields.Where(x => x.Name == fieldName)) {
-                        using (var resource_0 = item_0.GetCustomAttributes(false)
-                                                      .Where(x => x is System.ComponentModel.DescriptionAttribute)
+                    foreach (System.Reflection.MemberInfo item_0 in System.Linq.Enumerable.Where(
+                        System.Reflection.IntrospectionExtensions.GetTypeInfo(enumType)
+                              .DeclaredFields,
+                        x => x.Name == fieldName)) {
+                        using (var resource_0 = System.Linq.Enumerable.Where(item_0.GetCustomAttributes(false), x => x is System.ComponentModel.DescriptionAttribute)
                                                       .GetEnumerator()) {
                             if (resource_0.MoveNext()) {
                                 var local_9 = resource_0.Current;
@@ -79,7 +75,7 @@ namespace Butler.Schema.Data.Common {
             return str;
         }
 
-        private static Dictionary<string, Dictionary<object, string>> locEnumStringTable;
+        private static System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<object, string>> locEnumStringTable;
 
     }
 

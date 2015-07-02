@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    public class HeaderList : MimeNode, IEnumerable<Header> {
+    public class HeaderList : MimeNode, System.Collections.Generic.IEnumerable<Header> {
 
         internal HeaderList(MimeNode parent)
             : base(parent) {}
 
         private HeaderList() {}
 
-        IEnumerator<Header> IEnumerable<Header>.GetEnumerator() {
+        System.Collections.Generic.IEnumerator<Header> System.Collections.Generic.IEnumerable<Header>.GetEnumerator() {
             return new Enumerator<Header>(this);
         }
 
@@ -21,7 +19,7 @@ namespace Butler.Schema.Data.Mime {
 
         public static HeaderList ReadFrom(MimeReader reader) {
             if (reader == null)
-                throw new ArgumentNullException(nameof(reader));
+                throw new System.ArgumentNullException(nameof(reader));
             return reader.ReadHeaderList();
         }
 
@@ -46,7 +44,7 @@ namespace Butler.Schema.Data.Mime {
 
         public Header FindFirst(HeaderId headerId) {
             if (headerId < HeaderId.Unknown || headerId > (HeaderId) MimeData.nameIndex.Length)
-                throw new ArgumentException(Resources.Strings.InvalidHeaderId, nameof(headerId));
+                throw new System.ArgumentException(Resources.Strings.InvalidHeaderId, nameof(headerId));
             if (headerMap[(int) headerId] == 0)
                 return null;
             var header = this.FirstChild as Header;
@@ -63,9 +61,9 @@ namespace Butler.Schema.Data.Mime {
 
         public Header FindNext(Header refHeader) {
             if (refHeader == null)
-                throw new ArgumentNullException(nameof(refHeader));
+                throw new System.ArgumentNullException(nameof(refHeader));
             if (this != refHeader.Parent)
-                throw new ArgumentException(Resources.Strings.RefHeaderIsNotMyChild);
+                throw new System.ArgumentException(Resources.Strings.RefHeaderIsNotMyChild);
             var headerId = refHeader.HeaderId;
             if (headerMap[(int) headerId] == 1)
                 return null;
@@ -218,17 +216,17 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             if (!(destination is HeaderList))
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             base.CopyTo(destination);
         }
 
         public void WriteTo(System.IO.Stream stream, EncodingOptions encodingOptions, MimeOutputFilter filter) {
             if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
+                throw new System.ArgumentNullException(nameof(stream));
             if (encodingOptions == null)
                 encodingOptions = this.GetDocumentEncodingOptions();
             byte[] scratchBuffer = null;
@@ -266,7 +264,7 @@ namespace Butler.Schema.Data.Mime {
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
             var header = newChild as Header;
             if (header == null)
-                throw new ArgumentException(Resources.Strings.NewChildNotMimeHeader, nameof(newChild));
+                throw new System.ArgumentException(Resources.Strings.NewChildNotMimeHeader, nameof(newChild));
             var headerId = header.HeaderId;
             if (Header.IsRestrictedHeader(headerId)) {
                 if (headerMap[(int) headerId] != 0) {
@@ -298,7 +296,7 @@ namespace Butler.Schema.Data.Mime {
                 loopLimitInitialized = true;
             }
             if (count > loopLimit)
-                throw new InvalidOperationException(string.Format("Loop detected in headers collection. Loop count: {0}", loopLimit));
+                throw new System.InvalidOperationException(string.Format("Loop detected in headers collection. Loop count: {0}", loopLimit));
         }
 
         private const string LoopLimitMessage = "Loop detected in headers collection. Loop count: {0}";

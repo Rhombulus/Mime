@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -7,11 +6,11 @@ namespace Butler.Schema.Data.Mime {
 
         internal static void CheckBufferArguments(byte[] buffer, int offset, int count) {
             if (buffer == null)
-                throw new ArgumentNullException(nameof(buffer));
+                throw new System.ArgumentNullException(nameof(buffer));
             if (count + offset > buffer.Length)
-                throw new ArgumentException(Resources.Strings.LengthExceeded(offset + count, buffer.Length), nameof(buffer));
+                throw new System.ArgumentException(Resources.Strings.LengthExceeded(offset + count, buffer.Length), nameof(buffer));
             if (0 > offset || 0 > count)
-                throw new ArgumentOutOfRangeException(offset < 0 ? "offset" : "count");
+                throw new System.ArgumentOutOfRangeException(offset < 0 ? "offset" : "count");
         }
 
         internal static bool TryDecodeValue(MimeStringList lines, uint linesMask, DecodingOptions decodingOptions, out DecodingResults decodingResults, out string value) {
@@ -207,7 +206,7 @@ namespace Butler.Schema.Data.Mime {
                         do {
                             try {
                                 bytes = encoding.GetBytes(value, num20, chunkSize, byteBuffer, 0);
-                            } catch (ArgumentException ex) {
+                            } catch (System.ArgumentException ex) {
                                 if (chunkSize < 2)
                                     throw;
                                 chunkSize -= chunkSize > 10 ? 3 : 1;
@@ -223,7 +222,7 @@ namespace Butler.Schema.Data.Mime {
                                         mimeStringList.Append(new MimeString(numArray7, 0, count));
                                         count = 0;
                                     }
-                                    numArray7 = new byte[Math.Min(((value.Length - num20)/chunkSize + 1)*(num1 + 1), 4096/(num1 + 1)*(num1 + 1))];
+                                    numArray7 = new byte[System.Math.Min(((value.Length - num20)/chunkSize + 1)*(num1 + 1), 4096/(num1 + 1)*(num1 + 1))];
                                 }
                                 var destinationIndex = count;
                                 if (mimeStringList.Count > 0 || destinationIndex > 0)
@@ -265,7 +264,7 @@ namespace Butler.Schema.Data.Mime {
                                     }
                                     if (index6 != bytes) {
                                         if (chunkSize < 2)
-                                            throw new InvalidOperationException("unexpected thing just happened");
+                                            throw new System.InvalidOperationException("unexpected thing just happened");
                                         chunkSize -= chunkSize > 10 ? 3 : 1;
                                     } else
                                         goto label_56;
@@ -325,7 +324,7 @@ namespace Butler.Schema.Data.Mime {
         private static void CalculateMethodAndChunkSize_Sbcs(
             bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var num1 = encodedWordSpace/4*3;
-            var chunkSize1 = Math.Min(num1, value.Length - valueOffset);
+            var chunkSize1 = System.Math.Min(num1, value.Length - valueOffset);
             if (chunkSize1 != value.Length - valueOffset && MimeCommon.IsHighSurrogate(value[valueOffset + chunkSize1 - 1]) && MimeCommon.IsLowSurrogate(value[valueOffset + chunkSize1]))
                 --chunkSize1;
             var num2 = (chunkSize1 + 2)/3*4;
@@ -466,7 +465,7 @@ namespace Butler.Schema.Data.Mime {
         private static void CalculateMethodAndChunkSize_Unicode16(
             bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var targetBytes = encodedWordSpace/4*3;
-            chunkSize = Math.Min(targetBytes/2, value.Length - valueOffset);
+            chunkSize = System.Math.Min(targetBytes/2, value.Length - valueOffset);
             if (chunkSize < value.Length - valueOffset && MimeCommon.IsLowSurrogate(value[valueOffset + chunkSize]) && MimeCommon.IsHighSurrogate(value[valueOffset + chunkSize - 1]))
                 --chunkSize;
             chunkSize = MimeCommon.AdjustChunkSize(encoding, chunkSize, value, valueOffset, targetBytes);
@@ -476,7 +475,7 @@ namespace Butler.Schema.Data.Mime {
         private static void CalculateMethodAndChunkSize_Unicode32(
             bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var targetBytes = encodedWordSpace/4*3;
-            chunkSize = Math.Min(targetBytes/4, value.Length - valueOffset);
+            chunkSize = System.Math.Min(targetBytes/4, value.Length - valueOffset);
             if (chunkSize < value.Length - valueOffset && MimeCommon.IsLowSurrogate(value[valueOffset + chunkSize]) && MimeCommon.IsHighSurrogate(value[valueOffset + chunkSize - 1]))
                 --chunkSize;
             chunkSize = MimeCommon.AdjustChunkSize(encoding, chunkSize, value, valueOffset, targetBytes);
@@ -486,7 +485,7 @@ namespace Butler.Schema.Data.Mime {
         private static void CalculateMethodAndChunkSize_Mbcs(
             bool allowQEncoding, Encoders.ByteEncoder.Tables.CharClasses unsafeCharClassesForQEncoding, System.Text.Encoding encoding, string value, int valueOffset, int encodedWordSpace, out byte method, out int chunkSize) {
             var num = encodedWordSpace/4*3;
-            chunkSize = Math.Min(num, value.Length - valueOffset);
+            chunkSize = System.Math.Min(num, value.Length - valueOffset);
             if (chunkSize < value.Length - valueOffset && MimeCommon.IsLowSurrogate(value[valueOffset + chunkSize]) && MimeCommon.IsHighSurrogate(value[valueOffset + chunkSize - 1]))
                 --chunkSize;
             chunkSize = MimeCommon.AdjustChunkSize(encoding, chunkSize, value, valueOffset, num);

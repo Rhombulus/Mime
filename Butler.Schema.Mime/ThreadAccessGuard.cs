@@ -1,22 +1,21 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    internal class ThreadAccessGuard : IDisposable {
+    internal class ThreadAccessGuard : System.IDisposable {
 
         private ThreadAccessGuard(ObjectThreadAccessToken token) {}
 
         public void Dispose() {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
+            System.GC.SuppressFinalize(this);
         }
 
-        internal static IDisposable EnterPublic(ObjectThreadAccessToken token) {
+        internal static System.IDisposable EnterPublic(ObjectThreadAccessToken token) {
             return null;
         }
 
-        internal static IDisposable EnterPrivate(ObjectThreadAccessToken token) {
+        internal static System.IDisposable EnterPrivate(ObjectThreadAccessToken token) {
             return null;
         }
 

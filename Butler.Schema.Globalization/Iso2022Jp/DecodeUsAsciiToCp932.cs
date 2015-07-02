@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Butler.Schema.Data.Globalization.Iso2022Jp {
+﻿namespace Butler.Schema.Data.Globalization.Iso2022Jp {
 
     internal class DecodeUsAsciiToCp932 : DecodeToCp932 {
 
@@ -22,7 +19,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
             var limit = this.CalculateLoopCountLimit(lengthIn);
             if (validEscapeSequence) {
                 if (!this.IsEscapeSequenceHandled(escape))
-                    throw new InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
+                    throw new System.InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
                 index += escape.BytesInCurrentBuffer;
             }
             while (index < offsetIn + lengthIn) {
@@ -59,7 +56,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
             var limit = this.CalculateLoopCountLimit(lengthIn);
             if (escape.IsValidEscapeSequence) {
                 if (!this.IsEscapeSequenceHandled(escape))
-                    throw new InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
+                    throw new System.InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
                 index += escape.BytesInCurrentBuffer;
             }
             for (; index < offsetIn + lengthIn; dataOut[num++] = dataIn[index++]) {
@@ -72,7 +69,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
                         goto label_9;
                     default:
                         if (num + 1 > offsetOut + lengthOut)
-                            throw new InvalidOperationException(string.Format("DecodeUsAsciiToCp932.ConvertToCp932: output buffer overrun, offset {0}, length {1}", offsetOut, lengthOut));
+                            throw new System.InvalidOperationException(string.Format("DecodeUsAsciiToCp932.ConvertToCp932: output buffer overrun, offset {0}, length {1}", offsetOut, lengthOut));
                         continue;
                 }
             }

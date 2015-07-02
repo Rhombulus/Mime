@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Butler.Schema.Data.Globalization.Iso2022Jp {
+﻿namespace Butler.Schema.Data.Globalization.Iso2022Jp {
 
     internal class DecodeLastChanceToCp932 : DecodeToCp932 {
 
@@ -20,7 +17,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
             var limit = this.CalculateLoopCountLimit(lengthIn);
             if (escape.IsValidEscapeSequence) {
                 if (!this.IsEscapeSequenceHandled(escape))
-                    throw new InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
+                    throw new System.InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
                 index += escape.BytesInCurrentBuffer;
             } else if (escape.Sequence == EscapeSequence.NotRecognized) {
                 index += escape.BytesInCurrentBuffer;
@@ -62,7 +59,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
             var limit = this.CalculateLoopCountLimit(lengthIn);
             if (escape.IsValidEscapeSequence) {
                 if (!this.IsEscapeSequenceHandled(escape))
-                    throw new InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
+                    throw new System.InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
                 index1 += escape.BytesInCurrentBuffer;
             } else if (escape.Sequence == EscapeSequence.NotRecognized) {
                 for (var index2 = 0; index2 < escape.BytesInCurrentBuffer && index2 < lengthIn; ++index2) {

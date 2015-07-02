@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -7,7 +6,7 @@ namespace Butler.Schema.Data.Mime {
 
         public ValueDecoder(MimeStringList lines, uint linesMask) {
             iterator = new ValueIterator(lines, linesMask);
-            maxCharsetNameLength = Math.Max(60, Globalization.Charset.MaxCharsetNameLength) + 10 + 1;
+            maxCharsetNameLength = System.Math.Max(60, Globalization.Charset.MaxCharsetNameLength) + 10 + 1;
         }
 
         public bool TryDecodeValue(
@@ -17,7 +16,7 @@ namespace Butler.Schema.Data.Mime {
             cultureName = null;
             encodingScheme = EncodingScheme.None;
             value = null;
-            var stringBuilder = Internal.ScratchPad.GetStringBuilder(Math.Min(1024, iterator.TotalLength));
+            var stringBuilder = Internal.ScratchPad.GetStringBuilder(System.Math.Min(1024, iterator.TotalLength));
             char[] charBuffer = null;
             byte[] byteBuffer = null;
             var currentPosition1 = iterator.CurrentPosition;
@@ -329,7 +328,7 @@ namespace Butler.Schema.Data.Mime {
             if (iterator.Get() != 0x3f)
                 return false;
             if (byteBuffer == null)
-                byteBuffer = Internal.ScratchPad.GetByteBuffer(Math.Max(maxCharsetNameLength + 1, Math.Min(0x400, iterator.TotalLength)));
+                byteBuffer = Internal.ScratchPad.GetByteBuffer(System.Math.Max(maxCharsetNameLength + 1, System.Math.Min(0x400, iterator.TotalLength)));
             var num3 = -1;
             var index = 0;
             while (index < (maxCharsetNameLength + 1)) {
@@ -425,9 +424,9 @@ namespace Butler.Schema.Data.Mime {
             byte bOrQ, System.Text.Decoder decoder, ValuePosition encodedWordContentStart, ValuePosition encodedWordContentEnd, bool allowControlCharacters, ref byte[] byteBuffer, ref char[] charBuffer, System.Text.StringBuilder sb) {
             var valueIterator = new ValueIterator(iterator.Lines, iterator.LinesMask, encodedWordContentStart, encodedWordContentEnd);
             if (charBuffer == null)
-                charBuffer = Internal.ScratchPad.GetCharBuffer(Math.Min(1024, iterator.TotalLength));
+                charBuffer = Internal.ScratchPad.GetCharBuffer(System.Math.Min(1024, iterator.TotalLength));
             if (byteBuffer == null)
-                byteBuffer = Internal.ScratchPad.GetByteBuffer(Math.Max(maxCharsetNameLength + 1, Math.Min(1024, iterator.TotalLength)));
+                byteBuffer = Internal.ScratchPad.GetByteBuffer(System.Math.Max(maxCharsetNameLength + 1, System.Math.Min(1024, iterator.TotalLength)));
             var byteBufferLength = 0;
             if (bOrQ == 66) {
                 var num1 = 0;
@@ -590,7 +589,7 @@ namespace Butler.Schema.Data.Mime {
             if (valueIterator.Eof)
                 return;
             if (charBuffer == null)
-                charBuffer = Internal.ScratchPad.GetCharBuffer(Math.Min(1024, iterator.TotalLength));
+                charBuffer = Internal.ScratchPad.GetCharBuffer(System.Math.Min(1024, iterator.TotalLength));
             int bytesUsed;
             int charsUsed;
             bool completed;

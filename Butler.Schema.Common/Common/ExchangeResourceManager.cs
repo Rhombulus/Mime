@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Butler.Schema.Data.Common {
+﻿namespace Butler.Schema.Data.Common {
 
     public sealed class ExchangeResourceManager : System.Resources.ResourceManager {
 
@@ -18,7 +14,7 @@ namespace Butler.Schema.Data.Common {
 
         public static ExchangeResourceManager GetResourceManager(string baseName, System.Reflection.Assembly assembly) {
             if (null == assembly)
-                throw new ArgumentNullException(nameof(assembly));
+                throw new System.ArgumentNullException(nameof(assembly));
             var key = baseName + assembly.GetName()
                                          .Name;
             lock (resourceManagers) {
@@ -75,9 +71,9 @@ namespace Butler.Schema.Data.Common {
             return str;
         }
 
-        private static readonly Dictionary<string, ExchangeResourceManager> resourceManagers = new Dictionary<string, ExchangeResourceManager>();
+        private static readonly System.Collections.Generic.Dictionary<string, ExchangeResourceManager> resourceManagers = new System.Collections.Generic.Dictionary<string, ExchangeResourceManager>();
         private readonly System.Threading.ReaderWriterLockSlim readerWriterLock = new System.Threading.ReaderWriterLockSlim();
-        private readonly TimeSpan resourceReleaseInterval = TimeSpan.FromMinutes(1.0);
+        private readonly System.TimeSpan resourceReleaseInterval = System.TimeSpan.FromMinutes(1.0);
         private readonly System.Diagnostics.Stopwatch resourceReleaseStopwatch = new System.Diagnostics.Stopwatch();
 
     }

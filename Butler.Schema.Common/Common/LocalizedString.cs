@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using IntrospectionExtensions = System.Reflection.IntrospectionExtensions;
-
+﻿using System.Linq;
 namespace Butler.Schema.Data.Common {
 
-    [Serializable]
-    public struct LocalizedString : System.Runtime.Serialization.ISerializable, ILocalizedString, IFormattable, IEquatable<LocalizedString> {
+    [System.Serializable]
+    public struct LocalizedString : System.Runtime.Serialization.ISerializable, ILocalizedString, System.IFormattable, System.IEquatable<LocalizedString> {
 
         public LocalizedString(string id, ExchangeResourceManager resourceManager, params object[] inserts) {
             this = new LocalizedString(id, null, false, false, resourceManager, inserts);
@@ -14,95 +10,95 @@ namespace Butler.Schema.Data.Common {
 
         public LocalizedString(string id, string stringId, bool showStringIdIfError, bool showAssistanceInfoIfError, ExchangeResourceManager resourceManager, params object[] inserts) {
             if (id == null)
-                throw new ArgumentNullException(nameof(id));
+                throw new System.ArgumentNullException(nameof(id));
             if (resourceManager == null)
-                throw new ArgumentNullException(nameof(resourceManager));
+                throw new System.ArgumentNullException(nameof(resourceManager));
             Id = id;
-            this.stringId = stringId;
+            this._stringId = stringId;
             this.ShowStringIdInUIIfError = showStringIdIfError;
             this.ShowAssistanceInfoInUIIfError = showAssistanceInfoIfError;
-            ResourceManager = resourceManager;
-            DeserializedFallback = null;
-            Inserts = inserts == null || inserts.Length <= 0 ? null : inserts;
-            this.FormatParameters = Inserts != null ? new System.Collections.ObjectModel.ReadOnlyCollection<object>(Inserts) : null;
+            _resourceManager = resourceManager;
+            _deserializedFallback = null;
+            _inserts = inserts == null || inserts.Length <= 0 ? null : inserts;
+            this.FormatParameters = _inserts != null ? new System.Collections.ObjectModel.ReadOnlyCollection<object>(_inserts) : null;
         }
 
         public LocalizedString(string value) {
             Id = value;
-            stringId = null;
+            _stringId = null;
             this.ShowStringIdInUIIfError = false;
             this.ShowAssistanceInfoInUIIfError = false;
-            Inserts = null;
-            ResourceManager = null;
-            DeserializedFallback = null;
+            _inserts = null;
+            _resourceManager = null;
+            _deserializedFallback = null;
             this.FormatParameters = null;
         }
 
         private LocalizedString(string format, object[] inserts) {
             Id = format;
-            stringId = null;
+            _stringId = null;
             this.ShowStringIdInUIIfError = false;
             this.ShowAssistanceInfoInUIIfError = false;
-            Inserts = inserts;
-            ResourceManager = null;
-            DeserializedFallback = null;
-            this.FormatParameters = Inserts != null ? new System.Collections.ObjectModel.ReadOnlyCollection<object>(Inserts) : null;
+            _inserts = inserts;
+            _resourceManager = null;
+            _deserializedFallback = null;
+            this.FormatParameters = _inserts != null ? new System.Collections.ObjectModel.ReadOnlyCollection<object>(_inserts) : null;
         }
 
         private LocalizedString(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) {
-            Inserts = (object[]) info.GetValue("inserts", typeof (object[]));
-            this.FormatParameters = Inserts != null ? new System.Collections.ObjectModel.ReadOnlyCollection<object>(Inserts) : null;
-            ResourceManager = null;
+            _inserts = (object[]) info.GetValue("inserts", typeof (object[]));
+            this.FormatParameters = _inserts != null ? new System.Collections.ObjectModel.ReadOnlyCollection<object>(_inserts) : null;
+            _resourceManager = null;
             Id = null;
-            stringId = null;
+            _stringId = null;
             this.ShowStringIdInUIIfError = false;
             this.ShowAssistanceInfoInUIIfError = false;
-            DeserializedFallback = null;
+            _deserializedFallback = null;
             string str = null;
             try {
                 var @string = info.GetString("baseName");
                 str = info.GetString("fallback");
                 if (!string.IsNullOrEmpty(@string)) {
                     var assembly = System.Reflection.Assembly.Load(new System.Reflection.AssemblyName(info.GetString("assemblyName")));
-                    ResourceManager = ExchangeResourceManager.GetResourceManager(@string, assembly);
+                    _resourceManager = ExchangeResourceManager.GetResourceManager(@string, assembly);
                     Id = info.GetString("id");
-                    if (ResourceManager.GetString(Id) == null)
-                        ResourceManager = null;
+                    if (_resourceManager.GetString(Id) == null)
+                        _resourceManager = null;
                     else {
-                        DeserializedFallback = str;
+                        _deserializedFallback = str;
                         try {
-                            stringId = info.GetString("stringId");
+                            _stringId = info.GetString("stringId");
                             this.ShowStringIdInUIIfError = info.GetBoolean("showStringIdInUIIfError");
                             this.ShowAssistanceInfoInUIIfError = info.GetBoolean("showAssistanceInfoInUIIfError");
                         } catch (System.Runtime.Serialization.SerializationException ex) {
-                            stringId = null;
+                            _stringId = null;
                             this.ShowStringIdInUIIfError = false;
                             this.ShowAssistanceInfoInUIIfError = false;
                         }
                     }
                 }
             } catch (System.Runtime.Serialization.SerializationException ex) {
-                ResourceManager = null;
+                _resourceManager = null;
             } catch (System.IO.FileNotFoundException ex) {
-                ResourceManager = null;
+                _resourceManager = null;
             } catch (System.IO.FileLoadException ex) {
-                ResourceManager = null;
+                _resourceManager = null;
             } catch (System.Resources.MissingManifestResourceException ex) {
-                ResourceManager = null;
+                _resourceManager = null;
             }
-            if (ResourceManager != null)
+            if (_resourceManager != null)
                 return;
             Id = str;
         }
 
         public bool IsEmpty => null == Id;
-        public string FullId => (ResourceManager != null ? ResourceManager.BaseName : string.Empty) + Id;
+        public string FullId => (_resourceManager != null ? _resourceManager.BaseName : string.Empty) + Id;
         public int BaseId => this.FullId.GetHashCode();
 
         public string StringId {
             get {
-                if (stringId != null)
-                    return stringId;
+                if (_stringId != null)
+                    return _stringId;
                 return string.Empty;
             }
         }
@@ -112,38 +108,35 @@ namespace Butler.Schema.Data.Common {
         public System.Collections.ObjectModel.ReadOnlyCollection<object> FormatParameters { get; }
 
         public bool Equals(LocalizedString that) {
-            if (!string.Equals(Id, that.Id, StringComparison.OrdinalIgnoreCase) || !string.Equals(stringId, that.stringId, StringComparison.OrdinalIgnoreCase) ||
+            if (!string.Equals(Id, that.Id, System.StringComparison.OrdinalIgnoreCase) || !string.Equals(_stringId, that._stringId, System.StringComparison.OrdinalIgnoreCase) ||
                 (this.ShowStringIdInUIIfError != that.ShowStringIdInUIIfError || this.ShowAssistanceInfoInUIIfError != that.ShowAssistanceInfoInUIIfError) ||
-                (null != ResourceManager ^ null != that.ResourceManager || ResourceManager != null && !ResourceManager.Equals(that.ResourceManager)) || null != Inserts ^ null != that.Inserts)
+                (null != _resourceManager ^ null != that._resourceManager || _resourceManager != null && !_resourceManager.Equals(that._resourceManager)) || null != _inserts ^ null != that._inserts)
                 return false;
-            if (Inserts != null && that.Inserts != null) {
-                if (Inserts.Length != that.Inserts.Length)
-                    return false;
-                for (var index = 0; index < Inserts.Length; ++index) {
-                    if (null != Inserts[index] ^ null != that.Inserts[index] || Inserts[index] != null && that.Inserts[index] != null && !Inserts[index].Equals(that.Inserts[index]))
-                        return false;
-                }
-            }
-            return true;
+            if (_inserts == null || that._inserts == null)
+                return true;
+            if (_inserts.Length != that._inserts.Length)
+                return false;
+            return !_inserts.Where((t, index) => null != t ^ null != that._inserts[index] || t != null && that._inserts[index] != null && !t.Equals(that._inserts[index]))
+                           .Any();
         }
 
-        string IFormattable.ToString(string format, IFormatProvider formatProvider) {
+        string System.IFormattable.ToString(string format, System.IFormatProvider formatProvider) {
             if (this.IsEmpty)
                 return string.Empty;
-            format = ResourceManager != null ? ResourceManager.GetString(Id, formatProvider as System.Globalization.CultureInfo) : Id;
-            if (Inserts == null || Inserts.Length <= 0)
+            format = _resourceManager != null ? _resourceManager.GetString(Id, formatProvider as System.Globalization.CultureInfo) : Id;
+            if (_inserts == null || _inserts.Length <= 0)
                 return format;
-            var objArray = new object[Inserts.Length];
-            for (var index = 0; index < Inserts.Length; ++index) {
-                var badObject = Inserts[index];
-                var obj = !(badObject is ILocalizedString) ? LocalizedString.TranslateObject(badObject, formatProvider) : ((ILocalizedString) badObject).LocalizedString;
+            var objArray = new object[_inserts.Length];
+            for (var index = 0; index < _inserts.Length; ++index) {
+                var badObject = _inserts[index];
+                var obj = (badObject as ILocalizedString)?.LocalizedString ?? LocalizedString.TranslateObject(badObject, formatProvider);
                 objArray[index] = obj;
             }
             try {
                 return string.Format(formatProvider, format, objArray);
-            } catch (FormatException ex) {
-                if (DeserializedFallback != null)
-                    return string.Format(formatProvider, DeserializedFallback, objArray);
+            } catch (System.FormatException ex) {
+                if (_deserializedFallback != null)
+                    return string.Format(formatProvider, _deserializedFallback, objArray);
                 throw;
             }
         }
@@ -153,15 +146,15 @@ namespace Butler.Schema.Data.Common {
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.LinkDemand, Flags = System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter)]
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) {
             object[] objArray = null;
-            if (Inserts != null && Inserts.Length > 0) {
-                objArray = new object[Inserts.Length];
-                for (var index = 0; index < Inserts.Length; ++index) {
-                    var badObject = Inserts[index];
+            if (_inserts != null && _inserts.Length > 0) {
+                objArray = new object[_inserts.Length];
+                for (var index = 0; index < _inserts.Length; ++index) {
+                    var badObject = _inserts[index];
                     if (badObject != null) {
                         if (badObject is ILocalizedString)
                             badObject = ((ILocalizedString) badObject).LocalizedString;
-                        else if (!IntrospectionExtensions.GetTypeInfo(badObject.GetType())
-                                                         .IsSerializable && !(badObject is System.Runtime.Serialization.ISerializable)) {
+                        else if (!System.Reflection.IntrospectionExtensions.GetTypeInfo(badObject.GetType())
+                                        .IsSerializable && !(badObject is System.Runtime.Serialization.ISerializable)) {
                             var obj = LocalizedString.TranslateObject(badObject, System.Globalization.CultureInfo.InvariantCulture);
                             badObject = obj != badObject ? obj : badObject.ToString();
                         }
@@ -170,22 +163,16 @@ namespace Butler.Schema.Data.Common {
                 }
             }
             info.AddValue("inserts", objArray);
-            if (ResourceManager != null) {
-                info.AddValue("baseName", ResourceManager.BaseName);
-                info.AddValue("assemblyName", ResourceManager.AssemblyName);
+            if (_resourceManager != null) {
+                info.AddValue("baseName", _resourceManager.BaseName);
+                info.AddValue("assemblyName", _resourceManager.AssemblyName);
                 info.AddValue("id", Id);
-                info.AddValue("stringId", stringId);
+                info.AddValue("stringId", _stringId);
                 info.AddValue("showStringIdInUIIfError", this.ShowStringIdInUIIfError);
                 info.AddValue("showAssistanceInfoInUIIfError", this.ShowAssistanceInfoInUIIfError);
-                if (DeserializedFallback == null)
-                    info.AddValue("fallback", ResourceManager.GetString(Id, System.Globalization.CultureInfo.InvariantCulture));
-                else
-                    info.AddValue("fallback", DeserializedFallback);
+                info.AddValue("fallback", _deserializedFallback ?? _resourceManager.GetString(Id, System.Globalization.CultureInfo.InvariantCulture));
             } else {
-                if (DeserializedFallback == null)
-                    info.AddValue("fallback", Id);
-                else
-                    info.AddValue("fallback", DeserializedFallback);
+                info.AddValue("fallback", _deserializedFallback ?? Id);
                 info.AddValue("baseName", string.Empty);
             }
         }
@@ -209,7 +196,7 @@ namespace Butler.Schema.Data.Common {
                 separator = string.Empty;
             var inserts = new object[value.Length + 1];
             inserts[0] = separator;
-            Array.Copy(value, 0, inserts, 1, value.Length);
+            System.Array.Copy(value, 0, inserts, 1, value.Length);
             var stringBuilder = new System.Text.StringBuilder(6*value.Length);
             stringBuilder.Append("{");
             for (var index = 1; index < value.Length; ++index) {
@@ -221,23 +208,23 @@ namespace Butler.Schema.Data.Common {
         }
 
         public LocalizedString RecreateWithNewParams(params object[] inserts) {
-            return new LocalizedString(Id, this.StringId, this.ShowStringIdInUIIfError, this.ShowAssistanceInfoInUIIfError, ResourceManager, inserts);
+            return new LocalizedString(Id, this.StringId, this.ShowStringIdInUIIfError, this.ShowAssistanceInfoInUIIfError, _resourceManager, inserts);
         }
 
         public override string ToString() {
-            return ((IFormattable) this).ToString(null, null);
+            return ((System.IFormattable) this).ToString(null, null);
         }
 
-        public string ToString(IFormatProvider formatProvider) {
-            return ((IFormattable) this).ToString(null, formatProvider);
+        public string ToString(System.IFormatProvider formatProvider) {
+            return ((System.IFormattable) this).ToString(null, formatProvider);
         }
 
         public override int GetHashCode() {
-            var num = (Id != null ? Id.GetHashCode() : 0) ^ (ResourceManager != null ? ResourceManager.GetHashCode() : 0);
-            if (Inserts != null) {
-                for (var index = 0; index < Inserts.Length; ++index) {
-                    num = num ^ index ^ (Inserts[index] != null ? Inserts[index].GetHashCode() : 0);
-                }
+            var num = (Id?.GetHashCode() ?? 0) ^ (_resourceManager?.GetHashCode() ?? 0);
+            if (_inserts == null)
+                return num;
+            for (var index = 0; index < _inserts.Length; ++index) {
+                num = num ^ index ^ (_inserts[index] != null ? _inserts[index].GetHashCode() : 0);
             }
             return num;
         }
@@ -248,18 +235,18 @@ namespace Butler.Schema.Data.Common {
             return false;
         }
 
-        private static object TranslateObject(object badObject, IFormatProvider formatProvider) {
-            if (badObject is Exception)
-                return ((Exception) badObject).Message;
+        private static object TranslateObject(object badObject, System.IFormatProvider formatProvider) {
+            if (badObject is System.Exception)
+                return ((System.Exception) badObject).Message;
             return badObject;
         }
 
         public static readonly LocalizedString Empty = new LocalizedString();
-        private readonly string DeserializedFallback;
+        private readonly string _deserializedFallback;
         internal readonly string Id;
-        private readonly object[] Inserts;
-        private readonly ExchangeResourceManager ResourceManager;
-        private readonly string stringId;
+        private readonly object[] _inserts;
+        private readonly ExchangeResourceManager _resourceManager;
+        private readonly string _stringId;
 
     }
 

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    public abstract class ComplexHeader : Header, IEnumerable<MimeParameter>, System.Collections.IEnumerable {
+    public abstract class ComplexHeader : Header, System.Collections.Generic.IEnumerable<MimeParameter>, System.Collections.IEnumerable {
 
         internal ComplexHeader(string name, HeaderId headerId)
             : base(name, headerId) {}
@@ -12,7 +10,7 @@ namespace Butler.Schema.Data.Mime {
         public MimeParameter this[string name] {
             get {
                 if (name == null)
-                    throw new ArgumentNullException(nameof(name));
+                    throw new System.ArgumentNullException(nameof(name));
                 for (var mimeNode = this.FirstChild; mimeNode != null; mimeNode = mimeNode.NextSibling) {
                     var mimeParameter = mimeNode as MimeParameter;
                     if (mimeParameter.IsName(name))
@@ -22,7 +20,7 @@ namespace Butler.Schema.Data.Mime {
             }
         }
 
-        IEnumerator<MimeParameter> IEnumerable<MimeParameter>.GetEnumerator() {
+        System.Collections.Generic.IEnumerator<MimeParameter> System.Collections.Generic.IEnumerable<MimeParameter>.GetEnumerator() {
             return new Enumerator<MimeParameter>(this);
         }
 
@@ -61,7 +59,7 @@ namespace Butler.Schema.Data.Mime {
             if (str != null) {
                 var val2 = Internal.ByteString.StringToBytesCount(str, encodingOptions.AllowUTF8) + 1;
                 if (scratchBuffer == null || scratchBuffer.Length < val2)
-                    scratchBuffer = new byte[Math.Max(998, val2)];
+                    scratchBuffer = new byte[System.Math.Max(998, val2)];
                 scratchBuffer[0] = 32;
                 var num2 = Internal.ByteString.StringToBytes(str, scratchBuffer, 1, encodingOptions.AllowUTF8);
                 stream.Write(scratchBuffer, 0, num2 + 1);
@@ -74,7 +72,7 @@ namespace Butler.Schema.Data.Mime {
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
             var mimeParameter1 = newChild as MimeParameter;
             if (mimeParameter1 == null)
-                throw new ArgumentException(Resources.Strings.NewChildNotMimeParameter, nameof(newChild));
+                throw new System.ArgumentException(Resources.Strings.NewChildNotMimeParameter, nameof(newChild));
             var mimeParameter2 = this[mimeParameter1.Name];
             if (mimeParameter2 != null) {
                 if (mimeParameter2 == refChild)

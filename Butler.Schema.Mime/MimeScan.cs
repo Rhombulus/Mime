@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -449,7 +448,7 @@ namespace Butler.Schema.Data.Mime {
         };
 
 
-        [Flags]
+        [System.Flags]
         internal enum Token : short {
 
             Ctl = (short) 1,

@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
     public partial class MimePart {
 
-        public struct PartSubtree : IEnumerable<MimePart> {
+        public struct PartSubtree : System.Collections.Generic.IEnumerable<MimePart> {
 
             internal PartSubtree(MimePart part) {
                 _part = part;
             }
 
-            IEnumerator<MimePart> IEnumerable<MimePart>.GetEnumerator() {
+            System.Collections.Generic.IEnumerator<MimePart> System.Collections.Generic.IEnumerable<MimePart>.GetEnumerator() {
                 return new SubtreeEnumerator(_part, SubtreeEnumerationOptions.None, true);
             }
 

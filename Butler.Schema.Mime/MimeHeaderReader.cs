@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -35,7 +34,7 @@ namespace Butler.Schema.Data.Mime {
         public MimeAddressReader AddressReader {
             get {
                 if (!this.IsAddressHeader)
-                    throw new InvalidOperationException(Resources.Strings.HeaderCannotHaveAddresses);
+                    throw new System.InvalidOperationException(Resources.Strings.HeaderCannotHaveAddresses);
                 if (this.MimeReader.ReaderState == MimeReaderState.HeaderStart)
                     this.MimeReader.TryCompleteCurrentHeader(true);
                 return new MimeAddressReader(this.MimeReader, true);
@@ -55,7 +54,7 @@ namespace Butler.Schema.Data.Mime {
         public MimeParameterReader ParameterReader {
             get {
                 if (!this.CanHaveParameters)
-                    throw new InvalidOperationException(Resources.Strings.HeaderCannotHaveParameters);
+                    throw new System.InvalidOperationException(Resources.Strings.HeaderCannotHaveParameters);
                 if (this.MimeReader.ReaderState == MimeReaderState.HeaderStart)
                     this.MimeReader.TryCompleteCurrentHeader(true);
                 return new MimeParameterReader(this.MimeReader);
@@ -72,12 +71,12 @@ namespace Butler.Schema.Data.Mime {
             }
         }
 
-        public DateTime ReadValueAsDateTime() {
+        public System.DateTime ReadValueAsDateTime() {
             this.AssertGood(true);
             if (this.MimeReader.ReaderState == MimeReaderState.HeaderStart)
                 this.MimeReader.TryCompleteCurrentHeader(true);
             if (this.MimeReader.CurrentHeaderObject == null)
-                return DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
+                return System.DateTime.SpecifyKind(System.DateTime.MinValue, System.DateTimeKind.Utc);
             var dateHeader = this.MimeReader.CurrentHeaderObject as DateHeader;
             if (dateHeader != null)
                 return dateHeader.DateTime;
@@ -120,15 +119,15 @@ namespace Butler.Schema.Data.Mime {
 
         private void AssertGood(bool checkPositionedOnHeader) {
             if (this.MimeReader == null)
-                throw new NotSupportedException(Resources.Strings.HeaderReaderNotInitialized);
+                throw new System.NotSupportedException(Resources.Strings.HeaderReaderNotInitialized);
             this.MimeReader.AssertGoodToUse(true, true);
             if (
                 !MimeReader.StateIsOneOf(
                     this.MimeReader.ReaderState,
                     MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
-                throw new NotSupportedException(Resources.Strings.HeaderReaderCannotBeUsedInThisState);
+                throw new System.NotSupportedException(Resources.Strings.HeaderReaderCannotBeUsedInThisState);
             if (checkPositionedOnHeader && MimeReader.StateIsOneOf(this.MimeReader.ReaderState, MimeReaderState.PartStart | MimeReaderState.EndOfHeaders))
-                throw new InvalidOperationException(Resources.Strings.HeaderReaderIsNotPositionedOnAHeader);
+                throw new System.InvalidOperationException(Resources.Strings.HeaderReaderIsNotPositionedOnAHeader);
         }
 
     }

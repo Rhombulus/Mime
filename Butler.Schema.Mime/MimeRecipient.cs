@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -10,7 +9,7 @@ namespace Butler.Schema.Data.Mime {
         public MimeRecipient(string displayName, string email)
             : base(displayName) {
             if (email == null)
-                throw new ArgumentNullException(nameof(email));
+                throw new System.ArgumentNullException(nameof(email));
             emailAddressFragments.Append(new MimeString(email));
         }
 
@@ -28,9 +27,9 @@ namespace Butler.Schema.Data.Mime {
             }
             set {
                 if (value == null)
-                    throw new ArgumentNullException(nameof(value));
+                    throw new System.ArgumentNullException(nameof(value));
                 if (!MimeAddressParser.IsWellFormedAddress(value, true))
-                    throw new ArgumentException("Address string must be well-formed", nameof(value));
+                    throw new System.ArgumentException("Address string must be well-formed", nameof(value));
                 emailAddressFragments.Reset();
                 emailAddressFragments.Append(new MimeString(value));
                 this.SetDirty();
@@ -68,12 +67,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var mimeRecipient = destination as MimeRecipient;
             if (mimeRecipient == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             base.CopyTo(destination);
             mimeRecipient.emailAddressFragments = emailAddressFragments.Clone();
         }
@@ -89,7 +88,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
-            throw new NotSupportedException(Resources.Strings.RecipientsCannotHaveChildNodes);
+            throw new System.NotSupportedException(Resources.Strings.RecipientsCannotHaveChildNodes);
         }
 
         internal override long WriteTo(System.IO.Stream stream, EncodingOptions encodingOptions, MimeOutputFilter filter, ref MimeStringLength currentLineLength, ref byte[] scratchBuffer) {

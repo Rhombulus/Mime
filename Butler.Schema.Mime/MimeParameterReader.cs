@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -43,12 +42,12 @@ namespace Butler.Schema.Data.Mime {
 
         private void AssertGood(bool checkPositionedOnParameter) {
             if (reader == null)
-                throw new NotSupportedException(Resources.Strings.ParameterReaderNotInitialized);
+                throw new System.NotSupportedException(Resources.Strings.ParameterReaderNotInitialized);
             reader.AssertGoodToUse(true, true);
             if (reader.ReaderState != MimeReaderState.HeaderComplete || reader.CurrentHeaderObject == null || !(reader.CurrentHeaderObject is ComplexHeader))
-                throw new NotSupportedException(Resources.Strings.ReaderIsNotPositionedOnHeaderWithParameters);
+                throw new System.NotSupportedException(Resources.Strings.ReaderIsNotPositionedOnHeaderWithParameters);
             if (checkPositionedOnParameter && !reader.IsCurrentChildValid(true))
-                throw new InvalidOperationException(Resources.Strings.ParameterReaderIsNotPositionedOnParameter);
+                throw new System.InvalidOperationException(Resources.Strings.ParameterReaderIsNotPositionedOnParameter);
         }
 
         private readonly MimeReader reader;

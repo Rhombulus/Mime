@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -304,7 +303,7 @@ namespace Butler.Schema.Data.Mime {
             if (parseStack == null || this.Depth == parseStack.Length) {
                 var parseLevelArray = new ParseLevel[parseStack == null ? 4 : parseStack.Length*2];
                 if (parseStack != null)
-                    Array.Copy(parseStack, 0, parseLevelArray, 0, this.Depth);
+                    System.Array.Copy(parseStack, 0, parseLevelArray, 0, this.Depth);
                 for (var index = 0; index < this.Depth; ++index) {
                     parseStack[index] = new ParseLevel();
                 }
@@ -508,11 +507,11 @@ namespace Butler.Schema.Data.Mime {
                     var data = boundaryValue.GetData(out offset, out count);
                     var numArray = new byte[MimeString.TwoDashes.Length + count + MimeString.TwoDashes.Length];
                     var length = MimeString.TwoDashes.Length;
-                    Buffer.BlockCopy(MimeString.TwoDashes, 0, numArray, 0, length);
-                    Buffer.BlockCopy(data, offset, numArray, length, count);
+                    System.Buffer.BlockCopy(MimeString.TwoDashes, 0, numArray, 0, length);
+                    System.Buffer.BlockCopy(data, offset, numArray, length, count);
                     var num1 = length + count;
                     boundaryCrc = Internal.ByteString.ComputeCrc(numArray, 0, num1);
-                    Buffer.BlockCopy(MimeString.TwoDashes, 0, numArray, num1, MimeString.TwoDashes.Length);
+                    System.Buffer.BlockCopy(MimeString.TwoDashes, 0, numArray, num1, MimeString.TwoDashes.Length);
                     var num2 = num1 + MimeString.TwoDashes.Length;
                     endBoundaryCrc = Internal.ByteString.ComputeCrc(numArray, 0, num2);
                     this.boundaryValue = new MimeString(numArray, 0, num2);

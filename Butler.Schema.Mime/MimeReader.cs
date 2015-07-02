@@ -1,20 +1,19 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    public class MimeReader : IDisposable {
+    public class MimeReader : System.IDisposable {
 
         public MimeReader(System.IO.Stream mime)
             : this(mime, true, DecodingOptions.Default, MimeLimits.Unlimited, false, true) {
             if (mime == null)
-                throw new ArgumentNullException(nameof(mime));
+                throw new System.ArgumentNullException(nameof(mime));
         }
 
         public MimeReader(System.IO.Stream mime, bool inferMime, DecodingOptions decodingOptions, MimeLimits mimeLimits)
             : this(mime, inferMime, decodingOptions, mimeLimits, false, true) {
             if (mime == null)
-                throw new ArgumentNullException(nameof(mime));
+                throw new System.ArgumentNullException(nameof(mime));
         }
 
         internal MimeReader(System.IO.Stream mime, bool inferMime, DecodingOptions decodingOptions, MimeLimits mimeLimits, bool parseEmbeddedMessages, bool parseInline)
@@ -22,7 +21,7 @@ namespace Butler.Schema.Data.Mime {
 
         internal MimeReader(System.IO.Stream mime, bool inferMime, DecodingOptions decodingOptions, MimeLimits mimeLimits, bool parseEmbeddedMessages, bool parseInline, bool expectBinaryContent) {
             if (mime != null && !mime.CanRead)
-                throw new ArgumentException(Resources.Strings.StreamMustAllowRead, nameof(mime));
+                throw new System.ArgumentException(Resources.Strings.StreamMustAllowRead, nameof(mime));
             mimeStream = mime;
             parser = new MimeParser(true, parseInline, expectBinaryContent);
             data = new byte[5120];
@@ -54,7 +53,7 @@ namespace Butler.Schema.Data.Mime {
 
         internal MimeReader(IMimeHandlerInternal handler, bool inferMime, DecodingOptions decodingOptions, MimeLimits mimeLimits, bool parseInline) {
             if (handler == null)
-                throw new ArgumentNullException(nameof(handler));
+                throw new System.ArgumentNullException(nameof(handler));
             this.handler = handler;
             parser = new MimeParser(true, parseInline, true);
             data = new byte[5120];
@@ -118,7 +117,7 @@ namespace Butler.Schema.Data.Mime {
             get {
                 this.AssertGoodToUse(true, true);
                 if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete | MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 return new MimeHeaderReader(this);
             }
         }
@@ -127,7 +126,7 @@ namespace Butler.Schema.Data.Mime {
             get {
                 this.AssertGoodToUse(false, true);
                 if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete))
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 return currentHeaderId;
             }
         }
@@ -136,7 +135,7 @@ namespace Butler.Schema.Data.Mime {
             get {
                 this.AssertGoodToUse(false, true);
                 if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete))
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 return currentHeaderName;
             }
         }
@@ -147,7 +146,7 @@ namespace Butler.Schema.Data.Mime {
                 if (this.ReaderState == MimeReaderState.InlineStart)
                     return false;
                 if (this.ReaderState != MimeReaderState.EndOfHeaders)
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 if (currentPartMajorType == MajorContentType.Multipart)
                     return parser.IsMime;
                 return false;
@@ -160,7 +159,7 @@ namespace Butler.Schema.Data.Mime {
                 if (this.ReaderState == MimeReaderState.InlineStart)
                     return false;
                 if (this.ReaderState != MimeReaderState.EndOfHeaders)
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 if (currentPartMajorType == MajorContentType.MessageRfc822)
                     return parser.IsMime;
                 return false;
@@ -173,7 +172,7 @@ namespace Butler.Schema.Data.Mime {
                 if (this.ReaderState == MimeReaderState.InlineStart)
                     return "application/octet-stream";
                 if (this.ReaderState != MimeReaderState.EndOfHeaders)
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 return currentPartContentType;
             }
         }
@@ -182,7 +181,7 @@ namespace Butler.Schema.Data.Mime {
             get {
                 this.AssertGoodToUse(false, true);
                 if (this.ReaderState != MimeReaderState.EndOfHeaders && this.ReaderState != MimeReaderState.InlineStart)
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 return currentPartContentTransferEncoding;
             }
         }
@@ -191,7 +190,7 @@ namespace Butler.Schema.Data.Mime {
             get {
                 this.AssertGoodToUse(false, true);
                 if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.Start | MimeReaderState.End))
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 return MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.InlineStart | MimeReaderState.InlineBody | MimeReaderState.InlineEnd);
             }
         }
@@ -200,7 +199,7 @@ namespace Butler.Schema.Data.Mime {
             get {
                 this.AssertGoodToUse(false, true);
                 if (!this.IsInline)
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 return inlineFileName.ToString();
             }
         }
@@ -218,7 +217,7 @@ namespace Butler.Schema.Data.Mime {
 
         public void Dispose() {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
+            System.GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing) {
@@ -226,7 +225,7 @@ namespace Butler.Schema.Data.Mime {
                 return;
             if (disposing) {
                 if (childReader != null)
-                    throw new InvalidOperationException(Resources.Strings.EmbeddedMessageReaderNeedsToBeClosedFirst);
+                    throw new System.InvalidOperationException(Resources.Strings.EmbeddedMessageReaderNeedsToBeClosedFirst);
                 if (parentReader == null) {
                     if (mimeStream != null)
                         mimeStream.Dispose();
@@ -281,7 +280,7 @@ namespace Butler.Schema.Data.Mime {
                 return false;
             if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.Start | MimeReaderState.EndOfHeaders)) {
                 if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 do {
                     this.TryReachNextState();
                 } while (this.ReaderState != MimeReaderState.EndOfHeaders);
@@ -321,7 +320,7 @@ namespace Butler.Schema.Data.Mime {
             if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
                 return;
             if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
-                throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
             createHeader = false;
             do {
                 this.TryReachNextState();
@@ -333,7 +332,7 @@ namespace Butler.Schema.Data.Mime {
             if (MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart))
                 return false;
             if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
-                throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
             do {
                 this.TryReachNextState();
             } while (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.EndOfHeaders));
@@ -342,7 +341,7 @@ namespace Butler.Schema.Data.Mime {
 
         internal Header ReadHeaderObject() {
             if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
-                throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
             if (this.ReaderState == MimeReaderState.HeaderStart)
                 this.TryCompleteCurrentHeader(true);
             return this.CurrentHeaderObject;
@@ -398,7 +397,7 @@ namespace Butler.Schema.Data.Mime {
         internal HeaderList ReadHeaderList() {
             this.AssertGoodToUse(true, true);
             if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart))
-                throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
             var headerList = new HeaderList(null);
             if (this.ReaderState == MimeReaderState.InlineStart)
                 return headerList;
@@ -415,7 +414,7 @@ namespace Butler.Schema.Data.Mime {
         internal bool ReadNextDescendant(bool topLevel) {
             this.AssertGoodToUse(true, true);
             if (this.ReaderState != MimeReaderState.HeaderComplete)
-                throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
             if (topLevel) {
                 if (currentHeaderConsumed)
                     return false;
@@ -432,7 +431,7 @@ namespace Butler.Schema.Data.Mime {
                 return currentChild != null;
             }
             if (currentChild == null)
-                throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
             if (currentChildConsumed)
                 return false;
             currentGrandChild = currentGrandChild != null ? currentGrandChild.NextSibling : currentChild.FirstChild;
@@ -450,13 +449,13 @@ namespace Butler.Schema.Data.Mime {
         public void CopyOuterContentTo(System.IO.Stream stream) {
             this.AssertGoodToUse(false, true);
             if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
+                throw new System.ArgumentNullException(nameof(stream));
             if (!stream.CanWrite)
-                throw new ArgumentException(Resources.Strings.StreamMustSupportWriting, nameof(stream));
+                throw new System.ArgumentException(Resources.Strings.StreamMustSupportWriting, nameof(stream));
             if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart))
-                throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
             if (outerContentStream != null)
-                throw new NotSupportedException(Resources.Strings.OnlyOneOuterContentPushStreamAllowed);
+                throw new System.NotSupportedException(Resources.Strings.OnlyOneOuterContentPushStreamAllowed);
             outerContentStream = stream;
             outerContentDepth = depth;
         }
@@ -470,9 +469,9 @@ namespace Butler.Schema.Data.Mime {
                 this.TryInitializeReadContent(false);
             }
             if (contentStream != null)
-                throw new NotSupportedException(Resources.Strings.CannotReadContentWhileStreamIsActive);
+                throw new System.NotSupportedException(Resources.Strings.CannotReadContentWhileStreamIsActive);
             if (!readRawData)
-                throw new NotSupportedException(Resources.Strings.CannotMixReadRawContentAndReadContent);
+                throw new System.NotSupportedException(Resources.Strings.CannotMixReadRawContentAndReadContent);
             int readCount;
             this.ReadPartData(buffer, offset, count, out readCount);
             return readCount;
@@ -488,9 +487,9 @@ namespace Butler.Schema.Data.Mime {
                     throw new MimeException(Resources.Strings.CannotDecodeContentStream);
             }
             if (contentStream != null)
-                throw new NotSupportedException(Resources.Strings.CannotReadContentWhileStreamIsActive);
+                throw new System.NotSupportedException(Resources.Strings.CannotReadContentWhileStreamIsActive);
             if (readRawData)
-                throw new NotSupportedException(Resources.Strings.CannotMixReadRawContentAndReadContent);
+                throw new System.NotSupportedException(Resources.Strings.CannotMixReadRawContentAndReadContent);
             int readCount;
             this.ReadPartData(buffer, offset, count, out readCount);
             return readCount;
@@ -524,7 +523,7 @@ namespace Butler.Schema.Data.Mime {
         private bool TryInitializeReadContent(bool decode) {
             if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.EndOfHeaders | MimeReaderState.InlineStart)) {
                 if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 if (this.ReaderState == MimeReaderState.PartStart && enableReadingOuterContent) {
                     parser.SetStreamMode();
                     this.ReaderState = MimeReaderState.PartBody;
@@ -573,13 +572,13 @@ namespace Butler.Schema.Data.Mime {
             this.AssertGoodToUse(true, true);
             if (this.ReaderState != MimeReaderState.EndOfHeaders) {
                 if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderComplete))
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 do {
                     this.TryReachNextState();
                 } while (this.ReaderState != MimeReaderState.EndOfHeaders);
             }
             if (currentPartMajorType != MajorContentType.MessageRfc822 || !parser.IsMime)
-                throw new InvalidOperationException(Resources.Strings.CurrentPartIsNotEmbeddedMessage);
+                throw new System.InvalidOperationException(Resources.Strings.CurrentPartIsNotEmbeddedMessage);
             parser.SetContentType(MajorContentType.MessageRfc822, new MimeString());
             this.TryReachNextState();
             childReader = new MimeReader(this);
@@ -632,7 +631,7 @@ namespace Butler.Schema.Data.Mime {
             if (topLevel) {
                 mimeRecipient = currentChild as MimeRecipient;
                 if (mimeRecipient == null)
-                    throw new NotSupportedException(Resources.Strings.CurrentAddressIsGroupAndCannotHaveEmail);
+                    throw new System.NotSupportedException(Resources.Strings.CurrentAddressIsGroupAndCannotHaveEmail);
             } else
                 mimeRecipient = currentGrandChild as MimeRecipient;
             if (mimeRecipient != null)
@@ -656,8 +655,8 @@ namespace Butler.Schema.Data.Mime {
             this.CompactDataBuffer();
             int count;
             if (length != 0) {
-                count = Math.Min(length, data.Length - (dataOffset + dataCount) - 2);
-                Buffer.BlockCopy(buffer, offset, data, dataOffset + dataCount, count);
+                count = System.Math.Min(length, data.Length - (dataOffset + dataCount) - 2);
+                System.Buffer.BlockCopy(buffer, offset, data, dataOffset + dataCount, count);
                 length -= count;
                 dataCount += count;
             } else
@@ -686,14 +685,14 @@ namespace Butler.Schema.Data.Mime {
             else {
                 if (data.Length - dataOffset + dataCount >= data.Length/2)
                     return;
-                Buffer.BlockCopy(data, dataOffset, data, 0, dataCount);
+                System.Buffer.BlockCopy(data, dataOffset, data, 0, dataCount);
                 dataOffset = 0;
             }
         }
 
         internal void Write(byte[] buffer, int offset, int length) {
             if (dataEOF)
-                throw new InvalidOperationException(Resources.Strings.CannotWriteAfterFlush);
+                throw new System.InvalidOperationException(Resources.Strings.CannotWriteAfterFlush);
             while (true) {
                 while (currentToken.Id == MimeTokenId.None && this.ReaderState != MimeReaderState.Start) {
                     this.ParseAndCheckSize();
@@ -744,7 +743,7 @@ namespace Butler.Schema.Data.Mime {
                     handler.PartStart(this.ReaderState == MimeReaderState.InlineStart, this.ReaderState == MimeReaderState.InlineStart ? this.InlineFileName : null, out partParseOption, out outerContentWriteStream);
                     if (outerContentWriteStream != null) {
                         if (outerContentStream != null)
-                            throw new NotSupportedException(Resources.Strings.MimeHandlerErrorMoreThanOneOuterContentPushStream);
+                            throw new System.NotSupportedException(Resources.Strings.MimeHandlerErrorMoreThanOneOuterContentPushStream);
                         outerContentStream = outerContentWriteStream;
                         outerContentDepth = depth;
                     }
@@ -780,7 +779,7 @@ namespace Butler.Schema.Data.Mime {
                     if (partContentParseOption == PartContentParseOptionInternal.ParseEmbeddedMessage) {
                         if (currentPartMajorType == MajorContentType.MessageRfc822)
                             break;
-                        throw new NotSupportedException(Resources.Strings.MimeHandlerErrorNotEmbeddedMessage);
+                        throw new System.NotSupportedException(Resources.Strings.MimeHandlerErrorNotEmbeddedMessage);
                     }
                     if (currentPartMajorType == MajorContentType.MessageRfc822)
                         parser.SetContentType(MajorContentType.Other, new MimeString());
@@ -1027,7 +1026,7 @@ namespace Butler.Schema.Data.Mime {
                     this.ReaderState = MimeReaderState.HeaderComplete;
                     return true;
                 default:
-                    throw new InvalidOperationException();
+                    throw new System.InvalidOperationException();
             }
             return false;
         }
@@ -1230,10 +1229,10 @@ namespace Butler.Schema.Data.Mime {
                     offset += outputUsed;
                     readCount += outputUsed;
                 } else {
-                    inputUsed = outputUsed = Math.Min(count, currentToken.Length);
+                    inputUsed = outputUsed = System.Math.Min(count, currentToken.Length);
                     if (outputUsed != 0) {
                         if (buffer != null) {
-                            Buffer.BlockCopy(data, dataOffset, buffer, offset, outputUsed);
+                            System.Buffer.BlockCopy(data, dataOffset, buffer, offset, outputUsed);
                             count -= outputUsed;
                             offset += outputUsed;
                         }
@@ -1271,11 +1270,11 @@ namespace Butler.Schema.Data.Mime {
 
         internal void AssertGoodToUse(bool pullModeOnly, bool noEmbeddedReader) {
             if (parser == null)
-                throw new ObjectDisposedException("MimeReader");
+                throw new System.ObjectDisposedException("MimeReader");
             if (pullModeOnly && mimeStream == null)
-                throw new ObjectDisposedException("MimeReader");
+                throw new System.ObjectDisposedException("MimeReader");
             if (noEmbeddedReader && childReader != null)
-                throw new InvalidOperationException(Resources.Strings.EmbeddedMessageReaderNeedsToBeClosedFirst);
+                throw new System.InvalidOperationException(Resources.Strings.EmbeddedMessageReaderNeedsToBeClosedFirst);
         }
 
         internal void SetEofMeansEndOfFile(bool eofMeansEndOfFile) {
@@ -1295,7 +1294,7 @@ namespace Butler.Schema.Data.Mime {
                 return false;
             if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.Start | MimeReaderState.EndOfHeaders | MimeReaderState.PartPrologue)) {
                 if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete))
-                    throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                    throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
                 while (this.TryReachNextState()) {
                     if (this.ReaderState == MimeReaderState.EndOfHeaders)
                         goto label_8;
@@ -1338,7 +1337,7 @@ namespace Butler.Schema.Data.Mime {
             this.AssertGoodToUse(false, true);
             if (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart) &&
                 (!MimeReader.StateIsOneOf(this.ReaderState, MimeReaderState.HeaderStart | MimeReaderState.HeaderIncomplete | MimeReaderState.HeaderComplete) || this.headerList == null))
-                throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
             if (this.ReaderState == MimeReaderState.InlineStart)
                 return new HeaderList(null);
             HeaderList headerList;
@@ -1427,27 +1426,27 @@ namespace Butler.Schema.Data.Mime {
 
             public override long Length {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
             public override long Position {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
                 set {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
             public override int Read(byte[] buffer, int offset, int count) {
                 MimeCommon.CheckBufferArguments(buffer, offset, count);
                 if (reader.contentStream != this)
-                    throw new NotSupportedException(Resources.Strings.StreamNoLongerValid);
+                    throw new System.NotSupportedException(Resources.Strings.StreamNoLongerValid);
                 if (!MimeReader.StateIsOneOf(reader.ReaderState, MimeReaderState.PartBody | MimeReaderState.InlineBody)) {
                     if (MimeReader.StateIsOneOf(reader.ReaderState, MimeReaderState.PartEnd | MimeReaderState.InlineEnd))
                         return 0;
-                    throw new NotSupportedException(Resources.Strings.StreamNoLongerValid);
+                    throw new System.NotSupportedException(Resources.Strings.StreamNoLongerValid);
                 }
                 int readCount;
                 reader.ReadPartData(buffer, offset, count, out readCount);
@@ -1455,19 +1454,19 @@ namespace Butler.Schema.Data.Mime {
             }
 
             public override void Write(byte[] buffer, int offset, int count) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override long Seek(long offset, System.IO.SeekOrigin origin) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void Flush() {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void SetLength(long value) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             protected override void Dispose(bool disposing) {

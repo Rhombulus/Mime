@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    [Flags]
+    [System.Flags]
     public enum MimeComplianceStatus {
 
         Compliant = 0,

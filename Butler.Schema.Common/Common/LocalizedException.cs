@@ -1,17 +1,14 @@
-﻿using System;
-using System.Linq;
+﻿namespace Butler.Schema.Data.Common {
 
-namespace Butler.Schema.Data.Common {
-
-    [Serializable]
-    public class LocalizedException : Exception, ILocalizedException, ILocalizedString {
+    [System.Serializable]
+    public class LocalizedException : System.Exception, ILocalizedException, ILocalizedString {
 
         public LocalizedException(LocalizedString localizedString)
             : this(localizedString, null) {
             LocalizedException.TraceException("Created LocalizedException({0})", (object) localizedString);
         }
 
-        public LocalizedException(LocalizedString localizedString, Exception innerException)
+        public LocalizedException(LocalizedString localizedString, System.Exception innerException)
             : base(localizedString, innerException) {
             this.LocalizedString = localizedString;
             LocalizedException.TraceException("Created LocalizedException({0}, innerException)", (object) localizedString);
@@ -25,7 +22,7 @@ namespace Butler.Schema.Data.Common {
 
         public override string Message => this.LocalizedString.ToString(this.FormatProvider);
 
-        public IFormatProvider FormatProvider {
+        public System.IFormatProvider FormatProvider {
             get {
                 return formatProvider;
             }
@@ -53,7 +50,7 @@ namespace Butler.Schema.Data.Common {
             TraceExceptionCallback(formatString, formatObjects);
         }
 
-        public static int GenerateErrorCode(Exception e) {
+        public static int GenerateErrorCode(System.Exception e) {
             var num1 = LocalizedException.InternalGenerateErrorCode(e);
             var num2 = 0;
             if (e.InnerException != null) {
@@ -65,7 +62,7 @@ namespace Butler.Schema.Data.Common {
             return num1 ^ num2;
         }
 
-        private static int InternalGenerateErrorCode(Exception e) {
+        private static int InternalGenerateErrorCode(System.Exception e) {
             var hashCode1 = new System.Diagnostics.StackTrace(e).ToString()
                                                                 .GetHashCode();
             var hashCode2 = e.GetType()
@@ -84,7 +81,7 @@ namespace Butler.Schema.Data.Common {
         }
 
         internal static TraceExceptionDelegate TraceExceptionCallback;
-        private IFormatProvider formatProvider;
+        private System.IFormatProvider formatProvider;
 
 
         internal delegate void TraceExceptionDelegate(string formatString, params object[] formatObjects);

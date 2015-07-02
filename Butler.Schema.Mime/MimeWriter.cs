@@ -1,18 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    public class MimeWriter : IDisposable {
+    public class MimeWriter : System.IDisposable {
 
         public MimeWriter(System.IO.Stream data)
             : this(data, true, MimeCommon.DefaultEncodingOptions) {}
 
         public MimeWriter(System.IO.Stream data, bool forceMime, EncodingOptions encodingOptions) {
             if (data == null)
-                throw new ArgumentNullException(nameof(data));
+                throw new System.ArgumentNullException(nameof(data));
             if (!data.CanWrite)
-                throw new ArgumentException("Stream must support writing", nameof(data));
+                throw new System.ArgumentException("Stream must support writing", nameof(data));
             this.forceMime = forceMime;
             this.data = data;
             this.encodingOptions = encodingOptions;
@@ -64,7 +63,7 @@ namespace Butler.Schema.Data.Mime {
 
         public void Dispose() {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
+            System.GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing) {
@@ -104,10 +103,10 @@ namespace Butler.Schema.Data.Mime {
 
         public void WritePart(MimeReader reader) {
             if (reader == null)
-                throw new ArgumentNullException(nameof(reader));
+                throw new System.ArgumentNullException(nameof(reader));
             this.AssertOpen();
             if (!MimeReader.StateIsOneOf(reader.ReaderState, MimeReaderState.PartStart | MimeReaderState.InlineStart))
-                throw new InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
+                throw new System.InvalidOperationException(Resources.Strings.OperationNotValidInThisReaderState);
             this.StartPart();
             var headerReader = reader.HeaderReader;
             while (headerReader.ReadNextHeader())
@@ -146,10 +145,10 @@ namespace Butler.Schema.Data.Mime {
 
         public void WriteContent(MimeReader reader) {
             if (reader == null)
-                throw new ArgumentNullException(nameof(reader));
+                throw new System.ArgumentNullException(nameof(reader));
             this.AssertOpen();
             if (contentWritten)
-                throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
             using (var contentReadStream = reader.GetRawContentReadStream()) {
                 if (contentReadStream == null)
                     return;
@@ -171,9 +170,9 @@ namespace Butler.Schema.Data.Mime {
         public void WriteHeaderValue(string value) {
             this.AssertOpen();
             if (headerValueWritten)
-                throw new InvalidOperationException(Resources.Strings.CannotWriteHeaderValueMoreThanOnce);
+                throw new System.InvalidOperationException(Resources.Strings.CannotWriteHeaderValueMoreThanOnce);
             if (lastHeader == null)
-                throw new InvalidOperationException(Resources.Strings.CannotWriteHeaderValueHere);
+                throw new System.InvalidOperationException(Resources.Strings.CannotWriteHeaderValueHere);
             headerValueWritten = true;
             if (value == null)
                 return;
@@ -183,17 +182,17 @@ namespace Butler.Schema.Data.Mime {
                 lastHeader.Value = value;
         }
 
-        public void WriteHeaderValue(DateTime value) {
+        public void WriteHeaderValue(System.DateTime value) {
             this.AssertOpen();
             if (headerValueWritten)
-                throw new InvalidOperationException(Resources.Strings.CannotWriteHeaderValueMoreThanOnce);
+                throw new System.InvalidOperationException(Resources.Strings.CannotWriteHeaderValueMoreThanOnce);
             if (lastHeader == null)
-                throw new InvalidOperationException(Resources.Strings.CannotWriteHeaderValueHere);
+                throw new System.InvalidOperationException(Resources.Strings.CannotWriteHeaderValueHere);
             headerValueWritten = true;
-            var timeZoneOffset = TimeSpan.Zero;
+            var timeZoneOffset = System.TimeSpan.Zero;
             var utcDateTime = value.ToUniversalTime();
-            if (value.Kind != DateTimeKind.Utc)
-                timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(value);
+            if (value.Kind != System.DateTimeKind.Utc)
+                timeZoneOffset = System.TimeZoneInfo.Local.GetUtcOffset(value);
             Header.WriteName(shimStream, lastHeader.Name, ref scratchBuffer);
             var currentLineLength = new MimeStringLength(0);
             DateHeader.WriteDateHeaderValue(shimStream, utcDateTime, timeZoneOffset, ref currentLineLength);
@@ -204,7 +203,7 @@ namespace Butler.Schema.Data.Mime {
             MimeCommon.CheckBufferArguments(buffer, offset, count);
             this.AssertOpen();
             if (contentWritten)
-                throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
             if (encodedPartContent != null)
                 encodedPartContent.Write(buffer, offset, count);
             else {
@@ -215,10 +214,10 @@ namespace Butler.Schema.Data.Mime {
 
         public void WriteContent(System.IO.Stream sourceStream) {
             if (sourceStream == null)
-                throw new ArgumentNullException("stream");
+                throw new System.ArgumentNullException("stream");
             this.AssertOpen();
             if (contentWritten)
-                throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
             var stream1 = encodedPartContent;
             System.IO.Stream stream2 = null;
             try {
@@ -240,16 +239,16 @@ namespace Butler.Schema.Data.Mime {
             MimeCommon.CheckBufferArguments(buffer, offset, count);
             this.AssertOpen();
             if (contentWritten)
-                throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
             (partContent ?? this.GetRawContentWriteStream()).Write(buffer, offset, count);
         }
 
         public void WriteRawContent(System.IO.Stream sourceStream) {
             if (sourceStream == null)
-                throw new ArgumentNullException("stream");
+                throw new System.ArgumentNullException("stream");
             this.AssertOpen();
             if (contentWritten)
-                throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
             var stream = partContent ?? this.GetRawContentWriteStream();
             var buffer = new byte[4096];
             int count;
@@ -281,7 +280,7 @@ namespace Butler.Schema.Data.Mime {
 
         internal void WriteMimeNode(MimeNode node) {
             if (node == null)
-                throw new ArgumentNullException(nameof(node));
+                throw new System.ArgumentNullException(nameof(node));
             var header1 = node as Header;
             if (header1 != null) {
                 this.WriteHeader(header1);
@@ -336,14 +335,14 @@ namespace Butler.Schema.Data.Mime {
 
         public void WriteParameter(string name, string value) {
             if (name == null)
-                throw new ArgumentNullException(nameof(name));
+                throw new System.ArgumentNullException(nameof(name));
             this.AssertOpen();
             this.WriteParameter(new MimeParameter(name, value));
         }
 
         public void StartGroup(string name) {
             if (name == null)
-                throw new ArgumentNullException(nameof(name));
+                throw new System.ArgumentNullException(nameof(name));
             this.AssertOpen();
             this.StartGroup(new MimeGroup(name));
         }
@@ -351,13 +350,13 @@ namespace Butler.Schema.Data.Mime {
         public void EndGroup() {
             this.AssertOpen();
             if (state != MimeWriteState.GroupRecipients)
-                throw new InvalidOperationException(Resources.Strings.CannotWriteGroupEndHere);
+                throw new System.InvalidOperationException(Resources.Strings.CannotWriteGroupEndHere);
             state = MimeWriteState.Recipients;
         }
 
         public void WriteRecipient(string displayName, string address) {
             if (address == null)
-                throw new ArgumentNullException(nameof(address));
+                throw new System.ArgumentNullException(nameof(address));
             this.AssertOpen();
             this.WriteRecipient(new MimeRecipient(displayName, address));
         }
@@ -365,13 +364,13 @@ namespace Butler.Schema.Data.Mime {
         public MimeWriter GetEmbeddedMessageWriter() {
             this.AssertOpen();
             if (contentWritten)
-                throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
             switch (state) {
                 case MimeWriteState.Initial:
                 case MimeWriteState.Complete:
                 case MimeWriteState.PartContent:
                 case MimeWriteState.EndPart:
-                    throw new InvalidOperationException(Resources.Strings.CannotWritePartContentNow);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotWritePartContentNow);
                 default:
                     return new MimeWriter(this.GetRawContentWriteStream()) {
                         embeddedDepth = embeddedDepth + 1
@@ -382,12 +381,12 @@ namespace Butler.Schema.Data.Mime {
         public System.IO.Stream GetRawContentWriteStream() {
             this.AssertOpen();
             if (contentWritten)
-                throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
             switch (state) {
                 case MimeWriteState.Initial:
                 case MimeWriteState.Complete:
                 case MimeWriteState.EndPart:
-                    throw new InvalidOperationException(Resources.Strings.CannotWritePartContentNow);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotWritePartContentNow);
                 case MimeWriteState.StartPart:
                 case MimeWriteState.Headers:
                 case MimeWriteState.Parameters:
@@ -407,7 +406,7 @@ namespace Butler.Schema.Data.Mime {
                     return partContent;
             }
             if (currentPart.IsMultipart)
-                throw new InvalidOperationException(Resources.Strings.MultipartCannotContainContent);
+                throw new System.InvalidOperationException(Resources.Strings.MultipartCannotContainContent);
             state = MimeWriteState.PartContent;
             partContent = new WriterContentStream(this);
             return partContent;
@@ -416,17 +415,17 @@ namespace Butler.Schema.Data.Mime {
         public System.IO.Stream GetContentWriteStream() {
             this.AssertOpen();
             if (contentWritten)
-                throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
             if (partContent != null)
-                throw new InvalidOperationException(Resources.Strings.PartContentIsBeingWritten);
+                throw new System.InvalidOperationException(Resources.Strings.PartContentIsBeingWritten);
             var contentWriteStream = this.GetRawContentWriteStream();
             if (contentTransferEncoding == ContentTransferEncoding.SevenBit || contentTransferEncoding == ContentTransferEncoding.EightBit || contentTransferEncoding == ContentTransferEncoding.Binary)
                 return contentWriteStream;
             if (contentTransferEncoding == ContentTransferEncoding.BinHex)
-                throw new NotSupportedException(Resources.Strings.BinHexNotSupportedForThisMethod);
+                throw new System.NotSupportedException(Resources.Strings.BinHexNotSupportedForThisMethod);
             var encoder = MimePart.CreateEncoder(null, contentTransferEncoding);
             if (encoder == null)
-                throw new NotSupportedException(Resources.Strings.UnrecognizedTransferEncodingUsed);
+                throw new System.NotSupportedException(Resources.Strings.UnrecognizedTransferEncodingUsed);
             encodedPartContent = new Encoders.EncoderStream(contentWriteStream, encoder, Encoders.EncoderStreamAccess.Write);
             return new Internal.SuppressCloseStream(encodedPartContent);
         }
@@ -436,12 +435,12 @@ namespace Butler.Schema.Data.Mime {
             switch (state) {
                 case MimeWriteState.Complete:
                 case MimeWriteState.PartContent:
-                    throw new InvalidOperationException(Resources.Strings.CannotStartPartHere);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotStartPartHere);
                 default:
                     if (partDepth != 0) {
                         this.FlushHeader();
                         if (!currentPart.IsMultipart)
-                            throw new InvalidOperationException(Resources.Strings.NonMultiPartPartsCannotHaveChildren);
+                            throw new System.InvalidOperationException(Resources.Strings.NonMultiPartPartsCannotHaveChildren);
                         if (!foundMimeVersion && forceMime && partDepth == 1)
                             this.WriteMimeVersion();
                         this.Write(MimeString.CrLf, 0, MimeString.CrLf.Length);
@@ -461,7 +460,7 @@ namespace Butler.Schema.Data.Mime {
             switch (state) {
                 case MimeWriteState.Initial:
                 case MimeWriteState.Complete:
-                    throw new InvalidOperationException(Resources.Strings.CannotEndPartHere);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotEndPartHere);
                 case MimeWriteState.StartPart:
                 case MimeWriteState.Headers:
                 case MimeWriteState.Parameters:
@@ -534,7 +533,7 @@ namespace Butler.Schema.Data.Mime {
                 case MimeWriteState.Complete:
                 case MimeWriteState.PartContent:
                 case MimeWriteState.EndPart:
-                    throw new InvalidOperationException(Resources.Strings.CannotWriteHeadersHere);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotWriteHeadersHere);
                 default:
                     state = MimeWriteState.Headers;
                     this.FlushHeader();
@@ -545,21 +544,21 @@ namespace Butler.Schema.Data.Mime {
 
         private void WriteParameter(MimeParameter parameter) {
             if (lastHeader == null || !(lastHeader is ComplexHeader))
-                throw new InvalidOperationException(Resources.Strings.CannotWriteParametersOnThisHeader);
+                throw new System.InvalidOperationException(Resources.Strings.CannotWriteParametersOnThisHeader);
             switch (state) {
                 case MimeWriteState.Complete:
                 case MimeWriteState.StartPart:
                 case MimeWriteState.Recipients:
                 case MimeWriteState.PartContent:
                 case MimeWriteState.EndPart:
-                    throw new InvalidOperationException(Resources.Strings.CannotWriteParametersHere);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotWriteParametersHere);
                 default:
                     state = MimeWriteState.Parameters;
                     var contentTypeHeader = lastHeader as ContentTypeHeader;
                     if (contentTypeHeader != null && contentTypeHeader.IsMultipart && parameter.Name == "boundary") {
                         var str = parameter.Value;
                         if (str.Length == 0)
-                            throw new ArgumentException(Resources.Strings.CannotWriteEmptyOrNullBoundary);
+                            throw new System.ArgumentException(Resources.Strings.CannotWriteEmptyOrNullBoundary);
                         currentPart.Boundary = Internal.ByteString.StringToBytes(str, false);
                     }
                     lastHeader.InternalAppendChild(parameter);
@@ -569,14 +568,14 @@ namespace Butler.Schema.Data.Mime {
 
         private void WriteRecipient(MimeRecipient recipient) {
             if (lastHeader == null || !(lastHeader is AddressHeader))
-                throw new InvalidOperationException(Resources.Strings.CannotWriteRecipientsHere);
+                throw new System.InvalidOperationException(Resources.Strings.CannotWriteRecipientsHere);
             MimeNode mimeNode;
             switch (state) {
                 case MimeWriteState.Complete:
                 case MimeWriteState.StartPart:
                 case MimeWriteState.PartContent:
                 case MimeWriteState.EndPart:
-                    throw new InvalidOperationException(Resources.Strings.CannotWriteRecipientsHere);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotWriteRecipientsHere);
                 case MimeWriteState.GroupRecipients:
                     mimeNode = lastHeader.LastChild;
                     break;
@@ -594,10 +593,10 @@ namespace Butler.Schema.Data.Mime {
                 case MimeWriteState.StartPart:
                 case MimeWriteState.PartContent:
                 case MimeWriteState.EndPart:
-                    throw new InvalidOperationException(Resources.Strings.CannotWriteGroupStartHere);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotWriteGroupStartHere);
                 default:
                     if (lastHeader == null || !(lastHeader is AddressHeader))
-                        throw new InvalidOperationException(Resources.Strings.CannotWriteGroupStartHere);
+                        throw new System.InvalidOperationException(Resources.Strings.CannotWriteGroupStartHere);
                     state = MimeWriteState.GroupRecipients;
                     lastHeader.InternalAppendChild(@group);
                     break;
@@ -656,7 +655,7 @@ namespace Butler.Schema.Data.Mime {
                 partDepth = 0;
             } else if (partStack.Length == partDepth) {
                 var partDataArray = new PartData[partStack.Length*2];
-                Array.Copy(partStack, 0, partDataArray, 0, partStack.Length);
+                System.Array.Copy(partStack, 0, partDataArray, 0, partStack.Length);
                 for (var index = 0; index < partDepth; ++index) {
                     partStack[index] = new PartData();
                 }
@@ -676,7 +675,7 @@ namespace Butler.Schema.Data.Mime {
 
         private void AssertOpen() {
             if (data == null)
-                throw new ObjectDisposedException("MimeWriter");
+                throw new System.ObjectDisposedException("MimeWriter");
         }
 
         private void PushWrite(ref QueuedWrite write) {
@@ -685,7 +684,7 @@ namespace Butler.Schema.Data.Mime {
                 writeCount = 0;
             } else if (writeQueue.Length == writeCount) {
                 var queuedWriteArray = new QueuedWrite[writeQueue.Length*2];
-                Array.Copy(writeQueue, 0, queuedWriteArray, 0, writeQueue.Length);
+                System.Array.Copy(writeQueue, 0, queuedWriteArray, 0, writeQueue.Length);
                 for (var index = 0; index < writeQueue.Length; ++index) {
                     writeQueue[index] = new QueuedWrite();
                 }
@@ -769,8 +768,8 @@ namespace Butler.Schema.Data.Mime {
                     return 0;
                 if (this.Data == null)
                     this.Data = new byte[QueuedWriteSize];
-                var count1 = Math.Min(count, this.Data.Length - this.Count);
-                Buffer.BlockCopy(buffer, offset, this.Data, this.Count, count1);
+                var count1 = System.Math.Min(count, this.Data.Length - this.Count);
+                System.Buffer.BlockCopy(buffer, offset, this.Data, this.Count, count1);
                 this.Count += count1;
                 return count1;
             }
@@ -792,21 +791,21 @@ namespace Butler.Schema.Data.Mime {
 
             public override long Length {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
             public override long Position {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
                 set {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
             public override int Read(byte[] buffer, int offset, int count) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void Write(byte[] buffer, int offset, int count) {
@@ -816,15 +815,15 @@ namespace Butler.Schema.Data.Mime {
             }
 
             public override long Seek(long offset, System.IO.SeekOrigin origin) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void Flush() {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void SetLength(long value) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             protected override void Dispose(bool disposing) {
@@ -848,41 +847,41 @@ namespace Butler.Schema.Data.Mime {
 
             public override long Length {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
             public override long Position {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
                 set {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
             public override int Read(byte[] buffer, int offset, int count) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void Write(byte[] buffer, int offset, int count) {
                 MimeCommon.CheckBufferArguments(buffer, offset, count);
                 if (writer.contentWritten)
-                    throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                    throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
                 writer.Write(buffer, offset, count);
             }
 
             public override long Seek(long offset, System.IO.SeekOrigin origin) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void Flush() {
                 if (writer.contentWritten)
-                    throw new InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
+                    throw new System.InvalidOperationException(Resources.Strings.ContentAlreadyWritten);
             }
 
             public override void SetLength(long value) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             protected override void Dispose(bool disposing) {

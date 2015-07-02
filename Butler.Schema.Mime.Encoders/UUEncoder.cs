@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime.Encoders {
 
@@ -22,7 +21,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                 if (value != null)
                     num = value.Length;
                 if (num > 48)
-                    throw new ArgumentOutOfRangeException("FileName", Resources.EncodersStrings.UUEncoderFileNameTooLong(48));
+                    throw new System.ArgumentOutOfRangeException("FileName", Resources.EncodersStrings.UUEncoderFileNameTooLong(48));
                 if (num == 0)
                     fileName = null;
                 else
@@ -33,22 +32,22 @@ namespace Butler.Schema.Data.Mime.Encoders {
         public override sealed void Convert(byte[] input, int inputIndex, int inputSize, byte[] output, int outputIndex, int outputSize, bool flush, out int inputUsed, out int outputUsed, out bool completed) {
             if (inputSize != 0) {
                 if (input == null)
-                    throw new ArgumentNullException(nameof(input));
+                    throw new System.ArgumentNullException(nameof(input));
                 if (inputIndex < 0 || inputIndex >= input.Length)
-                    throw new ArgumentOutOfRangeException(nameof(inputIndex));
+                    throw new System.ArgumentOutOfRangeException(nameof(inputIndex));
                 if (inputSize < 0 || inputSize > input.Length - inputIndex)
-                    throw new ArgumentOutOfRangeException(nameof(inputSize));
+                    throw new System.ArgumentOutOfRangeException(nameof(inputSize));
             }
             if (output == null)
-                throw new ArgumentNullException(nameof(output));
+                throw new System.ArgumentNullException(nameof(output));
             if (outputIndex < 0 || outputIndex >= output.Length)
-                throw new ArgumentOutOfRangeException(nameof(outputIndex));
+                throw new System.ArgumentOutOfRangeException(nameof(outputIndex));
             if (outputSize < 1 || outputSize > output.Length - outputIndex)
-                throw new ArgumentOutOfRangeException(nameof(outputSize));
+                throw new System.ArgumentOutOfRangeException(nameof(outputSize));
             if (numLines == 0) {
                 outLineReady = false;
                 bufferSize = 0;
-                Array.Clear(chunk, 0, chunk.Length);
+                System.Array.Clear(chunk, 0, chunk.Length);
                 chunkIndex = 0;
                 if (fileName != null) {
                     ByteEncoder.BlockCopy(Prologue, 0, buffer, 0, Prologue.Length);
@@ -66,7 +65,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             outputUsed = outputIndex;
             do {
                 if (outLineReady) {
-                    var count = Math.Min(bufferSize, outputSize);
+                    var count = System.Math.Min(bufferSize, outputSize);
                     ByteEncoder.BlockCopy(buffer, bufferIndex, output, outputIndex, count);
                     outputSize -= count;
                     outputIndex += count;
@@ -99,7 +98,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                 }
                 while (inputSize != 0 || flush) {
                     if (inputSize != 0) {
-                        var num = Math.Min(3 - chunkIndex, inputSize);
+                        var num = System.Math.Min(3 - chunkIndex, inputSize);
                         if ((num & 2) != 0) {
                             chunk[chunkIndex++] = input[inputIndex++];
                             chunk[chunkIndex++] = input[inputIndex++];
@@ -112,7 +111,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
                     }
                     if (chunkIndex != 0) {
                         if (3 != chunkIndex)
-                            Array.Clear(chunk, chunkIndex, 3 - chunkIndex);
+                            System.Array.Clear(chunk, chunkIndex, 3 - chunkIndex);
                         buffer[bufferSize++] = UUEncoder.UUEncode(chunk[0] >> 2);
                         buffer[bufferSize++] = UUEncoder.UUEncode(chunk[0] << 4 | chunk[1] >> 4);
                         buffer[bufferSize++] = UUEncoder.UUEncode(chunk[1] << 2 | chunk[2] >> 6);

@@ -1,26 +1,11 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: Microsoft.Exchange.Data.Internal.StreamOnDataStorage
-// Assembly: Microsoft.Exchange.Data.Common, Version=15.0.1040.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
-// MVID: 60AF4FF7-547F-476B-8FAC-6C80D63CB41A
-// Assembly location: C:\Users\Thomas\Downloads\Microsoft.Exchange.Data.Common.dll
+﻿namespace Butler.Schema.Data.Internal {
 
-using System;
-using System.IO;
-using System.Linq;
+    internal abstract class StreamOnDataStorage : System.IO.Stream {
 
-namespace Butler.Schema.Data.Internal
-{
-  internal abstract class StreamOnDataStorage : Stream
-  {
-    public abstract DataStorage Storage { get; }
+        public abstract DataStorage Storage { get; }
+        public abstract long Start { get; }
+        public abstract long End { get; }
 
-    public abstract long Start { get; }
-
-    public abstract long End { get; }
-
-    protected override void Dispose(bool disposing)
-    {
-      base.Dispose(disposing);
     }
-  }
+
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime.Encoders {
 
@@ -16,18 +15,18 @@ namespace Butler.Schema.Data.Mime.Encoders {
         public override sealed void Convert(byte[] input, int inputIndex, int inputSize, byte[] output, int outputIndex, int outputSize, bool flush, out int inputUsed, out int outputUsed, out bool completed) {
             if (inputSize != 0) {
                 if (input == null)
-                    throw new ArgumentNullException(nameof(input));
+                    throw new System.ArgumentNullException(nameof(input));
                 if (inputIndex < 0 || inputIndex >= input.Length)
-                    throw new ArgumentOutOfRangeException(nameof(inputIndex));
+                    throw new System.ArgumentOutOfRangeException(nameof(inputIndex));
                 if (inputSize < 0 || inputSize > input.Length - inputIndex)
-                    throw new ArgumentOutOfRangeException(nameof(inputSize));
+                    throw new System.ArgumentOutOfRangeException(nameof(inputSize));
             }
             if (output == null)
-                throw new ArgumentNullException(nameof(output));
+                throw new System.ArgumentNullException(nameof(output));
             if (outputIndex < 0 || outputIndex >= output.Length)
-                throw new ArgumentOutOfRangeException(nameof(outputIndex));
+                throw new System.ArgumentOutOfRangeException(nameof(outputIndex));
             if (outputSize < 1 || outputSize > output.Length - outputIndex)
-                throw new ArgumentOutOfRangeException(nameof(outputSize));
+                throw new System.ArgumentOutOfRangeException(nameof(outputSize));
             if (state == State.Starting) {
                 lineReady = false;
                 encodedSize = 0;
@@ -39,7 +38,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             inputUsed = inputIndex;
             outputUsed = outputIndex;
             if (decodedSize != 0) {
-                var num2 = Math.Min(outputSize, decodedSize);
+                var num2 = System.Math.Min(outputSize, decodedSize);
                 if ((num2 & 2) != 0) {
                     output[outputIndex++] = decoded[decodedIndex++];
                     output[outputIndex++] = decoded[decodedIndex++];
@@ -59,7 +58,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             var numArray = new byte[4];
             do {
                 if (lineReady) {
-                    var num2 = Math.Min(outputSize/3, encodedBytes/3);
+                    var num2 = System.Math.Min(outputSize/3, encodedBytes/3);
                     for (var index = 0; index < num2; ++index) {
                         numArray[0] = UUDecoder.UUDecode(encoded[encodedIndex]);
                         numArray[1] = UUDecoder.UUDecode(encoded[encodedIndex + 1]);
@@ -79,14 +78,14 @@ namespace Butler.Schema.Data.Mime.Encoders {
                         numArray[1] = UUDecoder.UUDecode(encoded[encodedIndex + 1]);
                         numArray[2] = UUDecoder.UUDecode(encoded[encodedIndex + 2]);
                         numArray[3] = UUDecoder.UUDecode(encoded[encodedIndex + 3]);
-                        decodedSize = Math.Min(encodedBytes, 3);
+                        decodedSize = System.Math.Min(encodedBytes, 3);
                         decodedIndex = 0;
                         decoded[0] = (byte) (numArray[0] << 2 | numArray[1] >> 4);
                         decoded[1] = (byte) (numArray[1] << 4 | numArray[2] >> 2);
                         decoded[2] = (byte) ((uint) numArray[2] << 6 | numArray[3]);
                         encodedBytes -= decodedSize;
                         encodedIndex += 4;
-                        var num3 = Math.Min(outputSize, decodedSize);
+                        var num3 = System.Math.Min(outputSize, decodedSize);
                         if ((num3 & 2) != 0) {
                             output[outputIndex++] = decoded[decodedIndex++];
                             output[outputIndex++] = decoded[decodedIndex++];

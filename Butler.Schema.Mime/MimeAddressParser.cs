@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -358,7 +357,7 @@ namespace Butler.Schema.Data.Mime {
             var flag2 = false;
             var ignoreNextByte = false;
             if (!this.Initialized)
-                throw new InvalidOperationException(Resources.Strings.AddressParserNotInitialized);
+                throw new System.InvalidOperationException(Resources.Strings.AddressParserNotInitialized);
             while (true) {
                 byte num1;
                 do {
@@ -689,7 +688,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         private static bool IsEncapsulatedX400Address(string address) {
-            return address.StartsWith("IMCEAX400-", StringComparison.OrdinalIgnoreCase);
+            return address.StartsWith("IMCEAX400-", System.StringComparison.OrdinalIgnoreCase);
         }
 
         public const int MaxEmailName = 315;

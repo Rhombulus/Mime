@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -139,7 +138,7 @@ namespace Butler.Schema.Data.Mime {
                 return this.GetRawValue(true);
             }
             set {
-                throw new NotSupportedException(Resources.Strings.UnicodeMimeHeaderReceivedNotSupported);
+                throw new System.NotSupportedException(Resources.Strings.UnicodeMimeHeaderReceivedNotSupported);
             }
         }
 
@@ -157,12 +156,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var receivedHeader = destination as ReceivedHeader;
             if (receivedHeader == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             base.CopyTo(destination);
             receivedHeader.parsed = parsed;
             receivedHeader.fromValue = fromValue;
@@ -181,7 +180,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
-            throw new NotSupportedException(Resources.Strings.ChildrenCannotBeAddedToReceivedHeader);
+            throw new System.NotSupportedException(Resources.Strings.ChildrenCannotBeAddedToReceivedHeader);
         }
 
         private void AppendNameValue(byte[] name, string value, byte[] array, ref int offset) {
@@ -196,7 +195,7 @@ namespace Butler.Schema.Data.Mime {
         private void AppendName(byte[] name, byte[] array, ref int offset) {
             if (offset != 0)
                 array[offset++] = 32;
-            Buffer.BlockCopy(name, 0, array, offset, name.Length);
+            System.Buffer.BlockCopy(name, 0, array, offset, name.Length);
             offset += name.Length;
         }
 

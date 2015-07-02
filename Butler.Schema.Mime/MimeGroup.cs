@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    public class MimeGroup : AddressItem, IEnumerable<MimeRecipient>, System.Collections.IEnumerable {
+    public class MimeGroup : AddressItem, System.Collections.Generic.IEnumerable<MimeRecipient>, System.Collections.IEnumerable {
 
         public MimeGroup() {}
 
@@ -14,7 +12,7 @@ namespace Butler.Schema.Data.Mime {
         internal MimeGroup(ref MimeStringList displayName)
             : base(ref displayName) {}
 
-        IEnumerator<MimeRecipient> IEnumerable<MimeRecipient>.GetEnumerator() {
+        System.Collections.Generic.IEnumerator<MimeRecipient> System.Collections.Generic.IEnumerable<MimeRecipient>.GetEnumerator() {
             return new Enumerator<MimeRecipient>(this);
         }
 
@@ -34,12 +32,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var mimeGroup = destination as MimeGroup;
             if (mimeGroup == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             do
                 ; while (mimeGroup.ParseNextChild() != null);
             do
@@ -49,7 +47,7 @@ namespace Butler.Schema.Data.Mime {
 
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
             if (!(newChild is MimeRecipient))
-                throw new ArgumentException(Resources.Strings.NewChildIsNotARecipient);
+                throw new System.ArgumentException(Resources.Strings.NewChildIsNotARecipient);
             return refChild;
         }
 

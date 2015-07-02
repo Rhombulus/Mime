@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -7,7 +6,7 @@ namespace Butler.Schema.Data.Mime {
 
         public MimeParameter(string name) {
             if (name == null)
-                throw new ArgumentNullException(nameof(name));
+                throw new System.ArgumentNullException(nameof(name));
             this.Name = Header.NormalizeString(name);
         }
 
@@ -30,7 +29,7 @@ namespace Butler.Schema.Data.Mime {
                     this.RemoveAll();
                     this.SegmentNumber = -1;
                 } else if (0 < this.SegmentNumber)
-                    throw new NotSupportedException(Resources.Strings.CantSetValueOfRfc2231ContinuationSegment);
+                    throw new System.NotSupportedException(Resources.Strings.CantSetValueOfRfc2231ContinuationSegment);
                 this.RawValue = null;
                 decodedValue = value;
             }
@@ -47,7 +46,7 @@ namespace Butler.Schema.Data.Mime {
                     this.RemoveAll();
                     this.SegmentNumber = -1;
                 } else if (0 < this.SegmentNumber)
-                    throw new NotSupportedException(Resources.Strings.CantSetRawValueOfRfc2231ContinuationSegment);
+                    throw new System.NotSupportedException(Resources.Strings.CantSetRawValueOfRfc2231ContinuationSegment);
                 decodedValue = null;
                 valueFragments.Reset();
                 valueEncoded = false;
@@ -81,12 +80,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var mimeParameter = destination as MimeParameter;
             if (mimeParameter == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             mimeParameter.AllowAppend = true;
             base.CopyTo(destination);
             mimeParameter.AllowAppend = false;
@@ -109,7 +108,7 @@ namespace Butler.Schema.Data.Mime {
                 if (this.SegmentNumber == 0)
                     return this.TryDecodeRfc2231(ref decodingOptions, out decodingResults, out value);
                 if (0 < this.SegmentNumber)
-                    throw new NotSupportedException(Resources.Strings.CantGetValueOfRfc2231ContinuationSegment);
+                    throw new System.NotSupportedException(Resources.Strings.CantGetValueOfRfc2231ContinuationSegment);
             }
             if (valueFragments.Length != 0)
                 return MimeCommon.TryDecodeValue(valueFragments, 4026531839U, decodingOptions, out decodingResults, out value);
@@ -154,8 +153,8 @@ namespace Butler.Schema.Data.Mime {
 
         internal bool IsName(string name) {
             if (name == null)
-                throw new ArgumentNullException(nameof(name));
-            return this.Name.Equals(name, StringComparison.OrdinalIgnoreCase);
+                throw new System.ArgumentNullException(nameof(name));
+            return this.Name.Equals(name, System.StringComparison.OrdinalIgnoreCase);
         }
 
         internal override long WriteTo(System.IO.Stream stream, EncodingOptions encodingOptions, MimeOutputFilter filter, ref MimeStringLength currentLineLength, ref byte[] scratchBuffer) {
@@ -217,7 +216,7 @@ namespace Butler.Schema.Data.Mime {
             }
             var val2 = Internal.ByteString.StringToBytesCount(this.Name, false);
             if (scratchBuffer == null || scratchBuffer.Length < val2)
-                scratchBuffer = new byte[Math.Max(998, val2)];
+                scratchBuffer = new byte[System.Math.Max(998, val2)];
             var num7 = Internal.ByteString.StringToBytes(this.Name, scratchBuffer, 0, false);
             stream.Write(scratchBuffer, 0, num7);
             var num8 = num1 + num7;
@@ -273,7 +272,7 @@ namespace Butler.Schema.Data.Mime {
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
             if (allowAppend)
                 return refChild;
-            throw new NotSupportedException(Resources.Strings.ParametersCannotHaveChildNodes);
+            throw new System.NotSupportedException(Resources.Strings.ParametersCannotHaveChildNodes);
         }
 
         internal void AppendValue(ref MimeStringList list) {
@@ -488,7 +487,7 @@ namespace Butler.Schema.Data.Mime {
                 return destinationIndex - num1;
             }
             var count = source.Length - sourceIndex;
-            Buffer.BlockCopy(source, sourceIndex, destination, destinationIndex, count);
+            System.Buffer.BlockCopy(source, sourceIndex, destination, destinationIndex, count);
             return count;
         }
 

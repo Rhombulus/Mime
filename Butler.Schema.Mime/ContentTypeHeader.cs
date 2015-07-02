@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -26,9 +25,9 @@ namespace Butler.Schema.Data.Mime {
             }
             set {
                 if (value == null)
-                    throw new ArgumentNullException(nameof(value));
+                    throw new System.ArgumentNullException(nameof(value));
                 if (ValueParser.ParseToken(value, 0, false) != value.Length)
-                    throw new ArgumentException("Value should be valid MIME token", nameof(value));
+                    throw new System.ArgumentException("Value should be valid MIME token", nameof(value));
                 if (!parsed)
                     this.Parse();
                 if (value == type)
@@ -53,9 +52,9 @@ namespace Butler.Schema.Data.Mime {
             }
             set {
                 if (value == null)
-                    throw new ArgumentNullException(nameof(value));
+                    throw new System.ArgumentNullException(nameof(value));
                 if (ValueParser.ParseToken(value, 0, false) != value.Length)
-                    throw new ArgumentException("Value should be valid MIME token", nameof(value));
+                    throw new System.ArgumentException("Value should be valid MIME token", nameof(value));
                 if (!parsed)
                     this.Parse();
                 if (value == subType)
@@ -77,10 +76,10 @@ namespace Butler.Schema.Data.Mime {
             }
             set {
                 if (value == null)
-                    throw new ArgumentNullException(nameof(value));
+                    throw new System.ArgumentNullException(nameof(value));
                 var length = ValueParser.ParseToken(value, 0, false);
                 if (length == 0 || length > value.Length - 2 || (value[length] != 47 || ValueParser.ParseToken(value, length + 1, false) != value.Length - length - 1))
-                    throw new ArgumentException("Value should be a valid content type in the form 'token/token'", nameof(value));
+                    throw new System.ArgumentException("Value should be a valid content type in the form 'token/token'", nameof(value));
                 if (!parsed)
                     this.Parse();
                 if (value == this.value)
@@ -143,12 +142,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var contentTypeHeader = destination as ContentTypeHeader;
             if (contentTypeHeader == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType, nameof(destination));
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType, nameof(destination));
             base.CopyTo(destination);
             contentTypeHeader.type = type;
             contentTypeHeader.subType = subType;
@@ -164,8 +163,8 @@ namespace Butler.Schema.Data.Mime {
         }
 
         internal static byte[] CreateBoundary() {
-            var str = Guid.NewGuid()
-                          .ToString();
+            var str = System.Guid.NewGuid()
+                            .ToString();
             var bytes = new byte[str.Length + 2];
             bytes[0] = 95;
             Internal.ByteString.StringToBytes(str, bytes, 1, false);
@@ -228,7 +227,7 @@ namespace Butler.Schema.Data.Mime {
                 if (index2 > 0) {
                     do {
                         var str = MimeData.values[index2].value;
-                        if (str.Length == num && str.StartsWith(type, StringComparison.OrdinalIgnoreCase) && (str[type.Length] == 47 && str.EndsWith(subType, StringComparison.OrdinalIgnoreCase)))
+                        if (str.Length == num && str.StartsWith(type, System.StringComparison.OrdinalIgnoreCase) && (str[type.Length] == 47 && str.EndsWith(subType, System.StringComparison.OrdinalIgnoreCase)))
                             return str;
                         ++index2;
                     } while (MimeData.values[index2].hash == index1);

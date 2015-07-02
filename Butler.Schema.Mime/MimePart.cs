@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    public partial class MimePart : MimeNode, IDisposable, IEnumerable<MimePart> {
+    public partial class MimePart : MimeNode, System.IDisposable, System.Collections.Generic.IEnumerable<MimePart> {
 
         public MimePart() {
             accessToken = new MimePartThreadAccessToken(this);
@@ -14,7 +12,7 @@ namespace Butler.Schema.Data.Mime {
         public MimePart(string contentType)
             : this() {
             if (contentType == null)
-                throw new ArgumentNullException(nameof(contentType));
+                throw new System.ArgumentNullException(nameof(contentType));
             using (ThreadAccessGuard.EnterPublic(accessToken))
                 headers.InternalAppendChild(new ContentTypeHeader(contentType));
         }
@@ -379,7 +377,7 @@ namespace Butler.Schema.Data.Mime {
             this.Dispose(true);
         }
 
-        IEnumerator<MimePart> IEnumerable<MimePart>.GetEnumerator() {
+        System.Collections.Generic.IEnumerator<MimePart> System.Collections.Generic.IEnumerable<MimePart>.GetEnumerator() {
             this.ThrowIfDisposed();
             using (ThreadAccessGuard.EnterPublic(accessToken))
                 return new Enumerator<MimePart>(this);
@@ -499,7 +497,7 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfReadOnly("MimePart.GetRawContentWriteStream");
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (this.IsMultipart)
-                    throw new NotSupportedException(Resources.Strings.ModifyingRawContentOfMultipartNotSupported);
+                    throw new System.NotSupportedException(Resources.Strings.ModifyingRawContentOfMultipartNotSupported);
                 this.SetStorage(null, 0L, 0L);
                 return new PartContentWriteStream(this, ContentTransferEncoding.Unknown);
             }
@@ -510,7 +508,7 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfReadOnly("MimePart.GetContentWriteStream");
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (this.IsMultipart)
-                    throw new NotSupportedException(Resources.Strings.ModifyingRawContentOfMultipartNotSupported);
+                    throw new System.NotSupportedException(Resources.Strings.ModifyingRawContentOfMultipartNotSupported);
                 this.UpdateTransferEncoding(transferEncoding);
                 this.SetStorage(null, 0L, 0L);
                 return new PartContentWriteStream(this, ContentTransferEncoding.Binary);
@@ -522,7 +520,7 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfReadOnly("MimePart.GetContentWriteStream");
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (transferEncoding == null)
-                    throw new ArgumentNullException(nameof(transferEncoding));
+                    throw new System.ArgumentNullException(nameof(transferEncoding));
                 return this.GetContentWriteStream(MimePart.GetEncodingType(new MimeString(transferEncoding)));
             }
         }
@@ -535,7 +533,7 @@ namespace Butler.Schema.Data.Mime {
                 if (transferEncoding != null) {
                     transferEncoding1 = MimePart.GetEncodingType(new MimeString(transferEncoding));
                     if (transferEncoding1 == ContentTransferEncoding.Unknown)
-                        throw new ArgumentException("Transfer encoding is unknown or not supported", nameof(transferEncoding));
+                        throw new System.ArgumentException("Transfer encoding is unknown or not supported", nameof(transferEncoding));
                 }
                 this.SetContentStream(transferEncoding1, contentStream, cachingMode);
             }
@@ -546,11 +544,11 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfReadOnly("MimePart.SetContentStream");
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (contentStream == null)
-                    throw new ArgumentNullException(nameof(contentStream));
+                    throw new System.ArgumentNullException(nameof(contentStream));
                 if (!contentStream.CanRead)
-                    throw new ArgumentException(Resources.Strings.StreamMustSupportRead, nameof(contentStream));
+                    throw new System.ArgumentException(Resources.Strings.StreamMustSupportRead, nameof(contentStream));
                 if (this.IsMultipart)
-                    throw new NotSupportedException(Resources.Strings.ModifyingRawContentOfMultipartNotSupported);
+                    throw new System.NotSupportedException(Resources.Strings.ModifyingRawContentOfMultipartNotSupported);
                 var dataStart = 0L;
                 var dataEnd = long.MaxValue;
                 if (transferEncoding != ContentTransferEncoding.Unknown) {
@@ -570,7 +568,7 @@ namespace Butler.Schema.Data.Mime {
                     case CachingMode.Source:
                     case CachingMode.SourceTakeOwnership:
                         if (!contentStream.CanSeek)
-                            throw new NotSupportedException(Resources.Strings.CachingModeSourceButStreamCannotSeek);
+                            throw new System.NotSupportedException(Resources.Strings.CachingModeSourceButStreamCannotSeek);
                         var streamOnDataStorage = contentStream as Internal.StreamOnDataStorage;
                         if (streamOnDataStorage != null) {
                             storage = streamOnDataStorage.Storage;
@@ -586,7 +584,7 @@ namespace Butler.Schema.Data.Mime {
                         storage = new Internal.ReadableDataStorageOnStream(contentStream, cachingMode == CachingMode.SourceTakeOwnership);
                         break;
                     default:
-                        throw new ArgumentException("Invalid Caching Mode value", nameof(cachingMode));
+                        throw new System.ArgumentException("Invalid Caching Mode value", nameof(cachingMode));
                 }
                 this.SetStorage(storage, dataStart, dataEnd, 0L, transferEncoding, LineTerminationState.Unknown);
                 storage.Release();
@@ -612,7 +610,7 @@ namespace Butler.Schema.Data.Mime {
                             enumerator.Current.deferredStorageInfo = null;
                         }
                         enumerator.Current.isDisposed = true;
-                        GC.SuppressFinalize(enumerator.Current);
+                        System.GC.SuppressFinalize(enumerator.Current);
                     }
                 }
             } else
@@ -637,12 +635,12 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfDisposed();
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (destination == null)
-                    throw new ArgumentNullException(nameof(destination));
+                    throw new System.ArgumentNullException(nameof(destination));
                 if (destination == this)
                     return;
                 var dstPart = destination as MimePart;
                 if (dstPart == null)
-                    throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                    throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
                 using (ThreadAccessGuard.EnterPublic(dstPart.accessToken)) {
                     byte[] scratchBuffer = null;
                     var dstStorage = new Internal.TemporaryDataStorage();
@@ -658,7 +656,7 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfDisposed();
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (stream == null)
-                    throw new ArgumentNullException(nameof(stream));
+                    throw new System.ArgumentNullException(nameof(stream));
                 if (encodingOptions == null)
                     encodingOptions = this.GetDocumentEncodingOptions();
                 byte[] scratchBuffer = null;
@@ -674,7 +672,7 @@ namespace Butler.Schema.Data.Mime {
                     if (protectedHeaders == null)
                         this.PopulateProtectedHeaders();
                     foreach (var str in protectedHeaders) {
-                        if (headerName.Equals(str, StringComparison.OrdinalIgnoreCase))
+                        if (headerName.Equals(str, System.StringComparison.OrdinalIgnoreCase))
                             return true;
                     }
                 }
@@ -683,7 +681,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         private void PopulateProtectedHeaders() {
-            protectedHeaders = new List<string>();
+            protectedHeaders = new System.Collections.Generic.List<string>();
             protectedHeaders.Add("DKIM-Signature");
             var refHeader = this.Headers.FindFirst("DKIM-Signature");
             var headerDecodingOptions = this.GetHeaderDecodingOptions();
@@ -715,7 +713,7 @@ namespace Butler.Schema.Data.Mime {
                                 var goodValue = false;
                                 valueParser1.ParseParameterValue(ref lines, ref goodValue, handleISO2022);
                                 if (Header.NormalizeString(mimeString1.Data, mimeString1.Offset, mimeString1.Length, false)
-                                          .Equals("h", StringComparison.OrdinalIgnoreCase)) {
+                                          .Equals("h", System.StringComparison.OrdinalIgnoreCase)) {
                                     var valueParser2 = new ValueParser(lines, false);
                                     byte num2;
                                     do {
@@ -762,11 +760,11 @@ namespace Butler.Schema.Data.Mime {
                 mimeParameter.RawValue = ContentTypeHeader.CreateBoundary();
             var numArray = new byte[MimeString.CRLF2Dashes.Length + rawValue.Length + MimeString.CrLf.Length];
             var dstOffset1 = 0;
-            Buffer.BlockCopy(MimeString.CRLF2Dashes, 0, numArray, dstOffset1, MimeString.CRLF2Dashes.Length);
+            System.Buffer.BlockCopy(MimeString.CRLF2Dashes, 0, numArray, dstOffset1, MimeString.CRLF2Dashes.Length);
             var length = MimeString.CRLF2Dashes.Length;
-            Buffer.BlockCopy(rawValue, 0, numArray, length, rawValue.Length);
+            System.Buffer.BlockCopy(rawValue, 0, numArray, length, rawValue.Length);
             var dstOffset2 = length + rawValue.Length;
-            Buffer.BlockCopy(MimeString.CrLf, 0, numArray, dstOffset2, MimeString.CrLf.Length);
+            System.Buffer.BlockCopy(MimeString.CrLf, 0, numArray, dstOffset2, MimeString.CrLf.Length);
             return numArray;
         }
 
@@ -948,7 +946,7 @@ namespace Butler.Schema.Data.Mime {
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 var mimePart = newChild as MimePart;
                 if (mimePart == null)
-                    throw new ArgumentException(Resources.Strings.NewChildIsNotAPart);
+                    throw new System.ArgumentException(Resources.Strings.NewChildIsNotAPart);
                 MimeNode mimeNode = this;
                 while (mimeNode != newChild) {
                     mimeNode = mimeNode.Parent;
@@ -970,7 +968,7 @@ namespace Butler.Schema.Data.Mime {
                         return refChild;
                     }
                 }
-                throw new ArgumentException(Resources.Strings.ThisPartBelongsToSubtreeOfNewChild);
+                throw new System.ArgumentException(Resources.Strings.ThisPartBelongsToSubtreeOfNewChild);
             }
         }
 
@@ -1316,7 +1314,7 @@ namespace Butler.Schema.Data.Mime {
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 var encodingName = MimePart.GetEncodingName(transferEncoding);
                 if (encodingName == null)
-                    throw new ArgumentException("Transfer encoding is unknown or not supported", nameof(transferEncoding));
+                    throw new System.ArgumentException("Transfer encoding is unknown or not supported", nameof(transferEncoding));
                 var first = headers.FindFirst(HeaderId.ContentTransferEncoding);
                 if (first == null) {
                     first = Header.Create(HeaderId.ContentTransferEncoding);
@@ -1331,7 +1329,7 @@ namespace Butler.Schema.Data.Mime {
 
         private void ThrowIfDisposed() {
             if (isDisposed)
-                throw new ObjectDisposedException("MimePart");
+                throw new System.ObjectDisposedException("MimePart");
         }
 
         private static readonly EncodingEntry[] encoding_map = new EncodingEntry[9] {
@@ -1359,7 +1357,7 @@ namespace Butler.Schema.Data.Mime {
         private HeaderList headers;
         private bool isDisposed;
         private MimeDocument parentDocument;
-        private List<string> protectedHeaders;
+        private System.Collections.Generic.List<string> protectedHeaders;
 
     }
 

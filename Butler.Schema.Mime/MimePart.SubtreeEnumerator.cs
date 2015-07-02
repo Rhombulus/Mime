@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
     public partial class MimePart {
 
-        public struct SubtreeEnumerator : IEnumerator<MimePart> {
+        public struct SubtreeEnumerator : System.Collections.Generic.IEnumerator<MimePart> {
 
             internal SubtreeEnumerator(MimePart part, SubtreeEnumerationOptions options, bool includeUnparsed) {
                 _options = options;
@@ -62,7 +60,7 @@ namespace Butler.Schema.Data.Mime {
 
             public void Dispose() {
                 ((System.Collections.IEnumerator) this).Reset();
-                GC.SuppressFinalize(this);
+                System.GC.SuppressFinalize(this);
             }
 
             public void SkipChildren() {
@@ -79,7 +77,7 @@ namespace Butler.Schema.Data.Mime {
             private MimePart _nextChild;
 
 
-            [Flags]
+            [System.Flags]
             private enum EnumeratorDisposition : byte {
 
                 Begin = 1,

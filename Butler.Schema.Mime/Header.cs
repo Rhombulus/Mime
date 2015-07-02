@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -59,7 +58,7 @@ namespace Butler.Schema.Data.Mime {
 
         public static Header Create(string name) {
             if (name == null)
-                throw new ArgumentNullException(nameof(name));
+                throw new System.ArgumentNullException(nameof(name));
             var headerId = Header.GetHeaderId(name, true);
             if (headerId != HeaderId.Unknown)
                 return Header.Create(name, headerId);
@@ -72,9 +71,9 @@ namespace Butler.Schema.Data.Mime {
 
         internal static Header Create(string name, HeaderId headerId) {
             if (headerId < HeaderId.Unknown || headerId > (HeaderId) MimeData.nameIndex.Length)
-                throw new ArgumentException(Resources.Strings.InvalidHeaderId, nameof(headerId));
+                throw new System.ArgumentException(Resources.Strings.InvalidHeaderId, nameof(headerId));
             if (headerId == HeaderId.Unknown)
-                throw new ArgumentException(Resources.Strings.CannotDetermineHeaderNameFromId, nameof(headerId));
+                throw new System.ArgumentException(Resources.Strings.CannotDetermineHeaderNameFromId, nameof(headerId));
             Header header;
             switch (MimeData.headerNames[(int) MimeData.nameIndex[(int) headerId]].headerType) {
                 case HeaderType.AsciiText:
@@ -100,7 +99,7 @@ namespace Butler.Schema.Data.Mime {
                     break;
             }
             if (!string.IsNullOrEmpty(name) && !header.MatchName(name))
-                throw new ArgumentException("name");
+                throw new System.ArgumentException("name");
             return header;
         }
 
@@ -120,7 +119,7 @@ namespace Butler.Schema.Data.Mime {
 
         public static Header ReadFrom(MimeHeaderReader reader) {
             if (reader.MimeReader == null)
-                throw new ArgumentNullException(nameof(reader));
+                throw new System.ArgumentNullException(nameof(reader));
             return reader.MimeReader.ReadHeaderObject();
         }
 
@@ -135,18 +134,18 @@ namespace Butler.Schema.Data.Mime {
 
         public override void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var header = destination as Header;
             if (header == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             base.CopyTo(destination);
             header.lines = lines.Clone();
             header.IsDirty = this.IsDirty;
         }
 
-        internal static Type TypeFromHeaderId(HeaderId headerId) {
+        internal static System.Type TypeFromHeaderId(HeaderId headerId) {
             switch (MimeData.headerNames[(int) MimeData.nameIndex[(int) headerId]].headerType) {
                 case HeaderType.AsciiText:
                     return typeof (AsciiTextHeader);
@@ -168,18 +167,18 @@ namespace Butler.Schema.Data.Mime {
         internal static HeaderId GetHeaderId(string name, bool validateArgument) {
             if (name == null) {
                 if (validateArgument)
-                    throw new ArgumentNullException(nameof(name));
+                    throw new System.ArgumentNullException(nameof(name));
                 return HeaderId.Unknown;
             }
             if (name.Length == 0) {
                 if (validateArgument)
-                    throw new ArgumentException("Header name cannot be an empty string", nameof(name));
+                    throw new System.ArgumentException("Header name cannot be an empty string", nameof(name));
                 return HeaderId.Unknown;
             }
             if (validateArgument) {
                 for (var position = 0; position < name.Length; ++position) {
                     if (name[position] >= 128 || !MimeScan.IsField((byte) name[position]))
-                        throw new ArgumentException(Resources.Strings.InvalidHeaderName(name, position), nameof(name));
+                        throw new System.ArgumentException(Resources.Strings.InvalidHeaderName(name, position), nameof(name));
                 }
             }
             var headerNameIndex = Header.LookupName(name);
@@ -243,7 +242,7 @@ namespace Butler.Schema.Data.Mime {
                     lineBuffer.LengthTillLastLWSP.IncrementBy(1);
                 }
                 if (lineBuffer.LengthTillLastLWSP.InBytes != lineBuffer.Length.InBytes) {
-                    Buffer.BlockCopy(lineBuffer.Bytes, lineBuffer.LengthTillLastLWSP.InBytes, lineBuffer.Bytes, 0, lineBuffer.Length.InBytes - lineBuffer.LengthTillLastLWSP.InBytes);
+                    System.Buffer.BlockCopy(lineBuffer.Bytes, lineBuffer.LengthTillLastLWSP.InBytes, lineBuffer.Bytes, 0, lineBuffer.Length.InBytes - lineBuffer.LengthTillLastLWSP.InBytes);
                     lineBuffer.Length.DecrementBy(lineBuffer.LengthTillLastLWSP);
                     if (lineBuffer.Length.InBytes > 0 && MimeScan.IsFWSP(lineBuffer.Bytes[0]))
                         lineBuffer.LengthTillLastLWSP.SetAs(0);
@@ -276,7 +275,7 @@ namespace Butler.Schema.Data.Mime {
                 }
                 if (token != null) {
                     while (currentLineLength.InBytes + tokenLength.InBytes > 998) {
-                        var num2 = Math.Max(0, 998 - currentLineLength.InBytes);
+                        var num2 = System.Math.Max(0, 998 - currentLineLength.InBytes);
                         var countInChars = 0;
                         var num3 = 0;
                         if (allowUTF8) {
@@ -312,7 +311,7 @@ namespace Butler.Schema.Data.Mime {
                 }
             }
             if (token != null) {
-                Buffer.BlockCopy(token, tokenOffset, lineBuffer.Bytes, lineBuffer.Length.InBytes, tokenLength.InBytes);
+                System.Buffer.BlockCopy(token, tokenOffset, lineBuffer.Bytes, lineBuffer.Length.InBytes, tokenLength.InBytes);
                 if (flag1 && (lineBuffer.Length.InBytes == 0 || !MimeScan.IsFWSP(lineBuffer.Bytes[lineBuffer.Length.InBytes - 1]))) {
                     autoAddedLastLWSP = false;
                     lineBuffer.LengthTillLastLWSP.SetAs(lineBuffer.Length);
@@ -409,7 +408,7 @@ namespace Butler.Schema.Data.Mime {
 
         internal static int WriteName(System.IO.Stream stream, string name, ref byte[] scratchBuffer) {
             if (scratchBuffer == null || scratchBuffer.Length < name.Length)
-                scratchBuffer = new byte[Math.Max(998, name.Length)];
+                scratchBuffer = new byte[System.Math.Max(998, name.Length)];
             Internal.ByteString.StringToBytes(name, scratchBuffer, 0, false);
             stream.Write(scratchBuffer, 0, name.Length);
             stream.Write(MimeString.Colon, 0, MimeString.Colon.Length);
@@ -423,7 +422,7 @@ namespace Butler.Schema.Data.Mime {
                 if (index2 > 0) {
                     do {
                         var str = MimeData.headerNames[index2].name;
-                        if (name.Length == str.Length && name.Equals(str, StringComparison.OrdinalIgnoreCase))
+                        if (name.Length == str.Length && name.Equals(str, System.StringComparison.OrdinalIgnoreCase))
                             return (HeaderNameIndex) index2;
                         ++index2;
                     } while (MimeData.headerNames[index2].hash == index1);
@@ -456,7 +455,7 @@ namespace Butler.Schema.Data.Mime {
                 if (index2 > 0) {
                     do {
                         var str = MimeData.values[index2].value;
-                        if (value.Length == str.Length && value.Equals(str, StringComparison.OrdinalIgnoreCase))
+                        if (value.Length == str.Length && value.Equals(str, System.StringComparison.OrdinalIgnoreCase))
                             return str;
                         ++index2;
                     } while (MimeData.values[index2].hash == index1);
@@ -472,7 +471,7 @@ namespace Butler.Schema.Data.Mime {
                 if (index2 > 0) {
                     do {
                         var strA = MimeData.values[index2].value;
-                        if (length == strA.Length && string.Compare(strA, 0, value, offset, length, StringComparison.OrdinalIgnoreCase) == 0)
+                        if (length == strA.Length && string.Compare(strA, 0, value, offset, length, System.StringComparison.OrdinalIgnoreCase) == 0)
                             return strA;
                         ++index2;
                     } while (MimeData.values[index2].hash == index1);
@@ -557,16 +556,16 @@ namespace Butler.Schema.Data.Mime {
 
         internal bool IsName(string name) {
             if (name == null)
-                throw new ArgumentNullException(nameof(name));
-            return this.Name.Equals(name, StringComparison.OrdinalIgnoreCase);
+                throw new System.ArgumentNullException(nameof(name));
+            return this.Name.Equals(name, System.StringComparison.OrdinalIgnoreCase);
         }
 
         internal bool MatchName(string name) {
             if (name == null)
-                throw new ArgumentNullException(nameof(name));
+                throw new System.ArgumentNullException(nameof(name));
             if (this.Name.Equals(name))
                 return true;
-            if (!this.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+            if (!this.Name.Equals(name, System.StringComparison.OrdinalIgnoreCase))
                 return false;
             customName = name;
             return true;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Butler.Schema.Data.Globalization.Iso2022Jp {
+﻿namespace Butler.Schema.Data.Globalization.Iso2022Jp {
 
     internal class DecodeJisX0201_1976ToCp932 : DecodeToCp932 {
 
@@ -65,7 +62,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
             var limit = this.CalculateLoopCountLimit(lengthIn);
             if (escape.IsValidEscapeSequence) {
                 if (!this.IsEscapeSequenceHandled(escape))
-                    throw new InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
+                    throw new System.InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
                 index += escape.BytesInCurrentBuffer;
                 runBeganWithEscape = true;
             } else if (!runBeganWithEscape)
@@ -99,7 +96,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
             var limit = this.CalculateLoopCountLimit(lengthIn);
             if (escape.IsValidEscapeSequence) {
                 if (!this.IsEscapeSequenceHandled(escape))
-                    throw new InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
+                    throw new System.InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
                 index1 += escape.BytesInCurrentBuffer;
                 isKana = escape.Sequence == EscapeSequence.JisX0201K_1976 || escape.Sequence == EscapeSequence.ShiftOut;
                 isEscapeKana = escape.Sequence == EscapeSequence.JisX0201K_1976;

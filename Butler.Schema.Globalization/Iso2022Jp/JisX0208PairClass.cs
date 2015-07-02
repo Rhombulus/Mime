@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿namespace Butler.Schema.Data.Globalization.Iso2022Jp {
 
-namespace Butler.Schema.Data.Globalization.Iso2022Jp {
-
-    [Flags]
+    [System.Flags]
     internal enum JisX0208PairClass {
 
         Unrecognized = 1,

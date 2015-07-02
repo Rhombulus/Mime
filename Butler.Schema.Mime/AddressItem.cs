@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -39,12 +38,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var addressItem = destination as AddressItem;
             if (addressItem == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             base.CopyTo(destination);
             addressItem.displayNameFragments = displayNameFragments.Clone();
             addressItem.decodedDisplayName = decodedDisplayName;

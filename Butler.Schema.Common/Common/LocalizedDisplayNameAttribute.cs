@@ -1,10 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿namespace Butler.Schema.Data.Common {
 
-namespace Butler.Schema.Data.Common {
-
-    [AttributeUsage(AttributeTargets.All)]
-    [Serializable]
+    [System.AttributeUsage(System.AttributeTargets.All)]
+    [System.Serializable]
     public class LocalizedDisplayNameAttribute : System.ComponentModel.DisplayNameAttribute, ILocalizedString {
 
         public LocalizedDisplayNameAttribute() {}

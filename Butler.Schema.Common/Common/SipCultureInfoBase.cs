@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Butler.Schema.Data.Common {
+﻿namespace Butler.Schema.Data.Common {
 
     internal class SipCultureInfoBase : System.Globalization.CultureInfo {
 
@@ -13,16 +10,12 @@ namespace Butler.Schema.Data.Common {
             sipName = string.Format(
                 System.Globalization.CultureInfo.InvariantCulture,
                 "{0}-x-{1}",
-                new object[2] {
-                    parent.IsNeutralCulture ? parent.Name : parent.Parent.Name,
-                    segmentID
-                });
+                parent.IsNeutralCulture ? parent.Name : parent.Parent.Name,
+                segmentID);
             description = string.Format(
                 System.Globalization.CultureInfo.InvariantCulture,
                 "Role-Based Culture ({0})",
-                new object[1] {
-                    name
-                });
+                name);
         }
 
         public override string Name {

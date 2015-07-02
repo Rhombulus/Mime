@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Butler.Schema.Data.Globalization.Iso2022Jp {
+﻿namespace Butler.Schema.Data.Globalization.Iso2022Jp {
 
     internal class DecodeJisX0208_1983ToCp932 : DecodeToCp932 {
 
@@ -25,7 +22,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
             byte num2 = 0;
             if (escape.IsValidEscapeSequence) {
                 if (!this.IsEscapeSequenceHandled(escape))
-                    throw new InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
+                    throw new System.InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
                 index += escape.BytesInCurrentBuffer;
                 runBeganWithEscape = true;
                 isKana = false;
@@ -153,7 +150,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
             var limit = this.CalculateLoopCountLimit(lengthIn);
             if (escape.IsValidEscapeSequence) {
                 if (!this.IsEscapeSequenceHandled(escape))
-                    throw new InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
+                    throw new System.InvalidOperationException(string.Format("unhandled escape sequence: {0}", escape.Sequence));
                 index1 += escape.BytesInCurrentBuffer;
                 isKana = false;
                 leftoverByte = 0;
@@ -166,7 +163,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
                 int num5;
                 if (leftoverByte != 0) {
                     if (index1 != offsetIn)
-                        throw new InvalidOperationException(string.Format("DecodeJisX0208_1983ToCp932.ConvertToCp932: leftover byte processed at offset {0}, should have been {1}", index1, offsetIn));
+                        throw new System.InvalidOperationException(string.Format("DecodeJisX0208_1983ToCp932.ConvertToCp932: leftover byte processed at offset {0}, should have been {1}", index1, offsetIn));
                     num2 = leftoverByte;
                     num3 = dataIn[index1];
                     num4 = 1;
@@ -305,7 +302,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
                                     goto case JisX0208PairClass.Unrecognized;
                                 goto case JisX0208PairClass.IbmExtension;
                             default:
-                                throw new InvalidOperationException("unrecognized pair class, update DecodeJisX0208_1983.DecodeToCp932");
+                                throw new System.InvalidOperationException("unrecognized pair class, update DecodeJisX0208_1983.DecodeToCp932");
                         }
                     } else {
                         var num6 = ((int) num2 & 1) != 1 ? num3 + 125U : num3 + 31U;
@@ -361,7 +358,7 @@ namespace Butler.Schema.Data.Globalization.Iso2022Jp {
                     lowOut = (byte) (lowIn + 31U);
                     break;
                 default:
-                    throw new InvalidOperationException(string.Format("ClassifyPair and MapIbmExtensionToCp932 disagree on {0},{1}", highIn.ToString("X2"), lowIn.ToString("X2")));
+                    throw new System.InvalidOperationException(string.Format("ClassifyPair and MapIbmExtensionToCp932 disagree on {0},{1}", highIn.ToString("X2"), lowIn.ToString("X2")));
             }
         }
 

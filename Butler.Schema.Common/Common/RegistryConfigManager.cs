@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Butler.Schema.Data.Common {
+﻿namespace Butler.Schema.Data.Common {
 
     public class RegistryConfigManager {
 
@@ -20,7 +17,7 @@ namespace Butler.Schema.Data.Common {
         }
 
         private static void ReadAllConfigsIfRequired() {
-            var ticks = DateTime.UtcNow.Ticks;
+            var ticks = System.DateTime.UtcNow.Ticks;
             if (lastAccessTicks != 0L) {
                 if (lastAccessTicks <= ticks) {
                     if (ticks - lastAccessTicks <= RegistryReadIntervalTicks)
@@ -39,7 +36,7 @@ namespace Butler.Schema.Data.Common {
                         return;
                     htmlEncapsulationOverride = (int) obj2;
                 }
-            } catch (Exception ex) {} finally {
+            } catch (System.Exception ex) {} finally {
                 lastAccessTicks = ticks;
             }
         }

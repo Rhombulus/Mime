@@ -1,128 +1,102 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: Microsoft.Exchange.Data.Internal.AutoPositionReadOnlyStream
-// Assembly: Microsoft.Exchange.Data.Common, Version=15.0.1040.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
-// MVID: 60AF4FF7-547F-476B-8FAC-6C80D63CB41A
-// Assembly location: C:\Users\Thomas\Downloads\Microsoft.Exchange.Data.Common.dll
+﻿namespace Butler.Schema.Data.Internal {
 
-using System;
-using System.IO;
-using System.Linq;
+    internal sealed class AutoPositionReadOnlyStream : System.IO.Stream, ICloneableStream {
 
-namespace Butler.Schema.Data.Internal
-{
-  internal sealed class AutoPositionReadOnlyStream : Stream, ICloneableStream
-  {
-    private ReadableDataStorage storage;
-    private long position;
+        public AutoPositionReadOnlyStream(System.IO.Stream wrapped, bool ownsStream) {
+            storage = new ReadableDataStorageOnStream(wrapped, ownsStream);
+            position = wrapped.Position;
+        }
 
-    public override bool CanRead => this.storage != null;
+        private AutoPositionReadOnlyStream(AutoPositionReadOnlyStream original) {
+            original.storage.AddRef();
+            storage = original.storage;
+            position = original.position;
+        }
 
-      public override bool CanWrite => false;
+        public override bool CanRead => storage != null;
+        public override bool CanWrite => false;
+        public override bool CanSeek => storage != null;
 
-      public override bool CanSeek => this.storage != null;
+        public override long Length {
+            get {
+                if (storage == null)
+                    throw new System.ObjectDisposedException("AutoPositionReadOnlyStream");
+                return storage.Length;
+            }
+        }
 
-      public override long Length
-    {
-      get
-      {
-        if (this.storage == null)
-          throw new ObjectDisposedException("AutoPositionReadOnlyStream");
-        return this.storage.Length;
-      }
+        public override long Position {
+            get {
+                if (storage == null)
+                    throw new System.ObjectDisposedException("AutoPositionReadOnlyStream");
+                return position;
+            }
+            set {
+                if (storage == null)
+                    throw new System.ObjectDisposedException("AutoPositionReadOnlyStream");
+                if (value < 0L)
+                    throw new System.ArgumentOutOfRangeException(nameof(value), Resources.SharedStrings.CannotSeekBeforeBeginning);
+                position = value;
+            }
+        }
+
+        public System.IO.Stream Clone() {
+            if (storage == null)
+                throw new System.ObjectDisposedException("AutoPositionReadOnlyStream");
+            return new AutoPositionReadOnlyStream(this);
+        }
+
+        public override int Read(byte[] buffer, int offset, int count) {
+            if (storage == null)
+                throw new System.ObjectDisposedException("AutoPositionReadOnlyStream");
+            var num = storage.Read(position, buffer, offset, count);
+            position += num;
+            return num;
+        }
+
+        public override void Write(byte[] buffer, int offset, int count) {
+            throw new System.NotSupportedException();
+        }
+
+        public override void SetLength(long value) {
+            throw new System.NotSupportedException();
+        }
+
+        public override void Flush() {
+            throw new System.NotSupportedException();
+        }
+
+        public override long Seek(long offset, System.IO.SeekOrigin origin) {
+            if (storage == null)
+                throw new System.ObjectDisposedException("AutoPositionReadOnlyStream");
+            switch (origin) {
+                case System.IO.SeekOrigin.Begin:
+                    if (0L > offset)
+                        throw new System.ArgumentOutOfRangeException(nameof(offset), Resources.SharedStrings.CannotSeekBeforeBeginning);
+                    position = offset;
+                    return position;
+                case System.IO.SeekOrigin.Current:
+                    offset += position;
+                    goto case 0;
+                case System.IO.SeekOrigin.End:
+                    offset += this.Length;
+                    goto case 0;
+                default:
+                    throw new System.ArgumentException("origin");
+            }
+        }
+
+        protected override void Dispose(bool disposing) {
+            if (disposing && storage != null) {
+                storage.Release();
+                storage = null;
+            }
+            base.Dispose(disposing);
+        }
+
+        private long position;
+        private ReadableDataStorage storage;
+
     }
 
-    public override long Position
-    {
-      get
-      {
-        if (this.storage == null)
-          throw new ObjectDisposedException("AutoPositionReadOnlyStream");
-        return this.position;
-      }
-      set
-      {
-        if (this.storage == null)
-          throw new ObjectDisposedException("AutoPositionReadOnlyStream");
-        if (value < 0L)
-          throw new ArgumentOutOfRangeException(nameof(value), Resources.SharedStrings.CannotSeekBeforeBeginning);
-        this.position = value;
-      }
-    }
-
-    public AutoPositionReadOnlyStream(Stream wrapped, bool ownsStream)
-    {
-      this.storage = (ReadableDataStorage) new ReadableDataStorageOnStream(wrapped, ownsStream);
-      this.position = wrapped.Position;
-    }
-
-    private AutoPositionReadOnlyStream(AutoPositionReadOnlyStream original)
-    {
-      original.storage.AddRef();
-      this.storage = original.storage;
-      this.position = original.position;
-    }
-
-    public override int Read(byte[] buffer, int offset, int count)
-    {
-      if (this.storage == null)
-        throw new ObjectDisposedException("AutoPositionReadOnlyStream");
-      int num = this.storage.Read(this.position, buffer, offset, count);
-      this.position += (long) num;
-      return num;
-    }
-
-    public override void Write(byte[] buffer, int offset, int count)
-    {
-      throw new NotSupportedException();
-    }
-
-    public override void SetLength(long value)
-    {
-      throw new NotSupportedException();
-    }
-
-    public override void Flush()
-    {
-      throw new NotSupportedException();
-    }
-
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-      if (this.storage == null)
-        throw new ObjectDisposedException("AutoPositionReadOnlyStream");
-      switch (origin)
-      {
-        case SeekOrigin.Begin:
-          if (0L > offset)
-            throw new ArgumentOutOfRangeException(nameof(offset), Resources.SharedStrings.CannotSeekBeforeBeginning);
-          this.position = offset;
-          return this.position;
-        case SeekOrigin.Current:
-          offset += this.position;
-          goto case 0;
-        case SeekOrigin.End:
-          offset += this.Length;
-          goto case 0;
-        default:
-          throw new ArgumentException("origin");
-      }
-    }
-
-    public Stream Clone()
-    {
-      if (this.storage == null)
-        throw new ObjectDisposedException("AutoPositionReadOnlyStream");
-      return (Stream) new AutoPositionReadOnlyStream(this);
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-      if (disposing && this.storage != null)
-      {
-        this.storage.Release();
-        this.storage = (ReadableDataStorage) null;
-      }
-      base.Dispose(disposing);
-    }
-  }
 }

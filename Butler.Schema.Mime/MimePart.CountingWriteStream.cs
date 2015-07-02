@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -20,16 +18,16 @@ namespace Butler.Schema.Data.Mime {
 
             public override long Length {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
             public override long Position {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
                 set {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
@@ -38,7 +36,7 @@ namespace Butler.Schema.Data.Mime {
             }
 
             public override int Read(byte[] array, int offset, int count) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void Write(byte[] array, int offset, int count) {
@@ -47,7 +45,7 @@ namespace Butler.Schema.Data.Mime {
             }
 
             public override void SetLength(long value) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void Flush() {
@@ -55,7 +53,7 @@ namespace Butler.Schema.Data.Mime {
             }
 
             public override long Seek(long offset, System.IO.SeekOrigin origin) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             private readonly System.IO.Stream _stream;

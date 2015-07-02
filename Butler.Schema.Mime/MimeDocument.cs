@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    public class MimeDocument : IDisposable {
+    public class MimeDocument : System.IDisposable {
 
         public MimeDocument()
             : this(DecodingOptions.Default, MimeLimits.Default) {}
 
         public MimeDocument(DecodingOptions headerDecodingOptions, MimeLimits mimeLimits) {
             if (mimeLimits == null)
-                throw new ArgumentNullException(nameof(mimeLimits));
+                throw new System.ArgumentNullException(nameof(mimeLimits));
             decodingOptions = headerDecodingOptions;
             limits = mimeLimits;
             accessToken = new MimeDocumentThreadAccessToken(this);
@@ -40,12 +38,12 @@ namespace Butler.Schema.Data.Mime {
                 this.ThrowIfDisposed();
                 using (ThreadAccessGuard.EnterPublic(accessToken)) {
                     if (value == null)
-                        throw new ArgumentNullException(nameof(value));
+                        throw new System.ArgumentNullException(nameof(value));
                     if (value.Parent != null)
-                        throw new ArgumentException(Resources.Strings.RootPartCantHaveAParent);
+                        throw new System.ArgumentException(Resources.Strings.RootPartCantHaveAParent);
                     this.ThrowIfReadOnly("MimeDocument.set_RootPart");
                     if (reader != null)
-                        throw new InvalidOperationException("Cannot set a new document root part while document loading is not complete");
+                        throw new System.InvalidOperationException("Cannot set a new document root part while document loading is not complete");
                     lastPart = null;
                     contentStart = 0L;
                     complianceStatus = MimeComplianceStatus.Compliant;
@@ -171,7 +169,7 @@ namespace Butler.Schema.Data.Mime {
 
         public void Dispose() {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
+            System.GC.SuppressFinalize(this);
         }
 
         public MimePart Load(System.IO.Stream stream, CachingMode cachingMode) {
@@ -179,11 +177,11 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfReadOnly("MimeDocument.Load");
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (stream == null)
-                    throw new ArgumentNullException(nameof(stream));
+                    throw new System.ArgumentNullException(nameof(stream));
                 if (root != null)
-                    throw new InvalidOperationException(Resources.Strings.CannotLoadIntoNonEmptyDocument);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotLoadIntoNonEmptyDocument);
                 if (reader != null)
-                    throw new InvalidOperationException("Cannot load document again while previous load is not complete");
+                    throw new System.InvalidOperationException("Cannot load document again while previous load is not complete");
                 switch (cachingMode) {
                     case CachingMode.Copy:
                         this.InitializePushMode(true);
@@ -206,7 +204,7 @@ namespace Butler.Schema.Data.Mime {
                     case CachingMode.SourceTakeOwnership:
                         if (createValidateStorage) {
                             if (!stream.CanSeek)
-                                throw new NotSupportedException(Resources.Strings.CachingModeSourceButStreamCannotSeek);
+                                throw new System.NotSupportedException(Resources.Strings.CachingModeSourceButStreamCannotSeek);
                             stream.Position = 0L;
                             backingStorage = new Internal.ReadableDataStorageOnStream(stream, cachingMode == CachingMode.SourceTakeOwnership);
                         }
@@ -226,7 +224,7 @@ namespace Butler.Schema.Data.Mime {
                         }
                         break;
                     default:
-                        throw new ArgumentException("Invalid Caching Mode value", nameof(cachingMode));
+                        throw new System.ArgumentException("Invalid Caching Mode value", nameof(cachingMode));
                 }
                 return this.RootPart;
             }
@@ -240,7 +238,7 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfDisposed();
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (reader != null)
-                    throw new NotSupportedException(Resources.Strings.DocumentCloneNotSupportedInThisState);
+                    throw new System.NotSupportedException(Resources.Strings.DocumentCloneNotSupportedInThisState);
                 var mimeDocument = (MimeDocument) this.MemberwiseClone();
                 if (root != null) {
                     mimeDocument.root = (MimePart) root.Clone();
@@ -276,7 +274,7 @@ namespace Butler.Schema.Data.Mime {
 
         internal void DangerousSetFixBadMimeBoundary(bool value) {
             if (reader != null)
-                throw new InvalidOperationException("Cannot change FixBadMimeBoundary flag while previous load is not complete");
+                throw new System.InvalidOperationException("Cannot change FixBadMimeBoundary flag while previous load is not complete");
             dangerousFixBadMimeBoundary = value;
         }
 
@@ -285,9 +283,9 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfReadOnly("MimeDocument.GetLoadStream");
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (root != null)
-                    throw new InvalidOperationException(Resources.Strings.CannotLoadIntoNonEmptyDocument);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotLoadIntoNonEmptyDocument);
                 if (reader != null)
-                    throw new InvalidOperationException(Resources.Strings.CannotGetLoadStreamMoreThanOnce);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotGetLoadStreamMoreThanOnce);
                 this.expectBinaryContent = expectBinaryContent;
                 this.InitializePushMode(this.expectBinaryContent);
                 return new PushStream(this);
@@ -371,9 +369,9 @@ namespace Butler.Schema.Data.Mime {
         internal void BuildDomAndCompleteParse(MimePart rootPart) {
             using (ThreadAccessGuard.EnterPublic(accessToken)) {
                 if (reader != null)
-                    throw new InvalidOperationException("do not call BuildDomAndCompleteParse() before Load is complete");
+                    throw new System.InvalidOperationException("do not call BuildDomAndCompleteParse() before Load is complete");
                 if (stopLoading)
-                    throw new InvalidOperationException("do not call BuildDomAndCompleteParse() after canceling Load");
+                    throw new System.InvalidOperationException("do not call BuildDomAndCompleteParse() after canceling Load");
                 if (rootPart.InternalLastChild == null && rootPart.Storage == null)
                     this.ParseAllHeaders(rootPart);
                 else {
@@ -387,7 +385,7 @@ namespace Butler.Schema.Data.Mime {
                     reader = new MimeReader(null, true, decodingOptions, limits, true, true, expectBinaryContent);
                     reader.DangerousSetFixBadMimeBoundary(dangerousFixBadMimeBoundary);
                     try {
-                        var stack = new Stack<MimePart>(5);
+                        var stack = new System.Collections.Generic.Stack<MimePart>(5);
                         stack.Push(rootPart);
                         label_13:
                         if (stack.Count <= 0)
@@ -519,7 +517,7 @@ namespace Butler.Schema.Data.Mime {
             this.ThrowIfReadOnly("MimeDocument.Write");
             using (ThreadAccessGuard.EnterPrivate(accessToken)) {
                 if (reader == null)
-                    throw new InvalidOperationException(Resources.Strings.CannotWriteAfterFlush);
+                    throw new System.InvalidOperationException(Resources.Strings.CannotWriteAfterFlush);
                 if (count == 0)
                     return;
                 backingStorageWriteStream.Write(buffer, offset, count);
@@ -590,7 +588,7 @@ namespace Butler.Schema.Data.Mime {
                                 }
                                 goto case MimeReaderState.InlineBody;
                             default:
-                                throw new InvalidOperationException("unexpected reader state");
+                                throw new System.InvalidOperationException("unexpected reader state");
                         }
                     }
                 }
@@ -663,7 +661,7 @@ namespace Butler.Schema.Data.Mime {
                         contentPositionStack = new ContentPositionEntry[4];
                     else if (contentPositionStack.Length == contentPositionStackTop) {
                         var contentPositionEntryArray = new ContentPositionEntry[contentPositionStack.Length*2];
-                        Array.Copy(contentPositionStack, 0, contentPositionEntryArray, 0, contentPositionStackTop);
+                        System.Array.Copy(contentPositionStack, 0, contentPositionEntryArray, 0, contentPositionStackTop);
                         contentPositionStack = contentPositionEntryArray;
                     }
                     contentPositionStack[contentPositionStackTop++] = new ContentPositionEntry(contentStart, headersEnd, contentTransferEncoding);
@@ -787,7 +785,7 @@ namespace Butler.Schema.Data.Mime {
                         var flag = false;
                         if ((reader.ComplianceStatus & MimeComplianceStatus.UnexpectedBinaryContent) != MimeComplianceStatus.Compliant) {
                             var start = lastPart.DataStart + lastPart.BodyOffset;
-                            var num = Math.Min(lastPart.DataEnd - start, 1000L);
+                            var num = System.Math.Min(lastPart.DataEnd - start, 1000L);
                             var end = start + num;
                             if (num > 10L) {
                                 using (var stream = lastPart.Storage.OpenReadStream(start, end))
@@ -819,7 +817,7 @@ namespace Butler.Schema.Data.Mime {
 
         private void ThrowIfDisposed() {
             if (isDisposed)
-                throw new ObjectDisposedException("MimeDocument");
+                throw new System.ObjectDisposedException("MimeDocument");
         }
 
         private void ThrowIfReadOnly(string method) {
@@ -897,27 +895,27 @@ namespace Butler.Schema.Data.Mime {
 
             public override long Length {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
             public override long Position {
                 get {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
                 set {
-                    throw new NotSupportedException();
+                    throw new System.NotSupportedException();
                 }
             }
 
             public override void Flush() {
                 if (document == null)
-                    throw new ObjectDisposedException("stream");
+                    throw new System.ObjectDisposedException("stream");
                 using (ThreadAccessGuard.EnterPublic(document.AccessToken)) {
                     if (badState)
                         return;
                     if (document.stopLoading)
-                        throw new InvalidOperationException(Resources.Strings.LoadingStopped);
+                        throw new System.InvalidOperationException(Resources.Strings.LoadingStopped);
                     badState = true;
                     document.Flush(false);
                     badState = false;
@@ -925,25 +923,25 @@ namespace Butler.Schema.Data.Mime {
             }
 
             public override int Read(byte[] buffer, int offset, int count) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override long Seek(long offset, System.IO.SeekOrigin origin) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void SetLength(long length) {
-                throw new NotSupportedException();
+                throw new System.NotSupportedException();
             }
 
             public override void Write(byte[] buffer, int offset, int count) {
                 if (document == null)
-                    throw new ObjectDisposedException("stream");
+                    throw new System.ObjectDisposedException("stream");
                 using (ThreadAccessGuard.EnterPublic(document.AccessToken)) {
                     if (badState)
                         return;
                     if (document.stopLoading)
-                        throw new InvalidOperationException(Resources.Strings.LoadingStopped);
+                        throw new System.InvalidOperationException(Resources.Strings.LoadingStopped);
                     badState = true;
                     document.Write(buffer, offset, count);
                     badState = false;

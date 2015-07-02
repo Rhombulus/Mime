@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
-    public class AddressHeader : Header, IEnumerable<AddressItem>, System.Collections.IEnumerable {
+    public class AddressHeader : Header, System.Collections.Generic.IEnumerable<AddressItem>, System.Collections.IEnumerable {
 
         public AddressHeader(string name)
             : this(name, Header.GetHeaderId(name, true)) {
             var type = Header.TypeFromHeaderId(this.HeaderId);
             if (this.HeaderId != HeaderId.Unknown && type != typeof (AddressHeader))
-                throw new ArgumentException(Resources.Strings.NameNotValidForThisHeaderType(name, "AddressHeader", type.Name));
+                throw new System.ArgumentException(Resources.Strings.NameNotValidForThisHeaderType(name, "AddressHeader", type.Name));
         }
 
         internal AddressHeader(string name, HeaderId headerId)
@@ -21,7 +19,7 @@ namespace Butler.Schema.Data.Mime {
                 return null;
             }
             set {
-                throw new NotSupportedException(Resources.Strings.UnicodeMimeHeaderAddressNotSupported);
+                throw new System.NotSupportedException(Resources.Strings.UnicodeMimeHeaderAddressNotSupported);
             }
         }
 
@@ -47,7 +45,7 @@ namespace Butler.Schema.Data.Mime {
             }
         }
 
-        IEnumerator<AddressItem> IEnumerable<AddressItem>.GetEnumerator() {
+        System.Collections.Generic.IEnumerator<AddressItem> System.Collections.Generic.IEnumerable<AddressItem>.GetEnumerator() {
             return new Enumerator<AddressItem>(this);
         }
 
@@ -80,12 +78,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var addressHeader = destination as AddressHeader;
             if (addressHeader == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             base.CopyTo(destination);
             addressHeader.parsed = parsed;
             addressHeader.parser = parser == null ? null : new MimeAddressParser(addressHeader.Lines, parser);
@@ -190,7 +188,7 @@ namespace Butler.Schema.Data.Mime {
 
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
             if (!(newChild is MimeRecipient) && !(newChild is MimeGroup))
-                throw new ArgumentException(Resources.Strings.NewChildNotRecipientOrGroup, nameof(newChild));
+                throw new System.ArgumentException(Resources.Strings.NewChildNotRecipientOrGroup, nameof(newChild));
             return refChild;
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -24,9 +23,9 @@ namespace Butler.Schema.Data.Mime {
             }
             set {
                 if (value == null)
-                    throw new ArgumentNullException(nameof(value));
+                    throw new System.ArgumentNullException(nameof(value));
                 if (ValueParser.ParseToken(value, 0, false) != value.Length)
-                    throw new ArgumentException("Value should be a valid token", nameof(value));
+                    throw new System.ArgumentException("Value should be a valid token", nameof(value));
                 if (!parsed)
                     this.Parse();
                 if (value == disp)
@@ -60,12 +59,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var dispositionHeader = destination as ContentDispositionHeader;
             if (dispositionHeader == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType, nameof(destination));
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType, nameof(destination));
             base.CopyTo(destination);
             dispositionHeader.parsed = parsed;
             dispositionHeader.disp = disp;

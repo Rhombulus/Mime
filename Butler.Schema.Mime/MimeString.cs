@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -147,7 +146,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         public int CopyTo(byte[] destination, int destinationIndex) {
-            Buffer.BlockCopy(this.Data, this.Offset, destination, destinationIndex, this.Length);
+            System.Buffer.BlockCopy(this.Data, this.Offset, destination, destinationIndex, this.Length);
             return this.Length;
         }
 

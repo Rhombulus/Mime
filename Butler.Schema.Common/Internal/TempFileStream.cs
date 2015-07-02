@@ -1,105 +1,72 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: Microsoft.Exchange.Data.Internal.TempFileStream
-// Assembly: Microsoft.Exchange.Data.Common, Version=15.0.1040.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
-// MVID: 60AF4FF7-547F-476B-8FAC-6C80D63CB41A
-// Assembly location: C:\Users\Thomas\Downloads\Microsoft.Exchange.Data.Common.dll
+﻿namespace Butler.Schema.Data.Internal {
 
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
-using System.Threading;
-using Microsoft.Win32.SafeHandles;
+    internal class TempFileStream : System.IO.FileStream {
 
-namespace Butler.Schema.Data.Internal
-{
-  internal class TempFileStream : FileStream
-  {
-    private static int nextId = Environment.TickCount ^ Process.GetCurrentProcess().Id;
-    private static string tempPath;
+        private TempFileStream(Microsoft.Win32.SafeHandles.SafeFileHandle handle)
+            : base(handle, System.IO.FileAccess.ReadWrite) {}
 
-      internal static string Path => TempFileStream.GetTempPath();
+        internal static string Path => TempFileStream.GetTempPath();
+        public string FilePath { get; private set; }
 
-      public string FilePath { get; private set; }
-
-      private TempFileStream(SafeFileHandle handle)
-      : base(handle, FileAccess.ReadWrite)
-    {
-    }
-
-    public static TempFileStream CreateInstance()
-    {
-      return TempFileStream.CreateInstance("Cts");
-    }
-
-    public static TempFileStream CreateInstance(string prefix)
-    {
-      return TempFileStream.CreateInstance(prefix, true);
-    }
-
-    public static TempFileStream CreateInstance(string prefix, bool deleteOnClose)
-    {
-      NativeMethods.SecurityAttributes securityAttributes = new NativeMethods.SecurityAttributes(false);
-      string path = TempFileStream.Path;
-      new FileIOPermission(FileIOPermissionAccess.Write, path).Demand();
-      int error = 0;
-      int num1 = 10;
-      string str;
-      SafeFileHandle file;
-      do
-      {
-        uint num2 = (uint) Interlocked.Increment(ref TempFileStream.nextId);
-        str = System.IO.Path.Combine(path, prefix + num2.ToString("X5") + ".tmp");
-        uint num3 = deleteOnClose ? 67108864U : 0U;
-        file = NativeMethods.CreateFile(str, 1180063U, 0U, ref securityAttributes, 1U, (uint) (256 | (int) num3 | 8192), IntPtr.Zero);
-        --num1;
-        if (file.IsInvalid)
-        {
-          error = Marshal.GetLastWin32Error();
-          if (error == 80)
-            ++num1;
-          using (Process currentProcess = Process.GetCurrentProcess())
-            Interlocked.Add(ref TempFileStream.nextId, currentProcess.Id);
+        public static TempFileStream CreateInstance() {
+            return TempFileStream.CreateInstance("Cts");
         }
-        else
-          num1 = 0;
-      }
-      while (num1 > 0);
-      if (file.IsInvalid)
-      {
-        string fileFailed = Resources.SharedStrings.CreateFileFailed(str);
-        throw new IOException(fileFailed, (Exception) new Win32Exception(error, fileFailed));
-      }
-      return new TempFileStream(file)
-      {
-        FilePath = str
-      };
+
+        public static TempFileStream CreateInstance(string prefix) {
+            return TempFileStream.CreateInstance(prefix, true);
+        }
+
+        public static TempFileStream CreateInstance(string prefix, bool deleteOnClose) {
+            var securityAttributes = new NativeMethods.SecurityAttributes(false);
+            var path = TempFileStream.Path;
+            new System.Security.Permissions.FileIOPermission(System.Security.Permissions.FileIOPermissionAccess.Write, path).Demand();
+            var error = 0;
+            var num1 = 10;
+            string str;
+            Microsoft.Win32.SafeHandles.SafeFileHandle file;
+            do {
+                var num2 = (uint) System.Threading.Interlocked.Increment(ref nextId);
+                str = System.IO.Path.Combine(path, prefix + num2.ToString("X5") + ".tmp");
+                var num3 = deleteOnClose ? 67108864U : 0U;
+                file = NativeMethods.CreateFile(str, 1180063U, 0U, ref securityAttributes, 1U, (uint) (256 | (int) num3 | 8192), System.IntPtr.Zero);
+                --num1;
+                if (file.IsInvalid) {
+                    error = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+                    if (error == 80)
+                        ++num1;
+                    using (var currentProcess = System.Diagnostics.Process.GetCurrentProcess())
+                        System.Threading.Interlocked.Add(ref nextId, currentProcess.Id);
+                } else
+                    num1 = 0;
+            } while (num1 > 0);
+            if (file.IsInvalid) {
+                var fileFailed = Resources.SharedStrings.CreateFileFailed(str);
+                throw new System.IO.IOException(fileFailed, new System.ComponentModel.Win32Exception(error, fileFailed));
+            }
+            return new TempFileStream(file) {
+                FilePath = str
+            };
+        }
+
+        internal static void SetTemporaryPath(string path) {
+            tempPath = path;
+        }
+
+        private static string GetTempPath() {
+            return tempPath ?? (tempPath = System.IO.Path.GetTempPath());
+        }
+
+        protected override void Dispose(bool disposing) {
+            try {
+                base.Dispose(disposing);
+            } catch (System.IO.IOException ex) {}
+        }
+
+        private static int nextId = System.Environment.TickCount ^ System.Diagnostics.Process.GetCurrentProcess()
+                                                                         .Id;
+
+        private static string tempPath;
+
     }
 
-    internal static void SetTemporaryPath(string path)
-    {
-      TempFileStream.tempPath = path;
-    }
-
-    private static string GetTempPath()
-    {
-      if (TempFileStream.tempPath == null)
-        TempFileStream.tempPath = System.IO.Path.GetTempPath();
-      return TempFileStream.tempPath;
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-      try
-      {
-        base.Dispose(disposing);
-      }
-      catch (IOException ex)
-      {
-      }
-    }
-  }
 }

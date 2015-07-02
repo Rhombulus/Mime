@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime.Encoders {
 
@@ -12,9 +11,9 @@ namespace Butler.Schema.Data.Mime.Encoders {
 
         public MacBinaryHeader(byte[] bytes) {
             if (bytes == null)
-                throw new ArgumentNullException(nameof(bytes));
+                throw new System.ArgumentNullException(nameof(bytes));
             if (bytes.Length != 128)
-                throw new ArgumentException(Resources.EncodersStrings.MacBinHeaderMustBe128Long, nameof(bytes));
+                throw new System.ArgumentException(Resources.EncodersStrings.MacBinHeaderMustBe128Long, nameof(bytes));
             if (bytes[0] != 0 || bytes[74] != 0 || bytes[82] != 0)
                 throw new ByteEncoderException(Resources.EncodersStrings.MacBinInvalidData);
             if (bytes[1] > 63)
@@ -43,7 +42,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             set {
                 var bytes = System.Text.Encoding.ASCII.GetBytes(value);
                 if (bytes.Length > 63)
-                    throw new ArgumentException(Resources.EncodersStrings.MacBinFileNameTooLong, nameof(value));
+                    throw new System.ArgumentException(Resources.EncodersStrings.MacBinFileNameTooLong, nameof(value));
                 fileName = value;
                 this.FileNameLength = bytes.Length;
             }
@@ -59,7 +58,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             }
             set {
                 if (ushort.MaxValue < (uint) value)
-                    throw new ArgumentOutOfRangeException(nameof(value), Resources.EncodersStrings.MacBinIconOffsetTooLarge(ushort.MaxValue));
+                    throw new System.ArgumentOutOfRangeException(nameof(value), Resources.EncodersStrings.MacBinIconOffsetTooLarge(ushort.MaxValue));
                 iconXOffset = value;
             }
         }
@@ -70,7 +69,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             }
             set {
                 if (ushort.MaxValue < (uint) value)
-                    throw new ArgumentOutOfRangeException(nameof(value), Resources.EncodersStrings.MacBinIconOffsetTooLarge(ushort.MaxValue));
+                    throw new System.ArgumentOutOfRangeException(nameof(value), Resources.EncodersStrings.MacBinIconOffsetTooLarge(ushort.MaxValue));
                 iconYOffset = value;
             }
         }
@@ -79,8 +78,8 @@ namespace Butler.Schema.Data.Mime.Encoders {
         public bool Protected { get; set; }
         public long DataForkLength { get; set; }
         public long ResourceForkLength { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime ModificationDate { get; set; }
+        public System.DateTime CreationDate { get; set; }
+        public System.DateTime ModificationDate { get; set; }
         public int GetInfoLength { get; set; }
         public int UnpackedSize { get; set; }
         public int SecondaryHeaderLength { get; set; }
@@ -91,7 +90,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             }
             set {
                 if (value != 0 && 129 != value && 130 != value)
-                    throw new ArgumentOutOfRangeException(nameof(value), Resources.EncodersStrings.MacBinBadVersion);
+                    throw new System.ArgumentOutOfRangeException(nameof(value), Resources.EncodersStrings.MacBinBadVersion);
                 version = value;
             }
         }
@@ -102,7 +101,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             }
             set {
                 if (value != 0 && 129 != value && 130 != value)
-                    throw new ArgumentOutOfRangeException(nameof(value), Resources.EncodersStrings.MacBinBadVersion);
+                    throw new System.ArgumentOutOfRangeException(nameof(value), Resources.EncodersStrings.MacBinBadVersion);
                 minimumVersion = value;
             }
         }
@@ -129,7 +128,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
             var dstOffset = index2 + num5;
             int num6 = (byte) this.FileNameLength;
             numArray3[index2] = (byte) num6;
-            Buffer.BlockCopy(this.FileNameAsByteArray(), 0, numArray1, dstOffset, this.FileNameLength);
+            System.Buffer.BlockCopy(this.FileNameAsByteArray(), 0, numArray1, dstOffset, this.FileNameLength);
             const int offset1 = 65;
             var offset2 = offset1 + BinHexUtils.MarshalInt32(numArray1, offset1, this.FileType);
             var num7 = offset2 + BinHexUtils.MarshalInt32(numArray1, offset2, this.FileCreator);
@@ -212,7 +211,7 @@ namespace Butler.Schema.Data.Mime.Encoders {
         private int version;
 
 
-        [Flags]
+        [System.Flags]
         internal enum FinderFlagsFields {
 
             OnDesk = 1,

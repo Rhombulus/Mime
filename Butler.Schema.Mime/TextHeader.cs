@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -9,7 +8,7 @@ namespace Butler.Schema.Data.Mime {
             : this(name, Header.GetHeaderId(name, true)) {
             var type = Header.TypeFromHeaderId(this.HeaderId);
             if (this.HeaderId != HeaderId.Unknown && type != typeof (TextHeader) && type != typeof (AsciiTextHeader))
-                throw new ArgumentException(Resources.Strings.NameNotValidForThisHeaderType(name, "TextHeader", type.Name));
+                throw new System.ArgumentException(Resources.Strings.NameNotValidForThisHeaderType(name, "TextHeader", type.Name));
             this.Value = value;
         }
 
@@ -61,12 +60,12 @@ namespace Butler.Schema.Data.Mime {
 
         public override sealed void CopyTo(object destination) {
             if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+                throw new System.ArgumentNullException(nameof(destination));
             if (destination == this)
                 return;
             var textHeader = destination as TextHeader;
             if (textHeader == null)
-                throw new ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
+                throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
             base.CopyTo(destination);
             textHeader.decodedValue = decodedValue;
         }
@@ -140,7 +139,7 @@ namespace Butler.Schema.Data.Mime {
         }
 
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
-            throw new NotSupportedException(Resources.Strings.ChildrenCannotBeAddedToTextHeader);
+            throw new System.NotSupportedException(Resources.Strings.ChildrenCannotBeAddedToTextHeader);
         }
 
         private string decodedValue;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Butler.Schema.Data.Mime {
 
@@ -22,7 +21,7 @@ namespace Butler.Schema.Data.Mime {
         public MimeAddressReader GroupRecipientReader {
             get {
                 if (!this.IsGroup)
-                    throw new InvalidOperationException(Resources.Strings.AddressReaderIsNotPositionedOnAGroup);
+                    throw new System.InvalidOperationException(Resources.Strings.AddressReaderIsNotPositionedOnAGroup);
                 return new MimeAddressReader(reader, false);
             }
         }
@@ -61,14 +60,14 @@ namespace Butler.Schema.Data.Mime {
 
         private void AssertGood(bool checkPositionedOnAddress) {
             if (reader == null)
-                throw new NotSupportedException(Resources.Strings.AddressReaderNotInitialized);
+                throw new System.NotSupportedException(Resources.Strings.AddressReaderNotInitialized);
             reader.AssertGoodToUse(true, true);
             if (reader.ReaderState != MimeReaderState.HeaderComplete || reader.CurrentHeaderObject == null || !(reader.CurrentHeaderObject is AddressHeader))
-                throw new NotSupportedException(Resources.Strings.ReaderIsNotPositionedOnAddressHeader);
+                throw new System.NotSupportedException(Resources.Strings.ReaderIsNotPositionedOnAddressHeader);
             if (!topLevel && !reader.GroupInProgress)
-                throw new InvalidOperationException(Resources.Strings.AddressReaderIsNotPositionedOnAddress);
+                throw new System.InvalidOperationException(Resources.Strings.AddressReaderIsNotPositionedOnAddress);
             if (checkPositionedOnAddress && !reader.IsCurrentChildValid(topLevel))
-                throw new InvalidOperationException(Resources.Strings.AddressReaderIsNotPositionedOnAddress);
+                throw new System.InvalidOperationException(Resources.Strings.AddressReaderIsNotPositionedOnAddress);
         }
 
         private readonly MimeReader reader;
