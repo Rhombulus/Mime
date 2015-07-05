@@ -74,7 +74,7 @@ namespace Butler.Schema.Mime {
             get {
                 this.ThrowIfDisposed();
                 using (ThreadAccessGuard.EnterPublic(_accessToken)) {
-                    return headers.FindFirst(HeaderId.ContentDescription)?.Value;
+                    return headers.FindFirst(HeaderId.ContentId)?.Value;
                 }
             }
         }
