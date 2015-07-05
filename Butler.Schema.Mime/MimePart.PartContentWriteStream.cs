@@ -18,7 +18,7 @@ namespace Butler.Schema.Mime {
                         Internal.ReadableDataStorage readableDataStorage = this.ReadableWritableStorage;
                         readableDataStorage.AddRef();
                         base.Dispose(true);
-                        if (!_mimePart.isDisposed)
+                        if (!_mimePart._isDisposed)
                             _mimePart.SetStorage(readableDataStorage, 0L, readableDataStorage.Length, 0L, _contentTransferEncoding, LineTerminationState.Unknown);
                         readableDataStorage.Release();
                     }

@@ -51,6 +51,7 @@
     <Compile Include="EncodingFlags.cs" />
     <Compile Include="EncodingOptions.cs" />
     <Compile Include="EncodingScheme.cs" />
+    <Compile Include="Extentions.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="HeaderId.cs" />
     <Compile Include="HeaderList.cs" />

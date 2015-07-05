@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Butler.Schema.Mime {
 
@@ -29,7 +30,7 @@ namespace Butler.Schema.Mime {
             internal SubtreeEnumerator GetEnumerator(SubtreeEnumerationOptions options, bool includeUnparsed) {
                 return new SubtreeEnumerator(_part, options, includeUnparsed);
             }
-
+            
             private readonly MimePart _part;
 
         }

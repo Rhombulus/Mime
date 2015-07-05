@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Butler.Schema.Mime {
 
     public partial class MimePart : MimeNode, System.IDisposable , System.Collections.Generic.IEnumerable<MimePart> {
 
         public MimePart() {
-            accessToken = new MimePartThreadAccessToken(this);
+            _accessToken = new MimePartThreadAccessToken(this);
             headers = new HeaderList(this);
         }
 
@@ -13,34 +14,37 @@ namespace Butler.Schema.Mime {
             : this() {
             if (contentType == null)
                 throw new System.ArgumentNullException(nameof(contentType));
-            using (ThreadAccessGuard.EnterPublic(accessToken))
+            using (ThreadAccessGuard.EnterPublic(_accessToken))
                 headers.InternalAppendChild(new ContentTypeHeader(contentType));
         }
 
         public MimePart(string contentType, string transferEncoding, System.IO.Stream contentStream, CachingMode cachingMode)
             : this(contentType) {
-            using (ThreadAccessGuard.EnterPublic(accessToken))
+            using (ThreadAccessGuard.EnterPublic(_accessToken))
                 this.SetContentStream(transferEncoding, contentStream, cachingMode);
         }
 
         public MimePart(string contentType, ContentTransferEncoding transferEncoding, System.IO.Stream contentStream, CachingMode cachingMode)
             : this(contentType) {
-            using (ThreadAccessGuard.EnterPublic(accessToken))
+            using (ThreadAccessGuard.EnterPublic(_accessToken))
                 this.SetContentStream(transferEncoding, contentStream, cachingMode);
         }
 
         public HeaderList Headers {
             get {
                 this.ThrowIfDisposed();
-                using (ThreadAccessGuard.EnterPublic(accessToken))
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
                     return headers;
             }
         }
 
-        public string ContentType {
-            get {
+        public string ContentType
+        {
+            get
+            {
                 this.ThrowIfDisposed();
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                {
                     var contentTypeHeader = headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
                     if (contentTypeHeader != null)
                         return contentTypeHeader.Value;
@@ -52,11 +56,24 @@ namespace Butler.Schema.Mime {
                 }
             }
         }
+        public string ContentDescription
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                {
+                    var contentDescriptionHeader = headers.FindFirst(HeaderId.ContentDescription) as TextHeader;
+
+                    return contentDescriptionHeader?.Value;
+                }
+            }
+        }
 
         public bool IsMultipart {
             get {
                 this.ThrowIfDisposed();
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     var contentTypeHeader = headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
                     return contentTypeHeader != null && contentTypeHeader.IsMultipart;
                 }
@@ -66,22 +83,30 @@ namespace Butler.Schema.Mime {
         public bool IsEmbeddedMessage {
             get {
                 this.ThrowIfDisposed();
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     var contentTypeHeader = headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
                     return contentTypeHeader != null && contentTypeHeader.IsEmbeddedMessage;
                 }
             }
         }
 
+        internal IEnumerable<MimePart> GetSubtree(SubtreeEnumerationOptions options, bool includeUnparsed) {
+            return this.Subtree.GetEnumerator(SubtreeEnumerationOptions.IncludeEmbeddedMessages, true).Enumerate();
+        }
+
+      
+
         public bool RequiresSMTPUTF8 {
             get {
                 this.ThrowIfDisposed();
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                    return this.GetSubtree(SubtreeEnumerationOptions.IncludeEmbeddedMessages, true)
+                        .SelectMany(p => p.Headers)
+                        .Any(header => header.RequiresSMTPUTF8);
                     using (var enumerator = this.Subtree.GetEnumerator(SubtreeEnumerationOptions.IncludeEmbeddedMessages, true)) {
                         while (enumerator.MoveNext()) {
-                            foreach (var header in enumerator.Current.Headers) {
-                                if (header.RequiresSMTPUTF8)
-                                    return true;
+                            if (enumerator.Current.Headers.Any(header => header.RequiresSMTPUTF8)) {
+                                return true;
                             }
                         }
                     }
@@ -93,7 +118,7 @@ namespace Butler.Schema.Mime {
         internal bool IsAnyMessage {
             get {
                 this.ThrowIfDisposed();
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     var contentTypeHeader = headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
                     return contentTypeHeader != null && contentTypeHeader.IsAnyMessage;
                 }
@@ -102,19 +127,19 @@ namespace Butler.Schema.Mime {
 
         internal int CacheMapStamp {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
-                    return cacheMapStamp;
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                    return _cacheMapStamp;
             }
             set {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
-                    cacheMapStamp = value;
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                    _cacheMapStamp = value;
             }
         }
 
         public ContentTransferEncoding ContentTransferEncoding {
             get {
                 this.ThrowIfDisposed();
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     var first = headers.FindFirst(HeaderId.ContentTransferEncoding);
                     if (first != null && first.FirstRawToken.Length != 0)
                         return MimePart.GetEncodingType(first.FirstRawToken);
@@ -124,51 +149,48 @@ namespace Butler.Schema.Mime {
         }
 
         public int Version { get; private set; }
-        internal ObjectThreadAccessToken AccessToken => accessToken;
+        internal ObjectThreadAccessToken AccessToken => _accessToken;
 
         internal ObjectThreadAccessToken ParentAccessToken {
             get {
                 MimeNode treeRoot;
-                var parentDocument = MimeNode.GetParentDocument(this, out treeRoot);
-                if (parentDocument == null)
-                    return null;
-                return parentDocument.AccessToken;
+                return MimeNode.GetParentDocument(this, out treeRoot)?.AccessToken;
             }
         }
 
         public PartSubtree Subtree {
             get {
                 this.ThrowIfDisposed();
-                using (ThreadAccessGuard.EnterPublic(accessToken))
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
                     return new PartSubtree(this);
             }
         }
 
         internal Internal.DataStorage Storage {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
-                    return dataStorage;
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                    return _dataStorage;
             }
         }
 
         internal long DataStart {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
                     return _storageInfo.DataStart;
             }
         }
 
         internal long DataEnd {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
                     return _storageInfo.DataEnd;
             }
         }
 
         internal long DataLength {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                    if (dataStorage == null)
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                    if (_dataStorage == null)
                         return 0L;
                     if (MimePart.IsEqualContentTransferEncoding(_storageInfo.BodyCte, this.ContentTransferEncoding) && _storageInfo.DataEnd != long.MaxValue)
                         return _storageInfo.DataEnd - _storageInfo.DataStart - _storageInfo.BodyOffset;
@@ -188,39 +210,37 @@ namespace Butler.Schema.Mime {
 
         internal long BodyOffset {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
                     return _storageInfo.BodyOffset;
             }
         }
 
         internal ContentTransferEncoding BodyCte {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
                     return _storageInfo.BodyCte;
             }
         }
 
         internal LineTerminationState BodyLineTermination {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
                     return _storageInfo.BodyLineTermination;
             }
         }
 
         internal byte[] Boundary {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                    if (boundary == null)
-                        boundary = MimePart.GetBoundary(this.Headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader);
-                    return boundary;
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                    return _boundary ?? (_boundary = MimePart.GetBoundary(this.Headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader));
                 }
             }
         }
 
         internal bool IsSignedContent {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                    if (this.Parent == null || this != this.Parent.FirstChild || (dataStorage == null || 0L == _storageInfo.BodyOffset) || this.Version != 0)
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                    if (this.Parent == null || this != this.Parent.FirstChild || (_dataStorage == null || 0L == _storageInfo.BodyOffset) || this.Version != 0)
                         return false;
                     var contentTypeHeader = (this.Parent as MimePart).Headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
                     return contentTypeHeader != null && contentTypeHeader.Value == "multipart/signed";
@@ -230,8 +250,8 @@ namespace Butler.Schema.Mime {
 
         internal bool IsProtectedContent {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                    if (this.Parent != null && dataStorage != null && (0L != _storageInfo.BodyOffset && this.Version == 0))
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                    if (this.Parent != null && _dataStorage != null && (0L != _storageInfo.BodyOffset && this.Version == 0))
                         return (this.Parent as MimePart).Headers.FindFirst("DKIM-Signature") != null;
                     return false;
                 }
@@ -240,83 +260,83 @@ namespace Butler.Schema.Mime {
 
         internal MimeDocument ParentDocument {
             get {
-                return parentDocument;
+                return _parentDocument;
             }
             set {
                 this.ThrowIfReadOnly("MimePart.set_ParentDocument");
-                using (ThreadAccessGuard.EnterPublic(accessToken))
-                    parentDocument = value;
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                    _parentDocument = value;
             }
         }
 
         internal bool ContentDirty {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
-                    return contentDirty;
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                    return _contentDirty;
             }
             set {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                    if (contentDirty != value)
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                    if (_contentDirty != value)
                         this.ThrowIfReadOnly("MimePart.set_ContentDirty");
-                    contentDirty = value;
+                    _contentDirty = value;
                 }
             }
         }
 
         internal bool ContentPersisted {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
-                    return contentPersisted && _storageInfo.BodyCte == this.ContentTransferEncoding;
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                    return _contentPersisted && _storageInfo.BodyCte == this.ContentTransferEncoding;
             }
             set {
-                using (ThreadAccessGuard.EnterPublic(accessToken))
-                    contentPersisted = value;
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                    _contentPersisted = value;
             }
         }
 
         internal Internal.DataStorage DeferredStorage {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     if (!this.IsReadOnly)
                         return this.Storage;
-                    lock (deferredStorageLock)
-                        return deferredStorageInfo != null ? deferredStorage : dataStorage;
+                    lock (_deferredStorageLock)
+                        return _deferredStorageInfo != null ? _deferredStorage : _dataStorage;
                 }
             }
         }
 
         internal long DeferredDataStart {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     if (!this.IsReadOnly)
                         return this.DataStart;
-                    lock (deferredStorageLock)
-                        return deferredStorageInfo != null ? deferredStorageInfo.DataStart : _storageInfo.DataStart;
+                    lock (_deferredStorageLock)
+                        return _deferredStorageInfo?.DataStart ?? _storageInfo.DataStart;
                 }
             }
         }
 
         internal long DeferredDataEnd {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     if (!this.IsReadOnly)
                         return this.DataEnd;
-                    lock (deferredStorageLock)
-                        return deferredStorageInfo != null ? deferredStorageInfo.DataEnd : _storageInfo.DataEnd;
+                    lock (_deferredStorageLock)
+                        return _deferredStorageInfo?.DataEnd ?? _storageInfo.DataEnd;
                 }
             }
         }
 
         internal long DeferredDataLength {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     if (!this.IsReadOnly)
                         return this.DataLength;
                     Internal.DataStorage storage;
                     DataStorageInfo storageInfo;
-                    lock (deferredStorageLock) {
-                        storage = deferredStorage;
-                        storageInfo = deferredStorageInfo;
+                    lock (_deferredStorageLock) {
+                        storage = _deferredStorage;
+                        storageInfo = _deferredStorageInfo;
                     }
                     if (storageInfo == null)
                         return this.DataLength;
@@ -340,33 +360,33 @@ namespace Butler.Schema.Mime {
 
         internal long DeferredBodyOffset {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     if (!this.IsReadOnly)
                         return this.BodyOffset;
-                    lock (deferredStorageLock)
-                        return deferredStorageInfo != null ? deferredStorageInfo.BodyOffset : _storageInfo.BodyOffset;
+                    lock (_deferredStorageLock)
+                        return _deferredStorageInfo?.BodyOffset ?? _storageInfo.BodyOffset;
                 }
             }
         }
 
         internal ContentTransferEncoding DeferredBodyCte {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     if (!this.IsReadOnly)
                         return this.BodyCte;
-                    lock (deferredStorageLock)
-                        return deferredStorageInfo?.BodyCte ?? _storageInfo.BodyCte;
+                    lock (_deferredStorageLock)
+                        return _deferredStorageInfo?.BodyCte ?? _storageInfo.BodyCte;
                 }
             }
         }
 
         internal LineTerminationState DeferredBodyLineTermination {
             get {
-                using (ThreadAccessGuard.EnterPublic(accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                     if (!this.IsReadOnly)
                         return this.BodyLineTermination;
-                    lock (deferredStorageLock)
-                        return deferredStorageInfo?.BodyLineTermination ?? _storageInfo.BodyLineTermination;
+                    lock (_deferredStorageLock)
+                        return _deferredStorageInfo?.BodyLineTermination ?? _storageInfo.BodyLineTermination;
                 }
             }
         }
@@ -388,7 +408,7 @@ namespace Butler.Schema.Mime {
         public System.Collections.Generic.IEnumerator<MimePart> GetEnumerator()
         {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken))
+            using (ThreadAccessGuard.EnterPublic(_accessToken))
                 return new Enumerator<MimePart>(this);
         }
 
@@ -399,19 +419,19 @@ namespace Butler.Schema.Mime {
 
         public System.IO.Stream GetRawContentReadStream() {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken))
-                return this.GetRawContentReadStream(dataStorage, _storageInfo);
+            using (ThreadAccessGuard.EnterPublic(_accessToken))
+                return this.GetRawContentReadStream(_dataStorage, _storageInfo);
         }
 
         internal System.IO.Stream GetDeferredRawContentReadStream() {
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (!this.IsReadOnly)
                     return this.GetRawContentReadStream();
                 Internal.DataStorage storage;
                 DataStorageInfo storageInfo;
-                lock (deferredStorageLock) {
-                    storage = deferredStorage;
-                    storageInfo = deferredStorageInfo;
+                lock (_deferredStorageLock) {
+                    storage = _deferredStorage;
+                    storageInfo = _deferredStorageInfo;
                 }
                 if (storageInfo == null)
                     return this.GetRawContentReadStream();
@@ -421,7 +441,7 @@ namespace Butler.Schema.Mime {
 
         private System.IO.Stream GetRawContentReadStream(Internal.DataStorage storage, DataStorageInfo storageInfo) {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPrivate(accessToken)) {
+            using (ThreadAccessGuard.EnterPrivate(_accessToken)) {
                 System.IO.Stream result;
                 if (!this.TryGetContentReadStream(storage, storageInfo, this.ContentTransferEncoding, out result))
                     throw new MimeException(Resources.Strings.CannotDecodeContentStream);
@@ -431,9 +451,9 @@ namespace Butler.Schema.Mime {
 
         public System.IO.Stream GetContentReadStream() {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 System.IO.Stream result;
-                if (!this.TryGetContentReadStream(dataStorage, _storageInfo, ContentTransferEncoding.Binary, out result))
+                if (!this.TryGetContentReadStream(_dataStorage, _storageInfo, ContentTransferEncoding.Binary, out result))
                     throw new MimeException(Resources.Strings.CannotDecodeContentStream);
                 return result;
             }
@@ -441,12 +461,12 @@ namespace Butler.Schema.Mime {
 
         public bool TryGetContentReadStream(out System.IO.Stream result) {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken))
-                return this.TryGetContentReadStream(dataStorage, _storageInfo, ContentTransferEncoding.Binary, out result);
+            using (ThreadAccessGuard.EnterPublic(_accessToken))
+                return this.TryGetContentReadStream(_dataStorage, _storageInfo, ContentTransferEncoding.Binary, out result);
         }
 
         private bool TryGetContentReadStream(Internal.DataStorage dataStorage, DataStorageInfo storageInfo, ContentTransferEncoding desiredCte, out System.IO.Stream result) {
-            using (ThreadAccessGuard.EnterPrivate(accessToken)) {
+            using (ThreadAccessGuard.EnterPrivate(_accessToken)) {
                 result = null;
                 var transferEncoding = storageInfo.BodyCte;
                 if (transferEncoding == ContentTransferEncoding.Unknown)
@@ -503,7 +523,7 @@ namespace Butler.Schema.Mime {
         public System.IO.Stream GetRawContentWriteStream() {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.GetRawContentWriteStream");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (this.IsMultipart)
                     throw new System.NotSupportedException(Resources.Strings.ModifyingRawContentOfMultipartNotSupported);
                 this.SetStorage(null, 0L, 0L);
@@ -514,7 +534,7 @@ namespace Butler.Schema.Mime {
         public System.IO.Stream GetContentWriteStream(ContentTransferEncoding transferEncoding) {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.GetContentWriteStream");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (this.IsMultipart)
                     throw new System.NotSupportedException(Resources.Strings.ModifyingRawContentOfMultipartNotSupported);
                 this.UpdateTransferEncoding(transferEncoding);
@@ -526,7 +546,7 @@ namespace Butler.Schema.Mime {
         public System.IO.Stream GetContentWriteStream(string transferEncoding) {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.GetContentWriteStream");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (transferEncoding == null)
                     throw new System.ArgumentNullException(nameof(transferEncoding));
                 return this.GetContentWriteStream(MimePart.GetEncodingType(new MimeString(transferEncoding)));
@@ -536,7 +556,7 @@ namespace Butler.Schema.Mime {
         public void SetContentStream(string transferEncoding, System.IO.Stream contentStream, CachingMode cachingMode) {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.SetContentStream");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 var transferEncoding1 = ContentTransferEncoding.Unknown;
                 if (transferEncoding != null) {
                     transferEncoding1 = MimePart.GetEncodingType(new MimeString(transferEncoding));
@@ -550,7 +570,7 @@ namespace Butler.Schema.Mime {
         public void SetContentStream(ContentTransferEncoding transferEncoding, System.IO.Stream contentStream, CachingMode cachingMode) {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.SetContentStream");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (contentStream == null)
                     throw new System.ArgumentNullException(nameof(contentStream));
                 if (!contentStream.CanRead)
@@ -600,29 +620,29 @@ namespace Butler.Schema.Mime {
         }
 
         protected virtual void Dispose(bool disposing) {
-            if (disposing && !isDisposed) {
+            if (disposing && !_isDisposed) {
                 using (var enumerator = this.Subtree.GetEnumerator(SubtreeEnumerationOptions.IncludeEmbeddedMessages, false)) {
                     while (enumerator.MoveNext()) {
-                        if (enumerator.Current.dataStorage != null) {
-                            enumerator.Current.dataStorage.Release();
-                            enumerator.Current.dataStorage = null;
+                        if (enumerator.Current._dataStorage != null) {
+                            enumerator.Current._dataStorage.Release();
+                            enumerator.Current._dataStorage = null;
                         }
                         if (enumerator.Current.headers != null)
                             enumerator.Current.headers.InternalDetachParent();
                         enumerator.Current.headers = null;
-                        enumerator.Current.boundary = null;
-                        enumerator.Current.parentDocument = null;
-                        if (enumerator.Current.deferredStorage != null) {
-                            enumerator.Current.deferredStorage.Release();
-                            enumerator.Current.deferredStorage = null;
-                            enumerator.Current.deferredStorageInfo = null;
+                        enumerator.Current._boundary = null;
+                        enumerator.Current._parentDocument = null;
+                        if (enumerator.Current._deferredStorage != null) {
+                            enumerator.Current._deferredStorage.Release();
+                            enumerator.Current._deferredStorage = null;
+                            enumerator.Current._deferredStorageInfo = null;
                         }
-                        enumerator.Current.isDisposed = true;
+                        enumerator.Current._isDisposed = true;
                         System.GC.SuppressFinalize(enumerator.Current);
                     }
                 }
             } else
-                isDisposed = true;
+                _isDisposed = true;
         }
 
         //public new Enumerator<MimePart> GetEnumerator() {
@@ -632,7 +652,7 @@ namespace Butler.Schema.Mime {
         //}
 
         public override sealed MimeNode Clone() {
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 var mimePart = new MimePart();
                 this.CopyTo(mimePart);
                 return mimePart;
@@ -641,7 +661,7 @@ namespace Butler.Schema.Mime {
 
         public override sealed void CopyTo(object destination) {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (destination == null)
                     throw new System.ArgumentNullException(nameof(destination));
                 if (destination == this)
@@ -649,7 +669,7 @@ namespace Butler.Schema.Mime {
                 var dstPart = destination as MimePart;
                 if (dstPart == null)
                     throw new System.ArgumentException(Resources.Strings.CantCopyToDifferentObjectType);
-                using (ThreadAccessGuard.EnterPublic(dstPart.accessToken)) {
+                using (ThreadAccessGuard.EnterPublic(dstPart._accessToken)) {
                     byte[] scratchBuffer = null;
                     var dstStorage = new Internal.TemporaryDataStorage();
                     using (System.IO.Stream dstStream = dstStorage.OpenWriteStream(true))
@@ -662,7 +682,7 @@ namespace Butler.Schema.Mime {
 
         public long WriteTo(System.IO.Stream stream, EncodingOptions encodingOptions, MimeOutputFilter filter) {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (stream == null)
                     throw new System.ArgumentNullException(nameof(stream));
                 if (encodingOptions == null)
@@ -675,11 +695,11 @@ namespace Butler.Schema.Mime {
 
         internal bool IsProtectedHeader(string headerName) {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (!string.IsNullOrEmpty(headerName) && this.Headers.FindFirst("DKIM-Signature") != null) {
-                    if (protectedHeaders == null)
+                    if (_protectedHeaders == null)
                         this.PopulateProtectedHeaders();
-                    foreach (var str in protectedHeaders) {
+                    foreach (var str in _protectedHeaders) {
                         if (headerName.Equals(str, System.StringComparison.OrdinalIgnoreCase))
                             return true;
                     }
@@ -689,14 +709,14 @@ namespace Butler.Schema.Mime {
         }
 
         private void PopulateProtectedHeaders() {
-            protectedHeaders = new System.Collections.Generic.List<string>();
-            protectedHeaders.Add("DKIM-Signature");
+            _protectedHeaders = new System.Collections.Generic.List<string>();
+            _protectedHeaders.Add("DKIM-Signature");
             var refHeader = this.Headers.FindFirst("DKIM-Signature");
             var headerDecodingOptions = this.GetHeaderDecodingOptions();
             for (; refHeader != null; refHeader = this.Headers.FindNext(refHeader)) {
                 var valueParser1 = new ValueParser(refHeader.Lines, headerDecodingOptions.AllowUTF8);
                 var phrase = new MimeStringList();
-                var handleISO2022 = true;
+                const bool handleISO2022 = true;
                 byte num1;
                 do {
                     valueParser1.ParseCFWS(false, ref phrase, handleISO2022);
@@ -738,7 +758,7 @@ namespace Butler.Schema.Mime {
                                         if (mimeString2.Length == 0 || mimeString2.Length >= 128)
                                             valueParser2.ParseSkipToNextDelimiterByte(58);
                                         else
-                                            protectedHeaders.Add(Header.NormalizeString(mimeString2.Data, mimeString2.Offset, mimeString2.Length, false));
+                                            _protectedHeaders.Add(Header.NormalizeString(mimeString2.Data, mimeString2.Offset, mimeString2.Length, false));
                                     } while (num2 != 0);
                                 }
                                 break;
@@ -763,11 +783,11 @@ namespace Butler.Schema.Mime {
                 mimeParameter.RawValue = ContentTypeHeader.CreateBoundary();
             }
             var rawValue = mimeParameter.RawValue;
-            var num = rawValue != null ? rawValue.Length : 0;
+            var num = rawValue?.Length ?? 0;
             if (num == 0 || 70 < num)
                 mimeParameter.RawValue = ContentTypeHeader.CreateBoundary();
             var numArray = new byte[MimeString.CRLF2Dashes.Length + rawValue.Length + MimeString.CrLf.Length];
-            var dstOffset1 = 0;
+            const int dstOffset1 = 0;
             System.Buffer.BlockCopy(MimeString.CRLF2Dashes, 0, numArray, dstOffset1, MimeString.CRLF2Dashes.Length);
             var length = MimeString.CRLF2Dashes.Length;
             System.Buffer.BlockCopy(rawValue, 0, numArray, length, rawValue.Length);
@@ -796,9 +816,7 @@ namespace Butler.Schema.Mime {
         internal static bool IsEqualContentTransferEncoding(ContentTransferEncoding cte1, ContentTransferEncoding cte2) {
             if (cte1 == cte2)
                 return true;
-            if (MimePart.EncodingIsTransparent(cte1))
-                return MimePart.EncodingIsTransparent(cte2);
-            return false;
+            return MimePart.EncodingIsTransparent(cte1) && MimePart.EncodingIsTransparent(cte2);
         }
 
         internal static bool EncodingIsTransparent(ContentTransferEncoding cte) {
@@ -878,8 +896,8 @@ namespace Butler.Schema.Mime {
         internal override void SetDirty() {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.SetDirty");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                boundary = null;
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                _boundary = null;
                 var mimePart1 = this;
                 var flag = false;
                 MimePart mimePart2;
@@ -903,8 +921,8 @@ namespace Butler.Schema.Mime {
         internal override void ChildRemoved(MimeNode oldChild) {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.ChildRemoved");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                if (dataStorage == null)
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                if (_dataStorage == null)
                     return;
                 this.SetStorageImpl(null, 0L, 0L);
                 this.ContentPersisted = false;
@@ -915,8 +933,8 @@ namespace Butler.Schema.Mime {
         internal override void RemoveAllUnparsed() {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.RemoveAllUnparsed");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                if (dataStorage == null || !this.IsEmbeddedMessage)
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                if (_dataStorage == null || !this.IsEmbeddedMessage)
                     return;
                 this.SetStorageImpl(null, 0L, 0L);
                 this.ContentPersisted = false;
@@ -926,8 +944,8 @@ namespace Butler.Schema.Mime {
 
         internal override MimeNode ParseNextChild() {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                if (this.InternalLastChild != null || dataStorage == null || !this.IsEmbeddedMessage)
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                if (this.InternalLastChild != null || _dataStorage == null || !this.IsEmbeddedMessage)
                     return null;
                 this.ThrowIfReadOnly("MimePart.ParseNextChild");
                 MimeDocument mimeDocument = null;
@@ -950,7 +968,7 @@ namespace Butler.Schema.Mime {
 
         internal override MimeNode ValidateNewChild(MimeNode newChild, MimeNode refChild) {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 var mimePart = newChild as MimePart;
                 if (mimePart == null)
                     throw new System.ArgumentException(Resources.Strings.NewChildIsNotAPart);
@@ -959,15 +977,15 @@ namespace Butler.Schema.Mime {
                     mimeNode = mimeNode.Parent;
                     if (mimeNode == null) {
                         this.ThrowIfReadOnly("MimePart.ValidateNewChild");
-                        if (mimePart.parentDocument != null) {
-                            mimePart.parentDocument.RootPart = new MimePart();
-                            mimePart.parentDocument = null;
+                        if (mimePart._parentDocument != null) {
+                            mimePart._parentDocument.RootPart = new MimePart();
+                            mimePart._parentDocument = null;
                         }
                         if (this.IsEmbeddedMessage && this.InternalLastChild != null) {
                             this.InternalRemoveChild(this.InternalLastChild);
                             refChild = null;
                         }
-                        if (dataStorage != null) {
+                        if (_dataStorage != null) {
                             this.SetStorageImpl(null, 0L, 0L);
                             this.ContentPersisted = false;
                             this.ContentDirty = true;
@@ -980,8 +998,8 @@ namespace Butler.Schema.Mime {
         }
 
         internal void CopyPartTo(bool signedOrProtectedContent, MimePart dstPart, Internal.TemporaryDataStorage dstStorage, System.IO.Stream dstStream, long position, ref byte[] scratchBuffer) {
-            using (ThreadAccessGuard.EnterPublic(accessToken))
-            using (ThreadAccessGuard.EnterPublic(dstPart.accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken))
+            using (ThreadAccessGuard.EnterPublic(dstPart._accessToken)) {
                 var num1 = 0L;
                 MimePart mimePart = null;
                 using (var enumerator = this.Subtree.GetEnumerator(SubtreeEnumerationOptions.IncludeEmbeddedMessages | SubtreeEnumerationOptions.RevisitParent, false)) {
@@ -990,13 +1008,13 @@ namespace Butler.Schema.Mime {
                             if (enumerator.Depth != 0)
                                 dstPart = new MimePart();
                             else if (signedOrProtectedContent) {
-                                var dataStorage = enumerator.Current.dataStorage;
+                                var dataStorage = enumerator.Current._dataStorage;
                                 var num2 = enumerator.Current._storageInfo.DataStart;
                                 num1 = position - num2;
                                 mimePart = dstPart;
                                 continue;
                             }
-                            if (signedOrProtectedContent && enumerator.Current.dataStorage != null) {
+                            if (signedOrProtectedContent && enumerator.Current._dataStorage != null) {
                                 dstPart.SetStorageImpl(
                                     dstStorage,
                                     num1 + enumerator.Current._storageInfo.DataStart,
@@ -1005,17 +1023,17 @@ namespace Butler.Schema.Mime {
                                     enumerator.Current._storageInfo.BodyCte,
                                     enumerator.Current.BodyLineTermination);
                             } else if (enumerator.Current.IsSignedContent || enumerator.Current.IsProtectedContent) {
-                                var num2 = enumerator.Current.dataStorage.CopyContentToStream(enumerator.Current._storageInfo.DataStart, enumerator.Current._storageInfo.DataEnd, dstStream, ref scratchBuffer);
+                                var num2 = enumerator.Current._dataStorage.CopyContentToStream(enumerator.Current._storageInfo.DataStart, enumerator.Current._storageInfo.DataEnd, dstStream, ref scratchBuffer);
                                 dstPart.SetStorageImpl(dstStorage, position, position + num2, enumerator.Current._storageInfo.BodyOffset, enumerator.Current._storageInfo.BodyCte, enumerator.Current._storageInfo.BodyLineTermination);
                                 if (!enumerator.LastVisit) {
                                     enumerator.Current.CopyPartTo(true, dstPart, dstStorage, null, position, ref scratchBuffer);
                                     enumerator.SkipChildren();
                                 }
                                 position += num2;
-                            } else if (enumerator.Current.dataStorage == null || enumerator.Current.IsMultipart || enumerator.Current.IsEmbeddedMessage && !enumerator.LastVisit)
+                            } else if (enumerator.Current._dataStorage == null || enumerator.Current.IsMultipart || enumerator.Current.IsEmbeddedMessage && !enumerator.LastVisit)
                                 dstPart.SetStorageImpl(null, 0L, 0L);
                             else {
-                                var num2 = enumerator.Current.dataStorage.CopyContentToStream(
+                                var num2 = enumerator.Current._dataStorage.CopyContentToStream(
                                     enumerator.Current._storageInfo.DataStart + enumerator.Current._storageInfo.BodyOffset,
                                     enumerator.Current._storageInfo.DataEnd,
                                     dstStream,
@@ -1023,7 +1041,7 @@ namespace Butler.Schema.Mime {
                                 dstPart.SetStorageImpl(dstStorage, position, position + num2, 0L, enumerator.Current._storageInfo.BodyCte, enumerator.Current._storageInfo.BodyLineTermination);
                                 position += num2;
                             }
-                            dstPart.contentDirty = enumerator.Depth == 0 && !signedOrProtectedContent;
+                            dstPart._contentDirty = enumerator.Depth == 0 && !signedOrProtectedContent;
                             enumerator.Current.headers.CopyTo(dstPart.headers);
                             if (!signedOrProtectedContent && !enumerator.Current.IsSignedContent && !enumerator.Current.IsProtectedContent) {
                                 var contentTypeHeader = dstPart.headers.FindFirst(HeaderId.ContentType) as ContentTypeHeader;
@@ -1034,7 +1052,7 @@ namespace Butler.Schema.Mime {
                                 }
                             }
                             if (mimePart != null) {
-                                if (mimePart.IsEmbeddedMessage && mimePart.dataStorage != null && mimePart.InternalLastChild == null)
+                                if (mimePart.IsEmbeddedMessage && mimePart._dataStorage != null && mimePart.InternalLastChild == null)
                                     mimePart.InternalInsertAfter(dstPart, null);
                                 else
                                     mimePart.InternalAppendChild(dstPart);
@@ -1050,7 +1068,7 @@ namespace Butler.Schema.Mime {
 
         internal override long WriteTo(System.IO.Stream stream, EncodingOptions encodingOptions, MimeOutputFilter filter, ref MimeStringLength currentLineLength, ref byte[] scratchBuffer) {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 var num1 = 0L;
                 CountingWriteStream countingWriteStream1 = null;
                 CountingWriteStream countingWriteStream2 = null;
@@ -1087,7 +1105,7 @@ namespace Butler.Schema.Mime {
                                 }
                                 if (enumerator.Current.IsSignedContent) {
                                     num1 += MimePart.CopyStorageToStream(
-                                        enumerator.Current.dataStorage,
+                                        enumerator.Current._dataStorage,
                                         enumerator.Current._storageInfo.DataStart,
                                         enumerator.Current._storageInfo.DataEnd,
                                         enumerator.Current._storageInfo.BodyLineTermination,
@@ -1104,8 +1122,7 @@ namespace Butler.Schema.Mime {
                                     } else
                                         flag = false;
                                     if (filter != null && filter.FilterPartBody(enumerator.Current, stream)) {
-                                        if (filter != null)
-                                            filter.ClosePart(enumerator.Current, stream);
+                                        filter?.ClosePart(enumerator.Current, stream);
                                         enumerator.SkipChildren();
                                         flag = true;
                                     } else if (enumerator.Current.IsMultipart) {
@@ -1131,9 +1148,9 @@ namespace Butler.Schema.Mime {
                                             num1 += MimeString.CrLf.Length;
                                         }
                                         if (enumerator.Current.ContentTransferEncoding == enumerator.Current._storageInfo.BodyCte) {
-                                            if (enumerator.Current.dataStorage != null) {
+                                            if (enumerator.Current._dataStorage != null) {
                                                 num1 += MimePart.CopyStorageToStream(
-                                                    enumerator.Current.dataStorage,
+                                                    enumerator.Current._dataStorage,
                                                     enumerator.Current._storageInfo.DataStart + enumerator.Current._storageInfo.BodyOffset,
                                                     enumerator.Current._storageInfo.DataEnd,
                                                     enumerator.Current._storageInfo.BodyLineTermination,
@@ -1157,8 +1174,7 @@ namespace Butler.Schema.Mime {
                                                 }
                                             }
                                         }
-                                        if (filter != null)
-                                            filter.ClosePart(enumerator.Current, stream);
+                                        filter?.ClosePart(enumerator.Current, stream);
                                         if (!enumerator.LastVisit)
                                             enumerator.SkipChildren();
                                     }
@@ -1173,9 +1189,8 @@ namespace Butler.Schema.Mime {
                                 if (LineTerminationState.NotInteresting != lineTermination)
                                     lineTermination = LineTerminationState.CRLF;
                             }
-                            buffer = enumerator.Current.Parent == null ? null : ((MimePart) enumerator.Current.Parent).Boundary;
-                            if (filter != null)
-                                filter.ClosePart(enumerator.Current, stream);
+                            buffer = ((MimePart) enumerator.Current.Parent).Boundary;
+                            filter?.ClosePart(enumerator.Current, stream);
                         }
                     }
                 }
@@ -1193,15 +1208,14 @@ namespace Butler.Schema.Mime {
                 }
                 if (countingWriteStream1 != null) {
                     num1 = countingWriteStream1.Count - num2;
-                    if (countingWriteStream2 != null)
-                        countingWriteStream2.Dispose();
+                    countingWriteStream2?.Dispose();
                 }
                 return num1;
             }
         }
 
         internal void SetStorage(Internal.DataStorage storage, long dataStart, long dataEnd) {
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 this.SetStorageImpl(storage, dataStart, dataEnd);
                 this.ContentPersisted = false;
                 this.ContentDirty = true;
@@ -1210,7 +1224,7 @@ namespace Butler.Schema.Mime {
         }
 
         internal void SetStorage(Internal.DataStorage storage, long dataStart, long dataEnd, long bodyOffset, ContentTransferEncoding bodyCte, LineTerminationState bodyLineTermination) {
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 this.SetStorageImpl(storage, dataStart, dataEnd, bodyOffset, bodyCte, bodyLineTermination);
                 this.ContentPersisted = false;
                 this.ContentDirty = true;
@@ -1219,21 +1233,20 @@ namespace Butler.Schema.Mime {
         }
 
         internal void SetStorageImpl(Internal.DataStorage storage, long dataStart, long dataEnd) {
-            using (ThreadAccessGuard.EnterPublic(accessToken))
+            using (ThreadAccessGuard.EnterPublic(_accessToken))
                 this.SetStorageImpl(storage, dataStart, dataEnd, 0L, ContentTransferEncoding.Binary, LineTerminationState.Unknown);
         }
 
         internal void SetStorageImpl(Internal.DataStorage storage, long dataStart, long dataEnd, long bodyOffset, ContentTransferEncoding bodyCte, LineTerminationState bodyLineTermination) {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.SetStorageImpl");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (storage != null) {
                     storage.AddRef();
                     storage.SetReadOnly(false);
                 }
-                if (dataStorage != null)
-                    dataStorage.Release();
-                dataStorage = storage;
+                _dataStorage?.Release();
+                _dataStorage = storage;
                 _storageInfo.DataStart = dataStart;
                 _storageInfo.DataEnd = dataEnd;
                 _storageInfo.BodyOffset = bodyOffset;
@@ -1243,27 +1256,26 @@ namespace Butler.Schema.Mime {
         }
 
         internal void SetDeferredStorageImpl(Internal.DataStorage storage, long dataStart, long dataEnd) {
-            using (ThreadAccessGuard.EnterPublic(accessToken))
+            using (ThreadAccessGuard.EnterPublic(_accessToken))
                 this.SetDeferredStorageImpl(storage, dataStart, dataEnd, 0L, ContentTransferEncoding.Binary, LineTerminationState.Unknown);
         }
 
         internal void SetDeferredStorageImpl(Internal.DataStorage storage, long dataStart, long dataEnd, long bodyOffset, ContentTransferEncoding bodyCte, LineTerminationState bodyLineTermination) {
             this.ThrowIfDisposed();
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 if (this.IsReadOnly) {
-                    if (storage != null)
-                        storage.AddRef();
-                    var dataStorageInfo = new DataStorageInfo();
-                    dataStorageInfo.DataStart = dataStart;
-                    dataStorageInfo.DataEnd = dataEnd;
-                    dataStorageInfo.BodyOffset = bodyOffset;
-                    dataStorageInfo.BodyCte = bodyCte;
-                    dataStorageInfo.BodyLineTermination = bodyLineTermination;
-                    lock (deferredStorageLock) {
-                        if (deferredStorage != null)
-                            deferredStorage.Release();
-                        deferredStorage = storage;
-                        deferredStorageInfo = dataStorageInfo;
+                    storage?.AddRef();
+                    var dataStorageInfo = new DataStorageInfo {
+                        DataStart = dataStart,
+                        DataEnd = dataEnd,
+                        BodyOffset = bodyOffset,
+                        BodyCte = bodyCte,
+                        BodyLineTermination = bodyLineTermination
+                    };
+                    lock (_deferredStorageLock) {
+                        _deferredStorage?.Release();
+                        _deferredStorage = storage;
+                        _deferredStorageInfo = dataStorageInfo;
                     }
                 } else
                     this.SetStorageImpl(storage, dataStart, dataEnd, bodyOffset, bodyCte, bodyLineTermination);
@@ -1271,54 +1283,49 @@ namespace Butler.Schema.Mime {
         }
 
         internal void SetReadOnlyInternal(bool makeReadOnly) {
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
-                if (!makeReadOnly && deferredStorageInfo != null) {
-                    if (dataStorage != null)
-                        dataStorage.Release();
-                    dataStorage = deferredStorage;
-                    _storageInfo = deferredStorageInfo;
-                    deferredStorage = null;
-                    deferredStorageInfo = null;
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
+                if (!makeReadOnly && _deferredStorageInfo != null) {
+                    _dataStorage?.Release();
+                    _dataStorage = _deferredStorage;
+                    _storageInfo = _deferredStorageInfo;
+                    _deferredStorage = null;
+                    _deferredStorageInfo = null;
                 }
-                if (dataStorage == null)
+                if (_dataStorage == null)
                     return;
                 this.Storage.SetReadOnly(makeReadOnly);
             }
         }
 
         internal Globalization.Charset FindMimeTreeCharset() {
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 Globalization.Charset charset = null;
                 var mimePart = this;
                 while (!mimePart.IsEmbeddedMessage && mimePart.FirstChild != null)
                     mimePart = (MimePart) mimePart.FirstChild;
                 var complexHeader = mimePart.Headers.FindFirst(HeaderId.ContentType) as ComplexHeader;
-                if (complexHeader != null) {
-                    var mimeParameter = complexHeader["charset"];
-                    if (mimeParameter != null) {
-                        var rawValue = mimeParameter.RawValue;
-                        if (rawValue != null) {
-                            var name = Internal.ByteString.BytesToString(rawValue, false);
-                            if (name != null && Globalization.Charset.TryGetCharset(name, out charset) && charset.AsciiSupport < Globalization.CodePageAsciiSupport.Fine)
-                                charset = charset.Culture.MimeCharset;
-                        }
-                    }
+                var mimeParameter = complexHeader?["charset"];
+                var rawValue = mimeParameter?.RawValue;
+                if (rawValue != null) {
+                    var name = Internal.ByteString.BytesToString(rawValue, false);
+                    if (name != null && Globalization.Charset.TryGetCharset(name, out charset) && charset.AsciiSupport < Globalization.CodePageAsciiSupport.Fine)
+                        charset = charset.Culture.MimeCharset;
                 }
                 return charset;
             }
         }
 
         private void IncrementVersion() {
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 this.Version = int.MaxValue == this.Version ? 1 : this.Version + 1;
-                protectedHeaders = null;
+                _protectedHeaders = null;
             }
         }
 
         internal void UpdateTransferEncoding(ContentTransferEncoding transferEncoding) {
             this.ThrowIfDisposed();
             this.ThrowIfReadOnly("MimePart.UpdateTransferEncoding");
-            using (ThreadAccessGuard.EnterPublic(accessToken)) {
+            using (ThreadAccessGuard.EnterPublic(_accessToken)) {
                 var encodingName = MimePart.GetEncodingName(transferEncoding);
                 if (encodingName == null)
                     throw new System.ArgumentException("Transfer encoding is unknown or not supported", nameof(transferEncoding));
@@ -1334,12 +1341,13 @@ namespace Butler.Schema.Mime {
             }
         }
 
+
         private void ThrowIfDisposed() {
-            if (isDisposed)
+            if (_isDisposed)
                 throw new System.ObjectDisposedException("MimePart");
         }
 
-        private static readonly EncodingEntry[] encoding_map = new EncodingEntry[9] {
+        private static readonly EncodingEntry[] encoding_map = {
             new EncodingEntry(MimeString.Base64, ContentTransferEncoding.Base64),
             new EncodingEntry(MimeString.QuotedPrintable, ContentTransferEncoding.QuotedPrintable),
             new EncodingEntry(MimeString.Encoding7Bit, ContentTransferEncoding.SevenBit),
@@ -1351,20 +1359,20 @@ namespace Butler.Schema.Mime {
             new EncodingEntry(MimeString.Uue, ContentTransferEncoding.UUEncode)
         };
 
-        private readonly MimePartThreadAccessToken accessToken;
-        private readonly object deferredStorageLock = new object();
+        private readonly MimePartThreadAccessToken _accessToken;
+        private readonly object _deferredStorageLock = new object();
         private DataStorageInfo _storageInfo = new DataStorageInfo();
-        private byte[] boundary;
-        private int cacheMapStamp;
-        private bool contentDirty;
-        private bool contentPersisted;
-        private Internal.DataStorage dataStorage;
-        private Internal.DataStorage deferredStorage;
-        private DataStorageInfo deferredStorageInfo;
+        private byte[] _boundary;
+        private int _cacheMapStamp;
+        private bool _contentDirty;
+        private bool _contentPersisted;
+        private Internal.DataStorage _dataStorage;
+        private Internal.DataStorage _deferredStorage;
+        private DataStorageInfo _deferredStorageInfo;
         private HeaderList headers;
-        private bool isDisposed;
-        private MimeDocument parentDocument;
-        private System.Collections.Generic.List<string> protectedHeaders;
+        private bool _isDisposed;
+        private MimeDocument _parentDocument;
+        private System.Collections.Generic.List<string> _protectedHeaders;
 
     }
 
