@@ -32,6 +32,6 @@
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: System.Reflection.AssemblyVersion("1.0.0.*")]
+[assembly: System.Reflection.AssemblyVersion("1.0.1.*")]
 [assembly: System.Reflection.AssemblyFileVersion("1.0.0.0")]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("LINQPadQuery")]
