@@ -69,6 +69,19 @@ namespace Butler.Schema.Mime {
                 }
             }
         }
+        public string ContentId
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                using (ThreadAccessGuard.EnterPublic(_accessToken))
+                {
+                    var contentIdHeader = headers.FindFirst(HeaderId.ContentId) as TextHeader;
+
+                    return contentIdHeader?.Value;
+                }
+            }
+        }
 
         public bool IsMultipart {
             get {
